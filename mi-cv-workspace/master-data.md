@@ -1,154 +1,136 @@
 # 🗂️ Base de Datos Maestra del Profesional (master-data.md)
 
-> **Instrucciones:** Este archivo es tu **Fuente Única de Verdad (Single Source of Truth - SSOT)**. Contiene el 100% de tu trayectoria, proyectos, habilidades, certificaciones y datos cuantitativos. La IA seleccionará y adaptará únicamente los elementos más relevantes para cada vacante específica según `target-job.md`.
+> **Instrucciones:** Este archivo es tu **Fuente Única de Verdad (SSOT)** y tu **Baúl de Conocimiento Profesional**. No necesitas redactar múltiples resúmenes ni forzar estructuras rígidas: escribe aquí toda tu trayectoria, proyectos, notas libres, responsabilidades y contexto técnico. La IA se encargará de seleccionar, sintetizar y redactar el CV a medida para cada oferta según `target-job.md` y las directrices de `rules.md`.
 
 ---
 
 ## 👤 1. Información Personal y de Contacto
 
 - **Nombre Completo:** [Tu Nombre y Apellidos]
-- **Título Profesional Principal:** [Ej: Senior Fullstack Engineer | Cloud & DevOps Specialist | Product Data Analyst]
-- **Ubicación:** [Ciudad, País] *(ej. Madrid, España | Bogotá, Colombia)*
-- **Correo Electrónico:** [tu.email.profesional@gmail.com]
+- **Título Profesional Principal:** [Título del Rol Objetivo | Especialidad (ej. Frontend Engineer | Angular & React Specialist)]
+- **Ubicación:** [Ciudad, País (ej. Bogotá, Colombia)]
+- **Correo Electrónico:** [tu.correo.profesional@gmail.com]
 - **Teléfono / WhatsApp:** [+XX XXX XXXXXXX]
-- **LinkedIn:** [https://linkedin.com/in/tu-usuario](https://linkedin.com/in/tu-usuario)
-- **GitHub / GitLab:** [https://github.com/tu-usuario](https://github.com/tu-usuario)
-- **Portfolio / Web Personal:** [https://tuweb.dev](https://tuweb.dev)
-- **Disponibilidad:** [Inmediata / 2 semanas / 1 mes] | [Remoto / Híbrido / Relocalización]
+- **LinkedIn:** [https://linkedin.com/in/tu-usuario]
+- **GitHub:** [https://github.com/tu-usuario]
+- **Portfolio / Web:** [https://tuweb.dev]
+- **Disponibilidad:** [Inmediata / 2 semanas] | [Remoto / Híbrido / Presencial]
 
 ---
 
-## 📝 2. Perfiles Profesionales / Resúmenes (Múltiples Enfoques)
+## 🎯 2. Trayectoria General, Storytelling y Pitch Profesional
 
-*Escribe aquí distintas variantes de tu resumen profesional para usarlas según el foco de la oferta:*
+*Vuelca aquí tu historia profesional, tus puntos fuertes, transiciones de carrera y valor diferencial en tus propias palabras. La IA usará esto para redactar dinámicamente tu Resumen Profesional adaptado a la empresa objetivo:*
 
-### Variante A: Enfoque Técnico / Arquitectura
-> Ingeniero de Software con más de 6 años de experiencia especializándose en arquitectura de microservicios escalables, sistemas distribuidos de alto tráfico y computación en la nube (AWS/GCP). Historial comprobado de reducción de costos de infraestructura en un 30% y optimización de latencia en sistemas financieros.
-
-### Variante B: Enfoque Liderazgo / Tech Lead
-> Tech Lead con experiencia guiando equipos multidisciplinarios de hasta 10 ingenieros bajo metodologías ágiles (Scrum/Kanban). Experto en establecer estándares de calidad de código (CI/CD, TDD) y alinear la estrategia tecnológica con los objetivos de negocio y entrega de producto.
-
-### Variante C: Enfoque Producto / Negocio
-> Desarrollador orientado al impacto de producto con sólida formación en analítica de datos, diseño de APIs y optimización de conversión UX. Capacidad demostrada para colaborar estrechamente con Product Managers y Stakeholders para transformar requerimientos complejos en soluciones técnicas escalables.
+> Desarrollador Frontend / Ingeniero de Software con más de 3 años de experiencia construyendo, escalando y modernizando aplicaciones web de alto rendimiento. Especializado en el ecosistema JavaScript/TypeScript moderno, con sólida experiencia en frameworks frontend como Angular (versiones 7 en adelante) y React (15+).
+>
+> Experiencia destacada en diseño y desarrollo de arquitecturas basadas en Microfrontends, diseño modular basado en componentes, optimización de peticiones asíncronas y reactivas con RxJS, integración de APIs RESTful y GraphQL, y maquetación avanzada con HTML5, CSS3/SASS y TailwindCSS.
+>
+> Capacidad analítica rigurosa, pensamiento sistémico, habilidades de liderazgo técnico, redacción de especificaciones técnicas y colaboración fluida con equipos multidisciplinarios de Producto, UX/UI y Backend.
 
 ---
 
-## 🛠️ 3. Matriz de Habilidades y Competencias
+## 🛠️ 3. Matriz Maestra de Habilidades y Herramientas (Master Stack)
 
-### Lenguajes de Programación
-- **Avanzado / Diario:** TypeScript, JavaScript, Python, SQL, Go
-- **Intermedio / Experiencia previa:** Java, C#, PHP, Bash
+*Lista abierta de todas las tecnologías y competencias que dominas. La IA agrupará y priorizará las más relevantes según la vacante:*
 
-### Frameworks & Librerías
-- **Frontend:** React, Next.js, Vue.js, TailwindCSS, Redux Toolkit, React Query
-- **Backend:** Node.js, Express, NestJS, FastAPI, Django, Spring Boot
+### Lenguajes & Core Web
+- TypeScript, JavaScript (ES6+), HTML5, CSS3, SASS, SQL
 
-### Bases de Datos & Almacenamiento
-- **Relacionales:** PostgreSQL, MySQL, SQLite (Indexación, Optimización de Queries, Replicación)
-- **NoSQL / Caching:** MongoDB, Redis, DynamoDB, Elasticsearch
+### Frameworks & Librerías Frontend
+- Angular (7+), React, RxJS, NgRx, Redux Toolkit, React Query, Next.js, TailwindCSS, Bootstrap, Material UI
 
-### Cloud, DevOps & Infraestructura
-- **Cloud:** AWS (ECS, Lambda, S3, RDS, CloudFront, IAM), GCP, Azure
-- **Contenedores & Orquestación:** Docker, Docker Compose, Kubernetes
-- **CI/CD & Automatización:** GitHub Actions, GitLab CI, Terraform (IaC)
-- **Monitoreo & Logs:** Datadog, Prometheus, Grafana, CloudWatch, Sentry
+### Estado, APIs & Asincronía
+- Gestión de estado reactivo (RxJS / NgRx / Redux), RESTful APIs, GraphQL, WebSockets, Axios, Fetch API
 
-### Metodologías y Herramientas
-- Agile (Scrum, Kanban), TDD (Jest, PyTest, Cypress), Git/GitFlow, Jira, Figma, OpenAPI/Swagger
+### Arquitectura & Rendimiento
+- Microfrontends (Module Federation / Single-SPA), Component-Driven Development, Web Performance Optimization, Lazy Loading, Clean Code / SOLID
 
-### Habilidades Blandas / Soft Skills (Con evidencia)
-- **Liderazgo Técnico:** Mentoría de 4 desarrolladores Junior y Mid-level hacia promociones internas.
-- **Comunicación Asertiva:** Presentaciones técnicas quincenables a directivos y clientes clave.
-- **Resolución de Problemas:** Resolución de incidentes críticos de producción (P1/P0) con RTO < 15 min.
+### Herramientas de Desarrollo, Control de Versiones & CI/CD
+- Git, GitHub, GitLab, npm, Webpack, Vite, Docker, Jira, Confluence, Figma, Postman
+
+### Habilidades Blandas & Metodologías
+- Metodologías Ágiles (Scrum, Kanban), Liderazgo y Mentoría Técnica, Redacción de Especificaciones Técnicas, Comunicación Asertiva, Pensamiento Crítico y Resolución de Problemas
 
 ---
 
 ## 💼 4. Historial Laboral Completo (Cronológico Inverso)
 
-### Empresa A: [Nombre de la Empresa / Startup]
-- **Cargo:** Senior Software Engineer / Backend Lead
-- **Modalidad & Ubicación:** Remoto (EE.UU. / LATAM)
-- **Período:** Enero 2023 – Presente
-- **Contexto de la empresa:** Fintech Serie B con más de 2 millones de usuarios activos en LATAM.
-- **Tecnologías utilizadas:** Node.js, NestJS, TypeScript, AWS, PostgreSQL, Redis, Kafka, Docker.
-- **Logros y Métricas (Fórmula XYZ):**
-  - Rediseñé el pipeline de procesamiento de pagos asíncrono con Apache Kafka y Redis, reduciendo los fallos por timeout en un 42% durante eventos de alto tráfico.
-  - Lideré la migración de una base de datos monolítica PostgreSQL de 800GB a instancias Aurora con sharding, incrementando el throughput de consultas concurrentes en 3.5x.
-  - Implementé políticas de observabilidad con OpenTelemetry y Datadog, disminuyendo el Tiempo Medio de Recuperación (MTTR) de 45 a 12 minutos.
-  - Mentoricé a un equipo de 5 ingenieros implementando revisiones de código estructuradas y cobertura de pruebas unitarias superior al 85%.
+*Describe aquí tus roles, empresas, responsabilidades, problemas resueltos y logros. Puedes escribir en párrafos o viñetas libres; la IA los pulirá con la Fórmula Google XYZ según la oferta:*
+
+### Empresa 1: [Nombre de la Empresa / Startup / Cliente Actual]
+- **Cargo:** Frontend Developer / Angular Specialist
+- **Modalidad & Ubicación:** Remoto / Híbrido (Ciudad, País)
+- **Período:** [Mes AAAA – Presente]
+- **Contexto & Stack:** [Angular, TypeScript, RxJS, Microfrontends, TailwindCSS]
+- **Responsabilidades y Logros:**
+  - Desarrollo y mantenimiento de módulos frontend de alta concurrencia utilizando Angular y TypeScript.
+  - Implementación de arquitectura de microfrontends para desacoplar aplicaciones monolíticas y acelerar los tiempos de despliegue independiente.
+  - Optimización de rendimiento web, reduciendo tiempos de carga inicial y mejorando la reactividad de la interfaz mediante RxJS y lazy loading.
+  - Colaboración estrecha con diseñadores UX/UI en Figma para transformar prototipos en componentes reutilizables y accesibles.
 
 ---
 
-### Empresa B: [Nombre de la Empresa Anterior]
-- **Cargo:** Fullstack Software Developer
-- **Modalidad & Ubicación:** Híbrido (Ciudad, País)
-- **Período:** Marzo 2020 – Diciembre 2022 (2 años 10 meses)
-- **Contexto de la empresa:** Empresa SaaS de automatización logística B2B.
-- **Tecnologías utilizadas:** React, Next.js, Python/Django, PostgreSQL, AWS S3, Docker, GitHub Actions.
-- **Logros y Métricas:**
-  - Desarrollé el nuevo portal de clientes con Next.js y TailwindCSS, mejorando el puntaje de rendimiento en Google Lighthouse de 58 a 96 y la retención web en un 24%.
-  - Automaticé el flujo de facturación electrónica integrando APIs de terceros, ahorrando más de 120 horas mensuales al departamento contable.
-  - Construí un pipeline de CI/CD automatizado con GitHub Actions que redujo los tiempos de despliegue de 40 minutos manuales a 6 minutos automáticos sin caídas de servicio (*zero-downtime*).
+### Empresa 2: [Empresa Anterior]
+- **Cargo:** Frontend Software Developer
+- **Modalidad & Ubicación:** [Modalidad y Ciudad]
+- **Período:** [Mes AAAA – Mes AAAA]
+- **Contexto & Stack:** [React, JavaScript, Redux, REST APIs, SASS]
+- **Responsabilidades y Logros:**
+  - Construcción de interfaces de usuario interactivas y responsivas con React y Redux Toolkit.
+  - Integración de servicios RESTful y manejo de estados asíncronos complejos.
+  - Refactorización de componentes legados para mejorar la mantenibilidad y cobertura de pruebas.
 
 ---
 
-### Empresa C: [Primer Empleo / Experiencia Inicial]
-- **Cargo:** Junior Web Developer
-- **Modalidad & Ubicación:** Presencial (Ciudad, País)
-- **Período:** Junio 2018 – Febrero 2020 (1 año 9 meses)
-- **Tecnologías utilizadas:** JavaScript (ES6+), HTML5, CSS3, PHP, MySQL, WordPress API.
-- **Logros y Métricas:**
-  - Desarrollé más de 15 aplicaciones web responsivas para clientes corporativos cumpliendo los plazos de entrega en un 100%.
-  - Refactoricé el código frontend legacy para mejorar la compatibilidad cross-browser y la velocidad de carga en un 30%.
+### Empresa 3: [Experiencia Previa / Roles Iniciales]
+- **Cargo:** Junior Developer / Web Developer
+- **Modalidad & Ubicación:** [Modalidad y Ciudad]
+- **Período:** [Mes AAAA – Mes AAAA]
+- **Contexto & Stack:** [JavaScript, HTML5, CSS3, Git]
+- **Responsabilidades y Logros:**
+  - Maquetación y desarrollo de sitios web y aplicaciones interactivas.
+  - Soporte en resolución de incidencias frontend y mejoras de compatibilidad cross-browser.
 
 ---
 
-## 🚀 5. Proyectos Destacados (Side Projects, Open Source, Freelance)
+## 🚀 5. Proyectos Destacados (Side Projects, Open Source, Portafolio)
 
-### Proyecto 1: [Nombre del Proyecto]
-- **Rol:** Creador & Desarrollador Principal
-- **Link / Repositorio:** [https://github.com/tu-usuario/proyecto](https://github.com/tu-usuario/proyecto) | [Demo en vivo](https://proyecto.dev)
-- **Stack:** Next.js, FastAPI, PostgreSQL, TailwindCSS, Vercel
-- **Descripción & Logros:**
-  - Desarrollé una herramienta SaaS de análisis de métricas para creadores de contenido con más de 1,500 usuarios registrados activos.
-  - Integré autenticación segura OAuth2 y sistema de suscripciones recurrentes con Stripe Checkout y Webhooks.
+*Detalla aquí tus aplicaciones o proyectos personales con enlaces y detalles técnicos:*
 
-### Proyecto 2: [Contribución Open Source o Herramienta CLI]
-- **Rol:** Contribuidor Activo
-- **Link:** [https://github.com/org/repo](https://github.com/org/repo)
-- **Stack:** Rust / Go / Python
-- **Logros:** Corrección de bugs de concurrencia y optimización de memoria aceptada por los mantenedores principales (+100 estrellas en GitHub).
+### Proyecto 1: [Nombre del Proyecto / Aplicación]
+- **Link / Repositorio:** [https://github.com/tu-usuario/proyecto] | [Demo en vivo](https://...)
+- **Stack:** Angular / React, TypeScript, TailwindCSS
+- **Descripción & Valor Aportado:**
+  - [Descripción del proyecto, problema que resuelve, arquitectura implementada y funcionalidades clave].
 
 ---
 
 ## 🎓 6. Educación y Formación Académica
 
-- **Grado / Licenciatura:** Licenciatura en Ingeniería de Software / Sistemas / Informática
-  - **Institución:** [Nombre de la Universidad o Instituto]
-  - **Ubicación:** [Ciudad, País]
-  - **Año:** 2014 – 2019
-  - **Menciones / Honores (Opcional):** Graduado con honores / Tesis destacada en Inteligencia Artificial aplicada.
+- **[Título Profesional / Grado Universitario]:** [Nombre de la Universidad / Institución], [Año]
+- **Formación en Desarrollo de Software & Frontend:** [Plataformas / Bootcamps / Cursos Especializados], [Año]
 
 ---
 
 ## 📜 7. Certificaciones y Cursos Profesionales
 
-- **AWS Certified Solutions Architect – Associate** (Amazon Web Services, 2023) | [ID de Credencial: `ABC123456`] | [Enlace de verificación](https://aws.amazon.com)
-- **Certified Kubernetes Administrator (CKA)** (Linux Foundation, 2022)
-- **Professional Scrum Master I (PSM I)** (Scrum.org, 2021)
+- **[Nombre de la Certificación 1]:** [Entidad Emisora], [Año]
+- **[Nombre de la Certificación 2]:** [Entidad Emisora], [Año]
 
 ---
 
 ## 🌍 8. Idiomas
 
 - **Español:** Nativo
-- **Inglés:** C1 – Avanzado / Profesional Fluido (Experiencia trabajando con equipos en EE.UU./Europa)
-- **Portugués:** B1 – Intermedio (Conversacional)
+- **Inglés:** [Nivel: B2 / C1 / Profesional Técnico]
 
 ---
 
-## 🏆 9. Publicaciones, Premios, Hackathons y Voluntariado (Opcional)
+## 🧠 9. Baúl de Conocimiento Libre (Braindump & Notas sin Formato)
 
-- **1er Lugar:** Hackathon Nacional Fintech 2022 (Desarrollo de wallet descentralizada en 48 horas).
-- **Speaker:** Charla *"Optimizando Microservicios con Event-Driven Architecture"* en JS Conf / Meetup Local (2023).
-- **Voluntariado:** Mentor voluntario en programa de formación tecnológica para jóvenes vulnerables (2021 – 2022).
+*Escribe aquí libremente cualquier detalle adicional de tu experiencia, notas de proyectos, anécdotas técnicas, tecnologías con las que has experimentado, o responsabilidades que no encajan arriba. La IA leerá este bloque y extraerá lo que sea relevante para enriquecer tus postulaciones:*
+
+- Experiencia en redacción de especificaciones técnicas y diagramación arquitectónica.
+- Uso de herramientas de IA en el flujo de desarrollo para acelerar entregas y pruebas.
+- [Añade aquí cualquier otra experiencia, métrica o nota libre...]
