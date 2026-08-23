@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { parseCvMarkdownToData } from './parser';
+import { parseCvMarkdownToData, sanitizeFileName } from './parser';
 import { CVRenderer } from '../components/CVRenderer';
 import { ThemeId } from '../types/cv';
 
@@ -150,7 +150,9 @@ export async function generatePdfFromMarkdown({
   }
 
   if (!finalOutputPath) {
-    finalOutputPath = path.join(rootDir, 'outputs', 'CV_Generado.pdf');
+    const parsed = parseCvMarkdownToData(content);
+    const candidateName = sanitizeFileName(parsed.name || 'Candidato');
+    finalOutputPath = path.join(rootDir, 'outputs', `CV_${candidateName}.pdf`);
   }
 
   const html = renderCvToHtml(content, theme, rootDir);

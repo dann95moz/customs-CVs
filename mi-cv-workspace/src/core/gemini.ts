@@ -3,6 +3,12 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import { generatePdfFromMarkdown } from './pdf-generator';
+import { 
+  sanitizeFileName, 
+  extractCandidateName, 
+  extractTargetCompany, 
+  parseCvMarkdownToData 
+} from './parser';
 import { ThemeId } from '../types/cv';
 
 dotenv.config();
@@ -142,10 +148,9 @@ ${targetJob}
     fs.mkdirSync(outputsDir, { recursive: true });
   }
 
-  const sanitizedCompany = companyName.replace(/[^a-zA-Z0-9_-]/g, '_');
-  const cvMdPath = path.join(outputsDir, `CV_${sanitizedCompany}.md`);
-  const pdfPath = path.join(outputsDir, `CV_${sanitizedCompany}.pdf`);
-  const gapMdPath = path.join(outputsDir, `Gap_Analysis_${sanitizedCompany}.md`);
+  // Determine candidate and company names for filenames
+  const inferredCompany = companyName !== 'Objetivo' ? companyName : extractTargetCompany(targetJob, 'Objetivo');
+  const sanitizedCompany = sanitizeFileName(inferredCompany || 'Objetivo');
 
   let cvContent = responseText;
   let gapContent = '';
@@ -155,7 +160,22 @@ ${targetJob}
     gapContent = gapMatch[0].trim();
     cvContent = responseText.replace(gapMatch[0], '').trim();
     cvContent = cvContent.replace(/^```markdown\s*/i, '').replace(/^```\s*/, '').replace(/```$/, '').trim();
-    
+  }
+
+  cvContent = cvContent.replace(/^```markdown\s*/i, '').replace(/^```\s*/, '').replace(/```$/, '').trim();
+
+  let candidateName = extractCandidateName(masterData);
+  if (!candidateName) {
+    const parsed = parseCvMarkdownToData(cvContent);
+    candidateName = sanitizeFileName(parsed.name || 'Candidato');
+  }
+
+  const baseFileName = candidateName ? `CV_${candidateName}_${sanitizedCompany}` : `CV_${sanitizedCompany}`;
+  const cvMdPath = path.join(outputsDir, `${baseFileName}.md`);
+  const pdfPath = path.join(outputsDir, `${baseFileName}.pdf`);
+  const gapMdPath = path.join(outputsDir, `Gap_Analysis_${candidateName ? `${candidateName}_` : ''}${sanitizedCompany}.md`);
+
+  if (gapContent) {
     fs.writeFileSync(gapMdPath, gapContent, 'utf8');
     console.log(`📊 Reporte de Gap Analysis guardado en: ${gapMdPath}`);
   }

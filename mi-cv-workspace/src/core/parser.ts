@@ -9,6 +9,51 @@ import {
 } from '../types/cv';
 
 /**
+ * Sanitizes a string into a clean Pascal_Snake_Case filename without accents or special chars
+ */
+export function sanitizeFileName(text: string): string {
+  if (!text) return '';
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\[|\]/g, '')
+    .replace(/[^a-zA-Z0-9_\s-]/g, '')
+    .trim()
+    .split(/[\s_-]+/)
+    .filter(Boolean)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join('_');
+}
+
+/**
+ * Extracts candidate name from master-data.md or fallback
+ */
+export function extractCandidateName(masterDataText: string, fallback: string = ''): string {
+  const match = masterDataText.match(/Nombre Completo:\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+  if (match) {
+    const raw = match[1].trim();
+    if (!raw.toLowerCase().includes('tu nombre') && !raw.toLowerCase().includes('nombre y apellido')) {
+      return sanitizeFileName(raw);
+    }
+  }
+  return sanitizeFileName(fallback);
+}
+
+/**
+ * Extracts target company from target-job.md or fallback
+ */
+export function extractTargetCompany(targetJobText: string, fallback: string = ''): string {
+  const match = targetJobText.match(/Empresa:\*{0,2}\s*\[?(?:Ej:\s*)?([^\]\r\n*]+)\]?/i);
+  if (match) {
+    const raw = match[1].trim();
+    if (!raw.toLowerCase().includes('startup x') && !raw.includes('/')) {
+      return sanitizeFileName(raw);
+    }
+  }
+  return sanitizeFileName(fallback);
+}
+
+/**
  * Detects contact type and extracts label & URL
  */
 export function parseContactItem(rawText: string): ContactItem | null {

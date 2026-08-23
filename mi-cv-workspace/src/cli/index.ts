@@ -153,8 +153,8 @@ async function main() {
 
       case 'generate':
       case 'tailor': {
-        const companyName = positional[1] || (flags.company as string) || 'Objetivo';
-        console.log(`\n🎯 Iniciando CV Tailoring con Gemini API para: "${companyName}"...`);
+        const companyName = positional[1] || (flags.company as string) || undefined;
+        console.log(`\n🎯 Iniciando CV Tailoring con Gemini API...`);
         console.log(`🔒 SSOT: master-data.md es estrictamente de solo lectura.`);
 
         const result = await tailorCvWithGemini({
