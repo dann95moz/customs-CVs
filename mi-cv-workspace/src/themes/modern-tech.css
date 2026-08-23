@@ -1,0 +1,227 @@
+/* Theme: Modern Tech (Linear / Stripe inspired) */
+.theme-modern-tech {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #1e293b;
+  background-color: #f8fafc;
+}
+
+.theme-modern-tech .cv-container {
+  max-width: 820px;
+  margin: 20px auto;
+  padding: 36px 42px;
+  background: #ffffff;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  border-radius: 6px;
+}
+
+/* Header */
+.theme-modern-tech .cv-header {
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+.theme-modern-tech .cv-name {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 24pt;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #0f172a;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.theme-modern-tech .cv-title {
+  font-size: 11pt;
+  font-weight: 600;
+  color: #2563eb;
+  letter-spacing: 0.2px;
+  margin-bottom: 10px;
+}
+
+.theme-modern-tech .cv-contact-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  font-size: 8.8pt;
+  color: #475569;
+}
+
+.theme-modern-tech .cv-contact-item {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #475569;
+}
+
+.theme-modern-tech .cv-contact-item a {
+  color: #475569;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.theme-modern-tech .cv-contact-item a:hover {
+  color: #2563eb;
+}
+
+.theme-modern-tech .cv-contact-item .icon {
+  color: #2563eb;
+}
+
+/* Section Headings */
+.theme-modern-tech .cv-section {
+  margin-bottom: 18px;
+}
+
+.theme-modern-tech .cv-section-title {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 11pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1.5px solid #e2e8f0;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+
+.theme-modern-tech .cv-section-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 14px;
+  background: #2563eb;
+  border-radius: 2px;
+}
+
+/* Summary */
+.theme-modern-tech .cv-summary {
+  font-size: 9.5pt;
+  line-height: 1.55;
+  color: #334155;
+  text-align: justify;
+}
+
+/* Skills */
+.theme-modern-tech .skills-group {
+  margin-bottom: 8px;
+  font-size: 9.2pt;
+  line-height: 1.5;
+}
+
+.theme-modern-tech .skills-category {
+  font-weight: 700;
+  color: #0f172a;
+  margin-right: 6px;
+}
+
+.theme-modern-tech .skill-pill {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 1.5px 7px;
+  font-size: 8.5pt;
+  font-weight: 500;
+  margin: 2px 3px 2px 0;
+}
+
+/* Experience & Roles */
+.theme-modern-tech .experience-item,
+.theme-modern-tech .project-item,
+.theme-modern-tech .education-item {
+  margin-bottom: 14px;
+}
+
+.theme-modern-tech .item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+}
+
+.theme-modern-tech .item-company {
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.theme-modern-tech .item-location {
+  font-size: 8.8pt;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.theme-modern-tech .item-sub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.theme-modern-tech .item-role {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: #2563eb;
+  font-style: italic;
+}
+
+.theme-modern-tech .item-date {
+  font-size: 8.8pt;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Bullet points */
+.theme-modern-tech ul.item-bullets {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 4px;
+}
+
+.theme-modern-tech ul.item-bullets li {
+  position: relative;
+  padding-left: 14px;
+  margin-bottom: 4.5px;
+  font-size: 9.2pt;
+  line-height: 1.45;
+  color: #334155;
+}
+
+.theme-modern-tech ul.item-bullets li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #2563eb;
+  font-size: 9pt;
+  line-height: 1.4;
+}
+
+.theme-modern-tech ul.item-bullets li strong {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* Education & Languages */
+.theme-modern-tech .education-list,
+.theme-modern-tech .languages-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.theme-modern-tech .education-list li,
+.theme-modern-tech .languages-list li {
+  font-size: 9.2pt;
+  margin-bottom: 5px;
+  color: #334155;
+}
+
+.theme-modern-tech .education-list li strong,
+.theme-modern-tech .languages-list li strong {
+  color: #0f172a;
+}
