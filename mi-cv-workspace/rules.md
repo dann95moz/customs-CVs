@@ -21,6 +21,9 @@ Este documento define las directrices estrictas de estilo, formato, contenido y 
 - **Sin información redundante:**
   - ❌ NO incluir la frase *"Referencias disponibles a solicitud"*.
   - ❌ NO listar colegios secundarios si ya se tiene educación universitaria/superior.
+- **Sin inventar información:**
+  - ❌ NO usar información que no se encuentre en los archivos proporcionados.
+  - ❌ NO crear información falsa de métricas o tecnologías no mencionadas en master-data.md.
 
 ---
 
@@ -83,3 +86,11 @@ Usar verbos precisos según el tipo de contribución:
 - **Escaneabilidad Visual:**
   - Uso estratégico de negritas (`**palabra clave**` o `**métrica**`) para guiar la lectura del reclutador en los primeros 6 segundos de escaneo.
   - Máximo 3 a 5 viñetas por puesto de trabajo.
+
+  ## 5. Inclusión de archivos
+  - **Archivos a incluir y tener en cuenta:**
+    - `master-data.md`: Información general del usuario.
+    - `target-job.md`: Información específica del puesto objetivo.
+    - `rules.md`: Reglas generales para la creación del CV.
+    - `templates/cv-template.md`: Plantilla base para la creación del CV.
+    - `customs-cvs/mi-cv-workspace/certifications/*.md`: Certificaciones del usuario.

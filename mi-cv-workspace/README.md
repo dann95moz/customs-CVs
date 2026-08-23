@@ -46,36 +46,47 @@ Cada vez que encuentres una oferta interesante en LinkedIn, Indeed, etc., abre [
 2. Pídele al asistente de IA (ChatGPT, Claude, Gemini o tu agente Antigravity):
    > *"Lee `rules.md`, `master-data.md` y `target-job.md` y genera el reporte de Gap Analysis y el CV optimizado guardándolo en `outputs/CV_[Empresa]_[Cargo].md`"*.
 
-### Paso 4: Exportación a PDF
-Puedes exportar tus archivos Markdown a PDF usando:
-- **VS Code Extension:** *Markdown PDF* (o *Marp for VS Code*).
-- **Herramientas CLI:** `pandoc`, `wkhtmltopdf` o abrir en navegador y presionar `Ctrl + P` (Imprimir como PDF).
+### Paso 4: Exportación y Diseño Automatizado a PDF (Local y sin costo de tokens)
+
+El proyecto cuenta con un motor modular en **TypeScript + React SSR + Puppeteer** con 4 temas de diseño profesional:
+
+```bash
+# Exportar el CV más reciente en outputs/ a PDF
+npm run pdf
+
+# Exportar con temas específicos:
+npm run pdf:modern       # Tema Modern Tech (Estilo Stripe/Linear con badges)
+npm run pdf:executive    # Tema Executive Classic (Corporate Navy/Serif)
+npm run pdf:ats          # Tema Minimal ATS (100% compatible con filtros ATS)
+npm run pdf:two-column   # Tema Two-Column (Barra lateral + contenido)
+
+# Exportar todos los archivos Markdown de outputs/ a PDF
+npm run pdf:all
+```
 
 ---
 
-## 💡 Sugerencias y Mejoras para Llevar este Sistema al Siguiente Nivel
+## 🎨 CV Studio Web (Vite + React + Hot Reload)
 
-### 1. 🗂️ Registro de Postulaciones (Application Tracker)
-Crea un archivo `applications-tracker.md` o una tabla con:
-- Fecha de postulación.
-- Empresa, cargo y enlace.
-- CV personalizado utilizado (enlace en `outputs/`).
-- Estado actual (*Postulado / Primera entrevista / Prueba técnica / Oferta / Rechazado*).
-- Salario conversado y feedback recibido.
+Para previsualizar tu CV interactivamente en el navegador con Hot Module Reloading (<50ms), inspeccionar métricas y cambiar de tema en caliente:
 
-### 2. 🌐 Soporte Multilingüe Automatizado
-- Mantener una versión `master-data-en.md` y `master-data-es.md` (o dejar que el prompt maestro traduzca y adapte la terminología de forma nativa).
+```bash
+npm run dev
+```
+Abre tu navegador en `http://localhost:5173`.
 
-### 3. 🎯 Matriz de Habilidades por Especialidad (Sub-perfiles)
-Si aplicas a roles diferentes (ej. *Frontend Lead* vs *Fullstack Engineer* vs *DevOps Engineer*), añade secciones especializadas en `master-data.md` para que la IA priorice el ángulo correcto.
+---
 
-### 4. 🧪 Simulador de Entrevista Técnica / Preguntas Clave
-Añadir un prompt `prompts/interview-prep-prompt.md` que, leyendo `target-job.md` y tu CV generado, cree:
-- Las 10 preguntas técnicas y situacionales más probables que te harán en la entrevista.
-- Respuestas modelo basadas en tus proyectos reales de `master-data.md` usando STAR.
+## 🤖 Generación Automática con Gemini API (Opcional)
 
-### 5. 🤖 Script de Automatización
-Crear un pequeño script en Python o Node.js que:
-- Tome los archivos Markdown.
-- Llame a la API de un LLM.
-- Convierta automáticamente el Markdown resultante a un PDF con estilo tipográfico impecable.
+Si deseas que la IA adapte automáticamente tu CV leyendo `master-data.md` y `target-job.md`:
+1. Crea un archivo `.env` en la carpeta `mi-cv-workspace/` con tu API Key:
+   ```env
+   GEMINI_API_KEY=tu_api_key_aqui
+   ```
+2. Ejecuta el comando indicando el nombre de la empresa:
+   ```bash
+   npm run generate "Stripe"
+   ```
+   > 🔒 **Garantía SSOT:** `master-data.md` es **100% intocable y de solo lectura**. La IA nunca lo modificará; únicamente consultará tus datos reales para generar `outputs/CV_Stripe.md` y `outputs/CV_Stripe.pdf`.
+
