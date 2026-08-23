@@ -1,0 +1,20 @@
+{
+  "name": "customs-cvs-root",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Workspace raíz para el Sistema de Creación y Personalización de CVs a PDF con TypeScript y React",
+  "scripts": {
+    "dev": "npm run dev --prefix mi-cv-workspace",
+    "build": "npm run build --prefix mi-cv-workspace",
+    "preview": "npm run preview --prefix mi-cv-workspace",
+    "typecheck": "npm run typecheck --prefix mi-cv-workspace",
+    "pdf": "npm run pdf --prefix mi-cv-workspace --",
+    "pdf:all": "npm run pdf:all --prefix mi-cv-workspace",
+    "pdf:modern": "npm run pdf:modern --prefix mi-cv-workspace",
+    "pdf:executive": "npm run pdf:executive --prefix mi-cv-workspace",
+    "pdf:ats": "npm run pdf:ats --prefix mi-cv-workspace",
+    "pdf:two-column": "npm run pdf:two-column --prefix mi-cv-workspace",
+    "generate": "npm run generate --prefix mi-cv-workspace --",
+    "tailor": "npm run tailor --prefix mi-cv-workspace --"
+  }
+}

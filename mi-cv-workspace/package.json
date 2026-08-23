@@ -1,0 +1,50 @@
+{
+  "name": "mi-cv-engine",
+  "version": "2.0.0",
+  "description": "Sistema de diseño, visualización y generación de CVs a PDF con TypeScript, React, Vite, Puppeteer y Gemini API",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "pdf": "tsx src/cli/index.ts pdf",
+    "pdf:all": "tsx src/cli/index.ts pdf:all",
+    "pdf:modern": "tsx src/cli/index.ts pdf --theme modern-tech",
+    "pdf:executive": "tsx src/cli/index.ts pdf --theme executive",
+    "pdf:ats": "tsx src/cli/index.ts pdf --theme minimal-ats",
+    "pdf:two-column": "tsx src/cli/index.ts pdf --theme two-column",
+    "generate": "tsx src/cli/index.ts generate",
+    "tailor": "tsx src/cli/index.ts generate"
+  },
+  "keywords": [
+    "cv",
+    "resume",
+    "typescript",
+    "react",
+    "vite",
+    "pdf-generator",
+    "puppeteer",
+    "gemini-ai",
+    "ats-friendly"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "dotenv": "^16.4.7",
+    "marked": "^15.0.7",
+    "puppeteer": "^24.4.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
+    "vite": "^6.2.0"
+  }
+}
