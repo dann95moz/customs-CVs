@@ -3,3 +3,4 @@ dist
 .env
 *.pdf
 outputs
+master-data.md
