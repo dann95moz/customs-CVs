@@ -20,7 +20,6 @@ function resolveWorkspaceDir(baseDir?: string): string {
   if (baseDir && fs.existsSync(baseDir)) return baseDir;
   const cwd = process.cwd();
   if (fs.existsSync(path.join(cwd, 'master-data.md'))) return cwd;
-  if (fs.existsSync(path.join(cwd, 'mi-cv-workspace', 'master-data.md'))) return path.join(cwd, 'mi-cv-workspace');
   return path.resolve(import.meta.dirname, '..', '..');
 }
 

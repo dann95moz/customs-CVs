@@ -11,9 +11,6 @@ function getWorkspaceDir(): string {
   if (fs.existsSync(path.join(cwd, 'master-data.md'))) {
     return cwd;
   }
-  if (fs.existsSync(path.join(cwd, 'mi-cv-workspace', 'master-data.md'))) {
-    return path.join(cwd, 'mi-cv-workspace');
-  }
   return path.resolve(import.meta.dirname, '..', '..');
 }
 

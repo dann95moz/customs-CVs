@@ -93,4 +93,4 @@ Usar verbos precisos según el tipo de contribución:
     - `target-job.md`: Información específica del puesto objetivo.
     - `rules.md`: Reglas generales para la creación del CV.
     - `templates/cv-template.md`: Plantilla base para la creación del CV.
-    - `customs-cvs/mi-cv-workspace/certifications/*.md`: Certificaciones del usuario.
+    - `certificates/*.md`: Certificaciones del usuario.

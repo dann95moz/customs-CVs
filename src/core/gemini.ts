@@ -24,7 +24,6 @@ function resolveWorkspaceDir(baseDir?: string): string {
   if (baseDir && fs.existsSync(baseDir)) return baseDir;
   const cwd = process.cwd();
   if (fs.existsSync(path.join(cwd, 'master-data.md'))) return cwd;
-  if (fs.existsSync(path.join(cwd, 'mi-cv-workspace', 'master-data.md'))) return path.join(cwd, 'mi-cv-workspace');
   return path.resolve(import.meta.dirname, '..', '..');
 }
 
@@ -63,7 +62,7 @@ export async function tailorCvWithGemini({
   if (!apiKey) {
     throw new Error(
       '⚠️  GEMINI_API_KEY no encontrada.\n' +
-      '   Crea un archivo .env en la carpeta mi-cv-workspace con:\n' +
+      '   Crea un archivo .env en la raíz del proyecto con:\n' +
       '   GEMINI_API_KEY=tu_api_key_aqui'
     );
   }
