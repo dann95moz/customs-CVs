@@ -130,14 +130,17 @@ async function main() {
         console.log(`📄 Origen: ${targetFile}`);
         console.log(`🎨 Tema:   ${theme}`);
 
+        const maxPages = flags['max-pages'] ? Number(flags['max-pages']) : undefined;
+
         const result = await generatePdfFromMarkdown({
           markdownFilePath: targetFile,
           outputPath: flags.output as string | undefined,
           theme,
+          maxPages,
           baseDir: rootDir
         });
 
-        console.log(`\n✅ ¡PDF generado con éxito!\n📂 Archivo: ${result.outputPath}\n`);
+        console.log(`\n✅ ¡PDF generado con éxito!\n📂 Archivo: ${result.outputPath}\n📄 Páginas: ${result.pages} ${result.scale && result.scale < 1 ? `(Auto-Fit: ${(result.scale * 100).toFixed(0)}%)` : ''}\n`);
         break;
       }
 

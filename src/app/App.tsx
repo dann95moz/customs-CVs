@@ -57,6 +57,9 @@ export const App: React.FC = () => {
   const [selectedFilePath, setSelectedFilePath] = useState<string>('');
   const [markdownContent, setMarkdownContent] = useState<string>(DEFAULT_SAMPLE_MD);
   const [theme, setTheme] = useState<ThemeId>('modern-tech');
+  const [autoFitPreview, setAutoFitPreview] = useState<boolean>(true);
+  const [sheetHeight, setSheetHeight] = useState<number>(0);
+  const paperRef = React.useRef<HTMLDivElement>(null);
 
   // Load available files from local API
   useEffect(() => {
@@ -86,6 +89,22 @@ export const App: React.FC = () => {
   const parsedCv = useMemo(() => {
     return parseCvMarkdownToData(markdownContent);
   }, [markdownContent]);
+
+  // Measure rendered sheet height dynamically
+  useEffect(() => {
+    const updateHeight = () => {
+      if (paperRef.current) {
+        setSheetHeight(paperRef.current.scrollHeight);
+      }
+    };
+    const timer = setTimeout(updateHeight, 150);
+    return () => clearTimeout(timer);
+  }, [markdownContent, theme, autoFitPreview]);
+
+  // A4 Height estimation in pixels (Standard A4 at 96 DPI = 1123px)
+  const A4_PAGE_PX = 1123;
+  const estimatedPages = Math.max(1, Math.ceil((sheetHeight - 8) / A4_PAGE_PX));
+  const overflowPercentage = Math.max(0, Math.round(((sheetHeight - A4_PAGE_PX) / A4_PAGE_PX) * 100));
 
   // Statistics
   const stats = useMemo(() => {
@@ -167,18 +186,50 @@ export const App: React.FC = () => {
       {/* Main Workspace */}
       <div className="studio-body">
         <main className="preview-area">
-          <div className="paper-sheet">
+          <div 
+            ref={paperRef} 
+            className={`paper-sheet ${autoFitPreview && overflowPercentage > 0 && overflowPercentage <= 25 ? 'compact-fit' : ''}`}
+          >
             <CVRenderer data={parsedCv} theme={theme} />
+            
+            {/* Visual Page Break Marker */}
+            <div className="page-break-guide" style={{ top: `${A4_PAGE_PX}px` }}>
+              <span>✂️ Límite de Página 1 (Formato A4)</span>
+            </div>
           </div>
         </main>
 
         {/* Sidebar Inspector */}
         <aside className="stats-sidebar">
           <div className="stats-card">
-            <h4>📊 Métricas del CV</h4>
+            <h4>📄 Dimensiones & Páginas</h4>
+            <div className="stat-row">
+              <span>Páginas estimadas:</span>
+              <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>
+                {estimatedPages} {estimatedPages === 1 ? 'Página ✓' : 'Páginas'}
+              </strong>
+            </div>
+            <div className="stat-row">
+              <span>Altura del contenido:</span>
+              <strong>{sheetHeight}px / {A4_PAGE_PX}px</strong>
+            </div>
+            {overflowPercentage > 0 && (
+              <div className="stat-row">
+                <span>Desborde sobre Pág 1:</span>
+                <strong style={{ color: overflowPercentage <= 20 ? '#38bdf8' : '#ef4444' }}>
+                  +{overflowPercentage}% {overflowPercentage <= 20 ? '(Auto-Fit lo ajusta)' : '(Requiere síntesis)'}
+                </strong>
+              </div>
+            )}
+          </div>
+
+          <div className="stats-card">
+            <h4>📊 Métricas del Contenido</h4>
             <div className="stat-row">
               <span>Palabras totales:</span>
-              <strong>{stats.words}</strong>
+              <strong style={{ color: stats.words <= 450 ? '#10b981' : '#f59e0b' }}>
+                {stats.words} {stats.words <= 450 ? '(Ideal 1 pág)' : '(2 págs)'}
+              </strong>
             </div>
             <div className="stat-row">
               <span>Logros (Bullets XYZ):</span>
@@ -195,7 +246,7 @@ export const App: React.FC = () => {
           </div>
 
           <div className="stats-card">
-            <h4>🛡️ Reglas y ATS</h4>
+            <h4>🛡️ Cumplimiento ATS</h4>
             <div className="stat-row">
               <span>Fórmula Google XYZ:</span>
               <strong style={{ color: '#10b981' }}>✓ Activa</strong>
@@ -205,8 +256,8 @@ export const App: React.FC = () => {
               <strong style={{ color: '#10b981' }}>✓ Cumple</strong>
             </div>
             <div className="stat-row">
-              <span>Fuente de Verdad:</span>
-              <strong>master-data.md</strong>
+              <span>Auto-Fit Puppeteer:</span>
+              <strong style={{ color: '#38bdf8' }}>✓ Activo</strong>
             </div>
           </div>
         </aside>

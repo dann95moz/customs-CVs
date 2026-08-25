@@ -78,42 +78,42 @@
   width: 34%;
   background: #f8fafc;
   border-right: 1.5px solid #e2e8f0;
-  padding: 24px 22px;
+  padding: 14px 16px;
 }
 
 .theme-two-column .cv-main {
   width: 66%;
-  padding: 24px 28px;
+  padding: 14px 20px;
 }
 
 /* Section Headings */
 .theme-two-column .cv-section {
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 
 .theme-two-column .cv-section-title {
   font-family: 'Outfit', 'Inter', sans-serif;
-  font-size: 10pt;
+  font-size: 9.8pt;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: #0f172a;
   border-bottom: 2px solid #0284c7;
-  padding-bottom: 3px;
-  margin-bottom: 10px;
+  padding-bottom: 2px;
+  margin-bottom: 5px;
 }
 
 /* Sidebar Specifics */
 .theme-two-column .cv-sidebar .skills-group {
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 .theme-two-column .cv-sidebar .skills-category {
   display: block;
-  font-size: 8.8pt;
+  font-size: 8.5pt;
   font-weight: 700;
   color: #0369a1;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 .theme-two-column .cv-sidebar .skill-pill {
@@ -121,24 +121,24 @@
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 4px;
-  padding: 1.5px 6px;
-  font-size: 8pt;
+  padding: 1px 5px;
+  font-size: 7.8pt;
   font-weight: 500;
   color: #334155;
-  margin: 1.5px 2px 1.5px 0;
+  margin: 1px 2px 1px 0;
 }
 
 /* Summary */
 .theme-two-column .cv-summary {
-  font-size: 9.2pt;
-  line-height: 1.5;
+  font-size: 9pt;
+  line-height: 1.4;
   color: #334155;
 }
 
 /* Main Experience */
 .theme-two-column .experience-item,
 .theme-two-column .project-item {
-  margin-bottom: 14px;
+  margin-bottom: 7px;
 }
 
 .theme-two-column .item-header {
@@ -149,13 +149,13 @@
 }
 
 .theme-two-column .item-company {
-  font-size: 10pt;
+  font-size: 9.6pt;
   font-weight: 700;
   color: #0f172a;
 }
 
 .theme-two-column .item-location {
-  font-size: 8.5pt;
+  font-size: 8.2pt;
   color: #64748b;
 }
 
@@ -163,18 +163,18 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .theme-two-column .item-role {
-  font-size: 9.2pt;
+  font-size: 8.8pt;
   font-weight: 600;
   color: #0284c7;
   font-style: italic;
 }
 
 .theme-two-column .item-date {
-  font-size: 8.5pt;
+  font-size: 8.2pt;
   font-weight: 600;
   color: #475569;
 }
@@ -182,14 +182,15 @@
 .theme-two-column ul.item-bullets {
   list-style: none;
   padding-left: 0;
+  margin-top: 2px;
 }
 
 .theme-two-column ul.item-bullets li {
   position: relative;
-  padding-left: 12px;
-  margin-bottom: 4px;
-  font-size: 8.8pt;
-  line-height: 1.4;
+  padding-left: 11px;
+  margin-bottom: 2.5px;
+  font-size: 8.5pt;
+  line-height: 1.35;
   color: #334155;
 }
 
@@ -198,7 +199,7 @@
   position: absolute;
   left: 0;
   color: #0284c7;
-  font-size: 11pt;
+  font-size: 10pt;
   line-height: 1.2;
 }
 
@@ -207,22 +208,30 @@
   font-weight: 600;
 }
 
-.theme-two-column .education-list,
-.theme-two-column .languages-list {
+.theme-two-column .education-list {
   list-style: none;
   padding-left: 0;
+}
+
+.theme-two-column .languages-list {
+  list-style: disc;
+  padding-left: 14px;
 }
 
 .theme-two-column .education-list li,
 .theme-two-column .languages-list li {
   font-size: 8.5pt;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   line-height: 1.35;
   color: #334155;
 }
 
-.theme-two-column .education-list li strong,
-.theme-two-column .languages-list li strong {
+.theme-two-column .education-list li strong {
   color: #0f172a;
   display: block;
+}
+
+.theme-two-column .languages-list li strong {
+  color: #0f172a;
+  display: inline;
 }

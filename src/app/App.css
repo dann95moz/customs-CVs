@@ -187,14 +187,74 @@ body {
   align-items: flex-start;
 }
 
+/* Exact A4 Sheet Simulation */
 .paper-sheet {
-  width: 820px;
-  min-height: 1120px;
+  width: 794px; /* A4 width at 96 DPI */
+  min-height: 1123px; /* A4 height at 96 DPI */
   background: #ffffff;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-  border-radius: 4px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75);
+  border-radius: 3px;
   position: relative;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
+  padding: 10mm 12mm; /* Exact print margins */
+  font-size: 9.5pt;
+  line-height: 1.42;
+  color: #1e293b;
+}
+
+/* Reset inner container in paper sheet to prevent double padding */
+.paper-sheet .cv-container {
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  background: transparent !important;
+}
+
+/* Compact Fit Class */
+.paper-sheet.compact-fit {
+  font-size: 9.2pt;
+  line-height: 1.38;
+}
+
+.paper-sheet.compact-fit .cv-section {
+  margin-bottom: 10px !important;
+}
+
+.paper-sheet.compact-fit .experience-item,
+.paper-sheet.compact-fit .project-item,
+.paper-sheet.compact-fit .education-item {
+  margin-bottom: 8px !important;
+}
+
+.paper-sheet.compact-fit .cv-bullet-item {
+  margin-bottom: 3px !important;
+}
+
+/* Page Break Visual Guide */
+.page-break-guide {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-bottom: 2px dashed #f43f5e;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 14px;
+}
+
+.page-break-guide span {
+  background: #f43f5e;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  transform: translateY(-50%);
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Sidebar stats */
@@ -236,21 +296,102 @@ body {
   color: var(--text-main);
 }
 
-/* Print Overrides */
+/* ==========================================================================
+   Print Rules: Removes browser headers/footers (date, title, URL) & Studio UI
+   ========================================================================== */
+@page {
+  size: A4;
+  margin: 0; /* Strips browser auto-injected headers/footers completely */
+}
+
 @media print {
-  body {
-    background: transparent !important;
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #1e293b !important;
+    width: 100% !important;
+    height: auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
-  .studio-navbar, .stats-sidebar {
+
+  /* Completely hide all UI panels, bars and guides */
+  .studio-navbar,
+  .stats-sidebar,
+  .page-break-guide,
+  button {
     display: none !important;
   }
-  .preview-area {
-    padding: 0 !important;
+
+  .studio-app {
+    display: block !important;
+    height: auto !important;
     overflow: visible !important;
   }
+
+  .preview-area {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
   .paper-sheet {
     box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 10mm 12mm !important; /* Exact physical A4 print margins */
     width: 100% !important;
+    max-width: 100% !important;
     min-height: auto !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .paper-sheet .cv-container {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Universal Print Compression Protection to guarantee 1-page fit */
+  .cv-section {
+    margin-bottom: 9px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .experience-item, .project-item, .education-item {
+    margin-bottom: 6.5px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .skills-group {
+    margin-bottom: 3px !important;
+  }
+
+  ul.item-bullets li {
+    margin-bottom: 2.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .cv-summary {
+    line-height: 1.4 !important;
+  }
+
+  .cv-header {
+    margin-bottom: 10px !important;
+    padding-bottom: 8px !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
   }
 }
+
+

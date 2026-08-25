@@ -18,26 +18,26 @@
 .theme-executive .cv-header {
   text-align: center;
   border-bottom: 2px solid #0f2942;
-  padding-bottom: 16px;
-  margin-bottom: 20px;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .theme-executive .cv-name {
   font-family: 'Merriweather', Georgia, serif;
-  font-size: 23pt;
+  font-size: 19pt;
   font-weight: 700;
   letter-spacing: 0.5px;
   color: #0f2942;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .theme-executive .cv-title {
-  font-size: 10.8pt;
+  font-size: 10pt;
   font-weight: 600;
   color: #334155;
   letter-spacing: 0.3px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .theme-executive .cv-contact-list {
@@ -46,7 +46,7 @@
   justify-content: center;
   align-items: center;
   gap: 8px 14px;
-  font-size: 8.8pt;
+  font-size: 8.5pt;
   color: #475569;
 }
 
@@ -71,39 +71,39 @@
 
 /* Section Headings */
 .theme-executive .cv-section {
-  margin-bottom: 18px;
+  margin-bottom: 11px;
 }
 
 .theme-executive .cv-section-title {
   font-family: 'Merriweather', Georgia, serif;
-  font-size: 10.8pt;
+  font-size: 10pt;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: #0f2942;
   border-bottom: 1px solid #cbd5e1;
   padding-bottom: 3px;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 /* Summary */
 .theme-executive .cv-summary {
-  font-size: 9.5pt;
-  line-height: 1.55;
+  font-size: 9.1pt;
+  line-height: 1.42;
   color: #334155;
-  text-align: justify;
 }
 
 /* Skills */
 .theme-executive .skills-group {
-  margin-bottom: 6px;
-  font-size: 9.2pt;
-  line-height: 1.45;
+  margin-bottom: 4px;
+  font-size: 8.8pt;
+  line-height: 1.4;
 }
 
 .theme-executive .skills-category {
   font-weight: 700;
   color: #0f2942;
+  margin-right: 5px;
 }
 
 .theme-executive .skill-pill {
@@ -111,28 +111,33 @@
   color: #334155;
 }
 
+.theme-executive .skill-separator {
+  color: #475569;
+  margin-right: 4px;
+}
+
 /* Experience & Roles */
 .theme-executive .experience-item,
 .theme-executive .project-item,
 .theme-executive .education-item {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
 .theme-executive .item-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .theme-executive .item-company {
-  font-size: 10.5pt;
+  font-size: 9.8pt;
   font-weight: 700;
   color: #0f2942;
 }
 
 .theme-executive .item-location {
-  font-size: 8.8pt;
+  font-size: 8.4pt;
   color: #64748b;
   font-style: italic;
 }
@@ -141,17 +146,17 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
 }
 
 .theme-executive .item-role {
-  font-size: 9.5pt;
+  font-size: 9pt;
   font-weight: 600;
   color: #334155;
 }
 
 .theme-executive .item-date {
-  font-size: 8.8pt;
+  font-size: 8.4pt;
   font-weight: 600;
   color: #0f2942;
 }
@@ -159,14 +164,14 @@
 /* Bullet points */
 .theme-executive ul.item-bullets {
   list-style-type: disc;
-  padding-left: 18px;
-  margin-top: 4px;
+  padding-left: 16px;
+  margin-top: 2px;
 }
 
 .theme-executive ul.item-bullets li {
-  margin-bottom: 4px;
-  font-size: 9.2pt;
-  line-height: 1.45;
+  margin-bottom: 3px;
+  font-size: 8.8pt;
+  line-height: 1.38;
   color: #334155;
 }
 
@@ -179,13 +184,14 @@
 .theme-executive .education-list,
 .theme-executive .languages-list {
   list-style: disc;
-  padding-left: 18px;
+  padding-left: 16px;
 }
 
 .theme-executive .education-list li,
 .theme-executive .languages-list li {
-  font-size: 9.2pt;
-  margin-bottom: 4px;
+  font-size: 8.6pt;
+  margin-bottom: 3px;
+  line-height: 1.35;
   color: #334155;
 }
 
