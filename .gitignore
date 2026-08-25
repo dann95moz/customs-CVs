@@ -17,6 +17,7 @@ outputs/
 
 # Personal sensitive data (SSOT)
 master-data.md
+target-job.md
 
 # Logs & OS artifacts
 npm-debug.log*
