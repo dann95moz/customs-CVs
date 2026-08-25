@@ -129,7 +129,7 @@ function parseSkillGroups(rawContent: string): SkillCategory[] {
 }
 
 /**
- * Parses raw experience/projects text into typed ExperienceItem array
+ * Parses raw experience/projects text into typed ExperienceItem array with universal format support
  */
 function parseExperienceItems(rawContent: string): ExperienceItem[] {
   const lines = rawContent.split(/\r?\n/);
@@ -138,44 +138,67 @@ function parseExperienceItems(rawContent: string): ExperienceItem[] {
   let currentItem: ExperienceItem | null = null;
 
   function flush() {
-    if (currentItem) {
+    if (currentItem && (currentItem.company || currentItem.role || currentItem.bullets.length > 0)) {
       items.push(currentItem);
       currentItem = null;
     }
   }
 
-  for (const line of lines) {
-    const trimmed = line.trim();
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
     if (!trimmed) continue;
 
-    if (trimmed.startsWith('### ')) {
+    const isBullet = trimmed.startsWith('- ') || trimmed.startsWith('* ') || trimmed.startsWith('• ');
+    const isHeading = trimmed.startsWith('### ') || trimmed.startsWith('#### ');
+    const isBoldHeader = trimmed.startsWith('**') && (trimmed.includes('|') || currentItem === null || (currentItem && currentItem.bullets.length > 0));
+
+    if (isHeading || isBoldHeader) {
       flush();
-      const content = trimmed.replace(/^###\s*/, '').trim();
-      const parts = content.split('|').map(s => s.trim());
-      const company = (parts[0] || '').replace(/^\*\*/, '').replace(/\*\*$/, '').trim();
-      const location = parts[1] || undefined;
+      
+      const cleanLine = trimmed.replace(/^#+\s*/, '').trim();
+      const parts = cleanLine.split('|').map(s => s.trim());
+      
+      const companyPart = (parts[0] || '').replace(/^\*\*/, '').replace(/\*\*$/, '').trim();
+      let rolePart = parts[1] ? parts[1].replace(/^\*/, '').replace(/\*$/, '').replace(/^\*\*/, '').replace(/\*\*$/, '').trim() : undefined;
+      let locationPart = parts[2] ? parts[2].trim() : undefined;
+
+      // Handle cases where location was part 2 and role was part 1 or vice versa
+      if (rolePart && (rolePart.toLowerCase().includes('remoto') || rolePart.toLowerCase().includes('remote') || rolePart.includes(','))) {
+        locationPart = rolePart;
+        rolePart = undefined;
+      }
 
       currentItem = {
-        company,
-        location,
-        role: undefined,
+        company: companyPart,
+        location: locationPart,
+        role: rolePart,
         date: undefined,
         bullets: []
       };
-    } else if (trimmed.startsWith('*') && trimmed.includes('|') && currentItem && !currentItem.role) {
-      const parts = trimmed.split('|').map(s => s.trim());
-      const roleRaw = parts[0] || '';
-      const dateRaw = parts[1] || '';
-
-      currentItem.role = roleRaw.replace(/^\*/, '').replace(/\*$/, '').replace(/^\*\*/, '').replace(/\*\*$/, '').trim();
-      currentItem.date = dateRaw.replace(/^\*\*/, '').replace(/\*\*$/, '').replace(/^\*/, '').replace(/\*$/, '').trim();
-    } else if (trimmed.startsWith('- ')) {
-      const bullet = trimmed.replace(/^-\s*/, '').trim();
-      if (currentItem) {
-        currentItem.bullets.push(bullet);
+    } else if (isBullet) {
+      const bulletText = trimmed.replace(/^[-*•]\s*/, '').trim();
+      if (!currentItem) {
+        currentItem = {
+          company: 'Experiencia',
+          bullets: []
+        };
       }
+      currentItem.bullets.push(bulletText);
     } else if (currentItem) {
-      currentItem.bullets.push(trimmed);
+      // Sub-header line with date, role, location (e.g. *Oct 2024 – Present | Bogotá, Colombia*)
+      const cleanSub = trimmed.replace(/^\*/, '').replace(/\*$/, '').trim();
+      const parts = cleanSub.split('|').map(s => s.trim());
+
+      for (const p of parts) {
+        const cleanPart = p.replace(/^\*\*/, '').replace(/\*\*$/, '').replace(/^\*/, '').replace(/\*$/, '').trim();
+        if (/\d{4}|present|presente|actual/i.test(cleanPart)) {
+          currentItem.date = cleanPart;
+        } else if (/remoto|remote|,|colombia|mexico|usa|chile|spain/i.test(cleanPart)) {
+          currentItem.location = cleanPart;
+        } else if (!currentItem.role) {
+          currentItem.role = cleanPart;
+        }
+      }
     }
   }
 
@@ -184,7 +207,7 @@ function parseExperienceItems(rawContent: string): ExperienceItem[] {
 }
 
 /**
- * Parses education/languages bullet items
+ * Parses education/languages bullet items (supports discrete bullets and pipe-separated entries)
  */
 function parseListItems(rawContent: string): string[] {
   const lines = rawContent.split(/\r?\n/);
@@ -193,8 +216,16 @@ function parseListItems(rawContent: string): string[] {
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
-    if (trimmed.startsWith('- ')) {
-      items.push(trimmed.replace(/^-\s*/, '').trim());
+
+    // Split pipe-separated entries into individual bullet items
+    if (trimmed.includes('|') && !trimmed.startsWith('#')) {
+      const cleanLine = trimmed.replace(/^[-*•]\s*/, '');
+      const parts = cleanLine.split('|').map(s => s.trim()).filter(Boolean);
+      for (const part of parts) {
+        items.push(part);
+      }
+    } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ') || trimmed.startsWith('• ')) {
+      items.push(trimmed.replace(/^[-*•]\s*/, '').trim());
     } else {
       items.push(trimmed);
     }
