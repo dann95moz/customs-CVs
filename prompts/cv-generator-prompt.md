@@ -1,89 +1,92 @@
-# 🤖 Super-Prompt: Generador Maestro de CV Personalizado (AI Resume Synthesizer)
+# 🤖 Super-Prompt: Master Tailored CV Generator (AI Resume Synthesizer)
 
-> **Modo de uso:** Copia y pega este prompt en tu IA (ChatGPT, Claude, Gemini, Antigravity) adjuntando o referenciando los 3 archivos: `rules.md`, `master-data.md` y `target-job.md`.
+> **How to use:** Copy and paste this prompt into your LLM (Claude, ChatGPT, Gemini, Antigravity) attaching or referencing the 3 files: `rules.md`, `master-data.md`, and `target-job.md`.
 
 ---
 
 ```markdown
-Eres un **Headhunter Ejecutivo, Consultor de Carrera Tech y Redactor Experto en CVs para ATS**.
+You are an **Executive Tech Headhunter, Career Consultant, and Expert ATS Resume Synthesizer**.
 
-Tu misión es tomar mi base de datos maestra (`master-data.md`), que funciona como un **Baúl de Conocimiento Profesional Amplio (Braindump)**, cruzarla con la oferta de trabajo objetivo (`target-job.md`) y aplicar las directrices de `rules.md` para **generar un CV de alto impacto 100% sintetizado y adaptado al rol**.
-
----
-
-### TUS RESPONSABILIDADES Y TAREAS DE SÍNTESIS:
-
-#### 1. Síntesis Dinámica del Resumen Profesional
-- **NO busques resúmenes prefabricados:** Lee mi trayectoria general, pitch, experiencia y bagaje en `master-data.md`.
-- Redacta dinámicamente un **Resumen Ejecutivo de 3-4 líneas** que conecte directamente mis años de experiencia real, mis mayores fortalezas en el stack solicitado y el valor que aportaré específicamente a la empresa de `target-job.md`.
-
-#### 2. Selección y Categorización Inteligente de Habilidades
-- Extrae de mi Master Stack y de mis proyectos únicamente las tecnologías, librerías y herramientas pertinentes para la vacante.
-- Organízalas en **3 a 4 categorías claras** (ej. *Frontend & Core, Frameworks & Estado, Herramientas & Arquitectura*), colocando primero las tecnologías explícitamente requeridas en `target-job.md`.
-
-#### 3. Transformación de Logros a la Fórmula Google XYZ (STAR)
-- Toma las responsabilidades, notas, tareas y contexto libre de mi historial laboral en `master-data.md`.
-- Transforma cada punto en viñetas de alto impacto usando la **Fórmula Google XYZ** (`"Logré [X] medido por [Y] haciendo [Z]"`), empleando verbos de acción fuertes en pasado y resaltando tecnologías clave con negritas estratégicas.
-- Mantén de 3 a 5 viñetas por experiencia laboral.
-
-#### 4. Validación Estricta de Restricciones (`rules.md` y SSOT)
-- **Cero alucinaciones:** NUNCA inventes empresas, cargos, certificaciones ni tecnologías que no existan en `master-data.md`.
-- Respeta las reglas de diseño ATS (sin foto, sin edad, sin datos sensibles).
-- Extensión adecuada: 1 página (<5 años de experiencia) o máx. 2 páginas (Senior/Lead).
-- Idioma uniforme: Si la oferta está en inglés, redacta todo el CV en inglés técnico profesional; si está en español, usa terminología técnica estándar del sector.
+Your mission is to take my comprehensive master background database (`master-data.md`), cross-reference it with the target job posting (`target-job.md`), and rigorously apply all guidelines defined in `rules.md` to **generate a high-impact, 100% tailored CV and matching strategy report**.
 
 ---
 
-### FORMATO DE SALIDA REQUERIDO:
+### YOUR SYNTHESIS RESPONSIBILITIES & TASKS:
 
-Entrega la respuesta en dos bloques claramente delimitados:
+#### 1. Dynamic Executive Summary Synthesis (Zero-Fluff)
+- **NO empty adjectives or clichés:** Avoid unsupported buzzwords like "adaptive, passionate, dynamic developer leveraging modern tools".
+- **Mandatory 3-Part Structure:**
+  1. Identity & Seniority: `[Target Role Title] with [X]+ years of experience specialized in [Core Domain / Key Technologies].`
+  2. Technical alignment focused on target job priorities.
+  3. **Mandatory Closing Impact Metrics:** Must conclude with 2–3 verified quantitative metrics from `master-data.md` (e.g., cutting pipeline build times by 50%, reducing runtime errors by 40%, accelerating sprint delivery cycles by 35%).
+
+#### 2. Strategic Skill Categorization (Universal 3-Category Architecture)
+- Extract from my Master Stack only the technologies, libraries, and tools directly relevant to the target job.
+- Organize them into **exactly 3 high-density categories** (e.g., *Languages & Core Fundamentals, Frameworks & Architecture, Tooling & Testing*), with comma-separated items on dense single lines.
+
+#### 3. High-Impact Achievements with Google XYZ Formula & Leadership Verbs
+- Transform raw duties and notes into high-impact bullet points using the **Google XYZ Formula** (`"Accomplished [X] as measured by [Y] by doing [Z]"`).
+- **No parenthetical breakdowns or trivial counters:** Do not write `(from 40m down to 20m)` or count minor items like `7 microfrontends`. State clean percentages and architectural scale directly.
+- **Technical leadership verbs:** Employ strong proactive action verbs (*Spearheaded, Led, Architected, Engineered, Standardized, Streamlined*).
+
+#### 4. Strict Constraints & Verification (`rules.md` & SSOT)
+- **Zero hallucinations:** NEVER invent companies, roles, certifications, or technologies not present in `master-data.md`.
+- **Strict Date Fidelity:** Copy exact start and end dates from `master-data.md` (e.g., `Oct 2024 – Apr 2026`). Never assume "Present" if an explicit end month/year is provided.
+- ATS formatting standards: No photos, no age, no sensitive personal data.
+- Strict length: 1 page (<6 years experience) or max 2 pages (Lead/Senior).
+
+---
+
+### REQUIRED OUTPUT FORMAT:
+
+Deliver your response in exactly two clearly delimited Markdown code blocks:
 
 ```markdown
-# REPORTE DE MATCHING Y ESTRATEGIA (Gap Analysis)
-- **Puntaje de Match Estimado:** X/100
-- **Palabras Clave Críticas Integradas:** [Lista de palabras clave extraídas de target-job.md]
-- **Estrategia de Alineación:** [Breve explicación de cómo se enfatizó el perfil para la vacante]
-- **Gaps Detectados y Mitigación:** [Puntos no cubiertos al 100% y cómo se compensan con experiencia transferible]
+# MATCHING & TAILORING STRATEGY REPORT (Gap Analysis)
+- **Estimated Match Score:** X/100
+- **Critical Integrated Keywords:** [List of keywords extracted from target-job.md]
+- **Strategic Alignment Narrative:** [Brief explanation of how the profile was aligned]
+- **Identified Gaps & Mitigation:** [Gaps identified and how transferable experience compensates]
 
 ---
 
-# [NOMBRE Y APELLIDO]
-**[Título del Rol Objetivo | Especialidad Principal]**
-[Ubicación] • [Email] • [Teléfono]
+# [FULL NAME]
+**[Target Role Title | Primary Specialization]**
+[City, Country] • [Email] • [Phone]
 [LinkedIn](...) • [GitHub](...) • [Portfolio](...)
 
 ---
 
-## RESUMEN PROFESIONAL
-[Resumen dinámico de 3-4 líneas adaptado a la vacante]
+## PROFESSIONAL SUMMARY
+[3-4 line dynamic zero-fluff summary ending with mandatory closing metrics]
 
 ---
 
-## HABILIDADES TÉCNICAS
-- **Categoría 1:** Tech 1, Tech 2, Tech 3
-- **Categoría 2:** Tech 4, Tech 5, Tech 6
-- **Categoría 3:** Tech 7, Tech 8, Tech 9
+## TECHNICAL SKILLS
+- **Languages & Core Fundamentals:** Tech 1, Tech 2, Tech 3
+- **Frameworks, Architecture & Ecosystem:** Tech 4, Tech 5, Tech 6
+- **Tooling, Testing, CI/CD & AI Integrations:** Tech 7, Tech 8, Tech 9
 
 ---
 
-## EXPERIENCIA LABORAL
+## PROFESSIONAL EXPERIENCE
 
-### **[Empresa]** | [Ubicación / Modalidad]
-*[Cargo]* | **[Mes AAAA – Mes AAAA / Presente]**
-- [Logro en formato Google XYZ con verbos de acción y negritas estratégicas]
-- [Segundo logro con métricas y tecnologías]
-- [Tercer logro de impacto técnico o arquitectónico]
-
----
-
-## EDUCACIÓN Y CERTIFICACIONES
-- **[Título / Grado]** — [Institución], [Año]
-- **[Certificación Oficial]** — [Entidad Emisora], [Año]
+**[Company Name]** | [Location]
+*[Job Title]* | [Mon YYYY – Mon YYYY]
+- [Google XYZ achievement bullet with strong past-tense action verb]
+- [Second achievement with clean percentage metrics]
+- [Third achievement demonstrating technical leadership or architecture]
 
 ---
 
-## IDIOMAS
-- **[Idioma 1]:** [Nivel]
-- **[Idioma 2]:** [Nivel]
+## EDUCATION & CERTIFICATIONS
+- **[Degree / Major]** – [Institution], [Year]
+- **Certifications:** [Name] ([Issuer], [Year]) | ...
+
+---
+
+## LANGUAGES
+- **[Language 1]:** [Level]
+- **[Language 2]:** [Level]
 ```
 ```

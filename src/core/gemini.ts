@@ -3,11 +3,11 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import { generatePdfFromMarkdown } from './pdf-generator';
-import { 
-  sanitizeFileName, 
-  extractCandidateName, 
-  extractTargetCompany, 
-  parseCvMarkdownToData 
+import {
+  sanitizeFileName,
+  extractCandidateName,
+  extractTargetCompany,
+  parseCvMarkdownToData
 } from './parser';
 import { ThemeId } from '../types/cv';
 
@@ -17,6 +17,7 @@ interface TailorCvOptions {
   companyName?: string;
   theme?: ThemeId;
   modelName?: string;
+  maxPages?: number;
   baseDir?: string;
 }
 
@@ -29,7 +30,7 @@ function resolveWorkspaceDir(baseDir?: string): string {
 
 function loadReferenceFiles(baseDir?: string) {
   const root = resolveWorkspaceDir(baseDir);
-  
+
   const masterDataPath = path.join(root, 'master-data.md');
   const targetJobPath = path.join(root, 'target-job.md');
   const rulesPath = path.join(root, 'rules.md');
@@ -54,7 +55,8 @@ function loadReferenceFiles(baseDir?: string) {
 export async function tailorCvWithGemini({
   companyName = 'Objetivo',
   theme = 'modern-tech',
-  modelName = 'gemini-2.5-flash',
+  modelName = 'gemini-3.6-flash',
+  maxPages = 1,
   baseDir
 }: TailorCvOptions = {}) {
   const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
@@ -70,77 +72,104 @@ export async function tailorCvWithGemini({
   const root = baseDir || process.cwd();
   const { masterData, targetJob, rules } = loadReferenceFiles(root);
 
-  console.log('🤖 Conectando con Gemini API...');
+  console.log('🤖 Connecting to Gemini API...');
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: modelName });
 
   const systemInstruction = `
-Eres un Headhunter Ejecutivo y Consultor Experto en Reclutamiento Tech & Optimización ATS.
-Tu objetivo es analizar la base de datos profesional (master-data.md), que actúa como un Baúl de Conocimiento Profesional Amplio (Braindump), cruzarla con la oferta de trabajo objetivo (target-job.md) y aplicar las reglas de contenido (rules.md) para generar un CV de alto impacto 100% sintetizado y adaptado.
+You are an Executive Tech Headhunter, Career Consultant, and Expert ATS Resume Synthesizer.
+Your mission is to analyze the candidate's comprehensive master knowledge base (MASTER-DATA.MD), cross-reference it with the target job posting (TARGET-JOB.MD), and rigorously apply all guidelines defined in RULES.MD to generate a high-impact, 100% tailored CV and matching strategy report.
 
-TAREAS CLAVE DE SÍNTESIS:
-1. SÍNTESIS DEL RESUMEN PROFESIONAL: Redacta dinámicamente un Resumen Ejecutivo de 3-4 líneas conectando la trayectoria, especialidad y fortalezas de master-data.md con las necesidades clave de target-job.md (no busques textos pre-redactados; sintetízalo a medida).
-2. HABILIDADES TÉCNICAS: Selecciona del Master Stack de master-data.md las tecnologías relevantes para la vacante y organízalas en categorías claras, priorizando las requeridas en la oferta.
-3. LOGROS CON FÓRMULA GOOGLE XYZ: Transforma las notas, tareas y responsabilidades de master-data.md en viñetas de alto impacto con verbos de acción en pasado ("Logré [X] medido por [Y] haciendo [Z]").
-4. VERACIDAD TOTAL (SSOT): master-data.md es la única fuente de verdad. NUNCA inventes tecnologías, empresas, años de experiencia ni certificaciones no mencionadas.
-5. REGLAS ATS: Sin foto, sin edad ni datos sensibles; respeta límites de páginas y consistencia de idioma.
+=== CORE GUIDELINES & CONSTRAINTS (RULES.MD) ===
+${rules}
 
-FORMATO DE RESPUESTA:
-Entrega dos partes claramente delimitadas:
+=== PAGE FIT TARGET ===
+${maxPages === 1 
+  ? "- PAGE BUDGET: 1 PAGE EXACT (420–480 words). Fill 80%–90% of an A4 page harmoniously. Never omit experience or education if space is available."
+  : "- PAGE BUDGET: 2 PAGES (750–850 words). Fill 2 full pages with extensive project and leadership details."}
 
-PARTE 1: GAP ANALYSIS
+=== REQUIRED OUTPUT FORMAT ===
+Deliver your response in exactly two clearly delimited Markdown code blocks:
+
+PART 1: GAP ANALYSIS
 \`\`\`markdown
-# REPORTE DE MATCHING Y ESTRATEGIA (Gap Analysis)
-- **Puntaje de Match Estimado:** X/100
-- **Palabras Clave Críticas Integradas:** [...]
-- **Estrategia de Alineación:** [...]
-- **Gaps Detectados y Mitigación:** [...]
+# MATCHING & TAILORING STRATEGY REPORT (Gap Analysis)
+- **Estimated Match Score:** X/100
+- **Critical Integrated Keywords:** [...]
+- **Strategic Alignment Narrative:** [...]
+- **Identified Gaps & Mitigation:** [...]
 \`\`\`
 
-PARTE 2: CV OPTIMIZADO
+PART 2: TAILORED CV
 \`\`\`markdown
-# [NOMBRE Y APELLIDO]
-**[Título del Rol Objetivo | Especialidad]**
-[Ubicación] • [Email] • [Teléfono]
+# [FULL NAME]
+**[Target Role Title | Primary Specialization]**
+[City, Country] • [Email] • [Phone]
 [LinkedIn](...) • [GitHub](...) • [Portfolio](...)
 
 ---
 
-## RESUMEN PROFESIONAL
-...
+## PROFESSIONAL SUMMARY
+[3-4 lines zero-fluff summary ending with mandatory closing impact metrics]
 
-## HABILIDADES TÉCNICAS
-...
+## TECHNICAL SKILLS
+- **Languages & Core Fundamentals:** ...
+- **Frameworks, Architecture & Ecosystem:** ...
+- **Tooling, Testing, CI/CD & AI Integrations:** ...
 
-## EXPERIENCIA LABORAL
-...
+## PROFESSIONAL EXPERIENCE
 
-## EDUCACIÓN Y CERTIFICACIONES
-...
+**[Company Name]** | [Location]
+*[Job Title]* | [Mon YYYY – Mon YYYY]
+- **[Lead Verb & Core Action]** ...
+- **[Action & Metric]** ...
+- **[Action & Metric]** ...
 
-## IDIOMAS
-...
+## EDUCATION & CERTIFICATIONS
+- **[Degree / Program]** – [Institution], [Year]
+- **Certifications:** [Name] ([Issuer], [Year]) | ...
+
+## LANGUAGES
+- **[Language 1]:** [Level]
+- **[Language 2]:** [Level]
+- **[Language 3]:** [Level]
 \`\`\`
 `;
 
   const userPrompt = `
-Por favor procesa los siguientes 3 archivos para generar el CV adaptado a la empresa "${companyName}":
+Please generate the tailored CV for target company "${companyName}" by analyzing the following reference files:
 
-=== 1. RULES.MD ===
-${rules}
-
-=== 2. MASTER-DATA.MD (SSOT - Consulta) ===
+=== 1. MASTER-DATA.MD (Candidate Single Source of Truth) ===
 ${masterData}
 
-=== 3. TARGET-JOB.MD (Oferta Objetivo) ===
+=== 2. TARGET-JOB.MD (Target Job Description & Requirements) ===
 ${targetJob}
 `;
 
   console.log(`📡 Enviando solicitud al modelo ${modelName}...`);
-  const result = await model.generateContent([
-    { text: systemInstruction },
-    { text: userPrompt }
-  ]);
+  
+  let result;
+  const maxRetries = 3;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      result = await model.generateContent([
+        { text: systemInstruction },
+        { text: userPrompt }
+      ]);
+      break;
+    } catch (err: any) {
+      if (attempt < maxRetries && (err?.message?.includes('503') || err?.message?.includes('429') || err?.message?.includes('demand'))) {
+        console.warn(`⏳ Alta demanda en Gemini API (intento ${attempt}/${maxRetries}). Reintentando en 3s...`);
+        await new Promise(res => setTimeout(res, 3000));
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  if (!result) {
+    throw new Error('No se pudo obtener respuesta del modelo Gemini tras varios intentos.');
+  }
 
   const responseText = result.response.text();
 
@@ -156,14 +185,33 @@ ${targetJob}
   let cvContent = responseText;
   let gapContent = '';
 
-  const gapMatch = responseText.match(/#\s*(?:REPORTE DE MATCHING|GAP ANALYSIS)[\s\S]*?(?=(?:#\s+[A-ZÁÉÍÓÚÑ\s]{4,}|\n---\s*\n#))/i);
+  // Extract Gap Analysis
+  const gapRegex = /(?:#\s*(?:PARTE\s*1\s*:?\s*)?(?:REPORTE DE MATCHING|GAP ANALYSIS)[\s\S]*?)(?=(?:#\s*(?:PARTE\s*2\s*:?\s*)?CV\s+OPTIMIZADO|#\s+[A-ZÁÉÍÓÚÑ]{3,}\s+[A-ZÁÉÍÓÚÑ]{3,}|\n---\s*\n#))/i;
+  const gapMatch = responseText.match(gapRegex);
+
   if (gapMatch) {
-    gapContent = gapMatch[0].trim();
-    cvContent = responseText.replace(gapMatch[0], '').trim();
-    cvContent = cvContent.replace(/^```markdown\s*/i, '').replace(/^```\s*/, '').replace(/```$/, '').trim();
+    gapContent = gapMatch[0]
+      .replace(/```markdown/gi, '')
+      .replace(/```/g, '')
+      .trim();
   }
 
-  cvContent = cvContent.replace(/^```markdown\s*/i, '').replace(/^```\s*/, '').replace(/```$/, '').trim();
+  // Extract CV Content cleanly (find where candidate header starts)
+  const candidateHeaderRegex = /(?:#\s+(?:PARTE\s*2\s*:?\s*)?CV\s+OPTIMIZADO\s*)?(#\s+[A-ZÁÉÍÓÚÑ\s]{4,}[\r\n]+[\s\S]*)$/i;
+  const cvMatch = responseText.match(candidateHeaderRegex);
+
+  if (cvMatch && cvMatch[1]) {
+    cvContent = cvMatch[1];
+  } else if (gapMatch) {
+    cvContent = responseText.replace(gapMatch[0], '');
+  }
+
+  // Clean remaining markdown fences and Part 2 artifacts
+  cvContent = cvContent
+    .replace(/^#\s*(?:PARTE\s*2\s*:?\s*)?CV\s+OPTIMIZADO\s*/i, '')
+    .replace(/```markdown\s*/gi, '')
+    .replace(/```\s*/g, '')
+    .trim();
 
   let candidateName = extractCandidateName(masterData);
   if (!candidateName) {
@@ -185,15 +233,72 @@ ${targetJob}
   fs.writeFileSync(cvMdPath, cvContent, 'utf8');
   console.log(`📝 CV Markdown generado y guardado en: ${cvMdPath}`);
 
-  console.log(`🖨️ Compilando a PDF con tema "${theme}"...`);
-  await generatePdfFromMarkdown({
+  console.log(`🖨️ Compilando a PDF con tema "${theme}" (Límite: ${maxPages} página(s))...`);
+  let pdfResult = await generatePdfFromMarkdown({
     markdownFilePath: cvMdPath,
     outputPath: pdfPath,
     theme,
+    maxPages,
     baseDir: root
   });
 
-  console.log(`🎉 ¡PDF creado exitosamente en: ${pdfPath}!`);
+  // Self-Healing AI Condensation Loop: If content overshoots maxPages, condense automatically
+  if (pdfResult.pages > maxPages) {
+    console.log(`\n⚠️ El CV generado ocupó ${pdfResult.pages} páginas (supera el límite de ${maxPages} pág).`);
+    console.log(`🔄 Iniciando pase automático de auto-condensación y síntesis con Gemini...`);
+
+    const condensationInstruction = `
+You are a Senior Executive Resume Editor specializing in precision content synthesis.
+The generated CV exceeded the target limit of ${maxPages} page(s) and must be rigorously condensed to fit into EXACTLY ${maxPages} page(s) while preserving technical impact, leadership verbs, and quantitative metrics.
+
+CONDENSATION RULES:
+1. Reduce experience bullets to EXACTLY 2–3 bullets per company, prioritizing top quantitative impact (Google XYZ formula).
+2. Keep each bullet concise (20–25 words max).
+3. Summary: Maximum 3 dense, impactful lines ending with core metrics.
+4. Skills: Keep exactly 3 dense categories.
+5. Education & Certifications: Keep highest degrees and 2-3 most critical certifications.
+6. Preserve 100% factual accuracy and original language.
+7. STRICT FORMAT: Return ONLY the raw Markdown code starting directly with "# [FULL NAME]", without any conversational preambles.
+`;
+
+    try {
+      const condenseResponse = await model.generateContent([
+        { text: condensationInstruction },
+        { text: `CURRENT CV TO CONDENSE:\n\n${cvContent}` }
+      ]);
+
+      let condensedMarkdown = condenseResponse.response.text();
+      const candidateHeaderRegex = /(#\s+[A-ZÁÉÍÓÚÑ\s]{4,}[\r\n]+[\s\S]*)$/i;
+      const match = condensedMarkdown.match(candidateHeaderRegex);
+      if (match && match[1]) {
+        condensedMarkdown = match[1];
+      }
+
+      condensedMarkdown = condensedMarkdown
+        .replace(/```markdown\s*/gi, '')
+        .replace(/```\s*/g, '')
+        .trim();
+
+      if (condensedMarkdown.length > 100) {
+        cvContent = condensedMarkdown;
+        fs.writeFileSync(cvMdPath, cvContent, 'utf8');
+        console.log(`📝 CV condensado con éxito y guardado en: ${cvMdPath}`);
+
+        console.log(`🖨️ Recompilando PDF ajustado...`);
+        pdfResult = await generatePdfFromMarkdown({
+          markdownFilePath: cvMdPath,
+          outputPath: pdfPath,
+          theme,
+          maxPages,
+          baseDir: root
+        });
+      }
+    } catch (condenseErr: any) {
+      console.warn(`⚠️ No se pudo completar la auto-condensación secundaria: ${condenseErr.message}`);
+    }
+  }
+
+  console.log(`🎉 ¡PDF creado exitosamente en: ${pdfPath}! (Páginas: ${pdfResult.pages})`);
   return {
     cvMdPath,
     gapMdPath: gapContent ? gapMdPath : null,
