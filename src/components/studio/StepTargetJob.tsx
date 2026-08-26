@@ -1,5 +1,28 @@
 import React, { useRef } from 'react';
-import { Icon } from '../Icons';
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Chip,
+  Stack,
+  TextField,
+  InputAdornment,
+  useTheme,
+  alpha
+} from '@mui/material';
+import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
+import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
+import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
+import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
+import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { extractTargetCompany } from '../../core/parser';
 
 interface StepTargetJobProps {
@@ -25,6 +48,8 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   onPrevStep,
   onNextStep
 }) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,29 +103,49 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   const hasJob = content.trim().length > 40 && !content.includes('[Paste the raw job description');
 
   return (
-    <div className="wizard-step-view">
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflowY: 'auto', gap: 2, p: { xs: 1.5, md: 2.5 } }}>
       {/* Guiding Hero Banner */}
-      <div className="step-guidance-card">
-        <div className="guidance-left">
-          <div className="step-badge-pill target">
-            <Icon type="target" size={14} /> Step 2 of 4 • Target Vacancy Posting
-          </div>
-          <h2 className="step-title">The Target Role You Are Applying For</h2>
-          <p className="step-description">
-            Paste the job description from LinkedIn, Indeed, Greenhouse, or the company's careers site. 
-            <strong> The AI will analyze exact requirements</strong> and align your achievements from Step 1 so your resume beats ATS filters and catches recruiters' attention.
-          </p>
-        </div>
+      <Paper
+        sx={{
+          p: { xs: 2, md: 2.5 },
+          display: 'flex',
+          flexDirection: { xs: 'column', lg: 'row' },
+          alignItems: { xs: 'flex-start', lg: 'center' },
+          justifyContent: 'space-between',
+          gap: 2,
+          background: isDark
+            ? 'linear-gradient(135deg, rgba(16, 22, 35, 0.8) 0%, rgba(21, 29, 46, 0.9) 100%)'
+            : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+          border: `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        <Box sx={{ maxWidth: 900 }}>
+          <Chip
+            icon={<WorkRoundedIcon sx={{ fontSize: '16px !important' }} />}
+            label="Step 2 of 4 • Target Job & Vacancy Specs"
+            size="small"
+            color="secondary"
+            variant="outlined"
+            sx={{ mb: 1, fontWeight: 700 }}
+          />
+          <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
+            The Target Role You Are Applying For
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Paste the job posting description directly.
+            <strong> The AI will analyze the requirements and align your real achievements</strong> from Step 1 so your resume easily clears ATS filters and catches recruiters' attention.
+          </Typography>
+        </Box>
 
-        <div className="guidance-actions">
-          <button
-            type="button"
-            className="studio-btn studio-btn-secondary"
+        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<RefreshRoundedIcon />}
             onClick={onLoadSample}
-            title="Load sample vacancy posting to explore"
           >
-            <Icon type="refresh" size={13} /> Load Sample Job
-          </button>
+            Load Sample Vacancy
+          </Button>
 
           <input
             type="file"
@@ -109,130 +154,214 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             accept=".md,.txt"
             onChange={handleFileUpload}
           />
-          <button
-            type="button"
-            className="studio-btn studio-btn-secondary"
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<CloudUploadRoundedIcon />}
             onClick={() => fileInputRef.current?.click()}
-            title="Upload a file with the job description"
           >
-            <Icon type="upload" size={13} /> Upload File (.md)
-          </button>
+            Upload Job File
+          </Button>
 
-          <button
-            type="button"
-            className="studio-btn studio-btn-secondary"
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<FileDownloadRoundedIcon />}
             onClick={handleDownload}
-            title="Download a copy of this job posting"
           >
-            <Icon type="download" size={13} /> Export Copy
-          </button>
-        </div>
-      </div>
+            Export File
+          </Button>
+        </Stack>
+      </Paper>
 
-      {/* Quick Company & Role Fields */}
-      <div className="step-inputs-card">
-        <div className="inputs-row">
-          <div className="field-block">
-            <label htmlFor="company-name-input" className="field-block-label">
-              <Icon type="globe" size={14} />
-              <span>Target Company Name</span>
-            </label>
-            <input
-              id="company-name-input"
-              type="text"
-              className="studio-input-large"
-              placeholder="e.g. Stripe, Google, Mercado Libre, Amazon..."
-              value={companyName}
-              onChange={(e) => onCompanyChange(e.target.value)}
-            />
-            <span className="field-block-help">
-              Used to label output files and calibrate matching keywords.
-            </span>
-          </div>
+      {/* Target Metadata & Metric Inputs */}
+      <Paper
+        sx={{
+          p: 2,
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: '1fr 1fr 200px' },
+          gap: 2,
+          alignItems: 'center',
+          bgcolor: 'background.paper',
+          border: `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        <TextField
+          label="Target Company / Employer"
+          placeholder="e.g. Stripe, Nubank, Mercado Libre"
+          value={companyName}
+          onChange={(e) => onCompanyChange(e.target.value)}
+          size="small"
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <BusinessRoundedIcon fontSize="small" color="primary" />
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
 
-          <div className="field-block">
-            <label htmlFor="role-title-input" className="field-block-label">
-              <Icon type="star" size={14} />
-              <span>Target Role Title</span>
-            </label>
-            <input
-              id="role-title-input"
-              type="text"
-              className="studio-input-large"
-              placeholder="e.g. Senior Fullstack Engineer, Tech Lead, Product Manager..."
-              value={targetRole}
-              onChange={(e) => onRoleChange(e.target.value)}
-            />
-            <span className="field-block-help">
-              The exact job title optimizes ATS keyword density and seniority level.
-            </span>
-          </div>
-        </div>
-      </div>
+        <TextField
+          label="Target Role / Job Title"
+          placeholder="e.g. Senior Full Stack Engineer, Tech Lead"
+          value={targetRole}
+          onChange={(e) => onRoleChange(e.target.value)}
+          size="small"
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <BadgeRoundedIcon fontSize="small" color="secondary" />
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
 
-      {/* Description Textarea Card */}
-      <div className="step-editor-card">
-        <div className="editor-card-topbar">
-          <div className="topbar-title">
-            <Icon type="file-text" size={14} />
-            <span>Full Job Description & Requirements</span>
-          </div>
-          <span className="topbar-hint">
-            {wordCount > 0 ? `${wordCount} words pasted` : 'Paste the job posting description here'}
-          </span>
-        </div>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5,
+            p: 1,
+            borderRadius: '10px',
+            bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+            border: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <DescriptionRoundedIcon fontSize="small" color="action" />
+          <Box>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+              Vacancy Length
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 700 }}>
+              {wordCount} words
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
 
-        <div 
-          className="step-textarea-container"
+      {/* Spacious Dedicated Editor Area */}
+      <Paper
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: 450,
+          overflow: 'hidden',
+          border: `1px solid ${theme.palette.divider}`,
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Box
+          sx={{
+            py: 1,
+            px: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.02)',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <EditNoteRoundedIcon fontSize="small" color="secondary" />
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+              Job Description Markdown
+            </Typography>
+          </Box>
+          <Typography variant="caption" color="text.secondary" sx={{ display: { xs: 'none', sm: 'block' } }}>
+            Paste the job requirements, responsibilities, and qualifications.
+          </Typography>
+        </Box>
+
+        <Box
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
+          sx={{
+            flex: 1,
+            position: 'relative',
+            p: 0,
+            display: 'flex',
+          }}
         >
           <textarea
-            className="step-fullscreen-textarea"
+            className="studio-textarea"
             value={content}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="# 🎯 Target Job Posting&#10;&#10;Paste all job posting details here: responsibilities, requirements, qualifications, and tech stack..."
+            placeholder="# Senior Full Stack Engineer - Stripe&#10;&#10;## About the Role&#10;We are looking for a Senior Engineer with deep React and Node.js expertise...&#10;&#10;## Requirements&#10;- 5+ years building distributed web applications&#10;- Strong experience in TypeScript, React, PostgreSQL"
             spellCheck={false}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              outline: 'none',
+              padding: '16px',
+              fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
+              fontSize: '0.88rem',
+              lineHeight: 1.65,
+              resize: 'none',
+              backgroundColor: 'transparent',
+              color: isDark ? '#f8fafc' : '#0f172a',
+            }}
           />
-        </div>
-      </div>
+        </Box>
+      </Paper>
 
       {/* Navigation Footer */}
-      <footer className="step-navigation-footer">
-        <div className="footer-left">
-          <button
-            type="button"
-            className="studio-btn studio-btn-secondary btn-prev-step"
-            onClick={onPrevStep}
-          >
-            <Icon type="arrow-left" size={15} />
-            <span>Back to Profile</span>
-          </button>
-        </div>
+      <Paper
+        sx={{
+          p: 1.5,
+          px: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          border: `1px solid ${theme.palette.divider}`,
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Button
+          variant="outlined"
+          startIcon={<ArrowBackRoundedIcon />}
+          onClick={onPrevStep}
+        >
+          Back to Profile
+        </Button>
 
-        <div className="footer-status-msg">
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {hasJob ? (
-            <span className="status-good">
-              <Icon type="check-circle" size={14} /> Job posting ready for {companyName || 'target company'}
-            </span>
+            <Chip
+              icon={<CheckCircleRoundedIcon />}
+              label="Job vacancy ready for AI synthesis"
+              color="success"
+              variant="outlined"
+              size="small"
+              sx={{ fontWeight: 600 }}
+            />
           ) : (
-            <span className="status-notice">
-              <Icon type="alert-circle" size={14} /> Paste a job description or click "Load Sample Job"
-            </span>
+            <Chip
+              icon={<InfoRoundedIcon />}
+              label="Tip: Click 'Load Sample Vacancy' to test"
+              color="warning"
+              variant="outlined"
+              size="small"
+              sx={{ fontWeight: 600 }}
+            />
           )}
-        </div>
+        </Box>
 
-        <div className="footer-right">
-          <button
-            type="button"
-            className="studio-btn studio-btn-primary btn-next-step"
-            onClick={onNextStep}
-          >
-            <span>Continue to AI Tailoring</span>
-            <Icon type="arrow-right" size={15} />
-          </button>
-        </div>
-      </footer>
-    </div>
+        <Button
+          variant="contained"
+          color="primary"
+          endIcon={<ArrowForwardRoundedIcon />}
+          onClick={onNextStep}
+          sx={{ fontWeight: 700, px: 3 }}
+        >
+          Continue to AI Tailor
+        </Button>
+      </Paper>
+    </Box>
   );
 };

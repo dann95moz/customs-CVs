@@ -1,5 +1,19 @@
 import React from 'react';
-import { Icon, IconType } from '../Icons';
+import {
+  Box,
+  Paper,
+  Typography,
+  Chip,
+  ButtonBase,
+  useTheme,
+  alpha
+} from '@mui/material';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import { WizardStep } from '../../types/cv';
 
 interface WizardStepperProps {
@@ -16,7 +30,7 @@ interface StepMeta {
   label: string;
   shortLabel: string;
   subtitle: string;
-  icon: IconType;
+  icon: React.ReactElement;
 }
 
 const STEPS: StepMeta[] = [
@@ -25,32 +39,32 @@ const STEPS: StepMeta[] = [
     number: 1,
     label: 'Candidate Profile',
     shortLabel: 'Profile',
-    subtitle: 'Career history & master data',
-    icon: 'user'
+    subtitle: 'Career history & SSOT',
+    icon: <PersonRoundedIcon fontSize="small" />
   },
   {
     id: 'target',
     number: 2,
-    label: 'Target Job & Vacancy',
+    label: 'Target Vacancy',
     shortLabel: 'Target Job',
-    subtitle: 'Employer & vacancy details',
-    icon: 'target'
+    subtitle: 'Employer & vacancy specs',
+    icon: <WorkRoundedIcon fontSize="small" />
   },
   {
     id: 'tailor',
     number: 3,
-    label: 'AI Tailoring Studio',
+    label: 'AI Tailor & Synthesize',
     shortLabel: 'AI Tailor',
-    subtitle: 'Google XYZ alignment & budget',
-    icon: 'sparkles'
+    subtitle: 'Google XYZ alignment',
+    icon: <AutoAwesomeRoundedIcon fontSize="small" />
   },
   {
     id: 'preview',
     number: 4,
-    label: 'Tailored CV & PDF',
+    label: 'Live CV & PDF Export',
     shortLabel: 'CV & PDF',
-    subtitle: 'A4 live preview & download',
-    icon: 'printer'
+    subtitle: 'Pixel-perfect A4 export',
+    icon: <PictureAsPdfRoundedIcon fontSize="small" />
   }
 ];
 
@@ -61,6 +75,9 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
   hasTargetJob,
   hasGeneratedCv
 }) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
   const isStepComplete = (stepId: WizardStep): boolean => {
     switch (stepId) {
       case 'profile':
@@ -79,8 +96,32 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
   const currentStepIndex = STEPS.findIndex(s => s.id === currentStep);
 
   return (
-    <nav className="wizard-stepper" aria-label="Resume creation steps">
-      <div className="wizard-stepper-container">
+    <Paper
+      elevation={0}
+      sx={{
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        bgcolor: 'background.paper',
+        py: 1.25,
+        px: { xs: 1.5, md: 3 },
+        position: 'sticky',
+        top: 0,
+        zIndex: 20,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          maxWidth: 1400,
+          mx: 'auto',
+          gap: { xs: 1, sm: 2 },
+          overflowX: 'auto',
+          py: 0.5,
+          '&::-webkit-scrollbar': { display: 'none' },
+          scrollbarWidth: 'none',
+        }}
+      >
         {STEPS.map((step, index) => {
           const isActive = step.id === currentStep;
           const isCompleted = isStepComplete(step.id) && step.id !== currentStep;
@@ -88,45 +129,149 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
 
           return (
             <React.Fragment key={step.id}>
-              {/* Connector line between steps */}
-              {index > 0 && (
-                <div 
-                  className={`wizard-connector ${index <= currentStepIndex ? 'filled' : ''}`}
-                  aria-hidden="true"
-                >
-                  <div className="wizard-connector-bar" />
-                </div>
-              )}
-
-              {/* Step Button */}
-              <button
-                type="button"
-                className={`wizard-step-btn ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isPassed ? 'passed' : ''}`}
+              <ButtonBase
                 onClick={() => onSelectStep(step.id)}
-                title={`Go to Step ${step.number}: ${step.label}`}
-                aria-current={isActive ? 'step' : undefined}
+                sx={{
+                  flex: 1,
+                  minWidth: { xs: 130, sm: 200, md: 240 },
+                  p: { xs: 1, sm: 1.25 },
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.5,
+                  textAlign: 'left',
+                  border: '1px solid',
+                  borderColor: isActive
+                    ? theme.palette.primary.main
+                    : isCompleted
+                    ? alpha(theme.palette.success.main, 0.4)
+                    : isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+                  bgcolor: isActive
+                    ? alpha(theme.palette.primary.main, isDark ? 0.12 : 0.08)
+                    : isCompleted
+                    ? alpha(theme.palette.success.main, isDark ? 0.08 : 0.04)
+                    : 'transparent',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  '&:hover': {
+                    bgcolor: isActive
+                      ? alpha(theme.palette.primary.main, isDark ? 0.18 : 0.12)
+                      : alpha(theme.palette.text.primary, 0.04),
+                    borderColor: isActive
+                      ? theme.palette.primary.main
+                      : alpha(theme.palette.primary.main, 0.5),
+                  },
+                }}
               >
-                <div className="wizard-step-badge">
+                {/* Step Icon Badge */}
+                <Box
+                  sx={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    bgcolor: isActive
+                      ? theme.palette.primary.main
+                      : isCompleted
+                      ? theme.palette.success.main
+                      : isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
+                    color: isActive || isCompleted
+                      ? '#ffffff'
+                      : theme.palette.text.secondary,
+                    boxShadow: isActive
+                      ? `0 2px 8px ${alpha(theme.palette.primary.main, 0.4)}`
+                      : 'none',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
                   {isCompleted ? (
-                    <Icon type="check" size={14} className="step-icon-check" />
+                    <CheckCircleRoundedIcon sx={{ fontSize: 20 }} />
                   ) : (
-                    <span className="step-number">{step.number}</span>
+                    step.icon
                   )}
-                </div>
+                </Box>
 
-                <div className="wizard-step-content">
-                  <div className="wizard-step-header">
-                    <span className="wizard-step-title">{step.label}</span>
-                    {isCompleted && <span className="wizard-status-tag">Done ✓</span>}
-                    {isActive && <span className="wizard-status-tag active">Active</span>}
-                  </div>
-                  <span className="wizard-step-subtitle">{step.subtitle}</span>
-                </div>
-              </button>
+                {/* Step Texts */}
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.25 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: isActive ? 700 : 600,
+                        color: isActive
+                          ? theme.palette.primary.main
+                          : theme.palette.text.primary,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {step.label}
+                    </Typography>
+
+                    {isActive && (
+                      <Chip
+                        label={`Step ${step.number}`}
+                        size="small"
+                        color="primary"
+                        sx={{
+                          height: 18,
+                          fontSize: '0.68rem',
+                          fontWeight: 700,
+                          '& .MuiChip-label': { px: 0.8 },
+                        }}
+                      />
+                    )}
+                    {isCompleted && (
+                      <Chip
+                        label="Done"
+                        size="small"
+                        color="success"
+                        sx={{
+                          height: 18,
+                          fontSize: '0.68rem',
+                          fontWeight: 700,
+                          '& .MuiChip-label': { px: 0.8 },
+                        }}
+                      />
+                    )}
+                  </Box>
+
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      display: { xs: 'none', sm: 'block' },
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      fontSize: '0.75rem',
+                    }}
+                  >
+                    {step.subtitle}
+                  </Typography>
+                </Box>
+              </ButtonBase>
+
+              {/* Separator Chevron */}
+              {index < STEPS.length - 1 && (
+                <ArrowForwardIosRoundedIcon
+                  sx={{
+                    fontSize: 14,
+                    color: isPassed
+                      ? theme.palette.primary.main
+                      : alpha(theme.palette.text.disabled, 0.4),
+                    flexShrink: 0,
+                    display: { xs: 'none', md: 'block' },
+                  }}
+                />
+              )}
             </React.Fragment>
           );
         })}
-      </div>
-    </nav>
+      </Box>
+    </Paper>
   );
 };

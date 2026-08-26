@@ -1,5 +1,26 @@
 import React, { useRef } from 'react';
-import { Icon } from '../Icons';
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Chip,
+  Stack,
+  useTheme,
+  alpha
+} from '@mui/material';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
+import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
+import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { extractCandidateName, parseCvMarkdownToData } from '../../core/parser';
 
 interface StepMasterDataProps {
@@ -17,6 +38,8 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   onResetTemplate,
   onNextStep
 }) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,30 +90,49 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   const hasData = content.trim().length > 50 && !content.includes('[CANDIDATE FULL NAME]');
 
   return (
-    <div className="wizard-step-view">
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflowY: 'auto', gap: 2, p: { xs: 1.5, md: 2.5 } }}>
       {/* Guiding Hero Banner */}
-      <div className="step-guidance-card">
-        <div className="guidance-left">
-          <div className="step-badge-pill">
-            <Icon type="user" size={14} /> Step 1 of 4 • Master Career Dossier
-          </div>
-          <h2 className="step-title">Your Master Professional Profile</h2>
-          <p className="step-description">
-            This is your permanent career dossier containing your complete work history, education, and technical competencies.
-            <strong> The AI strictly uses this data as its Single Source of Truth</strong> to synthesize targeted resumes for specific jobs without ever fabricating details.
-            You can use natural language, extended and detailed description is highly recommended.
-          </p>
-        </div>
+      <Paper
+        sx={{
+          p: { xs: 2, md: 2.5 },
+          display: 'flex',
+          flexDirection: { xs: 'column', lg: 'row' },
+          alignItems: { xs: 'flex-start', lg: 'center' },
+          justifyContent: 'space-between',
+          gap: 2,
+          background: isDark
+            ? 'linear-gradient(135deg, rgba(16, 22, 35, 0.8) 0%, rgba(21, 29, 46, 0.9) 100%)'
+            : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+          border: `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        <Box sx={{ maxWidth: 900 }}>
+          <Chip
+            icon={<PersonRoundedIcon sx={{ fontSize: '16px !important' }} />}
+            label="Step 1 of 4 • Master Career Dossier (SSOT)"
+            size="small"
+            color="primary"
+            variant="outlined"
+            sx={{ mb: 1, fontWeight: 700 }}
+          />
+          <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
+            Your Master Professional Profile
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            This dossier holds your permanent career history, technical stack, and achievements.
+            <strong> The AI strictly uses this as its Single Source of Truth</strong> to synthesize targeted resumes without hallucinations.
+          </Typography>
+        </Box>
 
-        <div className="guidance-actions">
-          <button
-            type="button"
-            className="studio-btn studio-btn-secondary"
+        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<RefreshRoundedIcon />}
             onClick={onLoadSample}
-            title="Load comprehensive sample profile to explore"
           >
-            <Icon type="refresh" size={13} /> Load Sample Profile
-          </button>
+            Load Sample Profile
+          </Button>
 
           <input
             type="file"
@@ -99,122 +141,292 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             accept=".md,.txt"
             onChange={handleFileUpload}
           />
-          <button
-            type="button"
-            className="studio-btn studio-btn-secondary"
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<CloudUploadRoundedIcon />}
             onClick={() => fileInputRef.current?.click()}
-            title="Import an existing .md or .txt file"
           >
-            <Icon type="upload" size={13} /> Upload File (.md)
-          </button>
+            Upload File (.md)
+          </Button>
 
-          <button
-            type="button"
-            className="studio-btn studio-btn-secondary"
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<FileDownloadRoundedIcon />}
             onClick={handleDownload}
-            title="Download a backup copy to your computer"
           >
-            <Icon type="download" size={13} /> Export Copy
-          </button>
+            Export Backup
+          </Button>
 
-          <button
-            type="button"
-            className="studio-btn studio-btn-ghost"
+          <Button
+            variant="text"
+            size="small"
+            color="inherit"
+            startIcon={<RestartAltRoundedIcon />}
             onClick={onResetTemplate}
-            title="Reset to clean blank template"
           >
-            <Icon type="file-text" size={13} /> Start Blank
-          </button>
-        </div>
-      </div>
+            Start Blank
+          </Button>
+        </Stack>
+      </Paper>
 
-      {/* Summary Cards */}
-      <div className="step-metrics-strip">
-        <div className="metric-chip">
-          <span className="metric-chip-icon"><Icon type="user" size={14} /></span>
-          <div className="metric-chip-info">
-            <span className="metric-chip-label">Candidate</span>
-            <strong className="metric-chip-value">{candidateName}</strong>
-          </div>
-        </div>
+      {/* Summary Metrics Strip */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+          gap: 1.5,
+        }}
+      >
+        <Paper
+          sx={{
+            p: 1.5,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5,
+            bgcolor: 'background.paper',
+            border: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <Box
+            sx={{
+              width: 36,
+              height: 36,
+              borderRadius: '10px',
+              bgcolor: alpha(theme.palette.primary.main, 0.12),
+              color: theme.palette.primary.main,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <PersonRoundedIcon fontSize="small" />
+          </Box>
+          <Box sx={{ minWidth: 0 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+              Candidate
+            </Typography>
+            <Typography variant="body2" noWrap sx={{ fontWeight: 700 }}>
+              {candidateName}
+            </Typography>
+          </Box>
+        </Paper>
 
-        <div className="metric-chip">
-          <span className="metric-chip-icon"><Icon type="layers" size={14} /></span>
-          <div className="metric-chip-info">
-            <span className="metric-chip-label">Experience</span>
-            <strong className="metric-chip-value">{expCount} roles recorded</strong>
-          </div>
-        </div>
+        <Paper
+          sx={{
+            p: 1.5,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5,
+            bgcolor: 'background.paper',
+            border: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <Box
+            sx={{
+              width: 36,
+              height: 36,
+              borderRadius: '10px',
+              bgcolor: alpha(theme.palette.secondary.main, 0.12),
+              color: theme.palette.secondary.main,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <LayersRoundedIcon fontSize="small" />
+          </Box>
+          <Box sx={{ minWidth: 0 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+              Experience Roles
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 700 }}>
+              {expCount} roles recorded
+            </Typography>
+          </Box>
+        </Paper>
 
-        <div className="metric-chip">
-          <span className="metric-chip-icon"><Icon type="star" size={14} /></span>
-          <div className="metric-chip-info">
-            <span className="metric-chip-label">Core Skills</span>
-            <strong className="metric-chip-value">{skillsCount} technologies</strong>
-          </div>
-        </div>
+        <Paper
+          sx={{
+            p: 1.5,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5,
+            bgcolor: 'background.paper',
+            border: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <Box
+            sx={{
+              width: 36,
+              height: 36,
+              borderRadius: '10px',
+              bgcolor: alpha(theme.palette.warning.main, 0.12),
+              color: theme.palette.warning.main,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <StarRoundedIcon fontSize="small" />
+          </Box>
+          <Box sx={{ minWidth: 0 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+              Tech Competencies
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 700 }}>
+              {skillsCount} technologies
+            </Typography>
+          </Box>
+        </Paper>
 
-        <div className="metric-chip">
-          <span className="metric-chip-icon"><Icon type="file-text" size={14} /></span>
-          <div className="metric-chip-info">
-            <span className="metric-chip-label">Length</span>
-            <strong className="metric-chip-value">{wordCount} words</strong>
-          </div>
-        </div>
-      </div>
+        <Paper
+          sx={{
+            p: 1.5,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5,
+            bgcolor: 'background.paper',
+            border: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <Box
+            sx={{
+              width: 36,
+              height: 36,
+              borderRadius: '10px',
+              bgcolor: alpha(theme.palette.success.main, 0.12),
+              color: theme.palette.success.main,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <DescriptionRoundedIcon fontSize="small" />
+          </Box>
+          <Box sx={{ minWidth: 0 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+              Profile Length
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 700 }}>
+              {wordCount} words
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
 
       {/* Spacious Dedicated Editor Area */}
-      <div className="step-editor-card">
-        <div className="editor-card-topbar">
-          <div className="topbar-title">
-            <Icon type="edit" size={14} />
-            <span>Master Profile Editor</span>
-          </div>
-          <span className="topbar-hint">
-            You can type directly, paste text, or drag & drop a file here.
-          </span>
-        </div>
+      <Paper
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: 450,
+          overflow: 'hidden',
+          border: `1px solid ${theme.palette.divider}`,
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Box
+          sx={{
+            py: 1,
+            px: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.02)',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <EditNoteRoundedIcon fontSize="small" color="primary" />
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+              Master Profile Markdown Editor
+            </Typography>
+          </Box>
+          <Typography variant="caption" color="text.secondary" sx={{ display: { xs: 'none', sm: 'block' } }}>
+            Type directly, paste markdown, or drag & drop a file here.
+          </Typography>
+        </Box>
 
-        <div
-          className="step-textarea-container"
+        <Box
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
+          sx={{
+            flex: 1,
+            position: 'relative',
+            p: 0,
+            display: 'flex',
+          }}
         >
           <textarea
-            className="step-fullscreen-textarea"
+            className="studio-textarea"
             value={content}
             onChange={(e) => onChange(e.target.value)}
             placeholder="# [CANDIDATE FULL NAME]&#10;**Primary Professional Role / Specialization**&#10;City, Country • candidate.email@example.com • +1 234 567 8900&#10;&#10;## CAREER HISTORY & ACHIEVEMENTS&#10;Write your companies, roles, and achievements here..."
             spellCheck={false}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              outline: 'none',
+              padding: '16px',
+              fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
+              fontSize: '0.88rem',
+              lineHeight: 1.65,
+              resize: 'none',
+              backgroundColor: 'transparent',
+              color: isDark ? '#f8fafc' : '#0f172a',
+            }}
           />
-        </div>
-      </div>
+        </Box>
+      </Paper>
 
       {/* Navigation Footer */}
-      <footer className="step-navigation-footer">
-        <div className="footer-status-msg">
+      <Paper
+        sx={{
+          p: 1.5,
+          px: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          border: `1px solid ${theme.palette.divider}`,
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {hasData ? (
-            <span className="status-good">
-              <Icon type="check-circle" size={14} /> Master profile ready for tailoring
-            </span>
+            <Chip
+              icon={<CheckCircleRoundedIcon />}
+              label="Master profile ready for tailoring"
+              color="success"
+              variant="outlined"
+              size="small"
+              sx={{ fontWeight: 600 }}
+            />
           ) : (
-            <span className="status-notice">
-              <Icon type="alert-circle" size={14} /> Click "Load Sample Profile" to test right away
-            </span>
+            <Chip
+              icon={<InfoRoundedIcon />}
+              label="Tip: Click 'Load Sample Profile' to test right away"
+              color="warning"
+              variant="outlined"
+              size="small"
+              sx={{ fontWeight: 600 }}
+            />
           )}
-        </div>
+        </Box>
 
-        <div className="footer-buttons">
-          <button
-            type="button"
-            className="studio-btn studio-btn-primary btn-next-step"
-            onClick={onNextStep}
-          >
-            <span>Continue to Target Job</span>
-            <Icon type="arrow-right" size={15} />
-          </button>
-        </div>
-      </footer>
-    </div>
+        <Button
+          variant="contained"
+          color="primary"
+          endIcon={<ArrowForwardRoundedIcon />}
+          onClick={onNextStep}
+          sx={{ fontWeight: 700, px: 3 }}
+        >
+          Continue to Target Job
+        </Button>
+      </Paper>
+    </Box>
   );
 };

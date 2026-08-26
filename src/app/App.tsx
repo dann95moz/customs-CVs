@@ -24,6 +24,30 @@ import {
 } from '../core/ai-service';
 import { auditCvContent } from '../core/audit-engine';
 import {
+  Box,
+  AppBar,
+  Toolbar,
+  Typography,
+  Tabs,
+  Tab,
+  Button,
+  ButtonGroup,
+  IconButton,
+  Tooltip,
+  Chip,
+  Paper,
+  useTheme
+} from '@mui/material';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
+import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import { useThemeMode } from '../theme/ThemeContext';
+import {
   ThemeId,
   StudioTab,
   WizardStep,
@@ -186,6 +210,10 @@ const DEMO_GAP_REPORT = `
 `;
 
 export const App: React.FC = () => {
+  const { mode, toggleThemeMode } = useThemeMode();
+  const muiTheme = useTheme();
+  const isDark = muiTheme.palette.mode === 'dark';
+
   // Navigation State
   const [activeTab, setActiveTab] = useState<StudioTab>(() => {
     const saved = localStorage.getItem('cv_active_tab') as StudioTab;
@@ -517,101 +545,206 @@ export const App: React.FC = () => {
   return (
     <div className="studio-app">
       {/* Top Navbar */}
-      <header className="studio-navbar">
-        <div className="studio-brand" onClick={() => { setActiveTab('wizard'); setWizardStep('preview'); }}>
-          <div className="brand-logo-glow">
-            <Icon type="sparkles" size={18} />
-          </div>
-          <span className="brand-text">CV Studio Pro</span>
-          <span className="badge-pro-tag">Guided Studio</span>
-        </div>
-
-        {/* Primary Navigation Tabs */}
-        <nav className="studio-main-nav">
-          <button
-            type="button"
-            className={`nav-tab-btn ${activeTab === 'wizard' ? 'active' : ''}`}
-            onClick={() => setActiveTab('wizard')}
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          bgcolor: 'background.paper',
+          borderBottom: `1px solid ${muiTheme.palette.divider}`,
+          color: 'text.primary',
+          zIndex: 30,
+        }}
+      >
+        <Toolbar
+          variant="dense"
+          disableGutters
+          sx={{
+            px: { xs: 1.5, md: 3 },
+            minHeight: 56,
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: 2,
+          }}
+        >
+          {/* Brand Logo & Name */}
+          <Box
+            onClick={() => { setActiveTab('wizard'); setWizardStep('preview'); }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1.25,
+              cursor: 'pointer',
+              userSelect: 'none',
+              flexShrink: 0,
+            }}
           >
-            <Icon type="sparkles" size={14} /> Resume Creation Wizard
-          </button>
-          <button
-            type="button"
-            className={`nav-tab-btn ${activeTab === 'audit' ? 'active' : ''}`}
-            onClick={() => setActiveTab('audit')}
-          >
-            <Icon type="gauge" size={14} /> Quality Audit
-            {hasGeneratedCv ? (
-              <span className="nav-score-tag">{auditReport.overallScore}/10</span>
-            ) : (
-              <span className="nav-tag-locked">Requires CV</span>
-            )}
-          </button>
-          <button
-            type="button"
-            className={`nav-tab-btn ${activeTab === 'gap' ? 'active' : ''}`}
-            onClick={() => setActiveTab('gap')}
-          >
-            <Icon type="target" size={14} /> Gap Strategy
-            {!hasTargetJob ? (
-              <span className="nav-tag-locked">No Job Added</span>
-            ) : hasGapReport ? (
-              <span className="nav-match-tag">{gapInfo.matchScore}%</span>
-            ) : (
-              <span className="nav-tag-pending">Needs AI</span>
-            )}
-          </button>
-          <button
-            type="button"
-            className={`nav-tab-btn ${activeTab === 'settings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('settings')}
-          >
-            <Icon type="settings" size={14} /> Settings & API
-          </button>
-        </nav>
-
-        {/* Quick Actions */}
-        <div className="studio-top-actions">
-          {((activeTab === 'wizard' && wizardStep === 'preview') || activeTab === 'preview') && (
-            <div className="theme-pills">
-              <button
-                className={`theme-pill ${theme === 'modern-tech' ? 'active' : ''}`}
-                onClick={() => setTheme('modern-tech')}
-              >
-                Modern Tech
-              </button>
-              <button
-                className={`theme-pill ${theme === 'executive' ? 'active' : ''}`}
-                onClick={() => setTheme('executive')}
-              >
-                Executive
-              </button>
-              <button
-                className={`theme-pill ${theme === 'minimal-ats' ? 'active' : ''}`}
-                onClick={() => setTheme('minimal-ats')}
-              >
-                Minimal ATS
-              </button>
-              <button
-                className={`theme-pill ${theme === 'two-column' ? 'active' : ''}`}
-                onClick={() => setTheme('two-column')}
-              >
-                2 Column
-              </button>
-            </div>
-          )}
-
-          {activeTab !== 'wizard' && (
-            <button
-              className="studio-btn studio-btn-primary"
-              onClick={() => window.print()}
-              title="Export or print pixel-perfect A4 PDF"
+            <Box
+              sx={{
+                width: 32,
+                height: 32,
+                borderRadius: '8px',
+                background: 'linear-gradient(135deg, #0284c7 0%, #6366f1 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ffffff',
+                boxShadow: '0 2px 8px rgba(56, 189, 248, 0.3)',
+              }}
             >
-              <Icon type="printer" size={14} /> Print / Save PDF
-            </button>
-          )}
-        </div>
-      </header>
+              <AutoAwesomeRoundedIcon sx={{ fontSize: 18 }} />
+            </Box>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
+                background: 'linear-gradient(135deg, #38bdf8 0%, #a5b4fc 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                display: { xs: 'none', sm: 'block' },
+              }}
+            >
+              CV Studio
+            </Typography>
+            <Chip
+              label="PRO 3.0"
+              size="small"
+              color="primary"
+              variant="outlined"
+              sx={{
+                height: 20,
+                fontSize: '0.65rem',
+                fontWeight: 800,
+                display: { xs: 'none', md: 'inline-flex' },
+              }}
+            />
+          </Box>
+
+          {/* Primary Navigation Tabs */}
+          <Tabs
+            value={activeTab}
+            onChange={(_, val) => setActiveTab(val)}
+            sx={{
+              minHeight: 44,
+              '& .MuiTabs-indicator': {
+                height: 3,
+                borderRadius: '3px 3px 0 0',
+              },
+            }}
+          >
+            <Tab
+              value="wizard"
+              icon={<AutoAwesomeRoundedIcon sx={{ fontSize: 18 }} />}
+              iconPosition="start"
+              label="Resume Wizard"
+            />
+            <Tab
+              value="audit"
+              icon={<AssessmentRoundedIcon sx={{ fontSize: 18 }} />}
+              iconPosition="start"
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                  <span>Quality Audit</span>
+                  {hasGeneratedCv ? (
+                    <Chip label={`${auditReport.overallScore}/10`} size="small" color="success" sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }} />
+                  ) : (
+                    <Chip label="Locked" size="small" variant="outlined" sx={{ height: 18, fontSize: '0.65rem' }} />
+                  )}
+                </Box>
+              }
+            />
+            <Tab
+              value="gap"
+              icon={<TrackChangesRoundedIcon sx={{ fontSize: 18 }} />}
+              iconPosition="start"
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                  <span>Gap Strategy</span>
+                  {!hasTargetJob ? (
+                    <Chip label="No Job" size="small" variant="outlined" sx={{ height: 18, fontSize: '0.65rem' }} />
+                  ) : hasGapReport ? (
+                    <Chip label={`${gapInfo.matchScore}%`} size="small" color="primary" sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }} />
+                  ) : (
+                    <Chip label="Pending" size="small" color="warning" sx={{ height: 18, fontSize: '0.65rem' }} />
+                  )}
+                </Box>
+              }
+            />
+            <Tab
+              value="settings"
+              icon={<SettingsRoundedIcon sx={{ fontSize: 18 }} />}
+              iconPosition="start"
+              label="Settings & API"
+            />
+          </Tabs>
+
+          {/* Quick Actions & Theme Switcher */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
+            {((activeTab === 'wizard' && wizardStep === 'preview') || activeTab === 'preview') && (
+              <ButtonGroup size="small" variant="outlined" sx={{ display: { xs: 'none', lg: 'inline-flex' } }}>
+                <Button
+                  variant={theme === 'modern-tech' ? 'contained' : 'outlined'}
+                  onClick={() => setTheme('modern-tech')}
+                >
+                  Modern Tech
+                </Button>
+                <Button
+                  variant={theme === 'executive' ? 'contained' : 'outlined'}
+                  onClick={() => setTheme('executive')}
+                >
+                  Executive
+                </Button>
+                <Button
+                  variant={theme === 'minimal-ats' ? 'contained' : 'outlined'}
+                  onClick={() => setTheme('minimal-ats')}
+                >
+                  Minimal ATS
+                </Button>
+                <Button
+                  variant={theme === 'two-column' ? 'contained' : 'outlined'}
+                  onClick={() => setTheme('two-column')}
+                >
+                  2 Column
+                </Button>
+              </ButtonGroup>
+            )}
+
+            {/* Dark / Light Mode Toggle */}
+            <Tooltip title={`Switch to ${mode === 'dark' ? 'Light' : 'Dark'} mode`}>
+              <IconButton
+                onClick={toggleThemeMode}
+                size="small"
+                sx={{
+                  p: 0.75,
+                  borderRadius: '10px',
+                  border: `1px solid ${muiTheme.palette.divider}`,
+                  color: mode === 'dark' ? '#fbbf24' : '#0284c7',
+                  bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                  },
+                }}
+              >
+                {mode === 'dark' ? <LightModeRoundedIcon fontSize="small" /> : <DarkModeRoundedIcon fontSize="small" />}
+              </IconButton>
+            </Tooltip>
+
+            {activeTab !== 'wizard' && (
+              <Button
+                variant="contained"
+                size="small"
+                color="primary"
+                startIcon={<PictureAsPdfRoundedIcon />}
+                onClick={() => window.print()}
+                sx={{ fontWeight: 700 }}
+              >
+                Download PDF
+              </Button>
+            )}
+          </Box>
+        </Toolbar>
+      </AppBar>
 
       {/* Stepper Bar for Guided Wizard */}
       {activeTab === 'wizard' && (
@@ -815,51 +948,61 @@ export const App: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="sidebar-action-box">
-                        <button
-                          type="button"
-                          className="studio-btn studio-btn-secondary btn-full"
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 2 }}>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          startIcon={<AssessmentRoundedIcon />}
                           onClick={() => setActiveTab('audit')}
                         >
-                          <Icon type="gauge" size={13} /> View Full Audit Dashboard
-                        </button>
-                        <button
-                          type="button"
-                          className="studio-btn studio-btn-secondary btn-full"
+                          View Full Audit Dashboard
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          startIcon={<TrackChangesRoundedIcon />}
                           onClick={() => setActiveTab('gap')}
                         >
-                          <Icon type="target" size={13} /> View Gap Strategy
-                        </button>
-                      </div>
+                          View Gap Strategy
+                        </Button>
+                      </Box>
                     </aside>
                   )}
                 </div>
 
                 {/* Step 4 Bottom Navigation Bar */}
-                <footer className="step-navigation-footer preview-nav-footer">
-                  <div className="footer-left">
-                    <button
-                      type="button"
-                      className="studio-btn studio-btn-secondary btn-prev-step"
-                      onClick={() => setWizardStep('tailor')}
-                    >
-                      <Icon type="arrow-left" size={15} />
-                      <span>Back to Tailoring (Step 3)</span>
-                    </button>
-                  </div>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 1.5,
+                    px: 3,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderTop: `1px solid ${muiTheme.palette.divider}`,
+                    bgcolor: 'background.paper',
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    startIcon={<ArrowBackRoundedIcon />}
+                    onClick={() => setWizardStep('tailor')}
+                  >
+                    Back to Tailoring (Step 3)
+                  </Button>
 
-                  <div className="footer-right">
-                    <button
-                      type="button"
-                      className="studio-btn studio-btn-primary btn-next-step"
-                      onClick={() => window.print()}
-                      title="Download your tailored CV as a PDF"
-                    >
-                      <Icon type="printer" size={15} />
-                      <span>Download PDF</span>
-                    </button>
-                  </div>
-                </footer>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<PictureAsPdfRoundedIcon />}
+                    onClick={() => window.print()}
+                    sx={{ fontWeight: 800, px: 3.5 }}
+                  >
+                    Download PDF
+                  </Button>
+                </Paper>
               </div>
             )}
           </>

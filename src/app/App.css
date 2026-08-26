@@ -6,12 +6,13 @@
 /* ==========================================================================
    CV STUDIO PRO 3.0 — CORE DESIGN SYSTEM & TOKENS
    ========================================================================== */
-:root {
-  --bg-dark: #07090e;
-  --panel-bg: #0f141f;
-  --card-bg: #151c2c;
-  --card-hover: #1b2438;
-  --border: #232d42;
+:root,
+[data-theme="dark"] {
+  --bg-dark: #080b12;
+  --panel-bg: #101623;
+  --card-bg: #151d2e;
+  --card-hover: #1b243b;
+  --border: #232f48;
   --border-light: #334155;
   
   --accent: #38bdf8;
@@ -25,6 +26,33 @@
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-dim: #64748b;
+  --input-bg: #0b0f19;
+  --code-bg: #0b0f19;
+  --box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] {
+  --bg-dark: #f8fafc;
+  --panel-bg: #ffffff;
+  --card-bg: #ffffff;
+  --card-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --border-light: #cbd5e1;
+  
+  --accent: #0284c7;
+  --accent-glow: rgba(2, 132, 199, 0.2);
+  --accent-hover: #0369a1;
+  --primary-purple: #7c3aed;
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+  --input-bg: #f8fafc;
+  --code-bg: #f1f5f9;
+  --box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
 }
 
 * {
@@ -40,6 +68,12 @@ body {
   min-height: 100vh;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-dim);
+  opacity: 0.8;
 }
 
 .studio-app {
@@ -297,7 +331,7 @@ body {
   flex: 1;
   display: flex;
   overflow: hidden;
-  background: #05070c;
+  background: var(--bg-dark);
 }
 
 /* ==========================================================================
@@ -313,7 +347,7 @@ body {
 
 .split-view-bar {
   height: 44px;
-  background: #0b0f19;
+  background: var(--panel-bg);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -342,6 +376,7 @@ body {
 
 .split-toggle-btn:hover {
   color: var(--text-main);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .split-toggle-btn.active {
@@ -397,7 +432,7 @@ body {
   flex: 1;
   min-width: 320px;
   max-width: 50%;
-  background: #090d16;
+  background: var(--bg-dark);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -411,7 +446,7 @@ body {
 
 .split-editor-header {
   height: 38px;
-  background: #0d121e;
+  background: var(--panel-bg);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -446,8 +481,8 @@ body {
 .split-textarea {
   width: 100%;
   height: 100%;
-  background: #070a10;
-  color: #e2e8f0;
+  background: var(--input-bg);
+  color: var(--text-main);
   border: none;
   padding: 16px;
   font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
@@ -465,7 +500,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background: #06080e;
+  background: var(--bg-dark);
 }
 
 .paper-sheet {
@@ -598,7 +633,7 @@ body {
 
 .editor-header-bar {
   padding: 12px 16px;
-  background: #0d121e;
+  background: var(--panel-bg);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -647,7 +682,7 @@ body {
 
 .editor-meta-bar {
   display: flex;
-  background: #090c14;
+  background: var(--bg-dark);
   border-bottom: 1px solid var(--border);
   padding: 8px 14px;
   gap: 12px;
@@ -672,7 +707,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
   gap: 10px;
-  background: #090c14;
+  background: var(--bg-dark);
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
   align-items: flex-end;
@@ -723,14 +758,14 @@ body {
 .editor-textarea-wrapper {
   flex: 1;
   min-height: 400px;
-  background: #070a10;
+  background: var(--input-bg);
 }
 
 .studio-textarea {
   width: 100%;
   height: 100%;
   background: transparent;
-  color: #e2e8f0;
+  color: var(--text-main);
   border: none;
   padding: 14px;
   font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
@@ -742,7 +777,7 @@ body {
 
 .editor-footer-hint {
   padding: 8px 14px;
-  background: #090c14;
+  background: var(--bg-dark);
   border-top: 1px solid var(--border);
   font-size: 0.75rem;
   color: var(--text-dim);
@@ -1169,7 +1204,7 @@ body {
 }
 
 .audit-score-hero {
-  background: linear-gradient(135deg, #0f172a 0%, #1e1e38 100%);
+  background: linear-gradient(135deg, var(--card-bg) 0%, var(--panel-bg) 100%);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px 28px;
@@ -1194,8 +1229,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(7, 9, 14, 0.8);
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+  background: var(--bg-dark);
+  box-shadow: 0 0 20px var(--accent-glow);
   flex-shrink: 0;
 }
 
@@ -1283,6 +1318,7 @@ body {
 .metric-status-tag {
   font-size: 0.75rem;
   font-weight: 600;
+  color: var(--accent);
 }
 
 .metric-comment {
@@ -1308,7 +1344,7 @@ body {
 
 .gaps-list {
   padding-left: 16px;
-  color: #fde68a;
+  color: var(--text-main);
 }
 
 .metric-action-box {
@@ -1328,7 +1364,7 @@ body {
 
 .action-list {
   padding-left: 16px;
-  color: #bae6fd;
+  color: var(--text-main);
 }
 
 .growth-pillars-list {
@@ -1368,19 +1404,19 @@ body {
 
 .impact-badge.high {
   background: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
+  color: var(--danger);
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .impact-badge.strategic {
   background: rgba(168, 85, 247, 0.15);
-  color: #d8b4fe;
+  color: var(--primary-purple);
   border: 1px solid rgba(168, 85, 247, 0.3);
 }
 
 .impact-badge.medium-high {
   background: rgba(245, 158, 11, 0.15);
-  color: #fde68a;
+  color: var(--warning);
   border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
@@ -1395,7 +1431,7 @@ body {
   border-radius: 6px;
   padding: 8px 12px;
   font-size: 0.78rem;
-  color: #6ee7b7;
+  color: var(--text-main);
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -1421,7 +1457,7 @@ body {
 }
 
 .gap-hero-banner {
-  background: linear-gradient(135deg, #0f172a 0%, #142845 100%);
+  background: linear-gradient(135deg, var(--card-bg) 0%, var(--panel-bg) 100%);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
@@ -1495,7 +1531,7 @@ body {
 
 .keyword-pill {
   background: rgba(56, 189, 248, 0.12);
-  color: #bae6fd;
+  color: var(--accent);
   border: 1px solid rgba(56, 189, 248, 0.25);
   padding: 4px 10px;
   border-radius: 6px;
@@ -1507,7 +1543,7 @@ body {
 }
 
 .gap-markdown-rendered {
-  background: #070a10;
+  background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px;
@@ -1517,7 +1553,7 @@ body {
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   line-height: 1.6;
-  color: #e2e8f0;
+  color: var(--text-main);
   white-space: pre-wrap;
 }
 
@@ -2117,7 +2153,7 @@ body {
 }
 
 .step-guidance-card {
-  background: linear-gradient(135deg, #111728 0%, #0c101d 100%);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 20px 24px;
@@ -2125,7 +2161,7 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--box-shadow);
   flex-shrink: 0;
 }
 
@@ -2159,7 +2195,7 @@ body {
 .step-title {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #f8fafc;
+  color: var(--text-main);
   margin-bottom: 6px;
   letter-spacing: -0.3px;
 }
@@ -2172,7 +2208,7 @@ body {
 }
 
 .step-description strong {
-  color: #e2e8f0;
+  color: var(--text-main);
 }
 
 .guidance-actions {
@@ -2234,7 +2270,7 @@ body {
 
 /* Step Editor Card */
 .step-editor-card {
-  background: #0a0d16;
+  background: var(--bg-dark);
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
@@ -2242,11 +2278,11 @@ body {
   flex-direction: column;
   flex: 1;
   min-height: 360px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--box-shadow);
 }
 
 .editor-card-topbar {
-  background: #0f1422;
+  background: var(--panel-bg);
   border-bottom: 1px solid var(--border);
   padding: 10px 16px;
   display: flex;
@@ -2280,7 +2316,7 @@ body {
   flex: 1;
   min-height: 320px;
   background: transparent;
-  color: #e2e8f0;
+  color: var(--text-main);
   border: none;
   padding: 16px 20px;
   font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
@@ -2292,7 +2328,7 @@ body {
 
 /* Step Inputs Card */
 .step-inputs-card {
-  background: #0f1422;
+  background: var(--panel-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px 20px;
@@ -2345,7 +2381,7 @@ body {
 
 /* Step 3: Tailor Screen Styles */
 .tailor-summary-card {
-  background: #0f1422;
+  background: var(--panel-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 14px 20px;
@@ -2513,14 +2549,14 @@ body {
 }
 
 .synthesis-launch-box {
-  background: linear-gradient(135deg, #111729 0%, #171630 100%);
-  border: 1px solid rgba(99, 102, 241, 0.35);
+  background: linear-gradient(135deg, var(--card-bg) 0%, var(--panel-bg) 100%);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 22px 28px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--box-shadow);
   flex-shrink: 0;
 }
 
@@ -2534,7 +2570,7 @@ body {
 .generation-cta-title {
   font-size: 1.15rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-main);
   margin-bottom: 4px;
 }
 
@@ -2547,22 +2583,22 @@ body {
   padding: 13px 28px;
   font-size: 0.98rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
   border: none;
   border-radius: 10px;
-  color: #07090e;
+  color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
+  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.4);
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .btn-generate-hero:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(56, 189, 248, 0.6);
+  box-shadow: 0 6px 24px rgba(2, 132, 199, 0.6);
 }
 
 .generation-in-progress {
@@ -2588,7 +2624,7 @@ body {
 .generation-headline {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #f8fafc;
+  color: var(--text-main);
   margin-bottom: 4px;
 }
 
@@ -2616,7 +2652,7 @@ body {
 
 /* Step Navigation Footer */
 .step-navigation-footer {
-  background: #090c14;
+  background: var(--panel-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 12px 20px;
@@ -2628,7 +2664,7 @@ body {
   position: sticky;
   bottom: 0;
   z-index: 20;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--box-shadow);
   flex-shrink: 0;
 }
 
