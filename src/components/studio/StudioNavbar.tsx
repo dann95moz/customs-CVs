@@ -20,6 +20,7 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import { useThemeMode } from '../../theme/ThemeContext';
 import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
 import { StudioTab } from '../../types/cv';
@@ -34,19 +35,19 @@ export const StudioNavbar: React.FC = () => {
     setActiveTab,
     wizardStep,
     setWizardStep,
-    theme,
-    setTheme,
     hasGeneratedCv,
     auditReport,
     hasTargetJob,
     hasGapReport,
     gapInfo,
+    savedVersions,
   } = useResumeWorkspace();
 
   return (
     <AppBar
       position="sticky"
       elevation={0}
+      className="no-print studio-navbar"
       sx={{
         bgcolor: 'background.paper',
         borderBottom: `1px solid ${muiTheme.palette.divider}`,
@@ -108,18 +109,7 @@ export const StudioNavbar: React.FC = () => {
           >
             CV Studio
           </Typography>
-          <Chip
-            label="PRO 3.0"
-            size="small"
-            color="primary"
-            variant="outlined"
-            sx={{
-              height: 20,
-              fontSize: '0.65rem',
-              fontWeight: 800,
-              display: { xs: 'none', md: 'inline-flex' },
-            }}
-          />
+
         </Box>
 
         {/* Primary Navigation Tabs */}
@@ -183,6 +173,24 @@ export const StudioNavbar: React.FC = () => {
             }
           />
           <Tab
+            value="history"
+            icon={<BusinessRoundedIcon sx={{ fontSize: 18 }} />}
+            iconPosition="start"
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                <span>My Applications</span>
+                {savedVersions.length > 0 && (
+                  <Chip
+                    label={savedVersions.length}
+                    size="small"
+                    color="primary"
+                    sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }}
+                  />
+                )}
+              </Box>
+            }
+          />
+          <Tab
             value="settings"
             icon={<SettingsRoundedIcon sx={{ fontSize: 18 }} />}
             iconPosition="start"
@@ -192,34 +200,6 @@ export const StudioNavbar: React.FC = () => {
 
         {/* Quick Actions & Theme Switcher */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
-          {((activeTab === 'wizard' && wizardStep === 'preview') || activeTab === 'preview') && (
-            <ButtonGroup size="small" variant="outlined" sx={{ display: { xs: 'none', lg: 'inline-flex' } }}>
-              <Button
-                variant={theme === 'modern-tech' ? 'contained' : 'outlined'}
-                onClick={() => setTheme('modern-tech')}
-              >
-                Modern Tech
-              </Button>
-              <Button
-                variant={theme === 'executive' ? 'contained' : 'outlined'}
-                onClick={() => setTheme('executive')}
-              >
-                Executive
-              </Button>
-              <Button
-                variant={theme === 'minimal-ats' ? 'contained' : 'outlined'}
-                onClick={() => setTheme('minimal-ats')}
-              >
-                Minimal ATS
-              </Button>
-              <Button
-                variant={theme === 'two-column' ? 'contained' : 'outlined'}
-                onClick={() => setTheme('two-column')}
-              >
-                2 Column
-              </Button>
-            </ButtonGroup>
-          )}
 
           {/* Dark / Light Mode Toggle */}
           <Tooltip title={`Switch to ${mode === 'dark' ? 'Light' : 'Dark'} mode`}>

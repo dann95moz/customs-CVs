@@ -9,6 +9,7 @@ import { StepPreview } from '../components/studio/StepPreview';
 import { QualityAuditView } from '../components/studio/QualityAuditView';
 import { GapAnalysisView } from '../components/studio/GapAnalysisView';
 import { SettingsView } from '../components/studio/SettingsView';
+import { ApplicationsHistoryView } from '../components/studio/ApplicationsHistoryView';
 import { LockedViewCard } from '../components/studio/LockedViewCard';
 import { SynthesisErrorBanner } from '../components/studio/SynthesisErrorBanner';
 import { extractCandidateName } from '../core/parser';
@@ -196,6 +197,13 @@ export const App: React.FC = () => {
                 }}
               />
             )}
+          </div>
+        )}
+
+        {/* VIEW: APPLICATIONS & CV VERSIONS HISTORY */}
+        {activeTab === 'history' && (
+          <div className="history-workspace-layout" style={{ height: '100%' }}>
+            <ApplicationsHistoryView />
           </div>
         )}
 

@@ -76,16 +76,34 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   const hasJob = content.trim().length > 40 && !content.includes('[Paste the raw job description');
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflowY: 'auto', gap: 2, p: { xs: 1.5, md: 2.5 } }}>
-      {/* Guiding Hero Banner */}
-      <Paper
+    <Box
+      sx={{
+        flex: 1,
+        height: '100%',
+        overflowY: 'auto',
+        p: { xs: 1.5, sm: 2, md: 3 },
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <Box
         sx={{
-          p: { xs: 2, md: 2.5 },
+          width: '100%',
+          maxWidth: 1200,
           display: 'flex',
-          flexDirection: { xs: 'column', lg: 'row' },
-          alignItems: { xs: 'flex-start', lg: 'center' },
-          justifyContent: 'space-between',
-          gap: 2,
+          flexDirection: 'column',
+          gap: 2.5,
+        }}
+      >
+        {/* Guiding Hero Banner */}
+        <Paper
+          sx={{
+            p: { xs: 2, md: 2.5 },
+            display: 'flex',
+            flexDirection: { xs: 'column', lg: 'row' },
+            alignItems: { xs: 'flex-start', lg: 'center' },
+            justifyContent: 'space-between',
+            gap: 2,
           background: isDark
             ? 'linear-gradient(135deg, rgba(16, 22, 35, 0.8) 0%, rgba(21, 29, 46, 0.9) 100%)'
             : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
@@ -336,5 +354,6 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
         </Button>
       </Paper>
     </Box>
+  </Box>
   );
 };

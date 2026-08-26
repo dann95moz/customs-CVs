@@ -98,24 +98,28 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
   return (
     <Paper
       elevation={0}
+      className="no-print wizard-stepper"
       sx={{
         borderBottom: `1px solid ${theme.palette.divider}`,
         bgcolor: 'background.paper',
-        py: 1.25,
+        py: 1,
         px: { xs: 1.5, md: 3 },
         position: 'sticky',
         top: 0,
         zIndex: 20,
+        display: 'flex',
+        justifyContent: 'center',
       }}
     >
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          maxWidth: 1400,
+          justifyContent: { xs: 'flex-start', sm: 'center' },
+          width: '100%',
+          maxWidth: 1200,
           mx: 'auto',
-          gap: { xs: 1, sm: 2 },
+          gap: { xs: 1, sm: 1.5, md: 2 },
           overflowX: 'auto',
           py: 0.5,
           '&::-webkit-scrollbar': { display: 'none' },
@@ -132,13 +136,14 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
               <ButtonBase
                 onClick={() => onSelectStep(step.id)}
                 sx={{
-                  flex: 1,
-                  minWidth: { xs: 130, sm: 200, md: 240 },
-                  p: { xs: 1, sm: 1.25 },
+                  flex: { xs: '0 0 auto', sm: 1 },
+                  maxWidth: { sm: 270 },
+                  minWidth: { xs: 140, sm: 180, md: 210 },
+                  p: { xs: 0.85, sm: 1.15 },
                   borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 1.5,
+                  gap: 1.25,
                   textAlign: 'left',
                   border: '1px solid',
                   borderColor: isActive
@@ -259,12 +264,12 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
               {index < STEPS.length - 1 && (
                 <ArrowForwardIosRoundedIcon
                   sx={{
-                    fontSize: 14,
+                    fontSize: 13,
                     color: isPassed
                       ? theme.palette.primary.main
-                      : alpha(theme.palette.text.disabled, 0.4),
+                      : alpha(theme.palette.text.disabled, 0.35),
                     flexShrink: 0,
-                    display: { xs: 'none', md: 'block' },
+                    display: { xs: 'none', lg: 'block' },
                   }}
                 />
               )}

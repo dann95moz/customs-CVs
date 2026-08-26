@@ -137,12 +137,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             iconPosition="start"
             label="Synthesis Rules"
           />
-          <Tab
-            value="appearance"
-            icon={<PaletteRoundedIcon fontSize="small" />}
-            iconPosition="start"
-            label="Appearance"
-          />
+
         </Tabs>
       </Paper>
 
@@ -442,113 +437,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </Paper>
       )}
 
-      {/* TAB 3: APPEARANCE & THEMES */}
-      {activeTab === 'appearance' && (
-        <Paper
-          sx={{
-            p: 3,
-            border: `1px solid ${muiTheme.palette.divider}`,
-            bgcolor: 'background.paper',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 3,
-          }}
-        >
-          <Box>
-            <Typography variant="h6" sx={{ fontWeight: 800, mb: 0.5 }}>
-              Studio Appearance & Color Scheme
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Customize the look and feel of CV Studio Pro with Material You palettes.
-            </Typography>
-          </Box>
 
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
-            <Paper
-              variant="outlined"
-              onClick={() => setThemeMode('dark')}
-              sx={{
-                p: 2.5,
-                borderRadius: '14px',
-                cursor: 'pointer',
-                border: '2px solid',
-                borderColor: mode === 'dark' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
-                bgcolor: mode === 'dark' ? alpha(muiTheme.palette.primary.main, 0.08) : 'transparent',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 2,
-                transition: 'all 0.2s ease',
-              }}
-            >
-              <Box
-                sx={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: '12px',
-                  bgcolor: '#111827',
-                  color: '#38bdf8',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
-                }}
-              >
-                <DarkModeRoundedIcon fontSize="large" />
-              </Box>
-              <Box>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                  Dark Mode
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Deep tonal slate canvas, reduced eye strain, and high contrast.
-                </Typography>
-              </Box>
-            </Paper>
 
-            <Paper
-              variant="outlined"
-              onClick={() => setThemeMode('light')}
-              sx={{
-                p: 2.5,
-                borderRadius: '14px',
-                cursor: 'pointer',
-                border: '2px solid',
-                borderColor: mode === 'light' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
-                bgcolor: mode === 'light' ? alpha(muiTheme.palette.primary.main, 0.08) : 'transparent',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 2,
-                transition: 'all 0.2s ease',
-              }}
-            >
-              <Box
-                sx={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: '12px',
-                  bgcolor: '#ffffff',
-                  color: '#0284c7',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                  border: '1px solid #e2e8f0',
-                }}
-              >
-                <LightModeRoundedIcon fontSize="large" />
-              </Box>
-              <Box>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                  Light Mode
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Crisp, clean executive aesthetic with maximum readability.
-                </Typography>
-              </Box>
-            </Paper>
-          </Box>
-        </Paper>
-      )}
 
       {/* Danger Zone */}
       <Paper
