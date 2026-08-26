@@ -33,7 +33,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@google/generative-ai": "^0.24.0",
+    "@mui/icons-material": "^9.3.1",
+    "@mui/material": "^9.3.1",
     "dotenv": "^16.4.7",
     "marked": "^15.0.7",
     "puppeteer": "^24.4.0",
