@@ -33,7 +33,7 @@ export function renderCvToHtml(markdownContent: string, theme: ThemeId = 'modern
   const themeCss = fs.existsSync(themePath) ? fs.readFileSync(themePath, 'utf8') : '';
 
   return `<!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -161,13 +161,13 @@ export async function generatePdfFromMarkdown({
   let content = markdownContent;
   if (!content && markdownFilePath) {
     if (!fs.existsSync(markdownFilePath)) {
-      throw new Error(`No se encontró el archivo: ${markdownFilePath}`);
+      throw new Error(`File not found: ${markdownFilePath}`);
     }
     content = fs.readFileSync(markdownFilePath, 'utf8');
   }
 
   if (!content) {
-    throw new Error('No se proporcionó contenido Markdown ni archivo.');
+    throw new Error('No Markdown content or file path provided.');
   }
 
   let finalOutputPath = outputPath;
@@ -286,9 +286,9 @@ export async function generatePdfFromMarkdown({
     }, targetPages, autoFit);
 
     if (fitResult.appliedScale < 1) {
-      console.log(`📏 Auto-Fit: Contenido micro-ajustado al ${(fitResult.appliedScale * 100).toFixed(0)}% (${fitResult.measuredHeight}px / ${fitResult.targetHeight}px) -> ${fitResult.pages} página(s).`);
+      console.log(`📏 Auto-Fit: Content micro-adjusted to ${(fitResult.appliedScale * 100).toFixed(0)}% (${fitResult.measuredHeight}px / ${fitResult.targetHeight}px) -> ${fitResult.pages} page(s).`);
     } else {
-      console.log(`📏 Auto-Fit: Altura: ${fitResult.measuredHeight}px / ${fitResult.targetHeight}px (${fitResult.pages} página(s)).`);
+      console.log(`📏 Auto-Fit: Height: ${fitResult.measuredHeight}px / ${fitResult.targetHeight}px (${fitResult.pages} page(s)).`);
     }
 
     const outputDir = path.dirname(finalOutputPath);

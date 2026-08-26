@@ -14,7 +14,7 @@ import {
  */
 export function mapDataToSlots(data: CVData): CVSlotMap {
   const header: HeaderSlotData = {
-    name: data.name || 'Candidato',
+    name: data.name || 'Candidate',
     title: data.title,
     contacts: data.contacts || []
   };

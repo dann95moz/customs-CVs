@@ -17,28 +17,28 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
   'modern-tech': {
     id: 'modern-tech',
     name: 'Modern Tech',
-    description: 'Estilo Stripe/Linear con badges y diseño modular limpio',
+    description: 'Stripe/Linear style with badges and clean modular design',
     layout: 'single-column',
     defaultMaxPages: 1
   },
   'executive': {
     id: 'executive',
     name: 'Executive Classic',
-    description: 'Diseño corporativo Navy con tipografía Serif formal',
+    description: 'Corporate Navy design with formal Serif typography',
     layout: 'single-column',
     defaultMaxPages: 1
   },
   'minimal-ats': {
     id: 'minimal-ats',
     name: 'Minimal ATS',
-    description: 'Monocromático estricto y lineal para máxima compatibilidad con ATS',
+    description: 'Strict linear monochrome for maximum ATS compatibility',
     layout: 'ats-linear',
     defaultMaxPages: 1
   },
   'two-column': {
     id: 'two-column',
     name: 'Two-Column Asymmetric',
-    description: 'Barra lateral balanceada (Skills + Idiomas) y Columna Principal (Experiencia + Educación)',
+    description: 'Balanced sidebar (Skills + Languages) and Main Column (Experience + Education)',
     layout: 'two-column',
     defaultMaxPages: 1
   }

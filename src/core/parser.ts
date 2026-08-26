@@ -221,7 +221,7 @@ function parseExperienceItems(rawContent: string): ExperienceItem[] {
       const bulletText = trimmed.replace(/^[-*•]\s*/, '').trim();
       if (!currentItem) {
         currentItem = {
-          company: 'Experiencia',
+          company: 'Experience',
           bullets: []
         };
       }

@@ -31,13 +31,13 @@ function loadReferenceFiles(root: string) {
   const rulesPath = path.join(root, 'rules.md');
 
   if (!fs.existsSync(masterDataPath)) {
-    throw new Error(`Archivo master-data.md no encontrado en: ${masterDataPath}`);
+    throw new Error(`File master-data.md not found at: ${masterDataPath}`);
   }
   if (!fs.existsSync(targetJobPath)) {
-    throw new Error(`Archivo target-job.md no encontrado en: ${targetJobPath}`);
+    throw new Error(`File target-job.md not found at: ${targetJobPath}`);
   }
   if (!fs.existsSync(rulesPath)) {
-    throw new Error(`Archivo rules.md no encontrado en: ${rulesPath}`);
+    throw new Error(`File rules.md not found at: ${rulesPath}`);
   }
 
   return {
@@ -48,7 +48,7 @@ function loadReferenceFiles(root: string) {
 }
 
 export async function tailorCvWithGemini({
-  companyName = 'Objetivo',
+  companyName = 'Target',
   theme = 'modern-tech',
   modelName = 'gemini-3.6-flash',
   maxPages = 1,
@@ -58,9 +58,9 @@ export async function tailorCvWithGemini({
 
   if (!apiKey) {
     throw new Error(
-      '⚠️  GEMINI_API_KEY no encontrada.\n' +
-      '   Crea un archivo .env en la raíz del proyecto con:\n' +
-      '   GEMINI_API_KEY=tu_api_key_aqui'
+      '⚠️  GEMINI_API_KEY not found.\n' +
+      '   Create a .env file in the project root with:\n' +
+      '   GEMINI_API_KEY=your_api_key_here'
     );
   }
 
@@ -71,7 +71,7 @@ export async function tailorCvWithGemini({
     masterData,
     targetJob,
     rules,
-    companyName: companyName !== 'Objetivo' ? companyName : undefined,
+    companyName: companyName !== 'Target' ? companyName : undefined,
     pageBudget: maxPages === 2 ? 2 : 1,
     providerSettings: {
       provider: 'gemini',
@@ -89,7 +89,7 @@ export async function tailorCvWithGemini({
 
   for (const m of modelsToTry) {
     try {
-      console.log(`📡 Enviando solicitud al modelo ${m}...`);
+      console.log(`📡 Sending request to model ${m}...`);
       const model = genAI.getGenerativeModel({
         model: m,
         systemInstruction: prompts.systemInstruction,
@@ -102,12 +102,12 @@ export async function tailorCvWithGemini({
       activeModel = model;
       break;
     } catch (err: any) {
-      console.warn(`⏳ Modelo ${m} no disponible (${err.message}). Intentando siguiente modelo...`);
+      console.warn(`⏳ Model ${m} unavailable (${err.message}). Trying next model...`);
     }
   }
 
   if (!result) {
-    throw new Error('No se pudo obtener respuesta de ningún modelo de Gemini tras varios intentos.');
+    throw new Error('Failed to obtain a response from any Gemini model after several attempts.');
   }
 
   const responseText = result.response.text();
@@ -118,13 +118,13 @@ export async function tailorCvWithGemini({
   let cvContent = extracted.cvMarkdown;
   const gapContent = extracted.gapMarkdown;
 
-  const inferredCompany = companyName !== 'Objetivo' ? companyName : extractTargetCompany(targetJob, 'Objetivo');
-  const sanitizedCompany = sanitizeFileName(inferredCompany || 'Objetivo');
+  const inferredCompany = companyName !== 'Target' ? companyName : extractTargetCompany(targetJob, 'Target');
+  const sanitizedCompany = sanitizeFileName(inferredCompany || 'Target');
 
   let candidateName = extractCandidateName(masterData);
   if (!candidateName) {
     const parsed = parseCvMarkdownToData(cvContent);
-    candidateName = sanitizeFileName(parsed.name || 'Candidato');
+    candidateName = sanitizeFileName(parsed.name || 'Candidate');
   }
 
   const baseFileName = candidateName ? `CV_${candidateName}_${sanitizedCompany}` : `CV_${sanitizedCompany}`;
@@ -134,13 +134,13 @@ export async function tailorCvWithGemini({
 
   if (gapContent) {
     fs.writeFileSync(gapMdPath, gapContent, 'utf8');
-    console.log(`📊 Reporte de Gap Analysis guardado en: ${gapMdPath}`);
+    console.log(`📊 Gap Analysis report saved to: ${gapMdPath}`);
   }
 
   fs.writeFileSync(cvMdPath, cvContent, 'utf8');
-  console.log(`📝 CV Markdown generado y guardado en: ${cvMdPath}`);
+  console.log(`📝 CV Markdown generated and saved to: ${cvMdPath}`);
 
-  console.log(`🖨️ Compilando a PDF con tema "${theme}" (Límite: ${maxPages} página(s))...`);
+  console.log(`🖨️ Compiling to PDF with theme "${theme}" (Limit: ${maxPages} page(s))...`);
   let pdfResult = await generatePdfFromMarkdown({
     markdownFilePath: cvMdPath,
     outputPath: pdfPath,
@@ -151,8 +151,8 @@ export async function tailorCvWithGemini({
 
   // Self-Healing AI Condensation Loop: If content overshoots maxPages, condense automatically
   if (pdfResult.pages > maxPages) {
-    console.log(`\n⚠️ El CV generado ocupó ${pdfResult.pages} páginas (supera el límite de ${maxPages} pág).`);
-    console.log(`🔄 Iniciando pase automático de auto-condensación y síntesis con Gemini...`);
+    console.log(`\n⚠️ Generated CV occupied ${pdfResult.pages} pages (exceeds limit of ${maxPages} page(s)).`);
+    console.log(`🔄 Starting automatic auto-condensation and synthesis pass with Gemini...`);
 
     const condensationInstruction = `
 You are a Senior Executive Resume Editor specializing in precision content synthesis.
@@ -180,9 +180,9 @@ CONDENSATION RULES:
       if (condensedMarkdown.length > 100) {
         cvContent = condensedMarkdown;
         fs.writeFileSync(cvMdPath, cvContent, 'utf8');
-        console.log(`📝 CV condensado con éxito y guardado en: ${cvMdPath}`);
+        console.log(`📝 CV successfully condensed and saved to: ${cvMdPath}`);
 
-        console.log(`🖨️ Recompilando PDF ajustado...`);
+        console.log(`🖨️ Recompiling adjusted PDF...`);
         pdfResult = await generatePdfFromMarkdown({
           markdownFilePath: cvMdPath,
           outputPath: pdfPath,
@@ -192,11 +192,11 @@ CONDENSATION RULES:
         });
       }
     } catch (condenseErr: any) {
-      console.warn(`⚠️ No se pudo completar la auto-condensación secundaria: ${condenseErr.message}`);
+      console.warn(`⚠️ Could not complete secondary auto-condensation: ${condenseErr.message}`);
     }
   }
 
-  console.log(`🎉 ¡PDF creado exitosamente en: ${pdfPath}! (Páginas: ${pdfResult.pages})`);
+  console.log(`🎉 PDF created successfully at: ${pdfPath}! (Pages: ${pdfResult.pages})`);
 
   let qualityReportPath: string | null = null;
   try {
@@ -207,7 +207,7 @@ CONDENSATION RULES:
     });
     qualityReportPath = auditRes.reportMdPath;
   } catch (auditErr: any) {
-    console.warn(`⚠️ No se pudo generar el reporte de calidad: ${auditErr.message}`);
+    console.warn(`⚠️ Could not generate quality report: ${auditErr.message}`);
   }
 
   return {

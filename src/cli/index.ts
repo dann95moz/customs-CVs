@@ -48,26 +48,26 @@ function printHelp() {
 ✨ CV Studio & Tailor Engine (TypeScript + React + Puppeteer)
 =============================================================
 
-Uso CLI:
-  npm run pdf                         Genera PDF del archivo más reciente en outputs/
-  npm run pdf <archivo.md>            Genera PDF del archivo indicado
-  npm run pdf:all                     Genera PDFs de todos los archivos en outputs/
-  npm run audit [archivo.md]          Genera Reporte de Calidad y Auditoría (Tabla 1-10 y mejoras)
-  npm run dev                         Inicia el CV Studio Web en tiempo real (Vite + React)
-  npm run generate [Empresa]          Genera CV con Gemini API a partir de target-job.md
+CLI Usage:
+  npm run pdf                         Generate PDF from the most recent file in outputs/
+  npm run pdf <file.md>               Generate PDF from the specified Markdown file
+  npm run pdf:all                     Generate PDFs for all files in outputs/
+  npm run audit [file.md]             Generate Quality and Audit Report (1-10 table and growth levers)
+  npm run dev                         Start the CV Studio Web interface in real-time (Vite + React)
+  npm run generate [Company]          Synthesize tailored CV using Gemini API from target-job.md
 
-Temas visuales disponibles:
-  --theme modern-tech                 (Defecto: estilo Stripe/Linear con badges)
-  --theme executive                   (Corporativo Navy con tipografía Serif)
-  --theme minimal-ats                 (Monocromático estricto para ATS)
-  --theme two-column                  (2 columnas con barra lateral)
+Available visual themes:
+  --theme modern-tech                 (Default: Stripe/Linear inspired style with badges)
+  --theme executive                   (Corporate Navy design with formal Serif typography)
+  --theme minimal-ats                 (Strict linear monochrome for ATS compatibility)
+  --theme two-column                  (Two-column layout with skills & languages sidebar)
 
-Opciones:
-  --output <ruta>                     Ruta destino del PDF generado
-  --help, -h                          Muestra este mensaje de ayuda
+Options:
+  --output <path>                     Destination path for the generated PDF
+  --help, -h                          Display this help message
 
-Ejemplos:
-  npm run pdf outputs/Ejemplo_CV_Tailored_Stripe.md -- --theme executive
+Examples:
+  npm run pdf outputs/Sample_CV_Stripe.md -- --theme executive
   npm run audit outputs/CV_Daniel_Corredor_Acosta_Addi.md
   npm run generate "Google" -- --theme modern-tech
 `);
@@ -93,13 +93,13 @@ async function main() {
           : findLatestCvMarkdown(rootDir);
 
         if (!targetFile) {
-          console.error('❌ No se encontró ningún archivo .md en outputs/ o templates/.');
+          console.error('❌ No .md file found in outputs/ or templates/.');
           process.exit(1);
         }
 
-        console.log(`\n🚀 Compilando CV a PDF con TypeScript + React SSR...`);
-        console.log(`📄 Origen: ${targetFile}`);
-        console.log(`🎨 Tema:   ${theme}`);
+        console.log(`\n🚀 Compiling CV to PDF with TypeScript + React SSR...`);
+        console.log(`📄 Source: ${targetFile}`);
+        console.log(`🎨 Theme:  ${theme}`);
 
         const maxPages = flags['max-pages'] ? Number(flags['max-pages']) : undefined;
 
@@ -111,14 +111,14 @@ async function main() {
           baseDir: rootDir
         });
 
-        console.log(`\n✅ ¡PDF generado con éxito!\n📂 Archivo: ${result.outputPath}\n📄 Páginas: ${result.pages} ${result.scale && result.scale < 1 ? `(Auto-Fit: ${(result.scale * 100).toFixed(0)}%)` : ''}\n`);
+        console.log(`\n✅ PDF generated successfully!\n📂 File: ${result.outputPath}\n📄 Pages: ${result.pages} ${result.scale && result.scale < 1 ? `(Auto-Fit: ${(result.scale * 100).toFixed(0)}%)` : ''}\n`);
         break;
       }
 
       case 'pdf:all': {
-        console.log(`\n🚀 Compilando todos los archivos de outputs/ a PDF (Tema: ${theme})...\n`);
+        console.log(`\n🚀 Compiling all files in outputs/ to PDF (Theme: ${theme})...\n`);
         await generateAllPdfs({ theme, baseDir: rootDir });
-        console.log(`\n✨ Proceso completado exitosamente.\n`);
+        console.log(`\n✨ Process completed successfully.\n`);
         break;
       }
 
@@ -129,12 +129,12 @@ async function main() {
           : findLatestCvMarkdown(rootDir);
 
         if (!targetFile) {
-          console.error('❌ No se encontró ningún CV en outputs/ para auditar. Pasa la ruta del archivo explícitamente.');
+          console.error('❌ No CV found in outputs/ to audit. Pass the file path explicitly.');
           process.exit(1);
         }
 
-        console.log(`\n🔍 Iniciando Auditoría de Calidad de CV...`);
-        console.log(`📄 CV Evaluado: ${targetFile}`);
+        console.log(`\n🔍 Starting CV Quality Audit...`);
+        console.log(`📄 Evaluated CV: ${targetFile}`);
 
         const result = await generateQualityAuditReport({
           cvMarkdownPath: targetFile,
@@ -143,18 +143,18 @@ async function main() {
           baseDir: rootDir
         });
 
-        console.log(`\n🎉 ¡Reporte de Calidad y PDF generados con éxito!`);
-        console.log(`📊 Reporte Markdown: ${result.reportMdPath}`);
-        console.log(`🖨️ Reporte PDF:      ${result.reportPdfPath}`);
-        console.log(`⭐ Puntaje Global:   ${result.report.overallScore} / 10.0\n`);
+        console.log(`\n🎉 Quality Report and PDF generated successfully!`);
+        console.log(`📊 Markdown Report: ${result.reportMdPath}`);
+        console.log(`🖨️ PDF Report:      ${result.reportPdfPath}`);
+        console.log(`⭐ Overall Score:   ${result.report.overallScore} / 10.0\n`);
         break;
       }
 
       case 'generate':
       case 'tailor': {
         const companyName = positional[1] || (flags.company as string) || undefined;
-        console.log(`\n🎯 Iniciando CV Tailoring con Gemini API...`);
-        console.log(`🔒 SSOT: master-data.md es estrictamente de solo lectura.`);
+        console.log(`\n🎯 Starting CV Tailoring with Gemini API...`);
+        console.log(`🔒 SSOT: master-data.md is strictly read-only.`);
 
         const result = await tailorCvWithGemini({
           companyName,
@@ -162,7 +162,7 @@ async function main() {
           baseDir: rootDir
         });
 
-        console.log(`\n🎉 ¡CV y PDF generados con éxito!`);
+        console.log(`\n🎉 CV and PDF generated successfully!`);
         console.log(`📄 Markdown: ${result.cvMdPath}`);
         if (result.gapMdPath) {
           console.log(`📊 Gap Report: ${result.gapMdPath}`);
@@ -172,7 +172,7 @@ async function main() {
       }
 
       default:
-        console.error(`❌ Comando no reconocido: "${command}"`);
+        console.error(`❌ Unrecognized command: "${command}"`);
         printHelp();
         process.exit(1);
     }
