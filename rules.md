@@ -71,6 +71,12 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
 - **Action / Implementation:** The modern stack, design pattern, or migration applied.
 - **Quantitative Result:** Clear percentage or business/engineering metric achieved.
 
+### G. Strategic Keyword & Impact Bolding (The 6-Second Recruiter Hook)
+- **Recruiter Visual Anchors:** Recruiters and hiring managers spend an average of 6–8 seconds scanning a CV. To immediately seize attention and maximize reading speed:
+  - **Bold Core Matching Tech:** Strategically apply Markdown bolding (`**Keyword**`) to 1–2 primary matching technical terms per bullet (e.g., `**TypeScript**`, `**React**`, `**Webpack Module Federation**`, `**Microfrontends**`, `**Zustand**`, `**AWS**`, `**Docker**`).
+  - **Bold Quantitative Metrics & Results:** Apply Markdown bolding to all key percentages and numerical gains (e.g., `**50% reduction in CI/CD pipeline build times**`, `**40% decrease in runtime errors**`, `**35% faster cross-team feature delivery**`).
+  - **Rule of Balance:** Limit bold highlights to **1 to 3 impactful items per bullet** so the document remains clean, sophisticated, and easy to read without feeling cluttered.
+
 ---
 
 ## 3. 🎯 ATS Optimization & Formatting Consistency

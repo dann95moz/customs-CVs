@@ -54,12 +54,45 @@ export function extractTargetCompany(targetJobText: string, fallback: string = '
     if (
       !raw.toLowerCase().includes('startup x') && 
       !raw.toLowerCase().includes('company name') && 
+      !raw.toLowerCase().includes('target company') &&
       !raw.includes('/')
     ) {
       return sanitizeFileName(raw);
     }
   }
   return sanitizeFileName(fallback);
+}
+
+/**
+ * Extracts target role from target-job.md or master-data.md or fallback
+ */
+export function extractTargetRole(targetJobText: string, masterDataText: string = '', fallback: string = ''): string {
+  if (targetJobText) {
+    const match = targetJobText.match(/(?:Target Role|Target Position|Role|Cargo|Puesto|Position|Title|Job Title):\*{0,2}\s*\[?(?:e\.g\.\s*|Ej:\s*)?([^\]\r\n*]+)\]?/i);
+    if (match) {
+      const raw = match[1].replace(/^[–\-•|:\s]+/, '').replace(/[–\-•|:\s]+$/, '').trim();
+      if (
+        !raw.toLowerCase().includes('target role') &&
+        !raw.toLowerCase().includes('role title') &&
+        !raw.toLowerCase().includes('e.g.') &&
+        raw.length < 70
+      ) {
+        return raw;
+      }
+    }
+  }
+
+  if (masterDataText) {
+    const parsed = parseCvMarkdownToData(masterDataText);
+    if (parsed.title) {
+      const mainRole = parsed.title.split(/[|•]/)[0].trim();
+      if (mainRole && !mainRole.includes('[') && mainRole.length < 70) {
+        return mainRole;
+      }
+    }
+  }
+
+  return fallback;
 }
 
 /**

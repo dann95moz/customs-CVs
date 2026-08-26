@@ -73,15 +73,88 @@ export interface ThemeConfig {
   isTwoColumn?: boolean;
 }
 
-export interface GapAnalysisResult {
-  matchScore: number;
-  keywords: string[];
-  missingSkills: string[];
-  strategy: string;
-}
-
 export interface MarkdownFileItem {
   name: string;
   path: string;
   content: string;
 }
+
+// AI Providers & Configurations
+export type AIProviderId = 
+  | 'free-pollinations' 
+  | 'gemini' 
+  | 'openai' 
+  | 'claude' 
+  | 'groq' 
+  | 'openrouter' 
+  | 'custom';
+
+export interface AIModelOption {
+  id: string;
+  name: string;
+  provider: AIProviderId;
+  description: string;
+  isFree?: boolean;
+  requiresKey?: boolean;
+}
+
+export interface AIProviderSettings {
+  provider: AIProviderId;
+  model: string;
+  apiKey?: string;
+  customEndpoint?: string;
+  temperature?: number;
+}
+
+export interface TailorRequest {
+  masterData: string;
+  targetJob: string;
+  rules?: string;
+  companyName?: string;
+  targetRole?: string;
+  pageBudget: 1 | 2;
+  providerSettings: AIProviderSettings;
+}
+
+export interface TailorResponse {
+  tailoredCvMarkdown: string;
+  gapAnalysisMarkdown?: string;
+  estimatedMatchScore?: number;
+  extractedKeywords?: string[];
+  rawResponse?: string;
+  modelUsed: string;
+}
+
+// Audit & Quality Types
+export interface AuditSectionResult {
+  sectionName: string;
+  score: number; // Scale 1.0 - 10.0
+  status: '🟢 Optimal' | '🟡 Solid with Headroom' | '🔴 Needs Attention';
+  comment: string;
+  identifiedGaps?: string[];
+  actionToTen?: string[];
+}
+
+export interface StrategicGrowthPillar {
+  pillarName: string;
+  impactLevel: 'High' | 'Medium-High' | 'Strategic';
+  diagnostic: string;
+  recommendationForMasterData: string;
+}
+
+export interface QualityAuditReport {
+  candidateName: string;
+  targetCompany: string;
+  overallScore: number;
+  sections: AuditSectionResult[];
+  strategicPillars: StrategicGrowthPillar[];
+  markdownReport: string;
+}
+
+// Studio Navigation Tabs
+export type StudioTab = 
+  | 'editor' 
+  | 'preview' 
+  | 'audit' 
+  | 'gap' 
+  | 'settings';
