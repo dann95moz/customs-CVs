@@ -11,10 +11,13 @@ import {
 } from './parser';
 import { generateQualityAuditReport } from './audit';
 import { ThemeId } from '../types/cv';
+import { getWorkspaceRoot, getOutputsDir } from './workspace';
+import { buildPrompts } from './ai/prompt-builder';
+import { extractCvAndGap } from './ai/extractor';
 
 dotenv.config();
 
-interface TailorCvOptions {
+export interface TailorCvOptions {
   companyName?: string;
   theme?: ThemeId;
   modelName?: string;
@@ -22,16 +25,7 @@ interface TailorCvOptions {
   baseDir?: string;
 }
 
-function resolveWorkspaceDir(baseDir?: string): string {
-  if (baseDir && fs.existsSync(baseDir)) return baseDir;
-  const cwd = process.cwd();
-  if (fs.existsSync(path.join(cwd, 'master-data.md'))) return cwd;
-  return path.resolve(import.meta.dirname, '..', '..');
-}
-
-function loadReferenceFiles(baseDir?: string) {
-  const root = resolveWorkspaceDir(baseDir);
-
+function loadReferenceFiles(root: string) {
   const masterDataPath = path.join(root, 'master-data.md');
   const targetJobPath = path.join(root, 'target-job.md');
   const rulesPath = path.join(root, 'rules.md');
@@ -70,83 +64,24 @@ export async function tailorCvWithGemini({
     );
   }
 
-  const root = baseDir || process.cwd();
+  const root = getWorkspaceRoot(baseDir);
   const { masterData, targetJob, rules } = loadReferenceFiles(root);
 
-  const systemInstruction = `
-You are an Executive Tech Headhunter, Career Consultant, and Expert ATS Resume Synthesizer.
-Your mission is to analyze the candidate's comprehensive master knowledge base (MASTER-DATA.MD), cross-reference it with the target job posting (TARGET-JOB.MD), and rigorously apply all guidelines defined in RULES.MD to generate a high-impact, 100% tailored CV and matching strategy report.
-
-=== CORE GUIDELINES & CONSTRAINTS (RULES.MD) ===
-${rules}
-
-=== PAGE FIT TARGET ===
-${maxPages === 1 
-  ? "- PAGE BUDGET: 1 PAGE EXACT (420–480 words). Fill 80%–90% of an A4 page harmoniously. Never omit experience or education if space is available."
-  : "- PAGE BUDGET: 2 PAGES (750–850 words). Fill 2 full pages with extensive project and leadership details."}
-
-=== REQUIRED OUTPUT FORMAT ===
-Deliver your response in exactly two clearly delimited Markdown code blocks:
-
-PART 1: GAP ANALYSIS
-\`\`\`markdown
-# MATCHING & TAILORING STRATEGY REPORT (Gap Analysis)
-- **Estimated Match Score:** X/100
-- **Critical Integrated Keywords:** [...]
-- **Strategic Alignment Narrative:** [...]
-- **Identified Gaps & Mitigation:** [...]
-\`\`\`
-
-PART 2: TAILORED CV
-\`\`\`markdown
-# [FULL NAME]
-**[Target Role Title | Primary Specialization]**
-[City, Country] • [Email] • [Phone]
-[LinkedIn](...) • [GitHub](...) • [Portfolio](...)
-
----
-
-## PROFESSIONAL SUMMARY
-[3-4 lines zero-fluff summary ending with mandatory closing impact metrics]
-
-## TECHNICAL SKILLS
-- **Languages & Core Fundamentals:** ...
-- **Frameworks, Architecture & Ecosystem:** ...
-- **Tooling, Testing, CI/CD & AI Integrations:** ...
-
-## PROFESSIONAL EXPERIENCE
-
-**[Company Name]** | [Location]
-*[Job Title]* | [Mon YYYY – Mon YYYY]
-- **[Lead Verb & Core Action]** ...
-- **[Action & Metric]** ...
-- **[Action & Metric]** ...
-
-## EDUCATION & CERTIFICATIONS
-- **[Degree / Program]** – [Institution], [Year]
-- **[Certification Name 1]** – [Issuer], [Year]
-- **[Certification Name 2]** – [Issuer], [Year]
-
-## LANGUAGES
-- **[Language 1]:** [Level]
-- **[Language 2]:** [Level]
-- **[Language 3]:** [Level]
-\`\`\`
-`;
+  const prompts = buildPrompts({
+    masterData,
+    targetJob,
+    rules,
+    companyName: companyName !== 'Objetivo' ? companyName : undefined,
+    pageBudget: maxPages === 2 ? 2 : 1,
+    providerSettings: {
+      provider: 'gemini',
+      model: modelName,
+      apiKey
+    }
+  });
 
   const genAI = new GoogleGenerativeAI(apiKey);
   const modelsToTry = [modelName, 'gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash'].filter((v, i, a) => a.indexOf(v) === i);
-
-  const userPrompt = `
-Please generate the tailored CV for target company "${companyName}" by analyzing the following reference files:
-In EDUCATION & CERTIFICATIONS, list each degree and each certification as its OWN individual bullet point on a separate line (vertical column format). NEVER group certifications inline with pipes or commas.
-
-=== 1. MASTER-DATA.MD (Candidate Single Source of Truth) ===
-${masterData}
-
-=== 2. TARGET-JOB.MD (Target Job Description & Requirements) ===
-${targetJob}
-`;
 
   let result;
   let usedModel = modelName;
@@ -155,14 +90,14 @@ ${targetJob}
   for (const m of modelsToTry) {
     try {
       console.log(`📡 Enviando solicitud al modelo ${m}...`);
-      const model = genAI.getGenerativeModel({ 
+      const model = genAI.getGenerativeModel({
         model: m,
-        systemInstruction,
+        systemInstruction: prompts.systemInstruction,
         generationConfig: {
           temperature: 0.15
         }
       });
-      result = await model.generateContent(userPrompt);
+      result = await model.generateContent(prompts.userPrompt);
       usedModel = m;
       activeModel = model;
       break;
@@ -176,46 +111,15 @@ ${targetJob}
   }
 
   const responseText = result.response.text();
+  const outputsDir = getOutputsDir(root);
 
-  const outputsDir = path.join(root, 'outputs');
-  if (!fs.existsSync(outputsDir)) {
-    fs.mkdirSync(outputsDir, { recursive: true });
-  }
+  // Extract CV and Gap Analysis using unified extractor
+  const extracted = extractCvAndGap(responseText, masterData, prompts.company);
+  let cvContent = extracted.cvMarkdown;
+  const gapContent = extracted.gapMarkdown;
 
-  // Determine candidate and company names for filenames
   const inferredCompany = companyName !== 'Objetivo' ? companyName : extractTargetCompany(targetJob, 'Objetivo');
   const sanitizedCompany = sanitizeFileName(inferredCompany || 'Objetivo');
-
-  let cvContent = responseText;
-  let gapContent = '';
-
-  // Extract Gap Analysis
-  const gapRegex = /(?:#\s*(?:PARTE\s*1\s*:?\s*)?(?:REPORTE DE MATCHING|GAP ANALYSIS)[\s\S]*?)(?=(?:#\s*(?:PARTE\s*2\s*:?\s*)?CV\s+OPTIMIZADO|#\s+[A-ZÁÉÍÓÚÑ]{3,}\s+[A-ZÁÉÍÓÚÑ]{3,}|\n---\s*\n#))/i;
-  const gapMatch = responseText.match(gapRegex);
-
-  if (gapMatch) {
-    gapContent = gapMatch[0]
-      .replace(/```markdown/gi, '')
-      .replace(/```/g, '')
-      .trim();
-  }
-
-  // Extract CV Content cleanly (find where candidate header starts)
-  const candidateHeaderRegex = /(?:#\s+(?:PARTE\s*2\s*:?\s*)?CV\s+OPTIMIZADO\s*)?(#\s+[A-ZÁÉÍÓÚÑ\s]{4,}[\r\n]+[\s\S]*)$/i;
-  const cvMatch = responseText.match(candidateHeaderRegex);
-
-  if (cvMatch && cvMatch[1]) {
-    cvContent = cvMatch[1];
-  } else if (gapMatch) {
-    cvContent = responseText.replace(gapMatch[0], '');
-  }
-
-  // Clean remaining markdown fences and Part 2 artifacts
-  cvContent = cvContent
-    .replace(/^#\s*(?:PARTE\s*2\s*:?\s*)?CV\s+OPTIMIZADO\s*/i, '')
-    .replace(/```markdown\s*/gi, '')
-    .replace(/```\s*/g, '')
-    .trim();
 
   let candidateName = extractCandidateName(masterData);
   if (!candidateName) {
@@ -233,7 +137,6 @@ ${targetJob}
     console.log(`📊 Reporte de Gap Analysis guardado en: ${gapMdPath}`);
   }
 
-  cvContent = cvContent.replace(/^```markdown\s*/i, '').replace(/^```\s*/, '').replace(/```$/, '').trim();
   fs.writeFileSync(cvMdPath, cvContent, 'utf8');
   console.log(`📝 CV Markdown generado y guardado en: ${cvMdPath}`);
 
@@ -271,17 +174,8 @@ CONDENSATION RULES:
         { text: `CURRENT CV TO CONDENSE:\n\n${cvContent}` }
       ]);
 
-      let condensedMarkdown = condenseResponse.response.text();
-      const candidateHeaderRegex = /(#\s+[A-ZÁÉÍÓÚÑ\s]{4,}[\r\n]+[\s\S]*)$/i;
-      const match = condensedMarkdown.match(candidateHeaderRegex);
-      if (match && match[1]) {
-        condensedMarkdown = match[1];
-      }
-
-      condensedMarkdown = condensedMarkdown
-        .replace(/```markdown\s*/gi, '')
-        .replace(/```\s*/g, '')
-        .trim();
+      const condensedExtracted = extractCvAndGap(condenseResponse.response.text(), masterData, prompts.company);
+      const condensedMarkdown = condensedExtracted.cvMarkdown;
 
       if (condensedMarkdown.length > 100) {
         cvContent = condensedMarkdown;
@@ -321,6 +215,7 @@ CONDENSATION RULES:
     gapMdPath: gapContent ? gapMdPath : null,
     qualityReportPath,
     pdfPath,
-    theme
+    theme,
+    modelUsed: usedModel
   };
 }
