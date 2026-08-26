@@ -9,7 +9,7 @@ This document defines the strict styling, formatting, content, and ATS optimizat
 - **No Sensitive Personal Information:**
   - ❌ Do NOT include headshots or photos (unless legally and explicitly mandated in specific regional jurisdictions).
   - ❌ Do NOT include birth date, age, marital status, gender, nationality, or religion.
-  - ❌ Do NOT include national ID or passport numbers (DNI, Cédula, SSN).
+  - ❌ Do NOT include national ID or passport numbers (National ID, SSN, Passport Number).
   - ❌ Do NOT include full residential street addresses. Use only `City, Country`.
 - **No Empty Clichés or Buzzword Fluff:**
   - ❌ Avoid unsupported adjectives: *"passionate worker"*, *"results-driven team player"*, *"dynamic out-of-the-box thinker"*, *"adaptive developer"*.
@@ -85,15 +85,14 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
 - **Target Role Title Alignment:** Align the sub-header title to the target role while maintaining factual career accuracy.
 - **Strict Date Fidelity (SSOT):**
   - Copy exact start and end dates from `master-data.md` (e.g., `Oct 2024 – Apr 2026`).
-  - **Never assume "Present"** automatically if an explicit end month/year is provided. Only use "Present" if `master-data.md` explicitly specifies "Present" / "Actual".
+  - **Never assume "Present"** automatically if an explicit end month/year is provided. Only use "Present" if `master-data.md` explicitly specifies "Present".
   - Standard date format: `Mon YYYY – Mon YYYY` (e.g., `Oct 2024 – Apr 2026` or `Jul 2022 – Oct 2024`).
 - **Certifications & Education Format (Strict Column Rule):**
   - Always list each university degree and each certification as its own individual bullet point on a separate line (forming a clean vertical column).
   - ❌ Do NOT combine multiple certifications into a single inline line separated by pipes `|` or commas (e.g. NEVER output `- **Certifications:** Cert 1 | Cert 2`).
   - ✅ Format: `- **[Certification Name]** – [Issuer], [Year]`.
-- **Language Uniformity:**
-  - If `target-job.md` is in English, generate 100% of the CV in professional English with exact section titles (`PROFESSIONAL SUMMARY`, `TECHNICAL SKILLS`, `PROFESSIONAL EXPERIENCE`, `EDUCATION & CERTIFICATIONS`, `LANGUAGES`).
-  - If `target-job.md` is in Spanish, use industry-standard tech terminology.
+- **Language Uniformity (100% English Standard):**
+  - All CV generation, section titles, executive summaries, and experience bullets must be strictly in professional English (`PROFESSIONAL SUMMARY`, `TECHNICAL SKILLS`, `PROFESSIONAL EXPERIENCE`, `EDUCATION & CERTIFICATIONS`, `LANGUAGES`), regardless of whether input job postings or raw notes contain text in other languages.
 
 ---
 
