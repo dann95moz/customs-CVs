@@ -34,7 +34,7 @@
 .theme-modern-tech .cv-title {
   font-size: 10pt;
   font-weight: 600;
-  color: #2563eb;
+  color: var(--cv-accent-color, #2563eb);
   letter-spacing: 0.2px;
   margin-bottom: 6px;
 }
@@ -62,11 +62,11 @@
 }
 
 .theme-modern-tech .cv-contact-item a:hover {
-  color: #2563eb;
+  color: var(--cv-accent-hover, var(--cv-accent-color, #2563eb));
 }
 
 .theme-modern-tech .cv-contact-item .icon {
-  color: #2563eb;
+  color: var(--cv-accent-color, #2563eb);
 }
 
 /* Section Headings */
@@ -94,7 +94,7 @@
   display: inline-block;
   width: 3.5px;
   height: 13px;
-  background: #2563eb;
+  background: var(--cv-accent-color, #2563eb);
   border-radius: 2px;
 }
 
@@ -120,9 +120,9 @@
 
 .theme-modern-tech .skill-pill {
   display: inline-block;
-  background: #f1f5f9;
-  color: #334155;
-  border: 1px solid #e2e8f0;
+  background: var(--cv-badge-bg, #f1f5f9);
+  color: #1e293b;
+  border: 1px solid var(--cv-accent-border, #e2e8f0);
   border-radius: 4px;
   padding: 1px 6px;
   font-size: 8.2pt;
@@ -166,7 +166,7 @@
 .theme-modern-tech .item-role {
   font-size: 9pt;
   font-weight: 600;
-  color: #2563eb;
+  color: var(--cv-accent-color, #2563eb);
   font-style: italic;
 }
 
@@ -196,7 +196,7 @@
   content: "▸";
   position: absolute;
   left: 0;
-  color: #2563eb;
+  color: var(--cv-accent-color, #2563eb);
   font-size: 8.5pt;
   line-height: 1.35;
 }

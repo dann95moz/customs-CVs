@@ -1,17 +1,15 @@
 /**
- * CV Studio Pro 3.0 - Static Templates & Initial Markdown Documents
+ * CV Studio Pro - Static Templates & Initial Markdown Documents
  * Separated from presentation logic to adhere to Single Responsibility Principle (SRP).
  */
 
-export const BLANK_MASTER_DATA = `# [CANDIDATE FULL NAME]
-**[Primary Professional Role / Specialization]**  
-[City, Country] • [candidate.email@example.com] • [+1 234 567 8900]  
-[LinkedIn](https://linkedin.com/in/username) • [GitHub](https://github.com/username) • [Portfolio](https://portfolio.dev)
+export const BLANK_MASTER_DATA = `# 
 
 ---
 
 ## 🎯 PROFESSIONAL SUMMARY & PITCH
-[Write a concise 2-3 paragraph summary of your overall career trajectory, core technical domain, architectural capabilities, and high-level engineering achievements...]
+[Write a the summary of your overall career trajectory, core technical domain, architectural capabilities, and high-level engineering achievements...
+Feel free to write as much as you need, don't worry about formatting or grammar, the AI will take care of it.]
 
 ---
 

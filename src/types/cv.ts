@@ -63,7 +63,25 @@ export interface CVData {
   languages?: string[];
 }
 
-export type ThemeId = 'modern-tech' | 'executive' | 'minimal-ats' | 'two-column';
+export type ThemeId = 
+  | 'modern-tech' 
+  | 'executive' 
+  | 'minimal-ats' 
+  | 'two-column'
+  | 'designer-uiux'
+  | 'formal-legal'
+  | 'academic-research';
+
+export type PaletteId = 
+  | 'corporate-blue' 
+  | 'accent-teal' 
+  | 'editorial-black' 
+  | 'minimal-slate' 
+  | 'modern-indigo' 
+  | 'executive-burgundy'
+  | 'forest-green'
+  | 'warm-amber'
+  | 'creative-coral';
 
 export interface ThemeConfig {
   id: ThemeId;
@@ -71,6 +89,22 @@ export interface ThemeConfig {
   description: string;
   accentColor: string;
   isTwoColumn?: boolean;
+}
+
+export interface GeneratedCvVersion {
+  id: string;
+  createdAt: string; // ISO string
+  candidateName: string;
+  companyName: string;
+  targetRole: string;
+  matchScore: number;
+  qualityScore: number;
+  theme: ThemeId;
+  palette: PaletteId;
+  pageBudget: 1 | 2;
+  cvMarkdown: string;
+  gapMarkdown?: string;
+  targetJobSnippet?: string;
 }
 
 export interface MarkdownFileItem {
@@ -165,4 +199,6 @@ export type StudioTab =
   | 'preview' 
   | 'audit' 
   | 'gap' 
+  | 'history'
   | 'settings';
+

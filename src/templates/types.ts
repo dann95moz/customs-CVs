@@ -54,7 +54,10 @@ export interface CVTemplateProps {
 export interface TemplateMetadata {
   id: ThemeId;
   name: string;
+  category: 'Tech & Engineering' | 'Design & Creative' | 'Legal & Finance' | 'Executive & Leadership' | 'Academic & Research' | 'General & Operations';
+  recommendedFor: string;
   description: string;
   layout: 'single-column' | 'two-column' | 'ats-linear';
   defaultMaxPages: number;
+  icon?: string;
 }
