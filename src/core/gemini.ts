@@ -9,6 +9,7 @@ import {
   extractTargetCompany,
   parseCvMarkdownToData
 } from './parser';
+import { generateQualityAuditReport } from './audit';
 import { ThemeId } from '../types/cv';
 
 dotenv.config();
@@ -299,9 +300,23 @@ CONDENSATION RULES:
   }
 
   console.log(`🎉 ¡PDF creado exitosamente en: ${pdfPath}! (Páginas: ${pdfResult.pages})`);
+
+  let qualityReportPath: string | null = null;
+  try {
+    const auditRes = await generateQualityAuditReport({
+      cvMarkdownPath: cvMdPath,
+      theme,
+      baseDir: root
+    });
+    qualityReportPath = auditRes.reportMdPath;
+  } catch (auditErr: any) {
+    console.warn(`⚠️ No se pudo generar el reporte de calidad: ${auditErr.message}`);
+  }
+
   return {
     cvMdPath,
     gapMdPath: gapContent ? gapMdPath : null,
+    qualityReportPath,
     pdfPath,
     theme
   };

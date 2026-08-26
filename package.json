@@ -15,7 +15,9 @@
     "pdf:ats": "tsx src/cli/index.ts pdf --theme minimal-ats",
     "pdf:two-column": "tsx src/cli/index.ts pdf --theme two-column",
     "generate": "tsx src/cli/index.ts generate",
-    "tailor": "tsx src/cli/index.ts generate"
+    "tailor": "tsx src/cli/index.ts generate",
+    "audit": "tsx src/cli/index.ts audit",
+    "quality": "tsx src/cli/index.ts audit"
   },
   "keywords": [
     "cv",

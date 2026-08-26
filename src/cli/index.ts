@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { generatePdfFromMarkdown, generateAllPdfs } from '../core/pdf-generator';
 import { tailorCvWithGemini } from '../core/gemini';
+import { generateQualityAuditReport } from '../core/audit';
 import { ThemeId } from '../types/cv';
 
 function getWorkspaceDir(): string {
@@ -58,6 +59,7 @@ Uso CLI:
   npm run pdf                         Genera PDF del archivo más reciente en outputs/
   npm run pdf <archivo.md>            Genera PDF del archivo indicado
   npm run pdf:all                     Genera PDFs de todos los archivos en outputs/
+  npm run audit [archivo.md]          Genera Reporte de Calidad y Auditoría (Tabla 1-10 y mejoras)
   npm run dev                         Inicia el CV Studio Web en tiempo real (Vite + React)
   npm run generate [Empresa]          Genera CV con Gemini API a partir de target-job.md
 
@@ -73,6 +75,7 @@ Opciones:
 
 Ejemplos:
   npm run pdf outputs/Ejemplo_CV_Tailored_Stripe.md -- --theme executive
+  npm run audit outputs/CV_Daniel_Corredor_Acosta_Addi.md
   npm run generate "Google" -- --theme modern-tech
 `);
 }
@@ -98,10 +101,19 @@ async function main() {
           if (!fs.existsSync(outputsDir)) {
             fs.mkdirSync(outputsDir, { recursive: true });
           }
-          const files = fs.readdirSync(outputsDir)
-            .filter(f => f.endsWith('.md'))
+          // Prioritize CV files (exclude Gap_Analysis and Quality_Report by default)
+          let files = fs.readdirSync(outputsDir)
+            .filter(f => f.endsWith('.md') && !f.startsWith('Gap_Analysis_') && !f.startsWith('Quality_Report_'))
             .map(f => ({ name: f, time: fs.statSync(path.join(outputsDir, f)).mtimeMs }))
             .sort((a, b) => b.time - a.time);
+
+          if (files.length === 0) {
+            // Fallback to any markdown file if no CV file is found
+            files = fs.readdirSync(outputsDir)
+              .filter(f => f.endsWith('.md'))
+              .map(f => ({ name: f, time: fs.statSync(path.join(outputsDir, f)).mtimeMs }))
+              .sort((a, b) => b.time - a.time);
+          }
 
           if (files.length === 0) {
             console.log('⚠️ No se encontraron archivos .md en outputs/. Usando plantilla base...');
@@ -148,6 +160,57 @@ async function main() {
         console.log(`\n🚀 Compilando todos los archivos de outputs/ a PDF (Tema: ${theme})...\n`);
         await generateAllPdfs({ theme, baseDir: rootDir });
         console.log(`\n✨ Proceso completado exitosamente.\n`);
+        break;
+      }
+
+      case 'audit':
+      case 'quality': {
+        let targetFile = positional[1];
+
+        if (!targetFile) {
+          if (!fs.existsSync(outputsDir)) {
+            fs.mkdirSync(outputsDir, { recursive: true });
+          }
+          const files = fs.readdirSync(outputsDir)
+            .filter(f => f.endsWith('.md') && !f.startsWith('Gap_Analysis_') && !f.startsWith('Quality_Report_'))
+            .map(f => ({ name: f, time: fs.statSync(path.join(outputsDir, f)).mtimeMs }))
+            .sort((a, b) => b.time - a.time);
+
+          if (files.length === 0) {
+            console.error('❌ No se encontró ningún CV en outputs/ para auditar. Pasa la ruta del archivo explícitamente.');
+            process.exit(1);
+          } else {
+            targetFile = path.join(outputsDir, files[0].name);
+          }
+        } else if (!path.isAbsolute(targetFile)) {
+          const directPath = path.resolve(process.cwd(), targetFile);
+          const rootPath = path.resolve(rootDir, targetFile);
+          const outputSubPath = path.resolve(rootDir, 'outputs', targetFile);
+          if (fs.existsSync(directPath)) {
+            targetFile = directPath;
+          } else if (fs.existsSync(rootPath)) {
+            targetFile = rootPath;
+          } else if (fs.existsSync(outputSubPath)) {
+            targetFile = outputSubPath;
+          } else {
+            targetFile = rootPath;
+          }
+        }
+
+        console.log(`\n🔍 Iniciando Auditoría de Calidad de CV...`);
+        console.log(`📄 CV Evaluado: ${targetFile}`);
+
+        const result = await generateQualityAuditReport({
+          cvMarkdownPath: targetFile,
+          theme,
+          outputPath: flags.output as string | undefined,
+          baseDir: rootDir
+        });
+
+        console.log(`\n🎉 ¡Reporte de Calidad y PDF generados con éxito!`);
+        console.log(`📊 Reporte Markdown: ${result.reportMdPath}`);
+        console.log(`🖨️ Reporte PDF:      ${result.reportPdfPath}`);
+        console.log(`⭐ Puntaje Global:   ${result.report.overallScore} / 10.0\n`);
         break;
       }
 
