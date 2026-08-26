@@ -203,9 +203,10 @@
   line-height: 1.2;
 }
 
+.theme-two-column .cv-summary strong,
 .theme-two-column ul.item-bullets li strong {
-  color: #0f172a;
-  font-weight: 600;
+  color: #090d16;
+  font-weight: 700;
 }
 
 .theme-two-column .education-list {

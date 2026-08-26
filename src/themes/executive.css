@@ -175,9 +175,10 @@
   color: #334155;
 }
 
+.theme-executive .cv-summary strong,
 .theme-executive ul.item-bullets li strong {
-  color: #0f2942;
-  font-weight: 600;
+  color: #081726;
+  font-weight: 700;
 }
 
 /* Education & Languages */

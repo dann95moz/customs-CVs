@@ -201,9 +201,10 @@
   line-height: 1.35;
 }
 
+.theme-modern-tech .cv-summary strong,
 .theme-modern-tech ul.item-bullets li strong {
-  color: #0f172a;
-  font-weight: 600;
+  color: #090d16;
+  font-weight: 700;
 }
 
 /* Education & Languages */
