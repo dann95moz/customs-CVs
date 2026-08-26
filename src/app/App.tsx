@@ -203,7 +203,11 @@ export const App: React.FC = () => {
   });
 
   const [rules, setRules] = useState<string>(() => {
-    return localStorage.getItem('cv_rules_markdown') || DEFAULT_RULES;
+    const saved = localStorage.getItem('cv_rules_markdown');
+    if (saved && saved.length > 600) {
+      return saved;
+    }
+    return DEFAULT_RULES;
   });
 
   const [companyName, setCompanyName] = useState<string>(() => {
@@ -240,6 +244,7 @@ export const App: React.FC = () => {
   // Generator Loading States
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [generationStep, setGenerationStep] = useState<string>('');
+  const [generationError, setGenerationError] = useState<string | null>(null);
 
   // Auto-Fit & Height Measurement
   const [autoFitPreview, setAutoFitPreview] = useState<boolean>(true);
@@ -405,6 +410,7 @@ export const App: React.FC = () => {
   // Generation Handler
   const handleGenerate = async () => {
     setIsGenerating(true);
+    setGenerationError(null);
     setGenerationStep('Reading Master Data & Target Vacancy...');
 
     try {
@@ -435,7 +441,7 @@ export const App: React.FC = () => {
         setActiveTab('preview');
       }, 500);
     } catch (err: any) {
-      alert(`Synthesis Error: ${err.message}`);
+      setGenerationError(err.message || 'Error occurred during AI resume synthesis.');
       setIsGenerating(false);
     }
   };
@@ -987,6 +993,36 @@ export const App: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Synthesis Error Floating Banner */}
+      {generationError && (
+        <div className="synthesis-error-banner">
+          <div className="error-banner-content">
+            <div className="error-banner-header">
+              <span className="error-icon">⚠️</span>
+              <h4>AI Synthesis Notification</h4>
+            </div>
+            <p>{generationError}</p>
+            <div className="error-banner-actions">
+              <button 
+                className="btn-studio-action btn-studio-primary"
+                onClick={() => {
+                  setGenerationError(null);
+                  setActiveTab('settings');
+                }}
+              >
+                ⚙️ Open AI Settings & Add Key
+              </button>
+              <button 
+                className="btn-studio-action"
+                onClick={() => setGenerationError(null)}
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

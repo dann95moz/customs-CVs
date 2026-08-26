@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icons';
-import { 
-  AVAILABLE_AI_MODELS, 
-  AIProviderSettings, 
-  DEFAULT_RULES 
+import {
+  AVAILABLE_AI_MODELS,
+  AIProviderSettings,
+  DEFAULT_RULES
 } from '../../core/ai-service';
 
 interface SettingsViewProps {
@@ -25,7 +25,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [activeTab, setActiveTab] = useState<'ai' | 'rules'>('ai');
 
   const handleProviderChange = (provider: any) => {
-    const defaultModelForProvider = AVAILABLE_AI_MODELS.find(m => m.provider === provider)?.id || 'gemini-2.0-flash';
+    const defaultModelForProvider = AVAILABLE_AI_MODELS.find(m => m.provider === provider)?.id || 'gemini-3.6-flash';
     onSettingsChange({
       ...settings,
       provider,
@@ -106,7 +106,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     <strong>Google Gemini (BYOK)</strong>
                     <span className="badge-pro">Recommended</span>
                   </div>
-                  <p>Direct Google AI API with Gemini 2.0 Flash and 2.5 Flash.</p>
+                  <p>Direct Google AI API with Gemini 3.6 Flash.</p>
                 </div>
               </label>
 
@@ -203,9 +203,28 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       <Icon type="eye" size={14} />
                     </button>
                   </div>
-                  <span className="api-key-hint">
-                    🔒 Kept securely in your browser's private local storage.
-                  </span>
+                  <div className="api-key-hint-box" style={{ marginTop: '6px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                    {settings.provider === 'gemini' && (
+                      <p>
+                        💡 <strong>100% Free Google Key:</strong> Get your free Gemini API key in 10 seconds at{' '}
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>
+                          aistudio.google.com
+                        </a>{' '}
+                        (No credit card required).
+                      </p>
+                    )}
+                    {settings.provider === 'groq' && (
+                      <p>
+                        ⚡ <strong>Free Groq Key:</strong> Generate your free ultra-fast key at{' '}
+                        <a href="https://console.groq.com/keys" target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>
+                          console.groq.com/keys
+                        </a>.
+                      </p>
+                    )}
+                    <span className="api-key-hint">
+                      🔒 Kept securely in your browser's private local storage.
+                    </span>
+                  </div>
                 </div>
               )}
 

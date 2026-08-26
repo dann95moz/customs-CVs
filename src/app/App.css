@@ -1877,3 +1877,49 @@ body {
     color: inherit !important;
   }
 }
+
+/* Synthesis Error Banner */
+.synthesis-error-banner {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  max-width: 480px;
+  background: #1e1520;
+  border: 1.5px solid #f43f5e;
+  border-radius: 10px;
+  padding: 16px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  animation: slideUpError 0.25s ease-out;
+}
+
+@keyframes slideUpError {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.error-banner-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.error-banner-header h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fb7185;
+  margin: 0;
+}
+
+.error-banner-content p {
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #fecdd3;
+  margin: 0 0 12px 0;
+}
+
+.error-banner-actions {
+  display: flex;
+  gap: 10px;
+}

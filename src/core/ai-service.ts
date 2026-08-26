@@ -1,68 +1,60 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { 
-  AIModelOption, 
-  AIProviderSettings, 
-  TailorRequest, 
-  TailorResponse 
+import {
+  AIModelOption,
+  AIProviderSettings,
+  TailorRequest,
+  TailorResponse
 } from '../types/cv';
 
 export type { AIModelOption, AIProviderSettings, TailorRequest, TailorResponse };
-import { 
-  extractCandidateName, 
-  extractTargetCompany, 
-  parseCvMarkdownToData, 
-  sanitizeFileName 
+import {
+  extractCandidateName,
+  extractTargetCompany,
+  parseCvMarkdownToData,
+  sanitizeFileName
 } from './parser';
 
 export const AVAILABLE_AI_MODELS: AIModelOption[] = [
-  // Free No-Key Models
+  // Google Gemini (Recommended - 100% Free API Key from Google AI Studio)
   {
-    id: 'free-openai',
-    name: 'Free AI — OpenAI GPT-4o (No Key Required)',
-    provider: 'free-pollinations',
-    description: 'Instant zero-configuration AI tailored using public cloud inference.',
-    isFree: true,
-    requiresKey: false
+    id: 'gemini-3.6-flash',
+    name: 'Google Gemini 3.6 Flash (Recommended — Free API Key)',
+    provider: 'gemini',
+    description: 'Zero hallucinations. Ultra-fast synthesis with free Google AI Studio key.',
+    isFree: false,
+    requiresKey: true
   },
   {
-    id: 'free-deepseek',
-    name: 'Free AI — DeepSeek R1 (No Key Required)',
-    provider: 'free-pollinations',
-    description: 'Deep reasoning model for high-precision bullet synthesis.',
-    isFree: true,
-    requiresKey: false
+    id: 'gemini-3.7-flash',
+    name: 'Google Gemini 3.7 Flash',
+    provider: 'gemini',
+    description: 'Latest Google flagship model with advanced reasoning capabilities.',
+    isFree: false,
+    requiresKey: true
   },
   {
-    id: 'free-gemini',
-    name: 'Free AI — Gemini 2.0 (No Key Required)',
-    provider: 'free-pollinations',
-    description: 'Fast Google Gemini inference without requiring personal API key.',
-    isFree: true,
-    requiresKey: false
+    id: 'gemini-3.5-flash',
+    name: 'Google Gemini 3.5 Flash',
+    provider: 'gemini',
+    description: 'Fast and reliable generative inference for resume optimization.',
+    isFree: false,
+    requiresKey: true
   },
 
-  // Google Gemini (BYOK)
+  // Groq (Ultra-Fast Free Tier)
   {
-    id: 'gemini-2.0-flash',
-    name: 'Google Gemini 2.0 Flash (Recommended)',
-    provider: 'gemini',
-    description: 'Ultra-fast, high-capability synthesis directly from Google AI.',
+    id: 'llama-3.3-70b-versatile',
+    name: 'Groq — Llama 3.3 70B (Fast & Free Key)',
+    provider: 'groq',
+    description: 'Sub-second response speeds using free Groq Console key.',
     isFree: false,
     requiresKey: true
   },
   {
-    id: 'gemini-2.5-flash',
-    name: 'Google Gemini 2.5 Flash',
-    provider: 'gemini',
-    description: 'Latest generation Google flash model with expanded reasoning.',
-    isFree: false,
-    requiresKey: true
-  },
-  {
-    id: 'gemini-1.5-pro',
-    name: 'Google Gemini 1.5 Pro',
-    provider: 'gemini',
-    description: 'Maximum context depth and deep semantic understanding.',
+    id: 'deepseek-r1-distill-llama-70b',
+    name: 'Groq — DeepSeek R1 Distill 70B',
+    provider: 'groq',
+    description: 'High-speed distilled reasoning model hosted on Groq.',
     isFree: false,
     requiresKey: true
   },
@@ -111,22 +103,30 @@ export const AVAILABLE_AI_MODELS: AIModelOption[] = [
     requiresKey: true
   },
 
-  // Groq (BYOK - Ultra Fast)
+  // Public Free AI (No Key - Best Effort)
   {
-    id: 'llama-3.3-70b-versatile',
-    name: 'Groq — Llama 3.3 70B (Ultra Fast)',
-    provider: 'groq',
-    description: 'Sub-second response speeds on Groq LPU hardware.',
-    isFree: false,
-    requiresKey: true
+    id: 'free-openai',
+    name: 'Public Free AI — GPT-4o (Zero Configuration)',
+    provider: 'free-pollinations',
+    description: 'Shared public server inference (subject to rate limits & server load).',
+    isFree: true,
+    requiresKey: false
   },
   {
-    id: 'deepseek-r1-distill-llama-70b',
-    name: 'Groq — DeepSeek R1 Distill 70B',
-    provider: 'groq',
-    description: 'High-speed distilled reasoning model hosted on Groq.',
-    isFree: false,
-    requiresKey: true
+    id: 'free-deepseek',
+    name: 'Public Free AI — DeepSeek R1 (Zero Configuration)',
+    provider: 'free-pollinations',
+    description: 'Public shared reasoning model (subject to rate limits & server load).',
+    isFree: true,
+    requiresKey: false
+  },
+  {
+    id: 'free-gemini',
+    name: 'Public Free AI — Gemini 3.6 (Zero Configuration)',
+    provider: 'free-pollinations',
+    description: 'Public shared Gemini inference (subject to rate limits & server load).',
+    isFree: true,
+    requiresKey: false
   },
 
   // OpenRouter (BYOK)
@@ -211,9 +211,9 @@ ${rules}
 - Format: Bold 1 to 3 impactful phrases per bullet so recruiters immediately see the match upon opening the CV.
 
 === PAGE FIT TARGET ===
-${req.pageBudget === 1 
-  ? "- PAGE BUDGET: 1 PAGE EXACT (420–480 words). Fill 80%–90% of an A4 page harmoniously. Keep exactly 2-3 bullets per experience, dense summary, and 3 skill categories." 
-  : "- PAGE BUDGET: 2 PAGES (750–850 words). Fill 2 full pages with extensive project, leadership, and technical details."}
+${req.pageBudget === 1
+      ? "- PAGE BUDGET: 1 PAGE EXACT (420–480 words). Fill 80%–90% of an A4 page harmoniously. Keep exactly 2-3 bullets per experience, dense summary, and 3 skill categories."
+      : "- PAGE BUDGET: 2 PAGES (750–850 words). Fill 2 full pages with extensive project, leadership, and technical details."}
 
 === STRICT OUTPUT FORMAT ===
 Deliver your entire response in English with exactly two clearly delimited Markdown code blocks:
@@ -347,7 +347,7 @@ export function extractCvAndGap(rawText: string, masterData: string, company: st
   }
 
   if (keywords.length === 0) {
-    keywords = ['TypeScript', 'React', 'Node.js', 'System Architecture', 'CI/CD', 'Performance Optimization', 'AWS'];
+    keywords = ['TypeScript', 'React', 'Component Architecture', 'CI/CD', 'State Management', 'Performance Optimization'];
   }
 
   return {
@@ -355,119 +355,6 @@ export function extractCvAndGap(rawText: string, masterData: string, company: st
     gapMarkdown: gapContent,
     score,
     keywords
-  };
-}
-
-/**
- * Intelligent client-side rule-based fallback synthesizer
- * Ensures 100% availability even when offline or during provider downtime
- */
-function heuristicSynthesizer(req: TailorRequest): TailorResponse {
-  const company = req.companyName || extractTargetCompany(req.targetJob, 'Target Company');
-  const candidateName = extractCandidateName(req.masterData, 'Alejandro Gomez').replace(/_/g, ' ');
-  const parsed = parseCvMarkdownToData(req.masterData);
-
-  const targetRole = req.targetRole || (parsed.title || 'Senior Software Engineer');
-
-  // Build high-impact CV
-  let cv = `# ${candidateName.toUpperCase()}\n`;
-  cv += `**${targetRole} | Distributed Systems & High-Performance Engineering**  \n`;
-  
-  const contactLines = parsed.contacts.map(c => {
-    if (c.url) return `[${c.label}](${c.url})`;
-    return c.label;
-  }).join(' • ');
-  
-  cv += `${contactLines || 'Bogota, Colombia • candidate.dev@gmail.com • +57 300 1234567'}  \n\n`;
-  cv += `---\n\n`;
-
-  cv += `## PROFESSIONAL SUMMARY\n`;
-  cv += `${targetRole} with extensive engineering experience specialized in **resilient architectures**, **high-throughput systems**, and modern cloud ecosystems. Proven track record aligned with **${company}**'s technical priorities, cutting CI/CD pipeline build times by **50%**, reducing runtime errors by **40%**, and accelerating sprint delivery cycles by **35%**.\n\n`;
-  cv += `---\n\n`;
-
-  cv += `## TECHNICAL SKILLS\n`;
-  if (parsed.skillGroups && parsed.skillGroups.length >= 3) {
-    for (const group of parsed.skillGroups.slice(0, 3)) {
-      cv += `- **${group.category}:** ${group.skills.join(', ')}\n`;
-    }
-  } else {
-    cv += `- **Languages & Core Fundamentals:** TypeScript, JavaScript, Python, SQL, GraphQL, HTML5, Modern CSS\n`;
-    cv += `- **Frameworks, Architecture & Ecosystem:** React, Next.js, Node.js, Express, Microfrontends, RESTful APIs, State Management\n`;
-    cv += `- **Tooling, Testing, CI/CD & AI Integrations:** Docker, AWS, Git, Jest, Vitest, CI/CD Automation, Google Gemini / AI APIs\n`;
-  }
-  cv += `\n---\n\n`;
-
-  cv += `## PROFESSIONAL EXPERIENCE\n\n`;
-  const exps = parsed.experience && parsed.experience.length > 0 ? parsed.experience.slice(0, 3) : [
-    {
-      company: 'Tech Solutions Global',
-      role: 'Senior Fullstack Engineer',
-      date: 'Jan 2023 – Present',
-      location: 'Remote',
-      bullets: [
-        'Architected **asynchronous processing pipelines** reducing timeout error rates by **42%** across high-traffic distributed services.',
-        'Spearheaded **horizontal database sharding** on AWS cloud infrastructure, boosting query throughput by **3.5x** for 2M+ active records.',
-        'Standardized end-to-end telemetry and observability with **Datadog**, cutting incident MTTR from 45 down to **12 minutes**.'
-      ]
-    },
-    {
-      company: 'Digital Innovation Labs',
-      role: 'Software Developer',
-      date: 'Mar 2020 – Dec 2022',
-      location: 'Hybrid',
-      bullets: [
-        'Engineered responsive web client architecture with **React** and **TypeScript**, improving Lighthouse performance score from 58 to **96**.',
-        'Automated multi-region **CI/CD integration workflows**, reducing release cycle friction and saving **120+ team hours monthly**.'
-      ]
-    }
-  ];
-
-  for (const exp of exps) {
-    cv += `### **${exp.company}** | ${exp.location || 'Remote'}\n`;
-    cv += `*${exp.role || targetRole}* | **${exp.date || 'Jan 2023 – Present'}**\n`;
-    const bullets = exp.bullets.slice(0, req.pageBudget === 1 ? 3 : 5);
-    for (const b of bullets) {
-      cv += `- ${b.replace(/^[-*•]\s*/, '')}\n`;
-    }
-    cv += `\n---\n\n`;
-  }
-
-  cv += `## EDUCATION & CERTIFICATIONS\n`;
-  if (parsed.education && parsed.education.length > 0) {
-    for (const edu of parsed.education.slice(0, 2)) {
-      cv += `- **${edu.replace(/^[-*•]\s*/, '')}**\n`;
-    }
-  } else {
-    cv += `- **B.S. in Computer Science / Software Engineering** – National University, 2020\n`;
-    cv += `- **AWS Certified Solutions Architect – Associate** – Amazon Web Services, 2023\n`;
-  }
-  cv += `\n---\n\n`;
-
-  cv += `## LANGUAGES\n`;
-  if (parsed.languages && parsed.languages.length > 0) {
-    for (const lang of parsed.languages.slice(0, 3)) {
-      cv += `- **${lang.replace(/^[-*•]\s*/, '')}**\n`;
-    }
-  } else {
-    cv += `- **English:** C1 – Advanced / Professional Working Proficiency\n`;
-    cv += `- **Spanish:** Native\n`;
-  }
-
-  const gap = `# MATCHING & TAILORING STRATEGY REPORT (Gap Analysis)
-- **Target Company:** ${company}
-- **Target Role:** ${targetRole}
-- **Estimated Match Score:** 92/100
-- **Critical Integrated Keywords:** TypeScript, React, Distributed Architecture, CI/CD, Cloud Infrastructure, Google XYZ Metrics
-- **Strategic Alignment Narrative:** The candidate's background demonstrates exceptional architectural depth with quantifiable engineering outcomes matching ${company}'s core requirements.
-- **Identified Gaps & Mitigation:** Private enterprise codebase constraints mitigated by explicit percentage-based impact metrics and rigorous architectural standards.
-`;
-
-  return {
-    tailoredCvMarkdown: cv.trim(),
-    gapAnalysisMarkdown: gap.trim(),
-    estimatedMatchScore: 92,
-    extractedKeywords: ['TypeScript', 'React', 'Node.js', 'Distributed Architecture', 'CI/CD', 'AWS', 'Google XYZ Metrics'],
-    modelUsed: 'Smart Heuristic Synthesizer (Instant)'
   };
 }
 
@@ -480,83 +367,86 @@ export async function tailorResume(req: TailorRequest): Promise<TailorResponse> 
 
   // 1. FREE MODE (Pollinations AI text endpoint)
   if (settings.provider === 'free-pollinations') {
-    try {
-      const modelParam = settings.model === 'free-deepseek' ? 'deepseek' : (settings.model === 'free-gemini' ? 'gemini' : 'openai');
-      
-      const response = await fetch('https://text.pollinations.ai/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messages: [
-            { role: 'system', content: systemInstruction },
-            { role: 'user', content: userPrompt }
-          ],
-          model: modelParam,
-          temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15,
-          seed: 42
-        })
-      });
+    const modelParam = settings.model === 'free-deepseek' ? 'deepseek' : (settings.model === 'free-gemini' ? 'gemini' : 'openai');
 
-      if (!response.ok) {
-        throw new Error(`Pollinations API responded with status ${response.status}`);
-      }
+    const response = await fetch('https://text.pollinations.ai/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: [
+          { role: 'system', content: systemInstruction },
+          { role: 'user', content: userPrompt }
+        ],
+        model: modelParam,
+        temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15,
+        seed: 42
+      })
+    }).catch((err) => {
+      throw new Error(`Public Free AI connection error (${err.message}). The public endpoint may be rate-limited or blocked by browser CORS. Please use Google Gemini 3.6 Flash (Free key at aistudio.google.com) or configure your key in Settings.`);
+    });
 
-      const text = await response.text();
-      if (text && text.length > 200) {
-        const { cvMarkdown, gapMarkdown, score, keywords } = extractCvAndGap(text, req.masterData, company);
-        return {
-          tailoredCvMarkdown: cvMarkdown,
-          gapAnalysisMarkdown: gapMarkdown,
-          estimatedMatchScore: score,
-          extractedKeywords: keywords,
-          rawResponse: text,
-          modelUsed: `Free AI (${modelParam.toUpperCase()})`
-        };
-      }
-      throw new Error('Empty response from public inference endpoint.');
-    } catch (err: any) {
-      console.warn('⚠️ Free AI endpoint warning, using smart fallback engine:', err.message);
-      return heuristicSynthesizer(req);
-    }
-  }
-
-  // 2. GOOGLE GEMINI (BYOK)
-  if (settings.provider === 'gemini') {
-    const apiKey = settings.apiKey?.trim();
-    if (!apiKey) {
-      throw new Error('Please enter your Google Gemini API Key in AI Settings or use Free Mode.');
+    if (!response.ok) {
+      throw new Error(`Public Free AI error (HTTP ${response.status} ${response.statusText}). Public inference is currently rate-limited. Please use Google Gemini 3.6 Flash (Free API Key available at aistudio.google.com) or enter your API key in Settings.`);
     }
 
-    try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ 
-        model: settings.model || 'gemini-2.0-flash',
-        generationConfig: {
-          temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15
-        }
-      });
-
-      const result = await model.generateContent([
-        { text: systemInstruction },
-        { text: userPrompt }
-      ]);
-
-      const text = result.response.text();
+    const text = await response.text();
+    if (text && text.length > 100) {
       const { cvMarkdown, gapMarkdown, score, keywords } = extractCvAndGap(text, req.masterData, company);
-
       return {
         tailoredCvMarkdown: cvMarkdown,
         gapAnalysisMarkdown: gapMarkdown,
         estimatedMatchScore: score,
         extractedKeywords: keywords,
         rawResponse: text,
-        modelUsed: `Google ${settings.model || 'Gemini 2.0 Flash'}`
+        modelUsed: `Free AI (${modelParam.toUpperCase()})`
       };
-    } catch (err: any) {
-      throw new Error(`Gemini API Error: ${err.message}`);
     }
+    throw new Error('Empty response received from public AI service. Please select another model or enter your API Key.');
+  }
+
+  // 2. GOOGLE GEMINI (BYOK)
+  if (settings.provider === 'gemini') {
+    const apiKey = settings.apiKey?.trim();
+    if (!apiKey) {
+      throw new Error('Please enter your Google Gemini API Key in AI Settings.');
+    }
+
+    const requestedModel = settings.model || 'gemini-3.6-flash';
+    const modelsToTry = [requestedModel, 'gemini-3.5-flash', 'gemini-3.7-flash'].filter((v, i, a) => a.indexOf(v) === i);
+
+    let lastError: any = null;
+    for (const m of modelsToTry) {
+      try {
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({
+          model: m,
+          systemInstruction: systemInstruction,
+          generationConfig: {
+            temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15
+          }
+        });
+
+        const result = await model.generateContent(userPrompt);
+        const text = result.response.text();
+        const { cvMarkdown, gapMarkdown, score, keywords } = extractCvAndGap(text, req.masterData, company);
+
+        return {
+          tailoredCvMarkdown: cvMarkdown,
+          gapAnalysisMarkdown: gapMarkdown,
+          estimatedMatchScore: score,
+          extractedKeywords: keywords,
+          rawResponse: text,
+          modelUsed: `Google ${m}`
+        };
+      } catch (err: any) {
+        lastError = err;
+        console.warn(`Gemini model ${m} failed (${err.message}). Trying fallback model...`);
+      }
+    }
+
+    throw new Error(`Gemini API Error: ${lastError?.message || 'Failed to generate with Google Gemini'}`);
   }
 
   // 3. OPENAI / GROQ / OPENROUTER / CUSTOM (OpenAI Compatible)
@@ -608,7 +498,7 @@ export async function tailorResume(req: TailorRequest): Promise<TailorResponse> 
 
       const data = await response.json();
       const text = data.choices?.[0]?.message?.content || '';
-      
+
       const { cvMarkdown, gapMarkdown, score, keywords } = extractCvAndGap(text, req.masterData, company);
       return {
         tailoredCvMarkdown: cvMarkdown,
@@ -672,6 +562,5 @@ export async function tailorResume(req: TailorRequest): Promise<TailorResponse> 
     }
   }
 
-  // Fallback to Heuristic
-  return heuristicSynthesizer(req);
+  throw new Error(`Unsupported AI Provider: ${settings.provider}. Please choose a valid provider in AI Settings.`);
 }

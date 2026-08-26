@@ -73,10 +73,6 @@ export async function tailorCvWithGemini({
   const root = baseDir || process.cwd();
   const { masterData, targetJob, rules } = loadReferenceFiles(root);
 
-  console.log('🤖 Connecting to Gemini API...');
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: modelName });
-
   const systemInstruction = `
 You are an Executive Tech Headhunter, Career Consultant, and Expert ATS Resume Synthesizer.
 Your mission is to analyze the candidate's comprehensive master knowledge base (MASTER-DATA.MD), cross-reference it with the target job posting (TARGET-JOB.MD), and rigorously apply all guidelines defined in RULES.MD to generate a high-impact, 100% tailored CV and matching strategy report.
@@ -137,6 +133,9 @@ PART 2: TAILORED CV
 \`\`\`
 `;
 
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const modelsToTry = [modelName, 'gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash'].filter((v, i, a) => a.indexOf(v) === i);
+
   const userPrompt = `
 Please generate the tailored CV for target company "${companyName}" by analyzing the following reference files:
 
@@ -147,29 +146,31 @@ ${masterData}
 ${targetJob}
 `;
 
-  console.log(`📡 Enviando solicitud al modelo ${modelName}...`);
-  
   let result;
-  const maxRetries = 3;
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+  let usedModel = modelName;
+  let activeModel: any = null;
+
+  for (const m of modelsToTry) {
     try {
-      result = await model.generateContent([
-        { text: systemInstruction },
-        { text: userPrompt }
-      ]);
+      console.log(`📡 Enviando solicitud al modelo ${m}...`);
+      const model = genAI.getGenerativeModel({ 
+        model: m,
+        systemInstruction,
+        generationConfig: {
+          temperature: 0.15
+        }
+      });
+      result = await model.generateContent(userPrompt);
+      usedModel = m;
+      activeModel = model;
       break;
     } catch (err: any) {
-      if (attempt < maxRetries && (err?.message?.includes('503') || err?.message?.includes('429') || err?.message?.includes('demand'))) {
-        console.warn(`⏳ Alta demanda en Gemini API (intento ${attempt}/${maxRetries}). Reintentando en 3s...`);
-        await new Promise(res => setTimeout(res, 3000));
-      } else {
-        throw err;
-      }
+      console.warn(`⏳ Modelo ${m} no disponible (${err.message}). Intentando siguiente modelo...`);
     }
   }
 
   if (!result) {
-    throw new Error('No se pudo obtener respuesta del modelo Gemini tras varios intentos.');
+    throw new Error('No se pudo obtener respuesta de ningún modelo de Gemini tras varios intentos.');
   }
 
   const responseText = result.response.text();
@@ -263,7 +264,7 @@ CONDENSATION RULES:
 `;
 
     try {
-      const condenseResponse = await model.generateContent([
+      const condenseResponse = await (activeModel || genAI.getGenerativeModel({ model: 'gemini-3.5-flash' })).generateContent([
         { text: condensationInstruction },
         { text: `CURRENT CV TO CONDENSE:\n\n${cvContent}` }
       ]);
