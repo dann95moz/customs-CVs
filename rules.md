@@ -84,3 +84,35 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
 - **Language Uniformity:**
   - If `target-job.md` is in English, generate 100% of the CV in professional English with exact section titles (`PROFESSIONAL SUMMARY`, `TECHNICAL SKILLS`, `PROFESSIONAL EXPERIENCE`, `EDUCATION & CERTIFICATIONS`, `LANGUAGES`).
   - If `target-job.md` is in Spanish, use industry-standard tech terminology.
+
+---
+
+## 4. 📊 Quality Audit & Scoring Standard (Quality Report)
+
+Every CV generation or evaluation can produce a comprehensive Quality Audit Report formatted according to the following executive headhunter standards:
+
+### A. Mandatory 7-Pillar Scoring Table
+A Markdown table evaluating each key dimension on a strict **1.0 to 10.0 scale**:
+
+| Section | Score (1-10) | Diagnostic & Assessment Criteria |
+| :--- | :---: | :--- |
+| **Header & Contact Information** | [Score] | Clarity, direct links (LinkedIn, Email, Phone), omission of sensitive personal data (DNI/SSN/Address), and strategic GitHub curation. |
+| **Professional Summary** | [Score] | Length (3–4 dense lines), zero fluff/clichés, technical alignment with target role, and mandatory closing quantitative metrics. |
+| **Technical Skills** | [Score] | Universal 3-category high-density architecture, direct relevance to target job, and zero unverified technologies (strict SSOT). |
+| **Professional Experience** | [Score] | Google XYZ achievement formula, active technical leadership verbs, verifiable impact metrics, and zero thematic redundancy across roles. |
+| **Education & Certifications** | [Score] | University degrees, analytical/transferable context lines for non-traditional degrees, and curated technical certifications. |
+| **Languages** | [Score] | Standardized CEFR proficiency (Native, B2, C1, C2) with professional working capability. |
+| **Overall Structure & Legibility** | [Score] | Strict 1-page A4 fit (80%–90% harmonious fill / 420–480 words), clean Markdown hierarchy, and 100% ATS parseability. |
+
+### B. Action Plan for Scores Below 9.0 (`< 9.0/10`)
+For **any section scoring strictly below 9.0/10**, the audit report must explicitly outline:
+1. **Identified Gap / Missing Information:** The exact data points, metrics, or credentials missing from `master-data.md` or the CV.
+2. **Recommended Action:** Concrete bullet points, rephrasing, or structural adjustments required to reach a **10/10**.
+
+### C. Strategic Levers for Top-Tier Excellence (The 10/10 Ceiling)
+To bridge the gap from a solid 8.5–9.0 narrative to a top 5% candidate profile:
+1. **Verifiable Public Artifacts (Featured Projects):** Include 1–2 public projects with live demo and GitHub repository links to convert private enterprise narrative into verifiable proof.
+2. **Business & User-Facing Impact:** Complement internal engineering metrics (build times, error rates) with direct product metrics (conversion rates, transaction volume, churn reduction, customer onboarding speed).
+3. **Scale & Context Magnitude:** Anchor engineering achievements with volume context (MAU, transactions processed per month, cross-functional team size).
+
+

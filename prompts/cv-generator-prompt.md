@@ -39,14 +39,33 @@ Your mission is to take my comprehensive master background database (`master-dat
 
 ### REQUIRED OUTPUT FORMAT:
 
-Deliver your response in exactly two clearly delimited Markdown code blocks:
+Deliver your response in clearly delimited Markdown sections:
 
 ```markdown
-# MATCHING & TAILORING STRATEGY REPORT (Gap Analysis)
+# MATCHING & QUALITY AUDIT REPORT
+
+## 1. Matching & Tailoring Strategy (Gap Analysis)
+- **Target Company:** [Company Name]
+- **Target Role:** [Target Position]
 - **Estimated Match Score:** X/100
 - **Critical Integrated Keywords:** [List of keywords extracted from target-job.md]
-- **Strategic Alignment Narrative:** [Brief explanation of how the profile was aligned]
-- **Identified Gaps & Mitigation:** [Gaps identified and how transferable experience compensates]
+- **Strategic Alignment Narrative:** [Brief explanation of alignment]
+- **Identified Gaps & Mitigation:** [Gaps and compensatory experience]
+
+## 2. Quality Audit & Section Scoring
+| Sección | Nota | Comentario |
+| :--- | :---: | :--- |
+| **Encabezado y contacto** | [X.X/10] | [Comentario positivo / constructivo sobre claridad, canales directos y ATS] |
+| **Resumen profesional** | [X.X/10] | [Comentario sobre estructura, cero clichés y métricas de cierre] |
+| **Skills técnicas** | [X.X/10] | [Comentario sobre arquitectura de 3 categorías y alineación] |
+| **Experiencias** | [X.X/10] | [Comentario sobre fórmula Google XYZ, verbos de liderazgo y métricas verificables] |
+| **Educación y certificaciones** | [X.X/10] | [Comentario sobre grados, contexto analítico y certificaciones] |
+| **Idiomas** | [X.X/10] | [Comentario sobre niveles CEFR y uso profesional] |
+| **Estructura y legibilidad general** | [X.X/10] | [Comentario sobre ajuste a 1 página A4 y compatibilidad ATS] |
+
+### 🚀 Recomendaciones para Subir a 10/10 (Secciones con Nota < 9.0)
+*(Para cada sección con nota menor a 9.0, detallar la información faltante y las acciones concretas recomendadas).*
+- **[Nombre de la Sección]:** [Información faltante / Puntos clave a incorporar para alcanzar 10/10].
 
 ---
 
@@ -80,7 +99,7 @@ Deliver your response in exactly two clearly delimited Markdown code blocks:
 ---
 
 ## EDUCATION & CERTIFICATIONS
-- **[Degree / Major]** – [Institution], [Year]
+- **[Degree / Major]** – [Institution], [Year] • *[Optional Context Line]*
 - **Certifications:** [Name] ([Issuer], [Year]) | ...
 
 ---
@@ -89,4 +108,4 @@ Deliver your response in exactly two clearly delimited Markdown code blocks:
 - **[Language 1]:** [Level]
 - **[Language 2]:** [Level]
 ```
-```
+
