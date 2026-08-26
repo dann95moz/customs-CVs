@@ -24,6 +24,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { extractTargetCompany } from '../../core/parser';
+import { useFileUploader } from '../../hooks/useFileUploader';
 
 interface StepTargetJobProps {
   content: string;
@@ -50,44 +51,16 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const text = event.target?.result as string;
-        if (text) {
-          onChange(text);
-          const inferred = extractTargetCompany(text);
-          if (inferred && !companyName) {
-            onCompanyChange(inferred.replace(/_/g, ' '));
-          }
-        }
-      };
-      reader.readAsText(file);
+  const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
+    onFileLoaded: (text) => {
+      onChange(text);
+      const inferred = extractTargetCompany(text);
+      if (inferred && !companyName) {
+        onCompanyChange(inferred.replace(/_/g, ' '));
+      }
     }
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const text = event.target?.result as string;
-        if (text) {
-          onChange(text);
-          const inferred = extractTargetCompany(text);
-          if (inferred && !companyName) {
-            onCompanyChange(inferred.replace(/_/g, ' '));
-          }
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
+  });
 
   const handleDownload = () => {
     const blob = new Blob([content], { type: 'text/markdown;charset=utf-8;' });
@@ -278,7 +251,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
         </Box>
 
         <Box
-          onDragOver={(e) => e.preventDefault()}
+          onDragOver={handleDragOver}
           onDrop={handleDrop}
           sx={{
             flex: 1,

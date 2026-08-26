@@ -22,6 +22,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { extractCandidateName, parseCvMarkdownToData } from '../../core/parser';
+import { useFileUploader } from '../../hooks/useFileUploader';
 
 interface StepMasterDataProps {
   content: string;
@@ -40,36 +41,10 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const text = event.target?.result as string;
-        if (text) {
-          onChange(text);
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const text = event.target?.result as string;
-        if (text) {
-          onChange(text);
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
+  const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
+    onFileLoaded: (text) => onChange(text)
+  });
 
   const handleDownload = () => {
     const blob = new Blob([content], { type: 'text/markdown;charset=utf-8;' });
@@ -351,7 +326,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         </Box>
 
         <Box
-          onDragOver={(e) => e.preventDefault()}
+          onDragOver={handleDragOver}
           onDrop={handleDrop}
           sx={{
             flex: 1,
