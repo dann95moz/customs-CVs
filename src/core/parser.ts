@@ -159,11 +159,15 @@ function parseSkillGroups(rawContent: string): SkillCategory[] {
     const trimmed = line.trim();
     if (!trimmed) continue;
 
-    const match = trimmed.match(/^-\s*\*\*(.*?)\*\*:?\s*(.*)$/);
+    // Match - **Category:** Skill 1, Skill 2 or - Category: Skill 1, Skill 2 or * **Category**: Skill 1
+    const match = trimmed.match(/^[-*•]\s*(?:\*\*(.*?)\*\*|(.*?)):?\s*(.*)$/);
     if (match) {
-      const category = match[1].replace(/:$/, '').trim();
-      const skills = match[2].split(',').map(s => s.trim()).filter(Boolean);
-      groups.push({ category, skills });
+      const category = (match[1] || match[2] || '').replace(/:$/, '').trim();
+      const rawSkills = match[3] !== undefined ? match[3] : '';
+      const skills = rawSkills.split(',').map(s => s.trim()).filter(Boolean);
+      if (category || skills.length > 0) {
+        groups.push({ category: category || 'Specialized Domain', skills });
+      }
     }
   }
 
@@ -404,15 +408,22 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
       const upper = cleanTitle.toUpperCase();
 
       let type: SectionType = 'generic';
-      if (upper.includes('RESUMEN') || upper.includes('SUMMARY') || upper.includes('PERFIL')) {
+      if (upper.includes('RESUMEN') || upper.includes('SUMMARY') || upper.includes('PERFIL') || upper.includes('PITCH')) {
         type = 'summary';
-      } else if (upper.includes('HABILIDADES') || upper.includes('SKILLS') || upper.includes('COMPETENCIAS')) {
+      } else if (
+        upper.includes('HABILIDADES') ||
+        upper.includes('SKILLS') ||
+        upper.includes('COMPETENCIAS') ||
+        upper.includes('COMPETENCIES') ||
+        upper.includes('TECH STACK') ||
+        upper.includes('STACK')
+      ) {
         type = 'skills';
-      } else if (upper.includes('EXPERIENCIA') || upper.includes('EXPERIENCE') || upper.includes('HISTORIAL')) {
+      } else if (upper.includes('EXPERIENCIA') || upper.includes('EXPERIENCE') || upper.includes('HISTORIAL') || upper.includes('CAREER HISTORY') || upper.includes('WORK HISTORY')) {
         type = 'experience';
       } else if (upper.includes('PROYECTOS') || upper.includes('PROJECTS')) {
         type = 'projects';
-      } else if (upper.includes('EDUCACI') || upper.includes('EDUCATION') || upper.includes('CERTIFICA')) {
+      } else if (upper.includes('EDUCACI') || upper.includes('EDUCATION') || upper.includes('CERTIFICA') || upper.includes('ACADEMIC')) {
         type = 'education';
       } else if (upper.includes('IDIOMA') || upper.includes('LANGUAGE')) {
         type = 'languages';
@@ -452,3 +463,94 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
 
   return cvData;
 }
+
+/**
+ * Serializes a structured CVData object back into standardized Markdown
+ */
+export function serializeCvDataToMarkdown(data: CVData): string {
+  const parts: string[] = [];
+
+  // Name
+  parts.push(`# ${data.name || 'CANDIDATE FULL NAME'}`);
+
+  // Title
+  if (data.title) {
+    parts.push(`**${data.title}**  `);
+  }
+
+  // Contacts
+  if (data.contacts && data.contacts.length > 0) {
+    const contactStrings = data.contacts.map(c => {
+      if (c.url) {
+        return `[${c.label}](${c.url})`;
+      }
+      return c.label;
+    });
+    parts.push(contactStrings.join(' • '));
+  }
+
+  // Summary
+  if (data.summary && data.summary.trim()) {
+    parts.push('\n---\n');
+    parts.push('## 🎯 PROFESSIONAL SUMMARY & PITCH');
+    parts.push(data.summary.trim());
+  }
+
+  // Skills
+  if (data.skillGroups && data.skillGroups.length > 0) {
+    parts.push('\n---\n');
+    parts.push('## 🛠️ MASTER TECH STACK & COMPETENCIES');
+    for (const group of data.skillGroups) {
+      const cat = group.category ? group.category.trim() : 'Specialized Domain';
+      const skl = group.skills && group.skills.length > 0 ? group.skills.join(', ') : '';
+      parts.push(`- **${cat}:** ${skl}`);
+    }
+  }
+
+  // Experience
+  if (data.experience && data.experience.length > 0) {
+    parts.push('\n---\n');
+    parts.push('## 💼 CAREER HISTORY & KEY ACHIEVEMENTS\n');
+    const expItemsFormatted = data.experience.map(exp => {
+      const headerLine = `### **${exp.company || 'Company'}**${exp.location ? ` | ${exp.location}` : ''}`;
+      const subHeaderLine = `*${exp.role || 'Role'}*${exp.date ? ` | **${exp.date}**` : ''}`;
+      const bullets = (exp.bullets || []).map(b => (b.startsWith('- ') ? b : `- ${b}`)).join('\n');
+      return `${headerLine}\n${subHeaderLine}\n${bullets}`;
+    });
+    parts.push(expItemsFormatted.join('\n\n---\n\n'));
+  }
+
+  // Projects
+  if (data.projects && data.projects.length > 0) {
+    parts.push('\n---\n');
+    parts.push('## 🚀 FEATURED PROJECTS\n');
+    const projItemsFormatted = data.projects.map(proj => {
+      const headerLine = `### **${proj.company || 'Project'}**${proj.location ? ` | ${proj.location}` : ''}`;
+      const subHeaderLine = `*${proj.role || 'Role'}*${proj.date ? ` | **${proj.date}**` : ''}`;
+      const bullets = (proj.bullets || []).map(b => (b.startsWith('- ') ? b : `- ${b}`)).join('\n');
+      return `${headerLine}\n${subHeaderLine}\n${bullets}`;
+    });
+    parts.push(projItemsFormatted.join('\n\n---\n\n'));
+  }
+
+  // Education
+  if (data.education && data.education.length > 0) {
+    parts.push('\n---\n');
+    parts.push('## 🎓 EDUCATION & CERTIFICATIONS');
+    for (const edu of data.education) {
+      parts.push(`- ${edu.replace(/^[-*•]\s*/, '')}`);
+    }
+  }
+
+  // Languages
+  if (data.languages && data.languages.length > 0) {
+    parts.push('\n---\n');
+    parts.push('## 🌐 LANGUAGES');
+    for (const lang of data.languages) {
+      parts.push(`- ${lang.replace(/^[-*•]\s*/, '')}`);
+    }
+  }
+
+  return parts.join('\n') + '\n';
+}
+

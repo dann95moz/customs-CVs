@@ -20,11 +20,13 @@ import {
 } from '../constants/templates';
 import {
   ThemeId,
+  PaletteId,
   StudioTab,
   WizardStep,
   AIProviderSettings,
   CVData,
   QualityAuditReport,
+  GeneratedCvVersion,
 } from '../types/cv';
 
 export interface ResumeWorkspaceContextType {
@@ -55,6 +57,8 @@ export interface ResumeWorkspaceContextType {
   setPageBudget: React.Dispatch<React.SetStateAction<1 | 2>>;
   theme: ThemeId;
   setTheme: React.Dispatch<React.SetStateAction<ThemeId>>;
+  palette: PaletteId;
+  setPalette: React.Dispatch<React.SetStateAction<PaletteId>>;
   providerSettings: AIProviderSettings;
   setProviderSettings: React.Dispatch<React.SetStateAction<AIProviderSettings>>;
 
@@ -66,12 +70,19 @@ export interface ResumeWorkspaceContextType {
 
   // Derived Values
   parsedCv: CVData;
+  parsedMasterCv: CVData;
   auditReport: QualityAuditReport;
   gapInfo: { matchScore: number; keywords: string[] };
   stats: { words: number; bulletsCount: number; skillsCount: number; contactsCount: number };
   hasTargetJob: boolean;
   hasGeneratedCv: boolean;
   hasGapReport: boolean;
+
+  // History & Saved Versions
+  savedVersions: GeneratedCvVersion[];
+  handleSaveCurrentVersion: (customTitle?: string) => void;
+  handleLoadVersion: (id: string) => void;
+  handleDeleteVersion: (id: string) => void;
 
   // Actions
   handleGenerate: () => Promise<void>;
@@ -106,6 +117,8 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
   const [targetRole, setTargetRole] = useLocalStorage<string>('cv_target_role', '');
   const [pageBudget, setPageBudget] = useLocalStorage<1 | 2>('cv_page_budget', 1);
   const [theme, setTheme] = useLocalStorage<ThemeId>('cv_theme', 'modern-tech');
+  const [palette, setPalette] = useLocalStorage<PaletteId>('cv_palette', 'corporate-blue');
+  const [savedVersions, setSavedVersions] = useLocalStorage<GeneratedCvVersion[]>('cv_saved_versions', []);
   const [providerSettings, setProviderSettings] = useLocalStorage<AIProviderSettings>('cv_ai_settings', DEFAULT_AI_SETTINGS);
 
   // Generator Loading States
@@ -158,6 +171,11 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
     return parseCvMarkdownToData(cvMarkdown);
   }, [cvMarkdown]);
 
+  // Parsed Master Base CV for Comparison (Generic vs Tailored)
+  const parsedMasterCv = useMemo(() => {
+    return parseCvMarkdownToData(masterData);
+  }, [masterData]);
+
   // Calibrated Quality Audit Report
   const auditReport = useMemo(() => {
     return auditCvContent(cvMarkdown, targetJob, masterData);
@@ -195,6 +213,50 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
     return { words, bulletsCount, skillsCount, contactsCount: parsedCv.contacts.length };
   }, [cvMarkdown, parsedCv]);
 
+  // History Actions
+  const handleSaveCurrentVersion = (customTitle?: string) => {
+    const candName = extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ');
+    const comp = companyName || extractTargetCompany(targetJob, 'Target Company');
+    const role = targetRole || extractTargetRole(targetJob, masterData, 'Specialist');
+
+    const newVersion: GeneratedCvVersion = {
+      id: `cv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      createdAt: new Date().toISOString(),
+      candidateName: candName,
+      companyName: comp,
+      targetRole: role,
+      matchScore: gapInfo.matchScore || 92,
+      qualityScore: auditReport.overallScore || 8.8,
+      theme,
+      palette,
+      pageBudget,
+      cvMarkdown,
+      gapMarkdown,
+      targetJobSnippet: targetJob.slice(0, 280)
+    };
+
+    setSavedVersions(prev => [newVersion, ...prev.filter(v => !(v.companyName.toLowerCase() === comp.toLowerCase() && v.targetRole.toLowerCase() === role.toLowerCase()))]);
+  };
+
+  const handleLoadVersion = (id: string) => {
+    const found = savedVersions.find(v => v.id === id);
+    if (found) {
+      setCvMarkdown(found.cvMarkdown);
+      if (found.gapMarkdown) setGapMarkdown(found.gapMarkdown);
+      if (found.companyName) setCompanyName(found.companyName);
+      if (found.targetRole) setTargetRole(found.targetRole);
+      if (found.theme) setTheme(found.theme);
+      if (found.palette) setPalette(found.palette);
+      if (found.pageBudget) setPageBudget(found.pageBudget);
+      setActiveTab('wizard');
+      setWizardStep('preview');
+    }
+  };
+
+  const handleDeleteVersion = (id: string) => {
+    setSavedVersions(prev => prev.filter(v => v.id !== id));
+  };
+
   // Actions
   const handleGenerate = async () => {
     setIsGenerating(true);
@@ -222,6 +284,27 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
       if (response.gapAnalysisMarkdown) {
         setGapMarkdown(response.gapAnalysisMarkdown);
       }
+
+      // Auto-save generated version to history
+      const candName = extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ');
+      const comp = companyName || extractTargetCompany(targetJob, 'Target Company');
+      const role = targetRole || extractTargetRole(targetJob, masterData, 'Specialist');
+      const autoSavedVersion: GeneratedCvVersion = {
+        id: `cv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        createdAt: new Date().toISOString(),
+        candidateName: candName,
+        companyName: comp,
+        targetRole: role,
+        matchScore: response.estimatedMatchScore || 94,
+        qualityScore: 9.0,
+        theme,
+        palette,
+        pageBudget,
+        cvMarkdown: response.tailoredCvMarkdown || cvMarkdown,
+        gapMarkdown: response.gapAnalysisMarkdown || gapMarkdown,
+        targetJobSnippet: targetJob.slice(0, 280)
+      };
+      setSavedVersions(prev => [autoSavedVersion, ...prev.filter(v => !(v.companyName.toLowerCase() === comp.toLowerCase() && v.targetRole.toLowerCase() === role.toLowerCase()))]);
 
       setGenerationStep('Done! Resume tailored successfully.');
       setTimeout(() => {
@@ -302,6 +385,8 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
     setPageBudget,
     theme,
     setTheme,
+    palette,
+    setPalette,
     providerSettings,
     setProviderSettings,
     isGenerating,
@@ -309,12 +394,17 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
     generationError,
     setGenerationError,
     parsedCv,
+    parsedMasterCv,
     auditReport,
     gapInfo,
     stats,
     hasTargetJob,
     hasGeneratedCv,
     hasGapReport,
+    savedVersions,
+    handleSaveCurrentVersion,
+    handleLoadVersion,
+    handleDeleteVersion,
     handleGenerate,
     handleDownloadCvMarkdown,
     handleLoadDemoProfile,

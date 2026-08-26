@@ -4,10 +4,8 @@
 
 ---
 
-# [CANDIDATE FULL NAME]
+
 **[Primary Professional Role / Specialization]**
-[City, Country] • [email@example.com] • [+1 234 567 8900]
-[LinkedIn](https://linkedin.com/in/...) • [GitHub](https://github.com/...) • [Portfolio](https://...)
 
 ---
 
