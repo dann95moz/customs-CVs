@@ -53,19 +53,19 @@ Deliver your response in clearly delimited Markdown sections:
 - **Identified Gaps & Mitigation:** [Gaps and compensatory experience]
 
 ## 2. Quality Audit & Section Scoring
-| Sección | Nota | Comentario |
+| Section | Score (1-10) | Diagnostic & Assessment Criteria |
 | :--- | :---: | :--- |
-| **Encabezado y contacto** | [X.X/10] | [Comentario positivo / constructivo sobre claridad, canales directos y ATS] |
-| **Resumen profesional** | [X.X/10] | [Comentario sobre estructura, cero clichés y métricas de cierre] |
-| **Skills técnicas** | [X.X/10] | [Comentario sobre arquitectura de 3 categorías y alineación] |
-| **Experiencias** | [X.X/10] | [Comentario sobre fórmula Google XYZ, verbos de liderazgo y métricas verificables] |
-| **Educación y certificaciones** | [X.X/10] | [Comentario sobre grados, contexto analítico y certificaciones] |
-| **Idiomas** | [X.X/10] | [Comentario sobre niveles CEFR y uso profesional] |
-| **Estructura y legibilidad general** | [X.X/10] | [Comentario sobre ajuste a 1 página A4 y compatibilidad ATS] |
+| **Header & Contact Information** | [X.X/10] | [Assessment of clarity, direct links, and omission of sensitive data] |
+| **Professional Summary** | [X.X/10] | [Assessment of structure, zero fluff, and closing quantitative metrics] |
+| **Technical Skills** | [X.X/10] | [Assessment of 3-category universal architecture and alignment] |
+| **Professional Experience** | [X.X/10] | [Assessment of Google XYZ formula, leadership verbs, and verifiable metrics] |
+| **Education & Certifications** | [X.X/10] | [Assessment of degrees, analytical context, and verified credentials] |
+| **Languages** | [X.X/10] | [Assessment of CEFR proficiency and professional readiness] |
+| **Overall Structure & Legibility** | [X.X/10] | [Assessment of 1-page A4 fit and ATS parseability] |
 
-### 🚀 Recomendaciones para Subir a 10/10 (Secciones con Nota < 9.0)
-*(Para cada sección con nota menor a 9.0, detallar la información faltante y las acciones concretas recomendadas).*
-- **[Nombre de la Sección]:** [Información faltante / Puntos clave a incorporar para alcanzar 10/10].
+### 🚀 Recommendations to Reach 10/10 (Sections Scoring < 9.0)
+*(For each section scoring below 9.0, outline the exact missing data and concrete recommended actions).*
+- **[Section Name]:** [Missing information / Specific adjustments to reach 10/10].
 
 ---
 
@@ -108,4 +108,3 @@ Deliver your response in clearly delimited Markdown sections:
 - **[Language 1]:** [Level]
 - **[Language 2]:** [Level]
 ```
-

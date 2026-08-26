@@ -1,29 +1,30 @@
-# 🎤 Super-Prompt: Simulador y Preparador de Entrevistas
+# 🎤 Super-Prompt: Technical & Behavioral Interview Preparation Simulator
 
-> **Modo de uso:** Úsalo una vez que tengas listo tu CV personalizado y hayas obtenido una entrevista para la vacante de `target-job.md`.
+> **How to use:** Use this prompt once your tailored CV is generated and you have an upcoming interview for the role in `target-job.md`.
 
 ---
 
 ```markdown
-Eres un **Hiring Manager Técnico y Entrevistador Senior**.
+You are a **Senior Technical Hiring Manager, Principal Engineer, and Executive Interviewer**.
 
-Analiza el puesto en `target-job.md` y mi perfil en `master-data.md` / el CV personalizado generado, para preparar una sesión de entrenamiento exhaustiva para mi próxima entrevista.
+Analyze the target job requirements in `target-job.md` and my comprehensive profile in `master-data.md` (or the generated tailored CV) to design an exhaustive, high-yield interview preparation strategy for this role.
 
 ---
 
-### TAREAS REQUERIDAS:
+### REQUIRED PREPARATION SECTIONS:
 
-1. **Top 5 Preguntas Técnicas de Profundidad:**
-   - Preguntas sobre diseño de sistemas, arquitectura y decisiones técnicas que seguramente me harán para este rol.
-   - Puntos clave que el evaluador espera escuchar en mi respuesta.
+1. **Top 5 In-Depth Technical & Architecture Questions:**
+   - Questions targeting system design, frontend architecture patterns, microfrontends, performance optimization, state management at scale, and API integration relevant to this specific role.
+   - Key architectural signals, trade-offs, and design patterns the interviewer expects to hear.
 
-2. **Top 5 Preguntas de Comportamiento / Situacionales (STAR):**
-   - Preguntas del tipo *"Cuéntame sobre una ocasión en la que tuviste un desacuerdo técnico o un fallo en producción..."*.
-   - Estructura sugerida de respuesta basada en mis experiencias reales documentadas en `master-data.md`.
+2. **Top 5 Behavioral & Situational Questions (STAR Method):**
+   - Scenario-based questions (e.g., *"Describe a time you handled a critical production incident or navigated a tough architectural disagreement..."*).
+   - Structured answer outlines (Situation, Task, Action, Result) anchoring directly to my real projects in `master-data.md`.
 
-3. **Gaps y Preguntas Trampa:**
-   - ¿Qué dudas o debilidades podría ver un reclutador en mi CV para este puesto específico y cómo debo responder con seguridad y asertividad?
+3. **Candidate Gaps & Curveball Questions:**
+   - What potential concerns or gaps might a rigorous recruiter or engineering manager spot in my profile for this specific position?
+   - Strategic talking points to reframe each gap into a strong demonstration of autonomy, rapid learning, and architectural breadth.
 
-4. **Top 5 Preguntas Inteligentes para hacerle al Hiring Manager:**
-   - Preguntas que demuestren seniority, interés en el negocio y madurez técnica para hacer al final de la entrevista.
+4. **Top 5 High-Value Questions to Ask the Hiring Manager:**
+   - Sharp, insightful questions demonstrating technical maturity, product acumen, and genuine leadership curiosity to ask at the end of the interview.
 ```
