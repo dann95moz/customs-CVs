@@ -1,58 +1,57 @@
-# [NOMBRE Y APELLIDO]
-**[Título del Rol Objetivo | Especialidad Principal]**  
- [Ciudad, País] •  [correo@email.com] •  [+XX XXX XXXXXXX]  
- [LinkedIn](https://linkedin.com/in/usuario) •  [GitHub](https://github.com/usuario) •  [Portfolio](https://tuweb.dev)
+# [FULL NAME]
+**[Target Role Title | Primary Specialization]**  
+[City, Country] • [email@example.com] • [+1 234 567 8900]  
+[LinkedIn](https://linkedin.com/in/username) • [GitHub](https://github.com/username) • [Portfolio](https://yourportfolio.dev)
 
 ---
 
-##  RESUMEN PROFESIONAL
-[3 a 4 líneas redactadas con la fórmula de impacto, conectando tus años de experiencia, tus mayores fortalezas técnicas y los resultados medibles más relevantes para la empresa objetivo.]
+## PROFESSIONAL SUMMARY
+[3 to 4 impactful lines connecting your years of experience, core technical domain, architectural capabilities, and concluding with 2–3 quantitative engineering/business metrics relevant to the target role.]
 
 ---
 
-##  HABILIDADES TÉCNICAS
-- **Lenguajes & Core:** [TypeScript, Python, JavaScript, SQL, Go]
-- **Frameworks & Frontend/Backend:** [React, Next.js, Node.js, NestJS, FastAPI]
-- **Bases de Datos & Cloud:** [PostgreSQL, Redis, AWS (ECS, Lambda, RDS), Docker]
-- **Metodologías & Herramientas:** [CI/CD, GitHub Actions, TDD, Agile/Scrum, Git]
+## TECHNICAL SKILLS
+- **Languages & Core Fundamentals:** [TypeScript, JavaScript (ES6+), HTML5, CSS3/SASS, SQL, RESTful APIs, GraphQL, Clean Code]
+- **Frameworks, Architecture & Ecosystem:** [React.js, Next.js, Microfrontends (Module Federation), Zustand, Redux Toolkit, Component-Driven Design]
+- **Tooling, Testing, CI/CD & AI Integrations:** [Jest, ViTest, Git, Vite, Webpack, Docker, CI/CD Pipelines (GitHub Actions / Jenkins), Postman, AI/LLM APIs]
 
 ---
 
-##  EXPERIENCIA LABORAL
+## PROFESSIONAL EXPERIENCE
 
-### **[Nombre de la Empresa]** | [Ubicación / Modalidad: Remoto o Híbrido]
-*[Cargo / Rol Exacto o Alineado]* | **[Mes AAAA – Presente / Mes AAAA]**
-- [Verbo de acción en pasado] [proyecto o sistema clave] logrando [métrica de impacto: % mejora, tiempo ahorrado, $ generado] mediante la implementación de [tecnologías / metodologías].
-- [Verbo de acción] [segundo logro con métrica cuantitativa] utilizando [stack tecnológico relevante para la oferta].
-- [Verbo de acción] [tercer logro enfocado en liderazgo, arquitectura, colaboración o calidad de código].
-
----
-
-### **[Nombre de la Empresa Anterior]** | [Ubicación / Modalidad]
-*[Cargo / Rol]* | **[Mes AAAA – Mes AAAA]**
-- [Logro 1 redactado con Fórmula Google XYZ y métrica clara].
-- [Logro 2 destacando optimizaciones técnicas y tecnologías solicitadas en la oferta].
-- [Logro 3 demostrando autonomía y resolución de problemas].
+**[Company Name]** | [Location / Remote]
+*[Job Title]* | **[Mon YYYY – Mon YYYY / Present]**
+- [Strong past-tense action verb] [key project or architectural initiative] achieving [quantitative impact: % reduction in latency, build time, error rates, or business uplift] by implementing [modern tech stack / design patterns].
+- [Action verb] [second achievement with concrete metric] utilizing [technologies and methodologies aligned with the target job].
+- [Action verb] [third achievement highlighting technical leadership, code reviews, architectural documentation (ADRs), or cross-functional alignment].
 
 ---
 
-##  PROYECTOS DESTACADOS *(Opcional / Clave para perfiles Jr/Mid)*
-
-### **[Nombre del Proyecto]** | [Demo en Vivo](https://...) • [Código en GitHub](https://...)
-- [Breve descripción de 1-2 líneas del valor que aporta el software/aplicación].
-- **Stack:** [Tecnologías principales].
-- **Impacto / Métrica:** [Usuarios activos, estrellas en GitHub, tiempos de respuesta optimizados].
-
----
-
-##  EDUCACIÓN Y CERTIFICACIONES
-
-- **[Grado / Título Universitario en Ingeniería / Informática]** — [Nombre de la Universidad], [Año]
-- **[Nombre de la Certificación Oficial (ej. AWS Certified Solutions Architect)]** — [Entidad Emisora], [Año]
-- **[Segunda Certificación o Especialización Relevante]** — [Entidad], [Año]
+**[Previous Company Name]** | [Location / Remote]
+*[Job Title]* | **[Mon YYYY – Mon YYYY]**
+- [Google XYZ achievement bullet: Accomplished X as measured by Y by doing Z].
+- [Second achievement highlighting codebase modernization, performance optimizations, or state management refactoring].
+- [Third achievement demonstrating autonomy, cross-border team delivery, or CI/CD streamlining].
 
 ---
 
-##  IDIOMAS
-- **[Idioma 1]:** [Nivel: Nativo]
-- **[Idioma 2 (ej. Inglés)]:** [Nivel: C1 – Avanzado / Profesional Fluido]
+## FEATURED PROJECTS *(Optional / High impact for Jr/Mid/Senior profiles)*
+
+**[Project Name]** | [Live Demo](https://...) • [GitHub Repository](https://...)
+- [1–2 line description of architectural scope and user value delivered].
+- **Tech Stack:** [Core technologies and libraries used].
+- **Impact & Scale:** [Users served, performance benchmarks, or automated workflow metrics].
+
+---
+
+## EDUCATION & CERTIFICATIONS
+
+- **[Degree / Major in Engineering / Computer Science / Field]** – [University / Institution], [Year] • *[Optional Context Line]*
+- **[Official Industry Certification (e.g., AWS Certified Solutions Architect)]** – [Issuing Organization], [Year]
+- **[Second Certification or Specialization]** – [Issuer], [Year]
+
+---
+
+## LANGUAGES
+- **[Language 1]:** [Level: e.g., Spanish (Native)]
+- **[Language 2]:** [Level: e.g., English (C1 – Fluent / Professional Working Proficiency)]
