@@ -1,22 +1,22 @@
-# 📊 Registro y Seguimiento de Postulaciones (applications-tracker.md)
+# 📊 Job Applications Tracker (applications-tracker.md)
 
-Lleva el control de todas las vacantes a las que has postulado con sus versiones de CV y estados de proceso.
+Track all your active job applications, tailored CV versions, interview stages, and progress.
 
 ---
 
-| Fecha | Empresa | Puesto | Enlace / Portal | CV Utilizado | Estado | Salario / Rango | Notas / Próximo Paso |
+| Date | Company | Role | Portal / Link | CV Version Used | Status | Salary / Compensation | Notes / Next Action |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `2026-08-23` | **Stripe** | Senior Fullstack | [LinkedIn](https://...) | [`CV_Stripe.md`](outputs/Ejemplo_CV_Tailored_Stripe.md) | 🟡 Postulado | $85k USD | Esperando primer contacto de RRHH |
-| `2026-08-20` | **Mercado Libre**| Backend Lead | [Web Empresa](https://...) | [`CV_MeLi.md`](outputs/) | 🟢 Entrevista Técnica | $75k USD | Repasar arquitectura Kafka y Sharding |
-| `2026-08-15` | **Fintech X** | Senior Developer | [Referido](https://...) | [`CV_FintechX.md`](outputs/) | 🔵 Oferta Recibida | $90k USD | En negociación de beneficios |
+| `2026-08-25` | **Addi** | Frontend Engineer | [Ashby](https://jobs.ashbyhq.com/addi/...) | [`CV_Daniel_Corredor_Acosta_Addi.md`](outputs/CV_Daniel_Corredor_Acosta_Addi.md) | 🟡 Applied | $80k - $95k USD | Tailored CV + Quality Audit generated |
+| `2026-08-20` | **Stripe** | Senior Frontend | [LinkedIn](https://...) | [`CV_Stripe.md`](outputs/) | 🟢 Technical Interview | $90k - $110k USD | Review distributed systems & Module Federation |
+| `2026-08-15` | **Fintech X** | Senior Frontend Engineer | [Referral](https://...) | [`CV_FintechX.md`](outputs/) | 🔵 Offer Received | $95k USD | Reviewing compensation & equity package |
 
 ---
 
-### Estados Sugeridos:
-- ⚪ **Guardada / Por Postular**
-- 🟡 **Postulado (Enviado)**
-- 🟣 **Contacto Inicial / Screening de RRHH**
-- 🟢 **Entrevista Técnica / Cultural**
-- 🟠 **Prueba Técnica / Take-home Challenge**
-- 🔵 **Oferta Recibida (Negotiation)**
-- 🔴 **Rechazado / Descartado (Anotar feedback para iterar)**
+### Suggested Pipeline Statuses:
+- ⚪ **Saved / To Apply**
+- 🟡 **Applied (Submitted)**
+- 🟣 **Initial Contact / HR Screening**
+- 🟢 **Technical / Culture Interview**
+- 🟠 **Technical Assessment / Take-home Challenge**
+- 🔵 **Offer Received (Negotiation)**
+- 🔴 **Rejected / Archived (Feedback logged for iteration)**

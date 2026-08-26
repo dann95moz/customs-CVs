@@ -1,82 +1,82 @@
-# 🚀 Sistema Modular de Creación y Personalización de CVs
+# 🚀 Modular CV Creation & Tailoring System
 
-Bienvenido a tu entorno de trabajo inteligente para crear, mantener y personalizar currículums de alto impacto optimizados para **ATS (Applicant Tracking Systems)** y reclutadores técnicos.
+Welcome to your intelligent workspace designed to create, maintain, and tailor high-impact resumes optimized for **Applicant Tracking Systems (ATS)** and technical recruiters.
 
 ---
 
-## 📁 Estructura del Repositorio
+## 📁 Repository Structure
 
 ```text
-├── .env                         # Variables de entorno (API Keys - git ignored)
-├── .gitignore                   # Reglas de exclusión para Git/GitHub
-├── README.md                    # Guía de uso y flujo de trabajo
-├── package.json                 # Dependencias y scripts de ejecución
-├── tsconfig.json                # Configuración TypeScript
-├── vite.config.ts               # Servidor de desarrollo Vite y endpoints
-├── index.html                   # Interfaz de CV Studio Web
-├── master-data.md               # 🗂️ Tu trayectoria completa (SSOT: Proyectos, métricas, stack)
-├── rules.md                     # 📜 Límites, reglas de formato STAR/XYZ, tono y normas ATS
-├── target-job.md                # 🎯 Oferta laboral objetivo a la que postulas
-├── applications-tracker.md      # 📊 Registro y estado de postulaciones
-├── certificates/                # 🏅 Certificados y credenciales
+├── .env                         # Environment variables (API Keys - git ignored)
+├── .gitignore                   # Exclusion rules for Git/GitHub
+├── README.md                    # Usage guide and workflow
+├── package.json                 # Dependencies and execution scripts
+├── tsconfig.json                # TypeScript configuration
+├── vite.config.ts               # Vite development server and endpoints
+├── index.html                   # CV Studio Web interface
+├── master-data.md               # 🗂️ Complete career history (SSOT: Projects, metrics, stack)
+├── rules.md                     # 📜 Constraints, STAR/XYZ format rules, tone, and ATS guidelines
+├── target-job.md                # 🎯 Target job posting you are applying to
+├── applications-tracker.md      # 📊 Application log and pipeline status
+├── certificates/                # 🏅 Certificates and credentials
 │   └── certificates.md
-├── prompts/                     # 🤖 Prompts listos para usar con IA
-│   ├── cv-generator-prompt.md   # Generador de CV + Gap Analysis
-│   ├── cover-letter-prompt.md   # Generador de Carta de Presentación
-│   └── interview-prep-prompt.md # Preguntas y preparación para entrevistas
-├── templates/                   # 📄 Plantillas base
-│   └── cv-template.md           # Plantilla Markdown limpia para exportación
-├── src/                         # 💻 Motor TypeScript + React + Puppeteer
+├── prompts/                     # 🤖 Ready-to-use AI prompts
+│   ├── cv-generator-prompt.md   # Tailored CV Generator + Gap Analysis
+│   ├── cover-letter-prompt.md   # Cover Letter Generator
+│   └── interview-prep-prompt.md # Interview Simulator and Preparation
+├── templates/                   # 📄 Base templates
+│   └── cv-template.md           # Clean Markdown template for export
+├── src/                         # 💻 TypeScript + React SSR + Puppeteer Engine
 │   ├── app/                     # CV Studio Web UI
-│   ├── cli/                     # CLI de exportación y tailoring
-│   ├── components/              # Renderizado visual del CV
-│   ├── core/                    # Motores (Puppeteer, Gemini API, Parser)
-│   ├── themes/                  # Temas CSS profesionales
-│   └── types/                   # Tipos de datos del CV
-└── outputs/                     # 📤 CVs personalizados generados por cada postulación
-    └── Ejemplo_CV_Tailored_Stripe.md
+│   ├── cli/                     # CLI for export and tailoring
+│   ├── components/              # Visual CV rendering
+│   ├── core/                    # Core engines (Puppeteer, Gemini API, Parser, Audit)
+│   ├── themes/                  # Professional CSS themes
+│   └── types/                   # CV data types
+└── outputs/                     # 📤 Tailored CVs and reports generated per application
+    └── CV_Daniel_Corredor_Acosta_Addi.md
 ```
 
 ---
 
-## ⚡ Flujo de Trabajo (Workflow Paso a Paso)
+## ⚡ Step-by-Step Workflow
 
 ```mermaid
 flowchart LR
-    A[📝 master-data.md<br>Tu historial completo] --> D[🤖 Prompt de IA<br>cv-generator-prompt.md]
-    B[🎯 target-job.md<br>Oferta de empleo] --> D
-    C[📜 rules.md<br>Fórmula XYZ + ATS] --> D
+    A[📝 master-data.md<br>Comprehensive History] --> D[🤖 AI Prompt<br>cv-generator-prompt.md]
+    B[🎯 target-job.md<br>Target Job Posting] --> D
+    C[📜 rules.md<br>XYZ Formula + ATS Rules] --> D
     D --> E[📊 Gap Analysis<br>& Match Score]
-    D --> F[📄 outputs/CV_Empresa.md<br>CV Optimizado]
-    F --> G[🖨️ Exportar a PDF]
+    D --> F[📄 outputs/CV_Company.md<br>Tailored CV]
+    F --> G[🖨️ Export to PDF]
 ```
 
-### Paso 1: Configura tu `master-data.md` (Solo una vez y actualízalo periódicamente)
-Llena [master-data.md](file:///c:/Users/LeGo/Documents/customs%20CVs/master-data.md) con **toda** tu experiencia laboral, proyectos, métricas, herramientas y certificaciones. Este archivo nunca se envía a una empresa: es tu almacén de datos donde la IA extraerá lo más valioso.
+### Step 1: Configure `master-data.md` (One-time setup, update periodically)
+Populate [master-data.md](file:///c:/Users/LeGo/Documents/customs%20CVs/master-data.md) with **all** your professional experience, projects, metrics, tools, and certifications. This file is never sent directly to an employer—it is your private Single Source of Truth (SSOT) from which the AI extracts the most relevant highlights.
 
-### Paso 2: Copia la vacante en `target-job.md`
-Cada vez que encuentres una oferta interesante en LinkedIn, Indeed, etc., abre [target-job.md](file:///c:/Users/LeGo/Documents/customs%20CVs/target-job.md) y pega el texto de la oferta.
+### Step 2: Paste the Job Vacancy into `target-job.md`
+Whenever you find an attractive position on LinkedIn, Indeed, Ashby, etc., open [target-job.md](file:///c:/Users/LeGo/Documents/customs%20CVs/target-job.md) and paste the job description and requirements.
 
-### Paso 3: Ejecuta la Generación con IA
-1. Abre [cv-generator-prompt.md](file:///c:/Users/LeGo/Documents/customs%20CVs/prompts/cv-generator-prompt.md).
-2. Pídele al asistente de IA (ChatGPT, Claude, Gemini o tu agente Antigravity):
-   > *"Lee `rules.md`, `master-data.md` y `target-job.md` y genera el reporte de Gap Analysis y el CV optimizado guardándolo en `outputs/CV_[Empresa]_[Cargo].md`"*.
+### Step 3: Run AI Generation
+1. Open [cv-generator-prompt.md](file:///c:/Users/LeGo/Documents/customs%20CVs/prompts/cv-generator-prompt.md).
+2. Prompt your AI assistant (Claude, ChatGPT, Gemini, or Antigravity):
+   > *"Read `rules.md`, `master-data.md`, and `target-job.md`, then generate the Gap Analysis report and the tailored CV, saving them to `outputs/CV_[Company]_[Role].md`"*.
 
-### Paso 4: Exportación y Diseño Automatizado a PDF (Local y sin costo de tokens)
+### Step 4: Automated Local PDF Export (Zero token cost)
 
-El proyecto cuenta con un motor modular en **TypeScript + React SSR + Puppeteer** con 4 temas de diseño profesional:
+The project includes a modular engine built with **TypeScript + React SSR + Puppeteer** featuring 4 professional design themes:
 
 ```bash
-# Exportar el CV más reciente en outputs/ a PDF
+# Export the most recent CV in outputs/ to PDF
 npm run pdf
 
-# Exportar con temas específicos:
-npm run pdf:modern       # Tema Modern Tech (Estilo Stripe/Linear con badges)
-npm run pdf:executive    # Tema Executive Classic (Corporate Navy/Serif)
-npm run pdf:ats          # Tema Minimal ATS (100% compatible con filtros ATS)
-npm run pdf:two-column   # Tema Two-Column (Barra lateral + contenido)
+# Export with specific themes:
+npm run pdf:modern       # Modern Tech theme (Stripe/Linear style with badges)
+npm run pdf:executive    # Executive Classic theme (Corporate Navy / Serif)
+npm run pdf:ats          # Minimal ATS theme (100% parseable by legacy ATS filters)
+npm run pdf:two-column   # Two-Column theme (Sidebar + Main Content)
 
-# Exportar todos los archivos Markdown de outputs/ a PDF
+# Export all Markdown files in outputs/ to PDF
 npm run pdf:all
 ```
 
@@ -84,26 +84,24 @@ npm run pdf:all
 
 ## 🎨 CV Studio Web (Vite + React + Hot Reload)
 
-Para previsualizar tu CV interactivamente en el navegador con Hot Module Reloading (<50ms), inspeccionar métricas y cambiar de tema en caliente:
+To preview your CV interactively in the browser with sub-50ms Hot Module Reloading, inspect metrics, and switch themes on the fly:
 
 ```bash
 npm run dev
 ```
-Abre tu navegador en `http://localhost:5173`.
+Open your browser at `http://localhost:5173`.
 
 ---
 
-## 🤖 Generación Automática con Gemini API (Opcional)
+## 🤖 Automated Generation with Gemini API (Optional)
 
-Si deseas que la IA adapte automáticamente tu CV leyendo `master-data.md` y `target-job.md`:
-1. Crea un archivo `.env` en la raíz del proyecto con tu API Key:
+If you want the AI to automatically tailor your CV directly from the CLI using `master-data.md` and `target-job.md`:
+1. Create a `.env` file in the project root with your API Key:
    ```env
-   GEMINI_API_KEY=tu_api_key_aqui
+   GEMINI_API_KEY=your_api_key_here
    ```
-2. Ejecuta el comando indicando el nombre de la empresa:
+2. Run the command specifying the target company:
    ```bash
    npm run generate "Stripe"
    ```
-   > 🔒 **Garantía SSOT:** `master-data.md` es **100% intocable y de solo lectura**. La IA nunca lo modificará; únicamente consultará tus datos reales para generar `outputs/CV_Stripe.md` y `outputs/CV_Stripe.pdf`.
-
-
+   > 🔒 **SSOT Guarantee:** `master-data.md` is **100% read-only and immutable**. The AI will never modify it; it only queries your real data to produce `outputs/CV_Stripe.md` and `outputs/CV_Stripe.pdf`.
