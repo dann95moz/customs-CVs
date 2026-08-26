@@ -1,57 +1,14 @@
 import React from 'react';
 import { CVTemplateProps } from './types';
-import { 
-  HeaderSlot, 
-  SummarySlot, 
-  SkillsSlot, 
-  ExperienceSlot, 
-  EducationSlot, 
-  LanguagesSlot, 
-  GenericSlot 
-} from '../components/slots';
+import { SingleColumnLayout } from './SingleColumnLayout';
 
 export const MinimalAtsTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) => {
   return (
-    <div className={`theme-${theme} template-minimal-ats`}>
-      <div className="cv-container">
-        {/* ATS Standard Header */}
-        <HeaderSlot data={slots.header} />
-
-        {/* ATS Linear Sequence */}
-        <main className="cv-body">
-          {slots.summary && (
-            <SummarySlot data={slots.summary} />
-          )}
-
-          {slots.skills && (
-            <SkillsSlot data={slots.skills} variant="inline" />
-          )}
-
-          {slots.experience && (
-            <ExperienceSlot data={slots.experience} />
-          )}
-
-          {slots.projects && (
-            <ExperienceSlot data={slots.projects} />
-          )}
-
-          {/* Bottom Balanced Row: Education on Left, Languages on Right */}
-          {(slots.education || slots.languages) && (
-            <div className="cv-bottom-grid" style={{ display: 'grid', gridTemplateColumns: slots.languages && slots.education ? '1.75fr 1fr' : '1fr', gap: '18px' }}>
-              {slots.education && (
-                <EducationSlot data={slots.education} />
-              )}
-              {slots.languages && (
-                <LanguagesSlot data={slots.languages} />
-              )}
-            </div>
-          )}
-
-          {slots.genericSections.map(sec => (
-            <GenericSlot key={sec.id} data={sec} />
-          ))}
-        </main>
-      </div>
-    </div>
+    <SingleColumnLayout
+      slots={slots}
+      theme={theme}
+      templateClass="template-minimal-ats"
+      skillsVariant="inline"
+    />
   );
 };
