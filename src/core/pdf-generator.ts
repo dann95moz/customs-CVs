@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { parseCvMarkdownToData, sanitizeFileName } from './parser';
 import { CVRenderer } from '../components/CVRenderer';
 import { ThemeId } from '../types/cv';
+import { getWorkspaceRoot, getOutputsDir } from './workspace';
 
 interface GeneratePdfOptions {
   markdownContent?: string;
@@ -18,15 +19,8 @@ interface GeneratePdfOptions {
   baseDir?: string;
 }
 
-function resolveWorkspaceDir(baseDir?: string): string {
-  if (baseDir && fs.existsSync(baseDir)) return baseDir;
-  const cwd = process.cwd();
-  if (fs.existsSync(path.join(cwd, 'master-data.md'))) return cwd;
-  return path.resolve(import.meta.dirname, '..', '..');
-}
-
 export function renderCvToHtml(markdownContent: string, theme: ThemeId = 'modern-tech', baseDir?: string): string {
-  const rootDir = resolveWorkspaceDir(baseDir);
+  const rootDir = getWorkspaceRoot(baseDir);
   const cvData = parseCvMarkdownToData(markdownContent);
 
   // Render React component tree to static HTML markup
@@ -162,7 +156,7 @@ export async function generatePdfFromMarkdown({
   autoFit = true,
   baseDir
 }: GeneratePdfOptions) {
-  const rootDir = resolveWorkspaceDir(baseDir);
+  const rootDir = getWorkspaceRoot(baseDir);
 
   let content = markdownContent;
   if (!content && markdownFilePath) {
@@ -328,12 +322,8 @@ export async function generatePdfFromMarkdown({
 }
 
 export async function generateAllPdfs({ theme = 'modern-tech', baseDir }: { theme?: ThemeId; baseDir?: string } = {}) {
-  const rootDir = resolveWorkspaceDir(baseDir);
-  const outputsDir = path.join(rootDir, 'outputs');
-
-  if (!fs.existsSync(outputsDir)) {
-    fs.mkdirSync(outputsDir, { recursive: true });
-  }
+  const rootDir = getWorkspaceRoot(baseDir);
+  const outputsDir = getOutputsDir(baseDir);
 
   const files = fs.readdirSync(outputsDir).filter(f => f.endsWith('.md'));
   const results = [];

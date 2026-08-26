@@ -6,17 +6,10 @@ import { generatePdfFromMarkdown, generateAllPdfs } from '../core/pdf-generator'
 import { tailorCvWithGemini } from '../core/gemini';
 import { generateQualityAuditReport } from '../core/audit';
 import { ThemeId } from '../types/cv';
+import { getWorkspaceRoot, getOutputsDir, findLatestCvMarkdown, resolveCvPath } from '../core/workspace';
 
-function getWorkspaceDir(): string {
-  const cwd = process.cwd();
-  if (fs.existsSync(path.join(cwd, 'master-data.md'))) {
-    return cwd;
-  }
-  return path.resolve(import.meta.dirname, '..', '..');
-}
-
-const rootDir = getWorkspaceDir();
-const outputsDir = path.join(rootDir, 'outputs');
+const rootDir = getWorkspaceRoot();
+const outputsDir = getOutputsDir(rootDir);
 
 function parseArgs(args: string[]) {
   const flags: Record<string, string | boolean> = {};
@@ -95,47 +88,13 @@ async function main() {
   try {
     switch (command) {
       case 'pdf': {
-        let targetFile = positional[1];
+        const targetFile = positional[1]
+          ? resolveCvPath(positional[1], rootDir)
+          : findLatestCvMarkdown(rootDir);
 
         if (!targetFile) {
-          if (!fs.existsSync(outputsDir)) {
-            fs.mkdirSync(outputsDir, { recursive: true });
-          }
-          // Prioritize CV files (exclude Gap_Analysis and Quality_Report by default)
-          let files = fs.readdirSync(outputsDir)
-            .filter(f => f.endsWith('.md') && !f.startsWith('Gap_Analysis_') && !f.startsWith('Quality_Report_'))
-            .map(f => ({ name: f, time: fs.statSync(path.join(outputsDir, f)).mtimeMs }))
-            .sort((a, b) => b.time - a.time);
-
-          if (files.length === 0) {
-            // Fallback to any markdown file if no CV file is found
-            files = fs.readdirSync(outputsDir)
-              .filter(f => f.endsWith('.md'))
-              .map(f => ({ name: f, time: fs.statSync(path.join(outputsDir, f)).mtimeMs }))
-              .sort((a, b) => b.time - a.time);
-          }
-
-          if (files.length === 0) {
-            console.log('⚠️ No se encontraron archivos .md en outputs/. Usando plantilla base...');
-            targetFile = path.join(rootDir, 'templates', 'cv-template.md');
-          } else {
-            targetFile = path.join(outputsDir, files[0].name);
-          }
-        } else {
-          if (!path.isAbsolute(targetFile)) {
-            const directPath = path.resolve(process.cwd(), targetFile);
-            const rootPath = path.resolve(rootDir, targetFile);
-            const outputSubPath = path.resolve(rootDir, 'outputs', targetFile);
-            if (fs.existsSync(directPath)) {
-              targetFile = directPath;
-            } else if (fs.existsSync(rootPath)) {
-              targetFile = rootPath;
-            } else if (fs.existsSync(outputSubPath)) {
-              targetFile = outputSubPath;
-            } else {
-              targetFile = rootPath;
-            }
-          }
+          console.error('❌ No se encontró ningún archivo .md en outputs/ o templates/.');
+          process.exit(1);
         }
 
         console.log(`\n🚀 Compilando CV a PDF con TypeScript + React SSR...`);
@@ -165,36 +124,13 @@ async function main() {
 
       case 'audit':
       case 'quality': {
-        let targetFile = positional[1];
+        const targetFile = positional[1]
+          ? resolveCvPath(positional[1], rootDir)
+          : findLatestCvMarkdown(rootDir);
 
         if (!targetFile) {
-          if (!fs.existsSync(outputsDir)) {
-            fs.mkdirSync(outputsDir, { recursive: true });
-          }
-          const files = fs.readdirSync(outputsDir)
-            .filter(f => f.endsWith('.md') && !f.startsWith('Gap_Analysis_') && !f.startsWith('Quality_Report_'))
-            .map(f => ({ name: f, time: fs.statSync(path.join(outputsDir, f)).mtimeMs }))
-            .sort((a, b) => b.time - a.time);
-
-          if (files.length === 0) {
-            console.error('❌ No se encontró ningún CV en outputs/ para auditar. Pasa la ruta del archivo explícitamente.');
-            process.exit(1);
-          } else {
-            targetFile = path.join(outputsDir, files[0].name);
-          }
-        } else if (!path.isAbsolute(targetFile)) {
-          const directPath = path.resolve(process.cwd(), targetFile);
-          const rootPath = path.resolve(rootDir, targetFile);
-          const outputSubPath = path.resolve(rootDir, 'outputs', targetFile);
-          if (fs.existsSync(directPath)) {
-            targetFile = directPath;
-          } else if (fs.existsSync(rootPath)) {
-            targetFile = rootPath;
-          } else if (fs.existsSync(outputSubPath)) {
-            targetFile = outputSubPath;
-          } else {
-            targetFile = rootPath;
-          }
+          console.error('❌ No se encontró ningún CV en outputs/ para auditar. Pasa la ruta del archivo explícitamente.');
+          process.exit(1);
         }
 
         console.log(`\n🔍 Iniciando Auditoría de Calidad de CV...`);

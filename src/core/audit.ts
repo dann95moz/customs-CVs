@@ -4,6 +4,7 @@ import { extractCandidateName, extractTargetCompany, sanitizeFileName } from './
 import { generatePdfFromMarkdown } from './pdf-generator';
 import { ThemeId, AuditSectionResult, StrategicGrowthPillar, QualityAuditReport } from '../types/cv';
 import { auditCvContent } from './audit-engine';
+import { getWorkspaceRoot, getOutputsDir } from './workspace';
 
 export { auditCvContent };
 export type { AuditSectionResult, StrategicGrowthPillar, QualityAuditReport };
@@ -26,7 +27,7 @@ export async function generateQualityAuditReport({
   theme?: ThemeId;
   baseDir?: string;
 }) {
-  const root = baseDir || process.cwd();
+  const root = getWorkspaceRoot(baseDir);
   const cvMd = fs.readFileSync(cvMarkdownPath, 'utf8');
   
   const targetJobText = targetJobPath && fs.existsSync(targetJobPath) 
@@ -38,11 +39,7 @@ export async function generateQualityAuditReport({
     : (fs.existsSync(path.join(root, 'master-data.md')) ? fs.readFileSync(path.join(root, 'master-data.md'), 'utf8') : '');
 
   const report = auditCvContent(cvMd, targetJobText, masterDataText);
-
-  const outputsDir = path.join(root, 'outputs');
-  if (!fs.existsSync(outputsDir)) {
-    fs.mkdirSync(outputsDir, { recursive: true });
-  }
+  const outputsDir = getOutputsDir(baseDir);
 
   const candidateClean = sanitizeFileName(report.candidateName || 'Candidate');
   const companyClean = sanitizeFileName(report.targetCompany || 'Target');
