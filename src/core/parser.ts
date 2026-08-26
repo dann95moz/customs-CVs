@@ -249,7 +249,7 @@ function parseExperienceItems(rawContent: string): ExperienceItem[] {
 }
 
 /**
- * Parses education/languages bullet items (supports discrete bullets and pipe-separated entries)
+ * Parses education/languages bullet items (supports discrete bullets and auto-splits inline certifications)
  */
 function parseListItems(rawContent: string): string[] {
   const lines = rawContent.split(/\r?\n/);
@@ -258,6 +258,48 @@ function parseListItems(rawContent: string): string[] {
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
+
+    // Detect inline certifications line such as:
+    // - **Certifications:** Cert 1 | Cert 2 | Cert 3
+    // - **Certifications:** Cert 1, Cert 2, Cert 3
+    // - **Certificaciones:** Cert 1 • Cert 2
+    const certPrefixMatch = trimmed.match(/^[-*•]?\s*\*{0,2}(?:certifications?|certificaciones?):\*{0,2}\s*(.+)$/i);
+    if (certPrefixMatch) {
+      const certContent = certPrefixMatch[1].trim();
+      let certList: string[] = [];
+
+      if (certContent.includes('|')) {
+        certList = certContent.split('|').map(s => s.trim()).filter(Boolean);
+      } else if (certContent.includes('•')) {
+        certList = certContent.split('•').map(s => s.trim()).filter(Boolean);
+      } else if (certContent.includes(';')) {
+        certList = certContent.split(';').map(s => s.trim()).filter(Boolean);
+      } else if (/\),\s*[A-Z\*\d]/.test(certContent)) {
+        // e.g. "Cert 1 (Udemy, 2022), Cert 2 (Udemy, 2023)"
+        certList = certContent
+          .split(/\),\s*/)
+          .map((s, idx, arr) => (idx < arr.length - 1 ? `${s})` : s))
+          .map(s => s.trim())
+          .filter(Boolean);
+      } else {
+        certList = [certContent];
+      }
+
+      for (const cert of certList) {
+        let formatted = cert.trim();
+        if (!formatted.startsWith('**')) {
+          // If format is "Name (Issuer, Year)", format cleanly as "**Name** – Issuer, Year"
+          const matchParen = formatted.match(/^([^(]+)\s*\(([^)]+)\)$/);
+          if (matchParen) {
+            formatted = `**${matchParen[1].trim()}** – ${matchParen[2].trim()}`;
+          } else {
+            formatted = `**${formatted}**`;
+          }
+        }
+        items.push(formatted);
+      }
+      continue;
+    }
 
     // Split pipe-separated entries into individual bullet items
     if (trimmed.includes('|') && !trimmed.startsWith('#')) {
