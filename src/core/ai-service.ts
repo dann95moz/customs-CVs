@@ -179,6 +179,14 @@ This document defines the strict styling, formatting, content, and ATS optimizat
 6. STRATEGIC KEYWORD & IMPACT BOLDING (Recruiter 6-Second Scan Rule):
    - In EVERY experience bullet and in the summary, strategically BOLD (**keyword**) 1 to 3 critical matching technical terms (e.g. **TypeScript**, **React**, **Microfrontends**, **Webpack Module Federation**) and quantifiable metrics/results (e.g. **50% reduction in CI/CD build times**, **40% drop in runtime errors**, **35% faster delivery**).
    - This ensures human recruiters immediately see the candidate's exact technical match and tangible outcomes within seconds of scanning the CV.
+
+7. EDUCATION & CERTIFICATIONS (STRICT VERTICAL COLUMN FORMAT):
+   - In "EDUCATION & CERTIFICATIONS", list each university degree and each certification as its OWN individual bullet point on a separate line (one bullet per line, forming a clean vertical column).
+   - ❌ NEVER group multiple certifications into a single inline line separated by pipes or commas (e.g. NEVER output "- **Certifications:** Cert 1 | Cert 2 | Cert 3").
+   - ✅ Format each entry as:
+     - **[Degree / Major]** – [Institution], [Year]
+     - **[Certification Name 1]** – [Issuer], [Year]
+     - **[Certification Name 2]** – [Issuer], [Year]
 `;
 
 /**
@@ -209,6 +217,10 @@ ${rules}
   1. Primary matching technologies, architectures, and tools that ACTUALLY EXIST in MASTER-DATA.MD (e.g., **TypeScript**, **React**, **Microfrontends**, **Webpack Module Federation**, **Zustand**, **Jest**).
   2. Concrete numerical metrics, percentages, and quantifiable business/engineering outcomes from MASTER-DATA.MD (e.g., **50% build time reduction**, **40% drop in runtime errors**, **35% faster cross-team delivery**).
 - Format: Bold 1 to 3 impactful phrases per bullet so recruiters immediately see the match upon opening the CV.
+
+=== EDUCATION & CERTIFICATIONS (VERTICAL COLUMN RULE) ===
+- List each degree and each certification as its OWN individual bullet point on a new line (vertical column format).
+- NEVER compress certifications inline into a single bullet with pipes or commas.
 
 === PAGE FIT TARGET ===
 ${req.pageBudget === 1
@@ -262,7 +274,8 @@ PART 2: TAILORED CV
 
 ## EDUCATION & CERTIFICATIONS
 - **[Degree / Major]** – [Institution], [Year]
-- **Certifications:** [Certification Name] ([Issuer], [Year])
+- **[Certification Name 1]** – [Issuer], [Year]
+- **[Certification Name 2]** – [Issuer], [Year]
 
 ---
 
@@ -281,6 +294,7 @@ ${req.masterData}
 ${req.targetJob}
 
 REMINDER: Use ONLY technologies, companies, dates, and metrics present in MASTER-DATA.MD. If a job requirement is missing from MASTER-DATA.MD, put it in Part 1 Gap Analysis only. Do NOT add missing skills to the CV!
+In EDUCATION & CERTIFICATIONS, list each degree and each certification as its OWN individual bullet point on a separate line (forming a vertical column). NEVER group certifications inline with pipes or commas!
 `;
 
   return { systemInstruction, userPrompt, company };

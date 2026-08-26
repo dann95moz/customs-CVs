@@ -102,7 +102,8 @@ export const BLANK_TAILORED_CV = `# [CANDIDATE FULL NAME]
 
 ## EDUCATION & CERTIFICATIONS
 - **[Degree / Program]** – [University / Institution], [Year]
-- **[Verified Industry Certification]** – [Issuer], [Year]
+- **[Verified Industry Certification 1]** – [Issuer], [Year]
+- **[Verified Industry Certification 2]** – [Issuer], [Year]
 
 ---
 

@@ -100,7 +100,8 @@ Deliver your response in clearly delimited Markdown sections:
 
 ## EDUCATION & CERTIFICATIONS
 - **[Degree / Major]** – [Institution], [Year] • *[Optional Context Line]*
-- **Certifications:** [Name] ([Issuer], [Year]) | ...
+- **[Certification Name 1]** – [Issuer], [Year]
+- **[Certification Name 2]** – [Issuer], [Year]
 
 ---
 

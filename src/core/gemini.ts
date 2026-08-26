@@ -124,7 +124,8 @@ PART 2: TAILORED CV
 
 ## EDUCATION & CERTIFICATIONS
 - **[Degree / Program]** – [Institution], [Year]
-- **Certifications:** [Name] ([Issuer], [Year]) | ...
+- **[Certification Name 1]** – [Issuer], [Year]
+- **[Certification Name 2]** – [Issuer], [Year]
 
 ## LANGUAGES
 - **[Language 1]:** [Level]
@@ -138,6 +139,7 @@ PART 2: TAILORED CV
 
   const userPrompt = `
 Please generate the tailored CV for target company "${companyName}" by analyzing the following reference files:
+In EDUCATION & CERTIFICATIONS, list each degree and each certification as its OWN individual bullet point on a separate line (vertical column format). NEVER group certifications inline with pipes or commas.
 
 === 1. MASTER-DATA.MD (Candidate Single Source of Truth) ===
 ${masterData}

@@ -34,7 +34,7 @@ This document defines the strict styling, formatting, content, and ATS optimizat
   - Professional Summary: 3–4 impactful lines ending with concrete metrics.
   - Technical Skills: Exactly 3 strategic high-density categories.
   - Professional Experience: 2–3 roles with **3 to 4 high-impact bullets per role** (Google XYZ format).
-  - Education & Certifications: University degrees and relevant verified certifications with issuer and year.
+  - Education & Certifications: University degrees and relevant verified certifications with issuer and year, formatted in a strict vertical column (one bullet per degree/certification). NEVER combine multiple certifications into a single inline line with pipes or commas.
   - Languages: Standardized proficiency levels (CEFR: Native, B2, C1, C2).
 - **2-Page Target (Lead / Staff / Director +7 years experience):**
   - Word budget: **750 to 850 total words** completing 2 full pages.
@@ -87,6 +87,10 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
   - Copy exact start and end dates from `master-data.md` (e.g., `Oct 2024 – Apr 2026`).
   - **Never assume "Present"** automatically if an explicit end month/year is provided. Only use "Present" if `master-data.md` explicitly specifies "Present" / "Actual".
   - Standard date format: `Mon YYYY – Mon YYYY` (e.g., `Oct 2024 – Apr 2026` or `Jul 2022 – Oct 2024`).
+- **Certifications & Education Format (Strict Column Rule):**
+  - Always list each university degree and each certification as its own individual bullet point on a separate line (forming a clean vertical column).
+  - ❌ Do NOT combine multiple certifications into a single inline line separated by pipes `|` or commas (e.g. NEVER output `- **Certifications:** Cert 1 | Cert 2`).
+  - ✅ Format: `- **[Certification Name]** – [Issuer], [Year]`.
 - **Language Uniformity:**
   - If `target-job.md` is in English, generate 100% of the CV in professional English with exact section titles (`PROFESSIONAL SUMMARY`, `TECHNICAL SKILLS`, `PROFESSIONAL EXPERIENCE`, `EDUCATION & CERTIFICATIONS`, `LANGUAGES`).
   - If `target-job.md` is in Spanish, use industry-standard tech terminology.
