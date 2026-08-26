@@ -1,0 +1,195 @@
+/* ==========================================================================
+   PRINT SETUP — PERFECT A4 EXTRACTION (Zero Browser Chrome)
+   ========================================================================== */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  :root,
+  html,
+  body {
+    color-scheme: light !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #root,
+  .studio-app,
+  .studio-body,
+  .preview-workspace-layout,
+  .preview-canvas-wrapper,
+  .preview-pane-canvas {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Hide all Studio application UI elements, wizard, stepper, rails, drawers and sidebars */
+  .no-print,
+  .studio-navbar,
+  .wizard-stepper,
+  .MuiAppBar-root,
+  header:not(.cv-header),
+  .preview-top-toolbar,
+  .preview-side-rail,
+  .preview-side-panel,
+  .preview-nav-footer,
+  .step-navigation-footer,
+  .footer-status-msg,
+  .split-view-bar,
+  .split-pane-editor,
+  .stats-sidebar,
+  .page-break-guide,
+  .wizard-step-view,
+  .step-guidance-card,
+  .step-metrics-strip,
+  .step-inputs-card,
+  .step-editor-card,
+  .tailor-summary-card,
+  .tailor-config-grid,
+  .synthesis-launch-box,
+  .inputs-workspace-layout,
+  .generator-workspace-layout,
+  .audit-workspace-layout,
+  .gap-workspace-layout,
+  .settings-workspace-layout,
+  .sidebar-action-box,
+  .split-quick-tags,
+  .theme-pills,
+  button,
+  .MuiButton-root,
+  .MuiIconButton-root,
+  .MuiButtonGroup-root,
+  .MuiTooltip-popper,
+  .synthesis-error-banner {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    left: -99999px !important;
+  }
+
+  /* The printable sheet: exact A4 layout with NO dark drop shadow and pure white page */
+  .paper-sheet {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 auto !important;
+    padding: 10mm 12mm !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .paper-sheet .cv-container {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .paper-sheet [class*="theme-"] {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+
+  /* Ensure CV header, candidate name, contact list, and sections are ALWAYS visible on print */
+  .paper-sheet header.cv-header,
+  .paper-sheet .cv-header,
+  .paper-sheet .cv-name,
+  .paper-sheet .cv-title,
+  .paper-sheet .cv-contact-list,
+  .paper-sheet .cv-section,
+  .paper-sheet main.cv-main,
+  .paper-sheet aside.cv-sidebar {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    opacity: 1 !important;
+  }
+
+  .paper-sheet .cv-contact-item {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .paper-sheet .template-two-column .cv-body-grid {
+    display: grid !important;
+    grid-template-columns: 34% 66% !important;
+    visibility: visible !important;
+  }
+
+  .cv-section {
+    margin-bottom: 9px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .experience-item,
+  .project-item,
+  .education-item {
+    margin-bottom: 6.5px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .skills-group {
+    margin-bottom: 3px !important;
+  }
+
+  ul.item-bullets li {
+    margin-bottom: 2.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .cv-summary {
+    line-height: 1.4 !important;
+  }
+
+  .cv-header {
+    margin-bottom: 10px !important;
+    padding-bottom: 8px !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}
