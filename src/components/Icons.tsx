@@ -26,7 +26,10 @@ export type IconType =
   | 'alert-circle'
   | 'target'
   | 'layers'
-  | 'gauge';
+  | 'gauge'
+  | 'user'
+  | 'arrow-right'
+  | 'arrow-left';
 
 interface IconProps {
   type: IconType;
@@ -268,6 +271,27 @@ export const Icon: React.FC<IconProps> = ({ type, className = 'icon', size = 14 
         <svg {...svgProps}>
           <path d="m12 14 4-4" />
           <path d="M3.34 19a10 10 0 1 1 17.32 0" />
+        </svg>
+      );
+    case 'user':
+      return (
+        <svg {...svgProps}>
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      );
+    case 'arrow-right':
+      return (
+        <svg {...svgProps}>
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      );
+    case 'arrow-left':
+      return (
+        <svg {...svgProps}>
+          <path d="M19 12H5" />
+          <path d="m12 19-7-7 7-7" />
         </svg>
       );
     default:

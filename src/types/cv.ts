@@ -151,8 +151,16 @@ export interface QualityAuditReport {
   markdownReport: string;
 }
 
+// Wizard Navigation Steps
+export type WizardStep = 
+  | 'profile' 
+  | 'target' 
+  | 'tailor' 
+  | 'preview';
+
 // Studio Navigation Tabs
 export type StudioTab = 
+  | 'wizard'
   | 'editor' 
   | 'preview' 
   | 'audit' 

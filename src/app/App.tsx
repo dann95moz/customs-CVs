@@ -13,6 +13,10 @@ import { SplitMarkdownEditor } from '../components/studio/SplitMarkdownEditor';
 import { QualityAuditView } from '../components/studio/QualityAuditView';
 import { GapAnalysisView } from '../components/studio/GapAnalysisView';
 import { SettingsView } from '../components/studio/SettingsView';
+import { WizardStepper } from '../components/studio/WizardStepper';
+import { StepMasterData } from '../components/studio/StepMasterData';
+import { StepTargetJob } from '../components/studio/StepTargetJob';
+import { StepAITailor } from '../components/studio/StepAITailor';
 import {
   tailorResume,
   DEFAULT_RULES,
@@ -22,6 +26,7 @@ import { auditCvContent } from '../core/audit-engine';
 import {
   ThemeId,
   StudioTab,
+  WizardStep,
   AIProviderSettings,
   MarkdownFileItem
 } from '../types/cv';
@@ -182,7 +187,19 @@ const DEMO_GAP_REPORT = `
 
 export const App: React.FC = () => {
   // Navigation State
-  const [activeTab, setActiveTab] = useState<StudioTab>('editor');
+  const [activeTab, setActiveTab] = useState<StudioTab>(() => {
+    const saved = localStorage.getItem('cv_active_tab') as StudioTab;
+    if (saved === 'editor' || !saved) {
+      return 'wizard';
+    }
+    return saved;
+  });
+
+  const [wizardStep, setWizardStep] = useState<WizardStep>(() => {
+    const saved = localStorage.getItem('cv_wizard_step') as WizardStep;
+    return saved || 'profile';
+  });
+
   const [editorSplitView, setEditorSplitView] = useState<'split' | 'preview-only' | 'editor-only'>('split');
 
   // Core Data States (Default to clean blank templates; persist to LocalStorage if edited)
@@ -335,6 +352,14 @@ export const App: React.FC = () => {
     localStorage.setItem('cv_ai_settings', JSON.stringify(providerSettings));
   }, [providerSettings]);
 
+  useEffect(() => {
+    localStorage.setItem('cv_wizard_step', wizardStep);
+  }, [wizardStep]);
+
+  useEffect(() => {
+    localStorage.setItem('cv_active_tab', activeTab);
+  }, [activeTab]);
+
   // Load server files if API is available
   useEffect(() => {
     fetch('/api/files')
@@ -438,7 +463,8 @@ export const App: React.FC = () => {
       setGenerationStep('Done! Resume tailored successfully.');
       setTimeout(() => {
         setIsGenerating(false);
-        setActiveTab('preview');
+        setActiveTab('wizard');
+        setWizardStep('preview');
       }, 500);
     } catch (err: any) {
       setGenerationError(err.message || 'Error occurred during AI resume synthesis.');
@@ -492,29 +518,22 @@ export const App: React.FC = () => {
     <div className="studio-app">
       {/* Top Navbar */}
       <header className="studio-navbar">
-        <div className="studio-brand" onClick={() => setActiveTab('preview')}>
+        <div className="studio-brand" onClick={() => { setActiveTab('wizard'); setWizardStep('preview'); }}>
           <div className="brand-logo-glow">
             <Icon type="sparkles" size={18} />
           </div>
           <span className="brand-text">CV Studio Pro</span>
-          <span className="badge-pro-tag">v3.0 • AI Engine</span>
+          <span className="badge-pro-tag">Guided Studio</span>
         </div>
 
         {/* Primary Navigation Tabs */}
         <nav className="studio-main-nav">
           <button
             type="button"
-            className={`nav-tab-btn ${activeTab === 'editor' ? 'active' : ''}`}
-            onClick={() => setActiveTab('editor')}
+            className={`nav-tab-btn ${activeTab === 'wizard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('wizard')}
           >
-            <Icon type="file-text" size={14} /> Inputs & SSOT
-          </button>
-          <button
-            type="button"
-            className={`nav-tab-btn ${activeTab === 'preview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('preview')}
-          >
-            <Icon type="eye" size={14} /> CV Studio Preview
+            <Icon type="sparkles" size={14} /> Resume Creation Wizard
           </button>
           <button
             type="button"
@@ -547,13 +566,13 @@ export const App: React.FC = () => {
             className={`nav-tab-btn ${activeTab === 'settings' ? 'active' : ''}`}
             onClick={() => setActiveTab('settings')}
           >
-            <Icon type="settings" size={14} /> Settings
+            <Icon type="settings" size={14} /> Settings & API
           </button>
         </nav>
 
         {/* Quick Actions */}
         <div className="studio-top-actions">
-          {activeTab === 'preview' && (
+          {((activeTab === 'wizard' && wizardStep === 'preview') || activeTab === 'preview') && (
             <div className="theme-pills">
               <button
                 className={`theme-pill ${theme === 'modern-tech' ? 'active' : ''}`}
@@ -582,189 +601,48 @@ export const App: React.FC = () => {
             </div>
           )}
 
-          <button
-            className="studio-btn studio-btn-primary"
-            onClick={() => window.print()}
-            title="Export or print pixel-perfect A4 PDF"
-          >
-            <Icon type="printer" size={14} /> Print / Save PDF
-          </button>
+          {activeTab !== 'wizard' && (
+            <button
+              className="studio-btn studio-btn-primary"
+              onClick={() => window.print()}
+              title="Export or print pixel-perfect A4 PDF"
+            >
+              <Icon type="printer" size={14} /> Print / Save PDF
+            </button>
+          )}
         </div>
       </header>
 
+      {/* Stepper Bar for Guided Wizard */}
+      {activeTab === 'wizard' && (
+        <WizardStepper
+          currentStep={wizardStep}
+          onSelectStep={(step) => setWizardStep(step)}
+          hasMasterData={Boolean(masterData && masterData.trim().length > 60 && !masterData.includes('[CANDIDATE FULL NAME]'))}
+          hasTargetJob={hasTargetJob}
+          hasGeneratedCv={hasGeneratedCv}
+        />
+      )}
+
       {/* Main Workspace Body */}
       <div className="studio-body">
-        {/* VIEW 1: CV STUDIO & LIVE PREVIEW (SPLIT VIEW) */}
-        {activeTab === 'preview' && (
-          <div className="preview-workspace-layout">
-            {/* Split Screen Mode Toggle Bar */}
-            <div className="split-view-bar">
-              <div className="split-mode-buttons">
-                <button
-                  type="button"
-                  className={`split-toggle-btn ${editorSplitView === 'split' ? 'active' : ''}`}
-                  onClick={() => setEditorSplitView('split')}
-                >
-                  <Icon type="layers" size={13} /> Split Editor & Sheet
-                </button>
-                <button
-                  type="button"
-                  className={`split-toggle-btn ${editorSplitView === 'preview-only' ? 'active' : ''}`}
-                  onClick={() => setEditorSplitView('preview-only')}
-                >
-                  <Icon type="eye" size={13} /> Full Sheet Preview
-                </button>
-                <button
-                  type="button"
-                  className={`split-toggle-btn ${editorSplitView === 'editor-only' ? 'active' : ''}`}
-                  onClick={() => setEditorSplitView('editor-only')}
-                >
-                  <Icon type="edit" size={13} /> Markdown Only
-                </button>
-              </div>
-
-              <div className="split-quick-tags">
-                <span className="quick-company-pill">
-                  Target: <strong>{companyName || 'Target Company'}</strong>
-                </span>
-                <button
-                  type="button"
-                  className="btn-quick-tailor"
-                  onClick={handleGenerate}
-                  disabled={isGenerating}
-                >
-                  <Icon type="zap" size={12} /> {isGenerating ? 'Synthesizing...' : 'Re-Tailor with AI'}
-                </button>
-              </div>
-            </div>
-
-            <div className="preview-content-split">
-              {/* Left: Split Markdown Source Editor */}
-              {(editorSplitView === 'split' || editorSplitView === 'editor-only') && (
-                <div className="split-pane-editor">
-                  <SplitMarkdownEditor
-                    content={cvMarkdown}
-                    onChange={setCvMarkdown}
-                    onDownload={handleDownloadCvMarkdown}
-                    fileName={`CV_${extractCandidateName(masterData, 'Candidate')}.md`}
-                  />
-                </div>
-              )}
-
-              {/* Right: Realistic A4 Sheet Canvas */}
-              {(editorSplitView === 'split' || editorSplitView === 'preview-only') && (
-                <main className="preview-pane-canvas">
-                  <div
-                    ref={paperRef}
-                    className={`paper-sheet ${autoFitPreview && overflowPercentage > 0 && overflowPercentage <= 25 ? 'compact-fit' : ''}`}
-                  >
-                    <CVRenderer data={parsedCv} theme={theme} />
-
-                    {/* Visual Page Break Marker at A4 limit */}
-                    <div className="page-break-guide" style={{ top: `${A4_PAGE_PX}px` }}>
-                      <span>✂️ Page 1 Boundary (A4 Standard Format)</span>
-                    </div>
-                  </div>
-                </main>
-              )}
-
-              {/* Right Sidebar: Real-Time Dimensions & ATS Metrics */}
-              {editorSplitView !== 'editor-only' && (
-                <aside className="stats-sidebar">
-                  <div className="stats-card">
-                    <h4>📄 Dimensions & Page Fit</h4>
-                    <div className="stat-row">
-                      <span>Estimated Pages:</span>
-                      <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>
-                        {estimatedPages} {estimatedPages === 1 ? 'Page ✓' : 'Pages'}
-                      </strong>
-                    </div>
-                    <div className="stat-row">
-                      <span>Sheet Height:</span>
-                      <strong>{sheetHeight}px / {A4_PAGE_PX}px</strong>
-                    </div>
-                    {overflowPercentage > 0 && (
-                      <div className="stat-row">
-                        <span>Page 1 Overflow:</span>
-                        <strong style={{ color: overflowPercentage <= 20 ? '#38bdf8' : '#ef4444' }}>
-                          +{overflowPercentage}% {overflowPercentage <= 20 ? '(Auto-Fit Active)' : '(Needs Synthesis)'}
-                        </strong>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="stats-card">
-                    <h4>📊 Content Metrics</h4>
-                    <div className="stat-row">
-                      <span>Total Words:</span>
-                      <strong style={{ color: stats.words <= 480 ? '#10b981' : '#f59e0b' }}>
-                        {stats.words} {stats.words <= 480 ? '(Ideal 1-Page)' : '(Extended)'}
-                      </strong>
-                    </div>
-                    <div className="stat-row">
-                      <span>Achievements (XYZ):</span>
-                      <strong>{stats.bulletsCount} Bullets</strong>
-                    </div>
-                    <div className="stat-row">
-                      <span>Listed Skills:</span>
-                      <strong>{stats.skillsCount}</strong>
-                    </div>
-                    <div className="stat-row">
-                      <span>Contact Channels:</span>
-                      <strong>{stats.contactsCount}</strong>
-                    </div>
-                  </div>
-
-                  <div className="stats-card">
-                    <h4>🛡️ ATS & Executive Health</h4>
-                    <div className="stat-row">
-                      <span>Quality Audit:</span>
-                      <strong style={{ color: '#10b981' }}>{auditReport.overallScore} / 10.0</strong>
-                    </div>
-                    <div className="stat-row">
-                      <span>Google XYZ Metric:</span>
-                      <strong style={{ color: '#10b981' }}>✓ Calibrated</strong>
-                    </div>
-                    <div className="stat-row">
-                      <span>Zero PII / ATS Clean:</span>
-                      <strong style={{ color: '#10b981' }}>✓ 100% Compliant</strong>
-                    </div>
-                  </div>
-
-                  <div className="sidebar-action-box">
-                    <button
-                      type="button"
-                      className="studio-btn studio-btn-secondary btn-full"
-                      onClick={() => setActiveTab('audit')}
-                    >
-                      <Icon type="gauge" size={13} /> View Full Audit Dashboard
-                    </button>
-                    <button
-                      type="button"
-                      className="studio-btn studio-btn-secondary btn-full"
-                      onClick={() => setActiveTab('gap')}
-                    >
-                      <Icon type="target" size={13} /> View Gap Strategy
-                    </button>
-                  </div>
-                </aside>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* VIEW 2: INPUTS & MASTER DATA WORKSPACE */}
-        {activeTab === 'editor' && (
-          <div className="inputs-workspace-layout">
-            <div className="inputs-dual-grid">
-              <MasterDataEditor
+        {/* WIZARD FLOW: 4 SEPARATE, DEDICATED STEPS */}
+        {activeTab === 'wizard' && (
+          <>
+            {/* PASO 1: TU PERFIL PROFESIONAL (MASTER DATA) */}
+            {wizardStep === 'profile' && (
+              <StepMasterData
                 content={masterData}
                 onChange={setMasterData}
                 onLoadSample={() => setMasterData(DEMO_MASTER_DATA)}
                 onResetTemplate={() => setMasterData(BLANK_MASTER_DATA)}
+                onNextStep={() => setWizardStep('target')}
               />
+            )}
 
-              <TargetJobEditor
+            {/* PASO 2: LA OFERTA DE EMPLEO (TARGET JOB) */}
+            {wizardStep === 'target' && (
+              <StepTargetJob
                 content={targetJob}
                 onChange={setTargetJob}
                 companyName={companyName}
@@ -776,111 +654,215 @@ export const App: React.FC = () => {
                   setCompanyName('Stripe');
                   setTargetRole('Senior Frontend Engineer');
                 }}
+                onPrevStep={() => setWizardStep('profile')}
+                onNextStep={() => setWizardStep('tailor')}
               />
-            </div>
+            )}
 
-            {/* Action Toolbar with Model Selection, Page Budget & 1-Click Synthesis */}
-            <div className="inputs-synthesis-toolbar">
-              <div className="inputs-toolbar-left">
-                <button
-                  type="button"
-                  className="studio-btn studio-btn-secondary btn-sm"
-                  onClick={handleStartBlank}
-                  title="Clear all fields to clean blank templates"
-                >
-                  <Icon type="file-text" size={13} /> Clear / Blank
-                </button>
-                <button
-                  type="button"
-                  className="studio-btn studio-btn-secondary btn-sm"
-                  onClick={handleLoadDemoProfile}
-                  title="Load full sample profile and job vacancy"
-                >
-                  <Icon type="refresh" size={13} /> Load Demo
-                </button>
-              </div>
+            {/* PASO 3: PERSONALIZACIÓN INTELIGENTE CON IA */}
+            {wizardStep === 'tailor' && (
+              <StepAITailor
+                candidateName={extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ')}
+                companyName={companyName}
+                targetRole={targetRole}
+                pageBudget={pageBudget}
+                onPageBudgetChange={setPageBudget}
+                providerSettings={providerSettings}
+                onSettingsChange={setProviderSettings}
+                onGenerate={handleGenerate}
+                isGenerating={isGenerating}
+                generationStep={generationStep}
+                hasGeneratedCv={hasGeneratedCv}
+                onPrevStep={() => setWizardStep('target')}
+                onNextStep={() => setWizardStep('preview')}
+              />
+            )}
 
-              <div className="inputs-toolbar-center">
-                <div className="toolbar-control-group">
-                  <label className="toolbar-label">
-                    <Icon type="brain" size={12} /> AI Model:
-                  </label>
-                  <select
-                    className="studio-select-sm"
-                    value={providerSettings.model}
-                    onChange={(e) => {
-                      const selectedId = e.target.value;
-                      const modelObj = AVAILABLE_AI_MODELS.find(m => m.id === selectedId);
-                      if (modelObj) {
-                        setProviderSettings({
-                          ...providerSettings,
-                          provider: modelObj.provider,
-                          model: selectedId
-                        });
-                      }
-                    }}
-                    disabled={isGenerating}
-                  >
-                    <optgroup label="✨ Free Public AI (No Key Needed)">
-                      {AVAILABLE_AI_MODELS.filter(m => m.isFree).map(m => (
-                        <option key={m.id} value={m.id}>🟢 {m.name}</option>
-                      ))}
-                    </optgroup>
-                    <optgroup label="🔑 Custom / BYOK Models">
-                      {AVAILABLE_AI_MODELS.filter(m => !m.isFree).map(m => (
-                        <option key={m.id} value={m.id}>🔑 {m.name}</option>
-                      ))}
-                    </optgroup>
-                  </select>
-                </div>
-
-                <div className="toolbar-control-group">
-                  <label className="toolbar-label">
-                    <Icon type="layers" size={12} /> Page Budget:
-                  </label>
-                  <div className="budget-pills-mini">
+            {/* PASO 4: PREVISUALIZACIÓN A4, RETOQUE Y DESCARGA */}
+            {wizardStep === 'preview' && (
+              <div className="preview-workspace-layout">
+                {/* Split Screen Mode Toggle Bar */}
+                <div className="split-view-bar">
+                  <div className="split-mode-buttons">
                     <button
                       type="button"
-                      className={`budget-pill-sm ${pageBudget === 1 ? 'active' : ''}`}
-                      onClick={() => setPageBudget(1)}
-                      disabled={isGenerating}
+                      className={`split-toggle-btn ${editorSplitView === 'split' ? 'active' : ''}`}
+                      onClick={() => setEditorSplitView('split')}
                     >
-                      1 Page (A4 Fit)
+                      <Icon type="layers" size={13} /> Split View (Editor + Sheet)
                     </button>
                     <button
                       type="button"
-                      className={`budget-pill-sm ${pageBudget === 2 ? 'active' : ''}`}
-                      onClick={() => setPageBudget(2)}
+                      className={`split-toggle-btn ${editorSplitView === 'preview-only' ? 'active' : ''}`}
+                      onClick={() => setEditorSplitView('preview-only')}
+                    >
+                      <Icon type="eye" size={13} /> Full Sheet Preview
+                    </button>
+                    <button
+                      type="button"
+                      className={`split-toggle-btn ${editorSplitView === 'editor-only' ? 'active' : ''}`}
+                      onClick={() => setEditorSplitView('editor-only')}
+                    >
+                      <Icon type="edit" size={13} /> Markdown Only
+                    </button>
+                  </div>
+
+                  <div className="split-quick-tags">
+                    <span className="quick-company-pill">
+                      Target: <strong>{companyName || 'Target Company'}</strong> ({targetRole || 'Target Role'})
+                    </span>
+                    <button
+                      type="button"
+                      className="btn-quick-tailor"
+                      onClick={handleGenerate}
                       disabled={isGenerating}
                     >
-                      2 Pages (Senior)
+                      <Icon type="zap" size={12} /> {isGenerating ? 'Synthesizing...' : 'Re-Tailor with AI'}
                     </button>
                   </div>
                 </div>
-              </div>
 
-              <div className="inputs-toolbar-right">
-                <button
-                  type="button"
-                  className="studio-btn studio-btn-primary btn-lg btn-synthesis"
-                  onClick={handleGenerate}
-                  disabled={isGenerating}
-                >
-                  {isGenerating ? (
-                    <>
-                      <Icon type="refresh" size={16} className="spin" />
-                      <span>{generationStep || 'Synthesizing...'}</span>
-                    </>
-                  ) : (
-                    <>
-                      <Icon type="zap" size={16} />
-                      <span>✨ Synthesize Tailored CV</span>
-                    </>
+                <div className="preview-content-split">
+                  {/* Left: Split Markdown Source Editor */}
+                  {(editorSplitView === 'split' || editorSplitView === 'editor-only') && (
+                    <div className="split-pane-editor">
+                      <SplitMarkdownEditor
+                        content={cvMarkdown}
+                        onChange={setCvMarkdown}
+                        onDownload={handleDownloadCvMarkdown}
+                        fileName={`CV_${extractCandidateName(masterData, 'Candidate')}.md`}
+                      />
+                    </div>
                   )}
-                </button>
+
+                  {/* Right: Realistic A4 Sheet Canvas */}
+                  {(editorSplitView === 'split' || editorSplitView === 'preview-only') && (
+                    <main className="preview-pane-canvas">
+                      <div
+                        ref={paperRef}
+                        className={`paper-sheet ${autoFitPreview && overflowPercentage > 0 && overflowPercentage <= 25 ? 'compact-fit' : ''}`}
+                      >
+                        <CVRenderer data={parsedCv} theme={theme} />
+
+                        {/* Visual Page Break Marker at A4 limit */}
+                        <div className="page-break-guide" style={{ top: `${A4_PAGE_PX}px` }}>
+                          <span>✂️ Page 1 Boundary (Standard A4 Format)</span>
+                        </div>
+                      </div>
+                    </main>
+                  )}
+
+                  {/* Right Sidebar: Real-Time Dimensions & ATS Metrics */}
+                  {editorSplitView !== 'editor-only' && (
+                    <aside className="stats-sidebar">
+                      <div className="stats-card">
+                        <h4>📄 Dimensions & Page Fit</h4>
+                        <div className="stat-row">
+                          <span>Estimated Pages:</span>
+                          <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>
+                            {estimatedPages} {estimatedPages === 1 ? 'Page ✓' : 'Pages'}
+                          </strong>
+                        </div>
+                        <div className="stat-row">
+                          <span>Sheet Height:</span>
+                          <strong>{sheetHeight}px / {A4_PAGE_PX}px</strong>
+                        </div>
+                        {overflowPercentage > 0 && (
+                          <div className="stat-row">
+                            <span>Page 1 Overflow:</span>
+                            <strong style={{ color: overflowPercentage <= 20 ? '#38bdf8' : '#ef4444' }}>
+                              +{overflowPercentage}% {overflowPercentage <= 20 ? '(Auto-Fit Active)' : '(Needs Synthesis)'}
+                            </strong>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="stats-card">
+                        <h4>📊 Content Metrics</h4>
+                        <div className="stat-row">
+                          <span>Total Words:</span>
+                          <strong style={{ color: stats.words <= 480 ? '#10b981' : '#f59e0b' }}>
+                            {stats.words} {stats.words <= 480 ? '(Ideal 1-Page)' : '(Extended)'}
+                          </strong>
+                        </div>
+                        <div className="stat-row">
+                          <span>Achievements (XYZ):</span>
+                          <strong>{stats.bulletsCount} bullets</strong>
+                        </div>
+                        <div className="stat-row">
+                          <span>Key Skills:</span>
+                          <strong>{stats.skillsCount}</strong>
+                        </div>
+                        <div className="stat-row">
+                          <span>Contact Channels:</span>
+                          <strong>{stats.contactsCount}</strong>
+                        </div>
+                      </div>
+
+                      <div className="stats-card">
+                        <h4>🛡️ ATS & Executive Health</h4>
+                        <div className="stat-row">
+                          <span>Quality Audit:</span>
+                          <strong style={{ color: '#10b981' }}>{auditReport.overallScore} / 10.0</strong>
+                        </div>
+                        <div className="stat-row">
+                          <span>Google XYZ Metric:</span>
+                          <strong style={{ color: '#10b981' }}>✓ Calibrated</strong>
+                        </div>
+                        <div className="stat-row">
+                          <span>Zero PII / ATS Clean:</span>
+                          <strong style={{ color: '#10b981' }}>✓ 100% Compliant</strong>
+                        </div>
+                      </div>
+
+                      <div className="sidebar-action-box">
+                        <button
+                          type="button"
+                          className="studio-btn studio-btn-secondary btn-full"
+                          onClick={() => setActiveTab('audit')}
+                        >
+                          <Icon type="gauge" size={13} /> View Full Audit Dashboard
+                        </button>
+                        <button
+                          type="button"
+                          className="studio-btn studio-btn-secondary btn-full"
+                          onClick={() => setActiveTab('gap')}
+                        >
+                          <Icon type="target" size={13} /> View Gap Strategy
+                        </button>
+                      </div>
+                    </aside>
+                  )}
+                </div>
+
+                {/* Step 4 Bottom Navigation Bar */}
+                <footer className="step-navigation-footer preview-nav-footer">
+                  <div className="footer-left">
+                    <button
+                      type="button"
+                      className="studio-btn studio-btn-secondary btn-prev-step"
+                      onClick={() => setWizardStep('tailor')}
+                    >
+                      <Icon type="arrow-left" size={15} />
+                      <span>Back to Tailoring (Step 3)</span>
+                    </button>
+                  </div>
+
+                  <div className="footer-right">
+                    <button
+                      type="button"
+                      className="studio-btn studio-btn-primary btn-next-step"
+                      onClick={() => window.print()}
+                      title="Download your tailored CV as a PDF"
+                    >
+                      <Icon type="printer" size={15} />
+                      <span>Download PDF</span>
+                    </button>
+                  </div>
+                </footer>
               </div>
-            </div>
-          </div>
+            )}
+          </>
         )}
 
         {/* VIEW 3: QUALITY AUDIT (1-10 SCALE) */}
@@ -907,9 +889,12 @@ export const App: React.FC = () => {
                   <button
                     type="button"
                     className="studio-btn studio-btn-primary"
-                    onClick={() => setActiveTab('editor')}
+                    onClick={() => {
+                      setActiveTab('wizard');
+                      setWizardStep('tailor');
+                    }}
                   >
-                    <Icon type="zap" size={14} /> Go to Inputs & Synthesize
+                    <Icon type="zap" size={14} /> Go to Wizard & Tailor
                   </button>
                 </div>
               </div>
@@ -927,15 +912,18 @@ export const App: React.FC = () => {
                 </div>
                 <h3 className="locked-title">No Target Vacancy Entered Yet</h3>
                 <p className="locked-desc">
-                  Gap Strategy cross-references your candidate background against specific employer requirements. Please paste or upload a target job posting in Inputs & SSOT first.
+                  Gap Strategy cross-references your candidate background against specific employer requirements. Please paste or upload a target job posting in the wizard first.
                 </p>
                 <div className="locked-actions">
                   <button
                     type="button"
                     className="studio-btn studio-btn-primary"
-                    onClick={() => setActiveTab('editor')}
+                    onClick={() => {
+                      setActiveTab('wizard');
+                      setWizardStep('target');
+                    }}
                   >
-                    <Icon type="file-text" size={14} /> Add Target Job Description
+                    <Icon type="file-text" size={14} /> Add Target Job in Wizard
                   </button>
                 </div>
               </div>
