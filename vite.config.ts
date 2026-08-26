@@ -29,7 +29,7 @@ export default defineConfig({
             const templatePath = path.resolve(__dirname, 'templates', 'cv-template.md');
             if (fs.existsSync(templatePath)) {
               const content = fs.readFileSync(templatePath, 'utf8');
-              files.push({ name: 'cv-template.md (Plantilla base)', path: 'templates/cv-template.md', content });
+              files.push({ name: 'cv-template.md (Base Template)', path: 'templates/cv-template.md', content });
             }
 
             res.setHeader('Content-Type', 'application/json');

@@ -1,7 +1,7 @@
 {
   "name": "mi-cv-engine",
   "version": "2.0.0",
-  "description": "Sistema de diseño, visualización y generación de CVs a PDF con TypeScript, React, Vite, Puppeteer y Gemini API",
+  "description": "Design, preview, and PDF resume generation engine built with TypeScript, React, Vite, Puppeteer, and Gemini API",
   "type": "module",
   "scripts": {
     "dev": "vite",
