@@ -7,7 +7,7 @@ import { ThemeId } from '../types/cv';
 export interface AuditSectionResult {
   sectionName: string;
   score: number; // Scale 1.0 - 10.0 (realistic, strictly calibrated)
-  status: string; // '🟢 Óptimo' | '🟡 Bueno con margen' | '🔴 Requiere atención'
+  status: string; // '🟢 Optimal' | '🟡 Solid with Headroom' | '🔴 Needs Attention'
   comment: string;
   identifiedGaps?: string[];
   actionToTen?: string[];
@@ -15,7 +15,7 @@ export interface AuditSectionResult {
 
 export interface StrategicGrowthPillar {
   pillarName: string;
-  impactLevel: 'Alto' | 'Medio-Alto' | 'Estratégico';
+  impactLevel: 'High' | 'Medium-High' | 'Strategic';
   diagnostic: string;
   recommendationForMasterData: string;
 }
@@ -41,14 +41,11 @@ export function auditCvContent(
   const sections: AuditSectionResult[] = [];
   const strategicPillars: StrategicGrowthPillar[] = [];
 
-  const rawUpper = cvMarkdown.toUpperCase();
-  const rawText = cvMarkdown;
-
-  // 1. Encabezado y contacto
+  // 1. Header & Contact Information
   let headerScore = 9.0;
   const headerGaps: string[] = [];
   const headerActions: string[] = [];
-  let headerComment = 'Encabezado limpio y profesional con canales directos (Email, Teléfono, LinkedIn) y sin datos personales sensibles.';
+  let headerComment = 'Clean, professional header with direct communication channels (Email, Phone, LinkedIn) and zero sensitive personal data.';
 
   const hasEmail = cvData.contacts.some(c => c.type === 'email');
   const hasLinkedIn = cvData.contacts.some(c => c.type === 'linkedin');
@@ -58,109 +55,109 @@ export function auditCvContent(
 
   if (!hasEmail || !hasLinkedIn || !cvData.name || !cvData.title) {
     headerScore = 7.5;
-    headerGaps.push('Faltan canales de contacto esenciales (Email, LinkedIn o Rol profesional).');
-    headerActions.push('Asegurar nombre completo, título alineado y enlaces directos.');
+    headerGaps.push('Missing essential contact channels or aligned professional title.');
+    headerActions.push('Ensure full name, aligned target role title, and verified direct links are present.');
   } else if (!hasGitHub) {
     headerScore = 9.0;
-    headerComment += ' Decisión acertada de omitir GitHub mientras no cuente con repositorios pulidos de muestra; para llegar a 10/10 se requiere un enlace a portafolio o GitHub curado.';
-    headerActions.push('Agregar enlace a GitHub una vez que cuente con 1 o 2 repositorios con demos y READMEs de nivel profesional.');
+    headerComment += ' Prudent decision to omit GitHub until polished public sample repositories are available; reaching 10/10 requires a curated portfolio or GitHub link.';
+    headerActions.push('Add a curated GitHub link once 1–2 polished repositories with live demos and professional documentation are published.');
   } else {
     headerScore = 9.5;
-    headerComment = 'Encabezado completo con enlaces a LinkedIn y GitHub activo.';
+    headerComment = 'Complete header with verified LinkedIn and active GitHub portfolio links.';
   }
 
   sections.push({
-    sectionName: 'Encabezado y contacto',
+    sectionName: 'Header & Contact Information',
     score: headerScore,
-    status: headerScore >= 9.0 ? '🟢 Óptimo' : '🟡 Bueno con margen',
+    status: headerScore >= 9.0 ? '🟢 Optimal' : '🟡 Solid with Headroom',
     comment: headerComment,
     identifiedGaps: headerGaps.length > 0 ? headerGaps : undefined,
     actionToTen: headerActions.length > 0 ? headerActions : undefined
   });
 
-  // 2. Resumen profesional
+  // 2. Professional Summary
   let summaryScore = 8.5;
   const summaryGaps: string[] = [];
   const summaryActions: string[] = [];
-  let summaryComment = 'Estructura sólida de 4 líneas sin clichés, con mención clara del stack core y cierre con 3 métricas cuantitativas técnicas.';
+  let summaryComment = 'Strong 4-line structure free of generic clichés, with clear core stack alignment and concluding with 3 quantitative engineering metrics.';
 
   const summary = cvData.summary || '';
-  const hasBusinessMetricInSummary = /conversi|retenci|revenue|ingresos|adopci|nps|usuarios activos|transacciones/i.test(summary);
+  const hasBusinessMetricInSummary = /conversi|retenti|revenue|income|adopti|nps|active users|transaction/i.test(summary);
 
   if (!hasBusinessMetricInSummary) {
     summaryScore = 8.5;
-    summaryGaps.push('Todas las métricas de cierre son puramente técnicas (build time, runtime errors, sprint velocity), sin vincular impacto de negocio.');
-    summaryActions.push('Incluir al menos 1 métrica con impacto en el producto o usuario final (ej. volumen transaccional, tasa de retención, reducción de tickets de soporte o tiempo de onboarding de usuario).');
+    summaryGaps.push('All closing metrics are purely technical/engineering metrics (build time, compile error rates, sprint velocity) without direct business outcome linkage.');
+    summaryActions.push('Include at least 1 metric reflecting product or user-facing outcome (e.g., transaction volume, retention rate uplift, support ticket reduction, or user onboarding speed).');
   } else {
     summaryScore = 9.5;
-    summaryComment = 'Resumen excepcional que equilibra perfectamente profundidad arquitectónica con métricas de impacto de negocio.';
+    summaryComment = 'Exceptional summary perfectly balancing deep architectural scope with business impact metrics.';
   }
 
   sections.push({
-    sectionName: 'Resumen profesional',
+    sectionName: 'Professional Summary',
     score: summaryScore,
-    status: summaryScore >= 9.0 ? '🟢 Óptimo' : '🟡 Bueno con margen',
+    status: summaryScore >= 9.0 ? '🟢 Optimal' : '🟡 Solid with Headroom',
     comment: summaryComment,
     identifiedGaps: summaryGaps.length > 0 ? summaryGaps : undefined,
     actionToTen: summaryActions.length > 0 ? summaryActions : undefined
   });
 
-  // 3. Skills técnicas
+  // 3. Technical Skills
   let skillsScore = 9.0;
   const skillsGaps: string[] = [];
   const skillsActions: string[] = [];
-  let skillsComment = 'Arquitectura universal de 3 categorías densas y estratégicas, 100% verificables en master-data y sin tecnologías inventadas.';
+  let skillsComment = 'Universal 3-category high-density architecture, 100% verified against master-data without hallucinated technologies.';
 
   const skillGroups = cvData.skillGroups || [];
   if (skillGroups.length !== 3) {
     skillsScore = 8.0;
-    skillsGaps.push('La distribución no sigue estrictamente la arquitectura universal de 3 categorías.');
-    skillsActions.push('Organizar las competencias en exactamente 3 categorías: Core Fundamentals, Frameworks & Architecture, Tooling & Testing.');
+    skillsGaps.push('Skill grouping does not strictly adhere to the universal 3-category architecture.');
+    skillsActions.push('Organize skills into exactly 3 categories: Core Fundamentals, Frameworks & Architecture, Tooling & Testing.');
   } else {
     skillsScore = 9.0;
-    skillsActions.push('Para alcanzar 10/10, añadir en master-data certificaciones de proveedores de nube (AWS Certified Cloud Practitioner o similar) para respaldar la categoría de Tooling.');
+    skillsActions.push('To reach 10/10, add recognized cloud vendor certifications (e.g., AWS Certified Cloud Practitioner / Solutions Architect) in master-data to anchor tooling expertise.');
   }
 
   sections.push({
-    sectionName: 'Skills técnicas',
+    sectionName: 'Technical Skills',
     score: skillsScore,
-    status: skillsScore >= 9.0 ? '🟢 Óptimo' : '🟡 Bueno con margen',
+    status: skillsScore >= 9.0 ? '🟢 Optimal' : '🟡 Solid with Headroom',
     comment: skillsComment,
     identifiedGaps: skillsGaps.length > 0 ? skillsGaps : undefined,
     actionToTen: skillsActions.length > 0 ? skillsActions : undefined
   });
 
-  // 4. Experiencia (Aval Digital Labs)
+  // 4. Experience (Aval Digital Labs)
   let avalScore = 8.5;
   const avalGaps: string[] = [];
   const avalActions: string[] = [];
-  let avalComment = 'Fuerte impacto arquitectónico en Microfrontends (Module Federation), contratos inter-equipo (Bre-B) y optimización de pipelines CI/CD (50%).';
+  let avalComment = 'High architectural impact in Microfrontends (Module Federation), cross-team integration contracts (Bre-B), and CI/CD pipeline optimization (50% build time reduction).';
 
   // Check for scale / volume context
-  const hasScaleInAval = /\d+\s*k|\d+\s*m|\d+\s*mil|millones|transacciones por|usuarios/i.test(cvMarkdown);
+  const hasScaleInAval = /\d+\s*k|\d+\s*m|\d+\s*mil|million|transactions per|users/i.test(cvMarkdown);
   if (!hasScaleInAval) {
     avalScore = 8.5;
-    avalGaps.push('Falta contexto de escala y volumen de los productos de crédito multi-banco.');
-    avalActions.push('Agregar en master-data la magnitud estimada (ej. "orquestando flujos para 4 entidades bancarias con procesamiento de X solicitudes/mes").');
+    avalGaps.push('Missing explicit scale and transaction volume context for multi-bank credit products.');
+    avalActions.push('Add estimated volume magnitude in master-data (e.g., "orchestrating checkout flows across 4 major banks processing X applications/month").');
   } else {
     avalScore = 9.5;
-    avalComment += ' Incluye contexto claro de volumen y magnitud.';
+    avalComment += ' Includes clear quantitative volume and magnitude anchoring.';
   }
 
   sections.push({
-    sectionName: 'Experiencia (Aval Digital Labs)',
+    sectionName: 'Experience (Aval Digital Labs)',
     score: avalScore,
-    status: avalScore >= 9.0 ? '🟢 Óptimo' : '🟡 Bueno con margen',
+    status: avalScore >= 9.0 ? '🟢 Optimal' : '🟡 Solid with Headroom',
     comment: avalComment,
     identifiedGaps: avalGaps.length > 0 ? avalGaps : undefined,
     actionToTen: avalActions.length > 0 ? avalActions : undefined
   });
 
-  // 5. Experiencia (Inchcape Digital)
+  // 5. Experience (Inchcape Digital)
   let inchScore = 8.5;
   const inchGaps: string[] = [];
   const inchActions: string[] = [];
-  let inchComment = 'Gran demostración de modernización de código (migración a TypeScript con -40% errores), desacoplamiento a Zustand y liderazgo técnico.';
+  let inchComment = 'Strong demonstration of codebase modernization (TypeScript migration with 40% error reduction), decoupling with Zustand, and technical mentorship.';
 
   // Check for thematic redundancy with Aval (e.g. RxJS repetition in both companies)
   const expItems = cvData.experience || [];
@@ -178,103 +175,103 @@ export function auditCvContent(
 
   if (hasRedundancy) {
     inchScore = 8.0;
-    inchGaps.push('Redundancia temática detectada: se repite el enfoque de RxJS/reactividad tanto en Aval como en Inchcape.');
-    inchActions.push('Diversificar el ángulo técnico en Inchcape enfocándolo en arquitectura de renderizado, optimización de carga o entrega internacional con equipos remotos.');
+    inchGaps.push('Thematic overlap detected: reactive streaming (RxJS) is heavily emphasized across both Aval and Inchcape.');
+    inchActions.push('Diversify technical focus in Inchcape towards international multi-region SPA delivery, code splitting, and bundle size reduction.');
   } else {
     inchScore = 8.5;
-    inchComment += ' Excelente diversificación de facetas técnicas respecto a Aval.';
-    inchActions.push('Para llegar a 10/10, cuantificar el impacto del Digital Booking System en reducción de tiempos de reserva o incremento de conversiones.');
+    inchComment += ' Excellent technical diversification relative to Aval.';
+    inchActions.push('To reach 10/10, quantify the impact of the Digital Booking System on booking completion times or conversion rates.');
   }
 
   sections.push({
-    sectionName: 'Experiencia (Inchcape Digital)',
+    sectionName: 'Experience (Inchcape Digital)',
     score: inchScore,
-    status: inchScore >= 9.0 ? '🟢 Óptimo' : '🟡 Bueno con margen',
+    status: inchScore >= 9.0 ? '🟢 Optimal' : '🟡 Solid with Headroom',
     comment: inchComment,
     identifiedGaps: inchGaps.length > 0 ? inchGaps : undefined,
     actionToTen: inchActions.length > 0 ? inchActions : undefined
   });
 
-  // 6. Educación y certificaciones
+  // 6. Education & Certifications
   let eduScore = 8.5;
   const eduGaps: string[] = [];
   const eduActions: string[] = [];
-  let eduComment = 'Pregrado contextualizado con habilidades analíticas transferibles (análisis espacial y cartografía GIS) y lista depurada de certificaciones técnicas.';
+  let eduComment = 'Undergraduate degree contextualized with transferable analytical skills (spatial data analysis and GIS cartography) and a curated list of technical certifications.';
 
-  eduActions.push('Para subir a 10/10, incorporar certificaciones oficiales de la industria (ej. Google Cloud Associate o AWS Cloud) en lugar de cursos exclusivos de plataformas.');
+  eduActions.push('To reach 10/10, incorporate accredited vendor-level cloud or architecture certifications (e.g., AWS / Google Cloud) alongside platform-based course certificates.');
 
   sections.push({
-    sectionName: 'Educación y certificaciones',
+    sectionName: 'Education & Certifications',
     score: eduScore,
-    status: eduScore >= 9.0 ? '🟢 Óptimo' : '🟡 Bueno con margen',
+    status: eduScore >= 9.0 ? '🟢 Optimal' : '🟡 Solid with Headroom',
     comment: eduComment,
     identifiedGaps: eduGaps.length > 0 ? eduGaps : undefined,
     actionToTen: eduActions.length > 0 ? eduActions : undefined
   });
 
-  // 7. Idiomas
+  // 7. Languages
   let langScore = 9.0;
-  const langComment = 'Estandarización clara bajo marco internacional CEFR (Español Nativo, Inglés B2 Profesional, Francés B2 Profesional).';
-  const langActions = ['Para alcanzar 10/10, respaldar el nivel de inglés con una certificación internacional oficial (IELTS / TOEFL / Cambridge / EF SET).'];
+  const langComment = 'Standardized CEFR proficiency levels (Spanish Native, English B2 Professional Working, French B2 Professional Working).';
+  const langActions = ['To reach 10/10, back English proficiency with an official international certification (IELTS / TOEFL / Cambridge / EF SET).'];
 
   sections.push({
-    sectionName: 'Idiomas',
+    sectionName: 'Languages',
     score: langScore,
-    status: '🟢 Óptimo',
+    status: '🟢 Optimal',
     comment: langComment,
     actionToTen: langActions
   });
 
-  // 8. Estructura y legibilidad general
+  // 8. Overall Structure & Legibility
   let structScore = 8.5;
-  const structComment = 'Ajuste armónico en 1 página A4 (~430 palabras), jerarquía Markdown limpia y 100% compatible con ATS. El techo de 8.5 se debe a la ausencia de proyectos públicos verificables.';
-  const structActions = ['Incorporar una sección de 1-2 proyectos personales con links a repositorios públicos o demos en vivo para transformar la narrativa privada en prueba verificable.'];
+  const structComment = 'Harmonious 1-page A4 fill (~430 words), clean Markdown hierarchy, and 100% ATS parseability. The 8.5 ceiling reflects the absence of verifiable public code.';
+  const structActions = ['Incorporate 1–2 public showcase projects with live demo and GitHub repository links to convert private enterprise narrative into verifiable proof.'];
 
   sections.push({
-    sectionName: 'Estructura y legibilidad',
+    sectionName: 'Overall Structure & Legibility',
     score: structScore,
-    status: '🟡 Bueno con margen',
+    status: '🟡 Solid with Headroom',
     comment: structComment,
     actionToTen: structActions
   });
 
-  // Strategic Growth Pillars (What really moves the needle)
+  // Strategic Growth Pillars
   strategicPillars.push({
-    pillarName: '1. Sección de Proyectos con evidencia verificable (Mayor salto de nota)',
-    impactLevel: 'Alto',
-    diagnostic: 'Actualmente el 100% de la experiencia laboral pertenece a repositorios privados corporativos (Aval e Inchcape). Un reclutador técnico no puede auditar código propietario de un banco.',
-    recommendationForMasterData: 'Agregar a master-data.md 1 o 2 proyectos públicos (ej. este mismo generador de CVs modular con React/TS o un boilerplate de Microfrontends/Zustand) con enlace a GitHub y demo funcional. Esto convierte afirmaciones en evidencia verificable.'
+    pillarName: '1. Featured Projects with Verifiable Proof (Highest Score Delta)',
+    impactLevel: 'High',
+    diagnostic: '100% of professional experience resides within private corporate enterprise codebases (Aval and Inchcape). Technical recruiters cannot inspect proprietary banking code.',
+    recommendationForMasterData: 'Add 1–2 public showcase projects (e.g., this modular React/TypeScript CV studio engine or a Microfrontends/Zustand reference architecture) with live demo and GitHub repository links. This converts claims into tangible, verifiable evidence.'
   });
 
   strategicPillars.push({
-    pillarName: '2. Métricas de negocio y usuario final (Más allá de métricas de ingeniería)',
-    impactLevel: 'Estratégico',
-    diagnostic: 'Todas las métricas actuales son de ingeniería interna (tiempo de build, tasa de errores de compilación, velocidad de sprint). Falta reflejar el "para qué" del código.',
-    recommendationForMasterData: 'Identificar y agregar a master-data.md métricas con impacto directo en el producto: incremento en tasa de conversión, reducción de abandono de checkout en Bre-B, disminución de tickets de soporte o tiempo de procesamiento de solicitudes de crédito.'
+    pillarName: '2. Business & User-Facing Impact Metrics (Beyond Pure Engineering Metrics)',
+    impactLevel: 'Strategic',
+    diagnostic: 'All current metrics are internal engineering metrics (build pipeline execution times, runtime compile error rates, sprint velocity). The direct business and product outcome could be highlighted further.',
+    recommendationForMasterData: 'Identify and incorporate product-level metrics: conversion rate uplift, reduction in Bre-B checkout abandonment, customer support ticket reduction, or accelerated loan application processing speeds.'
   });
 
   strategicPillars.push({
-    pillarName: '3. Datos de escala y contexto de magnitud',
-    impactLevel: 'Medio-Alto',
-    diagnostic: 'Términos como "multi-bank", "scalable" y "high-traffic" transmiten complejidad, pero carecen del anclaje cuantitativo de volumen.',
-    recommendationForMasterData: 'Incorporar datos de magnitud en master-data.md: volumen estimado de transacciones procesadas, usuarios mensuales atendidos o tamaño de los equipos interdisciplinarios coordinados.'
+    pillarName: '3. Scale & Context Magnitude',
+    impactLevel: 'Medium-High',
+    diagnostic: 'Terms like "multi-bank", "scalable", and "high-traffic" convey technical complexity, but benefit from quantitative volume anchoring.',
+    recommendationForMasterData: 'Incorporate magnitude metrics into master-data.md: estimated monthly transactions processed, active monthly users served, or cross-functional team headcount coordinated.'
   });
 
   // Calculate Overall Score
   const overallScore = Number((sections.reduce((acc, s) => acc + s.score, 0) / sections.length).toFixed(1));
 
-  const candidateName = extractCandidateName(masterDataText) || cvData.name || 'Candidato';
-  const targetCompany = extractTargetCompany(targetJobText) || 'Objetivo';
+  const candidateName = extractCandidateName(masterDataText) || cvData.name || 'Candidate';
+  const targetCompany = extractTargetCompany(targetJobText) || 'Target Company';
 
   // Build Markdown Document
-  let md = `# 📊 REPORTE DE CALIDAD Y AUDITORÍA DE CV (Nivel Headhunter)\n\n`;
-  md += `- **Candidato:** ${candidateName}\n`;
-  md += `- **Empresa / Vacante Objetivo:** ${targetCompany}\n`;
-  md += `- **Puntaje Global Calibrado:** **${overallScore} / 10.0** (Nivel: Sólido y competitivo para postulación directa)\n`;
-  md += `- **Diagnóstico de Estado:** ✅ **Listo para postulación** (Margen de mejora enfocado en datos de negocio y proyectos verificables)\n\n`;
+  let md = `# 📊 CV QUALITY AUDIT REPORT (Executive Headhunter Standard)\n\n`;
+  md += `- **Candidate:** ${candidateName}\n`;
+  md += `- **Target Company / Vacancy:** ${targetCompany}\n`;
+  md += `- **Overall Calibrated Score:** **${overallScore} / 10.0** (Status: Strong & highly competitive for direct application)\n`;
+  md += `- **Application Readiness:** ✅ **Ready to Submit** (Growth headroom focused on business impact metrics and verifiable public projects)\n\n`;
   md += `---\n\n`;
-  md += `## 📋 1. Evaluación Estricta por Sección\n\n`;
-  md += `| Sección | Nota | Estado | Comentario & Diagnóstico |\n`;
+  md += `## 📋 1. Rigorous Section-by-Section Evaluation\n\n`;
+  md += `| Section | Score (1-10) | Status | Diagnostic & Assessment Criteria |\n`;
   md += `| :--- | :---: | :---: | :--- |\n`;
 
   for (const sec of sections) {
@@ -282,13 +279,13 @@ export function auditCvContent(
   }
 
   md += `\n---\n\n`;
-  md += `## 🚀 2. Lo que realmente movería la aguja para alcanzar la excelencia (10/10)\n\n`;
-  md += `*Un CV rara vez llega a 10/10 en narrativa corporativa porque siempre existe un techo natural sin código público. Las siguientes 3 iniciativas representan los puntos clave para ampliar en tu \`master-data.md\`:*\n\n`;
+  md += `## 🚀 2. Strategic Levers to Reach Top-Tier Excellence (10/10 Ceiling)\n\n`;
+  md += `*A corporate enterprise narrative rarely scores 10/10 because an internal private repository cannot be independently audited by a technical recruiter. The following 3 strategic initiatives outline key opportunities for future updates in \`master-data.md\`:*\n\n`;
 
   for (const pillar of strategicPillars) {
-    md += `### 📌 ${pillar.pillarName} *(Impacto: ${pillar.impactLevel})*\n`;
-    md += `* **Diagnóstico actual:** ${pillar.diagnostic}\n`;
-    md += `* **💡 Acción recomendada para \`master-data.md\`:** ${pillar.recommendationForMasterData}\n\n`;
+    md += `### 📌 ${pillar.pillarName} *(Impact: ${pillar.impactLevel})*\n`;
+    md += `* **Current Diagnostic:** ${pillar.diagnostic}\n`;
+    md += `* **💡 Recommended Action for \`master-data.md\`:** ${pillar.recommendationForMasterData}\n\n`;
   }
 
   return {
@@ -337,16 +334,16 @@ export async function generateQualityAuditReport({
     fs.mkdirSync(outputsDir, { recursive: true });
   }
 
-  const candidateClean = sanitizeFileName(report.candidateName || 'Candidato');
-  const companyClean = sanitizeFileName(report.targetCompany || 'Objetivo');
+  const candidateClean = sanitizeFileName(report.candidateName || 'Candidate');
+  const companyClean = sanitizeFileName(report.targetCompany || 'Target');
 
   const reportMdPath = outputPath || path.join(outputsDir, `Quality_Report_${candidateClean}_${companyClean}.md`);
   const reportPdfPath = reportMdPath.replace(/\.md$/, '.pdf');
 
   fs.writeFileSync(reportMdPath, report.markdownReport, 'utf8');
-  console.log(`📊 Reporte de calidad guardado en: ${reportMdPath}`);
+  console.log(`📊 Quality Audit report saved to: ${reportMdPath}`);
 
-  console.log(`🖨️ Compilando PDF del reporte de calidad...`);
+  console.log(`🖨️ Compiling Quality Audit PDF...`);
   const pdfResult = await generatePdfFromMarkdown({
     markdownFilePath: reportMdPath,
     outputPath: reportPdfPath,
@@ -354,7 +351,7 @@ export async function generateQualityAuditReport({
     baseDir: root
   });
 
-  console.log(`✅ PDF del reporte generado en: ${reportPdfPath} (Páginas: ${pdfResult.pages})`);
+  console.log(`✅ Quality Audit PDF created at: ${reportPdfPath} (Pages: ${pdfResult.pages})`);
 
   return {
     reportMdPath,

@@ -29,10 +29,15 @@ export function sanitizeFileName(text: string): string {
  * Extracts candidate name from master-data.md or fallback
  */
 export function extractCandidateName(masterDataText: string, fallback: string = ''): string {
-  const match = masterDataText.match(/Nombre Completo:\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+  const match = masterDataText.match(/(?:Nombre Completo|Full Name|Candidate Name):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
   if (match) {
     const raw = match[1].trim();
-    if (!raw.toLowerCase().includes('tu nombre') && !raw.toLowerCase().includes('nombre y apellido')) {
+    if (
+      !raw.toLowerCase().includes('tu nombre') && 
+      !raw.toLowerCase().includes('nombre y apellido') &&
+      !raw.toLowerCase().includes('candidate full name') &&
+      !raw.toLowerCase().includes('candidate name')
+    ) {
       return sanitizeFileName(raw);
     }
   }
@@ -43,10 +48,14 @@ export function extractCandidateName(masterDataText: string, fallback: string = 
  * Extracts target company from target-job.md or fallback
  */
 export function extractTargetCompany(targetJobText: string, fallback: string = ''): string {
-  const match = targetJobText.match(/Empresa:\*{0,2}\s*\[?(?:Ej:\s*)?([^\]\r\n*]+)\]?/i);
+  const match = targetJobText.match(/(?:Empresa|Company):\*{0,2}\s*\[?(?:Ej:\s*|e\.g\.\s*)?([^\]\r\n*]+)\]?/i);
   if (match) {
     const raw = match[1].trim();
-    if (!raw.toLowerCase().includes('startup x') && !raw.includes('/')) {
+    if (
+      !raw.toLowerCase().includes('startup x') && 
+      !raw.toLowerCase().includes('company name') && 
+      !raw.includes('/')
+    ) {
       return sanitizeFileName(raw);
     }
   }
