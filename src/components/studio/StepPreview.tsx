@@ -10,7 +10,7 @@ import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
 import { CVRenderer } from '../CVRenderer';
 import { SplitMarkdownEditor } from './SplitMarkdownEditor';
-import { extractCandidateName } from '../../core/parser';
+import { extractCandidateName, sanitizeFileName } from '../../core/parser';
 import { getTemplateMetadata } from '../../templates';
 import { usePrintPdf } from '../../hooks/usePrintPdf';
 import { StepPreviewToolbar, PreviewViewMode } from './preview/StepPreviewToolbar';
@@ -96,6 +96,16 @@ export const StepPreview: React.FC = () => {
     setIsEditingMarkdown(false);
   };
 
+  const candidateName = sanitizeFileName(
+    (viewMode === 'generic' ? parsedMasterCv.name : parsedCv.name) || extractCandidateName(masterData, 'Candidate')
+  );
+  const cleanCompany = sanitizeFileName(companyName || 'Target');
+  const targetPdfName = `CV_${candidateName}_${cleanCompany}.pdf`;
+
+  const onTriggerPrintPdf = () => {
+    handleDownloadPdf(targetPdfName);
+  };
+
   return (
     <div className="preview-workspace-layout" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       {/* Top Studio Control Bar */}
@@ -114,7 +124,7 @@ export const StepPreview: React.FC = () => {
         savedSuccess={savedSuccess}
         onReTailor={handleGenerate}
         isGenerating={isGenerating}
-        onDownloadPdf={handleDownloadPdf}
+        onDownloadPdf={onTriggerPrintPdf}
       />
 
       {/* Main Studio Body: Vertical Left Rail + Side Drawer + Sheet Canvas */}

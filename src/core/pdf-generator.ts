@@ -1,12 +1,115 @@
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { parseCvMarkdownToData, sanitizeFileName } from './parser';
 import { CVRenderer } from '../components/CVRenderer';
 import { ThemeId, PaletteId, FontFamilyId, SpacingDensity } from '../types/cv';
 import { getWorkspaceRoot, getOutputsDir } from './workspace';
+
+export interface SystemBrowserInfo {
+  name: string;
+  executablePath: string;
+}
+
+/**
+ * Resolves the directory containing CV theme stylesheets, ensuring themes are located
+ * correctly whether running locally in source, from the bundled binary, or as a global npm package.
+ */
+export function getThemesDir(rootDir: string): string {
+  const candidates = [
+    path.join(rootDir, 'src', 'themes'),
+    path.resolve(import.meta.dirname, '..', 'src', 'themes'),
+    path.resolve(import.meta.dirname, '..', 'themes'),
+    path.resolve(import.meta.dirname, 'themes')
+  ];
+
+  for (const c of candidates) {
+    if (fs.existsSync(c)) return c;
+  }
+  return candidates[0];
+}
+
+/**
+ * Detects locally installed Google Chrome or Microsoft Edge on Windows, macOS, or Linux.
+ * Allows CLI users to generate PDFs instantly without downloading ~150MB of Chromium.
+ */
+export function findSystemBrowser(): SystemBrowserInfo | null {
+  // 1. Check explicit environment variable overrides
+  const envPath = process.env.PUPPETEER_EXECUTABLE_PATH || process.env.CHROME_PATH || process.env.EDGE_PATH;
+  if (envPath && fs.existsSync(envPath)) {
+    return { name: 'Custom Browser (ENV)', executablePath: envPath };
+  }
+
+  const platform = os.platform();
+
+  if (platform === 'win32') {
+    const localAppData = process.env.LOCALAPPDATA || '';
+    const programFiles = process.env.ProgramFiles || 'C:\\Program Files';
+    const programFilesX86 = process.env['ProgramFiles(x86)'] || 'C:\\Program Files (x86)';
+
+    const candidates = [
+      {
+        name: 'Google Chrome',
+        paths: [
+          path.join(programFiles, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+          path.join(programFilesX86, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+          path.join(localAppData, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+        ]
+      },
+      {
+        name: 'Microsoft Edge',
+        paths: [
+          path.join(programFiles, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+          path.join(programFilesX86, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+          path.join(localAppData, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+        ]
+      }
+    ];
+
+    for (const browser of candidates) {
+      for (const p of browser.paths) {
+        if (p && fs.existsSync(p)) {
+          return { name: browser.name, executablePath: p };
+        }
+      }
+    }
+  } else if (platform === 'darwin') {
+    const home = process.env.HOME || '';
+    const candidates = [
+      { name: 'Google Chrome', path: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' },
+      { name: 'Microsoft Edge', path: '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge' },
+      { name: 'Google Chrome', path: path.join(home, 'Applications/Google Chrome.app/Contents/MacOS/Google Chrome') },
+      { name: 'Microsoft Edge', path: path.join(home, 'Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge') },
+    ];
+
+    for (const c of candidates) {
+      if (fs.existsSync(c.path)) {
+        return { name: c.name, executablePath: c.path };
+      }
+    }
+  } else if (platform === 'linux') {
+    const candidates = [
+      { name: 'Google Chrome', path: '/usr/bin/google-chrome' },
+      { name: 'Google Chrome', path: '/usr/bin/google-chrome-stable' },
+      { name: 'Microsoft Edge', path: '/usr/bin/microsoft-edge' },
+      { name: 'Microsoft Edge', path: '/usr/bin/microsoft-edge-stable' },
+      { name: 'Chromium', path: '/usr/bin/chromium' },
+      { name: 'Chromium', path: '/usr/bin/chromium-browser' },
+      { name: 'Chromium', path: '/snap/bin/chromium' },
+    ];
+
+    for (const c of candidates) {
+      if (fs.existsSync(c.path)) {
+        return { name: c.name, executablePath: c.path };
+      }
+    }
+  }
+
+  return null;
+}
 
 export interface GeneratePdfOptions {
   markdownContent?: string;
@@ -66,10 +169,11 @@ export function renderCvToHtml(
   );
 
   // Load baseline shared CSS and active theme CSS
-  const cvBasePath = path.join(rootDir, 'src', 'themes', 'cv-base.css');
+  const themesDir = getThemesDir(rootDir);
+  const cvBasePath = path.join(themesDir, 'cv-base.css');
   const cvBaseCss = fs.existsSync(cvBasePath) ? fs.readFileSync(cvBasePath, 'utf8') : '';
 
-  const themePath = path.join(rootDir, 'src', 'themes', `${theme}.css`);
+  const themePath = path.join(themesDir, `${theme}.css`);
   const themeCss = fs.existsSync(themePath) ? fs.readFileSync(themePath, 'utf8') : '';
 
   return `<!DOCTYPE html>
@@ -242,15 +346,38 @@ export async function generatePdfFromMarkdown({
     baseDir: rootDir
   });
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--font-render-hinting=medium'
-    ]
-  });
+  const baseLaunchArgs = [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--font-render-hinting=medium'
+  ];
+
+  const systemBrowser = findSystemBrowser();
+  let browser: Browser;
+
+  if (systemBrowser) {
+    try {
+      console.log(`🌐 Using detected system browser: ${systemBrowser.name}`);
+      browser = await puppeteer.launch({
+        headless: true,
+        executablePath: systemBrowser.executablePath,
+        args: baseLaunchArgs
+      });
+    } catch (launchErr: unknown) {
+      const msg = launchErr instanceof Error ? launchErr.message : String(launchErr);
+      console.warn(`⚠️ Could not launch system browser (${msg}). Falling back to Puppeteer bundled browser...`);
+      browser = await puppeteer.launch({
+        headless: true,
+        args: baseLaunchArgs
+      });
+    }
+  } else {
+    browser = await puppeteer.launch({
+      headless: true,
+      args: baseLaunchArgs
+    });
+  }
 
   try {
     const page = await browser.newPage();
