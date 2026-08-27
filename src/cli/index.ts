@@ -10,6 +10,7 @@ import { getWorkspaceRoot, getOutputsDir, findLatestCvMarkdown, resolveCvPath } 
 import { getAllTemplates } from '../templates/registry';
 import { getAllPalettes, CURATED_PALETTES } from '../constants/palettes';
 import { AVAILABLE_AI_MODELS } from '../core/ai-service';
+import { startInteractiveWizard } from './wizard';
 
 const rootDir = getWorkspaceRoot();
 const outputsDir = getOutputsDir(rootDir);
@@ -83,6 +84,10 @@ function printHelp() {
 ✨ CV Studio & Tailor Engine (TypeScript + React + Puppeteer)
 =============================================================
 
+Interactive Terminal Wizard:
+  npm run wizard                      Launch step-by-step interactive terminal assistant
+  cv-engine                           Launch wizard automatically (when run with no flags)
+
 CLI Usage:
   npm run pdf                         Generate PDF from the most recent file in outputs/
   npm run pdf <file.md>               Generate PDF from the specified Markdown file
@@ -118,6 +123,9 @@ AI Tailoring & Synthesis Options:
   --rules <path>                      Custom rules instruction file (default: rules.md)
 
 Examples:
+  # Launch interactive step-by-step assistant
+  npm run wizard
+
   # Generate PDF with modern tech template and linear indigo styling
   npm run pdf outputs/Sample_CV_Stripe.md -- --theme modern-tech --palette modern-indigo --font outfit
 
@@ -144,24 +152,38 @@ async function main() {
   const rawArgs = process.argv.slice(2);
   const { flags, positional } = parseArgs(rawArgs);
 
-  const command = positional[0] || 'pdf';
+  const command = positional[0];
 
-  if (flags.help || flags.h || command === 'help' || command === '--help') {
+  // Launch interactive wizard if explicitly invoked or run without arguments in an interactive terminal
+  if (
+    command === 'wizard' ||
+    command === 'interactive' ||
+    flags.interactive ||
+    flags.wizard ||
+    (rawArgs.length === 0 && process.stdin.isTTY)
+  ) {
+    await startInteractiveWizard();
+    return;
+  }
+
+  const activeCommand = command || 'pdf';
+
+  if (flags.help || flags.h || activeCommand === 'help' || activeCommand === '--help') {
     printHelp();
     return;
   }
 
-  if (command === 'themes' || command === 'list:themes') {
+  if (activeCommand === 'themes' || activeCommand === 'list:themes') {
     printThemes();
     return;
   }
 
-  if (command === 'palettes' || command === 'list:palettes') {
+  if (activeCommand === 'palettes' || activeCommand === 'list:palettes') {
     printPalettes();
     return;
   }
 
-  if (command === 'models' || command === 'list:models') {
+  if (activeCommand === 'models' || activeCommand === 'list:models') {
     printModels();
     return;
   }

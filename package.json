@@ -23,8 +23,19 @@
     "generate": "tsx src/cli/index.ts generate",
     "tailor": "tsx src/cli/index.ts generate",
     "audit": "tsx src/cli/index.ts audit",
-    "quality": "tsx src/cli/index.ts audit"
+    "quality": "tsx src/cli/index.ts audit",
+    "wizard": "tsx src/cli/index.ts wizard",
+    "cli": "tsx src/cli/index.ts wizard",
+    "build:cli": "esbuild src/cli/index.ts --bundle --platform=node --target=node18 --format=esm --packages=external --minify --outfile=bin/cli.mjs",
+    "prepublishOnly": "npm run build:cli"
   },
+  "bin": {
+    "cv-engine": "./bin/cli.mjs"
+  },
+  "files": [
+    "bin",
+    "src/themes"
+  ],
   "keywords": [
     "cv",
     "resume",
@@ -55,6 +66,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "esbuild": "^0.28.2",
     "tsx": "^4.19.3",
     "typescript": "^5.7.3",
     "vite": "^6.2.0"

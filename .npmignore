@@ -1,0 +1,43 @@
+# ==============================================================================
+# NPM DISTRIBUTION IGNORE - PRIVACY & CODE PROTECTION
+# Only compiled binaries in bin/ and static stylesheets in src/themes/ are published.
+# ==============================================================================
+
+# 1. Private Candidate SSOT & Application Data
+master-data.md
+target-job.md
+rules.md
+applications-tracker.md
+certificates/
+prompts/
+outputs/
+templates/
+
+# 2. Raw TypeScript Source Code (Protected IP)
+src/app/
+src/cli/
+src/components/
+src/constants/
+src/context/
+src/core/
+src/hooks/
+src/styles/
+src/templates/
+src/theme/
+src/types/
+src/*.ts
+src/*.tsx
+
+# 3. Environment, Secrets & IDE Configs
+.env
+.env.*
+.git/
+.gitignore
+.agents/
+.gemini/
+.system_generated/
+tsconfig.json
+vite.config.ts
+index.html
+vercel.json
+netlify.toml
