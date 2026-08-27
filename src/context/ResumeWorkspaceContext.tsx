@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useCvVersionHistory } from '../hooks/useCvVersionHistory';
 import {
   parseCvMarkdownToData,
   extractCandidateName,
@@ -21,6 +22,8 @@ import {
 import {
   ThemeId,
   PaletteId,
+  FontFamilyId,
+  SpacingDensity,
   StudioTab,
   WizardStep,
   AIProviderSettings,
@@ -59,6 +62,12 @@ export interface ResumeWorkspaceContextType {
   setTheme: React.Dispatch<React.SetStateAction<ThemeId>>;
   palette: PaletteId;
   setPalette: React.Dispatch<React.SetStateAction<PaletteId>>;
+  customColor: string;
+  setCustomColor: React.Dispatch<React.SetStateAction<string>>;
+  fontFamily: FontFamilyId;
+  setFontFamily: React.Dispatch<React.SetStateAction<FontFamilyId>>;
+  spacingDensity: SpacingDensity;
+  setSpacingDensity: React.Dispatch<React.SetStateAction<SpacingDensity>>;
   providerSettings: AIProviderSettings;
   setProviderSettings: React.Dispatch<React.SetStateAction<AIProviderSettings>>;
 
@@ -118,8 +127,28 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
   const [pageBudget, setPageBudget] = useLocalStorage<1 | 2>('cv_page_budget', 1);
   const [theme, setTheme] = useLocalStorage<ThemeId>('cv_theme', 'modern-tech');
   const [palette, setPalette] = useLocalStorage<PaletteId>('cv_palette', 'corporate-blue');
-  const [savedVersions, setSavedVersions] = useLocalStorage<GeneratedCvVersion[]>('cv_saved_versions', []);
+  const [customColor, setCustomColor] = useLocalStorage<string>('cv_custom_color', '#1d4ed8');
+  const [fontFamily, setFontFamily] = useLocalStorage<FontFamilyId>('cv_font_family', 'inter');
+  const [spacingDensity, setSpacingDensity] = useLocalStorage<SpacingDensity>('cv_spacing_density', 'standard');
   const [providerSettings, setProviderSettings] = useLocalStorage<AIProviderSettings>('cv_ai_settings', DEFAULT_AI_SETTINGS);
+
+  // Version History Management Hook
+  const {
+    savedVersions,
+    saveVersion,
+    handleLoadVersion,
+    handleDeleteVersion,
+  } = useCvVersionHistory({
+    setCvMarkdown,
+    setGapMarkdown,
+    setCompanyName,
+    setTargetRole,
+    setTheme,
+    setPalette,
+    setPageBudget,
+    setActiveTab,
+    setWizardStep,
+  });
 
   // Generator Loading States
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
@@ -214,7 +243,7 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
   }, [cvMarkdown, parsedCv]);
 
   // History Actions
-  const handleSaveCurrentVersion = (customTitle?: string) => {
+  const handleSaveCurrentVersion = () => {
     const candName = extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ');
     const comp = companyName || extractTargetCompany(targetJob, 'Target Company');
     const role = targetRole || extractTargetRole(targetJob, masterData, 'Specialist');
@@ -235,26 +264,7 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
       targetJobSnippet: targetJob.slice(0, 280)
     };
 
-    setSavedVersions(prev => [newVersion, ...prev.filter(v => !(v.companyName.toLowerCase() === comp.toLowerCase() && v.targetRole.toLowerCase() === role.toLowerCase()))]);
-  };
-
-  const handleLoadVersion = (id: string) => {
-    const found = savedVersions.find(v => v.id === id);
-    if (found) {
-      setCvMarkdown(found.cvMarkdown);
-      if (found.gapMarkdown) setGapMarkdown(found.gapMarkdown);
-      if (found.companyName) setCompanyName(found.companyName);
-      if (found.targetRole) setTargetRole(found.targetRole);
-      if (found.theme) setTheme(found.theme);
-      if (found.palette) setPalette(found.palette);
-      if (found.pageBudget) setPageBudget(found.pageBudget);
-      setActiveTab('wizard');
-      setWizardStep('preview');
-    }
-  };
-
-  const handleDeleteVersion = (id: string) => {
-    setSavedVersions(prev => prev.filter(v => v.id !== id));
+    saveVersion(newVersion);
   };
 
   // Actions
@@ -304,7 +314,7 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
         gapMarkdown: response.gapAnalysisMarkdown || gapMarkdown,
         targetJobSnippet: targetJob.slice(0, 280)
       };
-      setSavedVersions(prev => [autoSavedVersion, ...prev.filter(v => !(v.companyName.toLowerCase() === comp.toLowerCase() && v.targetRole.toLowerCase() === role.toLowerCase()))]);
+      saveVersion(autoSavedVersion);
 
       setGenerationStep('Done! Resume tailored successfully.');
       setTimeout(() => {
@@ -312,8 +322,9 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
         setActiveTab('wizard');
         setWizardStep('preview');
       }, 500);
-    } catch (err: any) {
-      setGenerationError(err.message || 'Error occurred during AI resume synthesis.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error occurred during AI resume synthesis.';
+      setGenerationError(message);
       setIsGenerating(false);
     }
   };
@@ -387,6 +398,12 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
     setTheme,
     palette,
     setPalette,
+    customColor,
+    setCustomColor,
+    fontFamily,
+    setFontFamily,
+    spacingDensity,
+    setSpacingDensity,
     providerSettings,
     setProviderSettings,
     isGenerating,

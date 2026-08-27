@@ -1,42 +1,23 @@
 import React, { useState } from 'react';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Button,
-  TextField,
-  Typography,
-  Chip,
-  Box,
-  Stack,
-  Alert,
   Snackbar,
-  IconButton
 } from '@mui/material';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import { Icon } from '../Icons';
 import { QualityAuditReport } from '../../types/cv';
 import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
+import { ActionModalState, AuditImprovementModal } from './audit/AuditImprovementModal';
+import { AuditSectionCard } from './audit/AuditSectionCard';
 
-interface QualityAuditViewProps {
+export interface QualityAuditViewProps {
   report: QualityAuditReport;
   onRefresh: () => void;
 }
 
-interface ActionModalState {
-  open: boolean;
-  sectionName: string;
-  title: string;
-  description: string;
-  type: 'certification' | 'summary_metric' | 'github_link' | 'google_xyz' | 'skills_3cat' | 'generic';
-  inputValue: string;
-  presets: string[];
-}
-
+/**
+ * Quality Audit view orchestrator displaying 1-10 executive scoring, growth pillars, and action modal.
+ * Principle: Single Responsibility (S) - delegates card rendering and modal to subcomponents.
+ */
 export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
   report,
   onRefresh
@@ -66,13 +47,13 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 9.0) return '#10b981'; // Green
-    if (score >= 8.0) return '#38bdf8'; // Blue
-    if (score >= 7.0) return '#f59e0b'; // Amber
-    return '#ef4444'; // Red
+    if (score >= 9.0) return '#10b981';
+    if (score >= 8.0) return '#38bdf8';
+    if (score >= 7.0) return '#f59e0b';
+    return '#ef4444';
   };
 
-  // Helper to open targeted action modal based on lever text
+  // Open targeted action modal based on lever text
   const handleOpenAction = (actionText: string, sectionName: string) => {
     const lower = actionText.toLowerCase();
 
@@ -147,10 +128,8 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
     }
   };
 
-  // Helper to execute action and update workspace markdown
   const handleApplyAction = () => {
     const { type, inputValue } = modalState;
-
     if (!inputValue.trim()) return;
 
     let updatedCv = cvMarkdown;
@@ -178,25 +157,28 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
     } else if (type === 'github_link') {
       if (updatedCv.includes('http')) {
         updatedCv = updatedCv.replace(/(\[LinkedIn\]\([^\)]+\))/i, `$1 • [GitHub](${inputValue.trim()})`);
-      } else {
-        updatedCv = updatedCv.replace(/(# [^\n]+\n[^\n]+\n)/i, `$1[GitHub](${inputValue.trim()})\n`);
       }
     } else if (type === 'google_xyz') {
-      if (updatedCv.includes('## PROFESSIONAL EXPERIENCE')) {
-        updatedCv = updatedCv.replace(/(### [^\n]+\n\*[^\n]+\n)/i, `$1${inputValue.trim()}\n`);
+      const bulletLine = inputValue.startsWith('- ') ? inputValue : `- ${inputValue}`;
+      if (updatedCv.includes('### **')) {
+        updatedCv = updatedCv.replace(/(### \*\*[^\n]+\n\*?[^\n]*\*?\n)/, `$1${bulletLine}\n`);
+      } else {
+        updatedCv += `\n${bulletLine}\n`;
       }
+    } else {
+      updatedCv += `\n\n<!-- Strategic Lever Applied: ${modalState.sectionName} -->\n${inputValue}\n`;
     }
 
     setCvMarkdown(updatedCv);
     setMasterData(updatedMaster);
+    setSnackbarMessage(`Successfully applied "${modalState.title}" to your tailored CV!`);
     setModalState(prev => ({ ...prev, open: false }));
-    setSnackbarMessage('Action successfully applied! Quality audit scores and report updated.');
   };
 
-  const getActionButtonLabel = (actionText: string) => {
-    const lower = actionText.toLowerCase();
-    if (lower.includes('aws') || lower.includes('cloud') || lower.includes('certification')) {
-      return '+ Add Cloud Certification';
+  const getActionButtonLabel = (action: string): string => {
+    const lower = action.toLowerCase();
+    if (lower.includes('aws') || lower.includes('cloud') || lower.includes('certif')) {
+      return '🎓 Add Official Certification';
     }
     if (lower.includes('metric') || lower.includes('business')) {
       return '✨ Add Business Impact Metric';
@@ -259,77 +241,18 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
       {/* 7-Pillar Section Breakdown */}
       <div className="audit-section-group">
         <h3 className="section-group-title">
-          <Icon type="gauge" size={18} /> 1. Section-by-Section Calibrated Diagnostic & Action Levers
+          <Icon type="gauge" size={18} /> 1. Section-by-Section Calibrated Diagnostic &amp; Action Levers
         </h3>
 
         <div className="audit-cards-grid">
           {report.sections.map((sec, idx) => (
-            <div key={idx} className="audit-metric-card">
-              <div className="card-top-row">
-                <h4 className="metric-section-name">{sec.sectionName}</h4>
-                <div 
-                  className="metric-score-badge"
-                  style={{ 
-                    backgroundColor: `${getScoreColor(sec.score)}22`, 
-                    color: getScoreColor(sec.score),
-                    borderColor: `${getScoreColor(sec.score)}55`
-                  }}
-                >
-                  {sec.score} / 10.0
-                </div>
-              </div>
-
-              <div className="metric-status-tag">
-                {sec.status}
-              </div>
-
-              <p className="metric-comment">{sec.comment}</p>
-
-              {sec.identifiedGaps && sec.identifiedGaps.length > 0 && (
-                <div className="metric-gaps-box">
-                  <span className="gaps-title">⚠️ Identified Gap:</span>
-                  <ul className="gaps-list">
-                    {sec.identifiedGaps.map((g, i) => (
-                      <li key={i}>{g}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {sec.actionToTen && sec.actionToTen.length > 0 && (
-                <div className="metric-action-box" style={{ background: 'rgba(56, 189, 248, 0.05)', borderRadius: 8, padding: 12 }}>
-                  <span className="action-title" style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, marginBottom: 8 }}>
-                    <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: '#0284c7' }} /> Strategic Levers to Reach 10/10:
-                  </span>
-                  <Stack spacing={1.5}>
-                    {sec.actionToTen.map((a, i) => (
-                      <Box key={i} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                        <Typography variant="body2" sx={{ fontSize: '0.82rem', color: 'text.secondary' }}>
-                          {a}
-                        </Typography>
-                        <Button
-                          variant="contained"
-                          size="small"
-                          color="primary"
-                          startIcon={<BoltRoundedIcon sx={{ fontSize: '15px !important' }} />}
-                          onClick={() => handleOpenAction(a, sec.sectionName)}
-                          sx={{
-                            alignSelf: 'flex-start',
-                            fontSize: '0.78rem',
-                            fontWeight: 700,
-                            py: 0.5,
-                            px: 1.5,
-                            borderRadius: '8px'
-                          }}
-                        >
-                          {getActionButtonLabel(a)}
-                        </Button>
-                      </Box>
-                    ))}
-                  </Stack>
-                </div>
-              )}
-            </div>
+            <AuditSectionCard
+              key={idx}
+              section={sec}
+              scoreColor={getScoreColor(sec.score)}
+              onExecuteAction={handleOpenAction}
+              getActionButtonLabel={getActionButtonLabel}
+            />
           ))}
         </div>
       </div>
@@ -370,76 +293,12 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
       </div>
 
       {/* Action Dialog */}
-      <Dialog
-        open={modalState.open}
+      <AuditImprovementModal
+        modalState={modalState}
         onClose={() => setModalState(prev => ({ ...prev, open: false }))}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <AutoAwesomeRoundedIcon color="primary" />
-            <Typography variant="h6" sx={{ fontWeight: 800 }}>
-              {modalState.title}
-            </Typography>
-          </Box>
-          <IconButton size="small" onClick={() => setModalState(prev => ({ ...prev, open: false }))}>
-            <CloseRoundedIcon fontSize="small" />
-          </IconButton>
-        </DialogTitle>
-
-        <DialogContent dividers>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            {modalState.description}
-          </Typography>
-
-          {modalState.presets.length > 0 && (
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', mb: 1 }}>
-                One-Click Suggestions:
-              </Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                {modalState.presets.map((preset, pIdx) => (
-                  <Chip
-                    key={pIdx}
-                    label={preset}
-                    size="small"
-                    variant={modalState.inputValue === preset ? 'filled' : 'outlined'}
-                    color={modalState.inputValue === preset ? 'primary' : 'default'}
-                    onClick={() => setModalState(prev => ({ ...prev, inputValue: preset }))}
-                    sx={{ cursor: 'pointer', maxWidth: '100%' }}
-                  />
-                ))}
-              </Box>
-            </Box>
-          )}
-
-          <TextField
-            label="Content to Incorporate into CV"
-            fullWidth
-            multiline
-            rows={modalState.type === 'summary_metric' || modalState.type === 'google_xyz' ? 3 : 1}
-            value={modalState.inputValue}
-            onChange={(e) => setModalState(prev => ({ ...prev, inputValue: e.target.value }))}
-            size="small"
-          />
-        </DialogContent>
-
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setModalState(prev => ({ ...prev, open: false }))}>
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<BoltRoundedIcon />}
-            onClick={handleApplyAction}
-            sx={{ fontWeight: 700 }}
-          >
-            ✨ Apply to CV & Recalculate Score
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onInputChange={(val) => setModalState(prev => ({ ...prev, inputValue: val }))}
+        onApply={handleApplyAction}
+      />
 
       {/* Snackbar Feedback */}
       <Snackbar
