@@ -1,0 +1,128 @@
+/* ==========================================================================
+   CV BASE - Universal CV Template Structural Layout (DRY Shared Styles)
+   Each theme builds upon these baseline layout rules.
+   ========================================================================== */
+
+/* Universal Container */
+.cv-container {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+}
+
+/* Contact List Layout */
+.cv-contact-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+}
+
+.cv-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  font-size: inherit;
+}
+
+.cv-contact-item a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cv-contact-item a:hover {
+  text-decoration: underline;
+}
+
+.cv-contact-item svg {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+/* Summary Block */
+.cv-summary-text {
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Section Structure */
+.cv-section {
+  position: relative;
+}
+
+/* Skill Groups Framework */
+.cv-skill-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cv-skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cv-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.cv-skill-tag {
+  display: inline-block;
+  line-height: 1.3;
+}
+
+/* Timeline & Entries */
+.cv-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cv-entry {
+  position: relative;
+}
+
+.cv-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.cv-entry-title {
+  margin: 0;
+}
+
+.cv-entry-company {
+  margin: 0;
+}
+
+.cv-entry-date {
+  white-space: nowrap;
+}
+
+/* Bullet Points */
+.cv-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cv-bullet-item {
+  position: relative;
+  line-height: 1.45;
+}
+
+.cv-bullet-item strong {
+  font-weight: 700;
+}

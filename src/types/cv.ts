@@ -78,10 +78,14 @@ export type PaletteId =
   | 'editorial-black' 
   | 'minimal-slate' 
   | 'modern-indigo' 
-  | 'executive-burgundy'
-  | 'forest-green'
-  | 'warm-amber'
-  | 'creative-coral';
+  | 'executive-burgundy' 
+  | 'forest-green' 
+  | 'warm-amber' 
+  | 'creative-coral'
+  | 'custom';
+
+export type FontFamilyId = 'inter' | 'outfit' | 'serif' | 'mono';
+export type SpacingDensity = 'compact' | 'standard' | 'spacious';
 
 export interface ThemeConfig {
   id: ThemeId;

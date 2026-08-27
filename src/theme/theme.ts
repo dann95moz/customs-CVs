@@ -69,6 +69,27 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
     components: {
       MuiCssBaseline: {
         styleOverrides: {
+          ':root': {
+            '--bg-dark': isDark ? '#080b12' : '#f8fafc',
+            '--panel-bg': isDark ? '#101623' : '#ffffff',
+            '--card-bg': isDark ? '#151d2e' : '#ffffff',
+            '--card-hover': isDark ? '#1b243b' : '#f1f5f9',
+            '--border': isDark ? '#232f48' : '#e2e8f0',
+            '--border-light': isDark ? '#334155' : '#cbd5e1',
+            '--accent': isDark ? '#38bdf8' : '#0284c7',
+            '--accent-glow': isDark ? 'rgba(56, 189, 248, 0.25)' : 'rgba(2, 132, 199, 0.2)',
+            '--accent-hover': isDark ? '#0284c7' : '#0369a1',
+            '--primary-purple': isDark ? '#818cf8' : '#7c3aed',
+            '--success': isDark ? '#10b981' : '#059669',
+            '--warning': isDark ? '#f59e0b' : '#d97706',
+            '--danger': isDark ? '#ef4444' : '#dc2626',
+            '--text-main': isDark ? '#f8fafc' : '#0f172a',
+            '--text-muted': isDark ? '#94a3b8' : '#475569',
+            '--text-dim': isDark ? '#64748b' : '#94a3b8',
+            '--input-bg': isDark ? '#0b0f19' : '#f8fafc',
+            '--code-bg': isDark ? '#0b0f19' : '#f1f5f9',
+            '--box-shadow': isDark ? '0 4px 20px -2px rgba(0, 0, 0, 0.4)' : '0 4px 20px -2px rgba(0, 0, 0, 0.06)',
+          },
           body: {
             scrollbarColor: isDark ? '#334155 #0b0f19' : '#cbd5e1 #f8fafc',
             '&::-webkit-scrollbar, & *::-webkit-scrollbar': {

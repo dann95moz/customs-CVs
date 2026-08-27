@@ -4,6 +4,7 @@
    ========================================================================== */
 
 /* 1. Specialized CV Templates */
+@import '../themes/cv-base.css';
 @import '../themes/modern-tech.css';
 @import '../themes/executive.css';
 @import '../themes/minimal-ats.css';

@@ -20,6 +20,46 @@ const TEMPLATE_REGISTRY: Record<ThemeId, React.FC<CVTemplateProps>> = {
 };
 
 const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
+  'executive': {
+    id: 'executive',
+    name: 'Corporate Top Banner',
+    category: 'Executive & Leadership',
+    recommendedFor: 'C-Level, VP of Engineering, Directors, Management Consultants',
+    description: 'Full-width colored banner with initials monogram box and 2-column executive flow',
+    layout: 'two-column',
+    defaultMaxPages: 1,
+    icon: '🏛️'
+  },
+  'two-column': {
+    id: 'two-column',
+    name: 'Modern Contrast Sidebar',
+    category: 'General & Operations',
+    recommendedFor: 'Software Engineers, Full-Stack Devs, Consultants, Technical Leaders',
+    description: 'Solid colored right sidebar with geometric emblem card and bold modern display',
+    layout: 'two-column',
+    defaultMaxPages: 1,
+    icon: '📐'
+  },
+  'designer-uiux': {
+    id: 'designer-uiux',
+    name: 'Editorial Pastel Card',
+    category: 'Design & Creative',
+    recommendedFor: 'Product Designers, UI/UX Specialists, Frontend Devs, Creatives',
+    description: 'Soft pastel tinted card header with clean editorial asymmetric columns',
+    layout: 'two-column',
+    defaultMaxPages: 1,
+    icon: '🎨'
+  },
+  'academic-research': {
+    id: 'academic-research',
+    name: 'Executive Dual-Tone',
+    category: 'Academic & Research',
+    recommendedFor: 'Research Scientists, Engineering Managers, Directors, Consultants',
+    description: 'Dark charcoal left sidebar with monogram avatar and right soft accent header',
+    layout: 'two-column',
+    defaultMaxPages: 1,
+    icon: '👔'
+  },
   'modern-tech': {
     id: 'modern-tech',
     name: 'Modern Tech',
@@ -29,46 +69,6 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     layout: 'single-column',
     defaultMaxPages: 1,
     icon: '💻'
-  },
-  'designer-uiux': {
-    id: 'designer-uiux',
-    name: 'UI/UX & Product Design',
-    category: 'Design & Creative',
-    recommendedFor: 'Product Designers, UI/UX Specialists, Design Systems Leads, Creatives',
-    description: 'Modern geometric typography with highlighted portfolio links and design stack pills',
-    layout: 'single-column',
-    defaultMaxPages: 1,
-    icon: '🎨'
-  },
-  'formal-legal': {
-    id: 'formal-legal',
-    name: 'Legal, Finance & Counsel',
-    category: 'Legal & Finance',
-    recommendedFor: 'Attorneys, Corporate Counsel, Investment Bankers, Compliance Directors',
-    description: 'Classical prestigious serif styling, formal header rule, case volume and bar admissions',
-    layout: 'single-column',
-    defaultMaxPages: 1,
-    icon: '⚖️'
-  },
-  'executive': {
-    id: 'executive',
-    name: 'Executive Classic',
-    category: 'Executive & Leadership',
-    recommendedFor: 'C-Level, VP of Engineering, Directors, Management Consultants',
-    description: 'Authoritative serif header, corporate navy accents, revenue & leadership milestones',
-    layout: 'single-column',
-    defaultMaxPages: 1,
-    icon: '👔'
-  },
-  'academic-research': {
-    id: 'academic-research',
-    name: 'Academic & Research',
-    category: 'Academic & Research',
-    recommendedFor: 'Research Scientists, Postdocs, Professors, Data Scientists, BioTech',
-    description: 'Scholarly structure emphasizing publications, research credentials, grants, and education',
-    layout: 'single-column',
-    defaultMaxPages: 1,
-    icon: '🔬'
   },
   'minimal-ats': {
     id: 'minimal-ats',
@@ -80,16 +80,16 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     defaultMaxPages: 1,
     icon: '🛡️'
   },
-  'two-column': {
-    id: 'two-column',
-    name: 'Two-Column Compact',
-    category: 'General & Operations',
-    recommendedFor: 'Solutions Architects, Technical PMs, Multi-disciplinary Consultants',
-    description: 'Asymmetric layout with compact skills/languages sidebar and prominent experience flow',
-    layout: 'two-column',
+  'formal-legal': {
+    id: 'formal-legal',
+    name: 'Formal Classic',
+    category: 'Legal & Finance',
+    recommendedFor: 'Attorneys, Corporate Counsel, Investment Bankers, Compliance Directors',
+    description: 'Classical prestigious serif styling, formal header rule, case volume and bar admissions',
+    layout: 'single-column',
     defaultMaxPages: 1,
-    icon: '📐'
-  }
+    icon: '⚖️'
+  },
 };
 
 /**

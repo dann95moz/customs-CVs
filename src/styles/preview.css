@@ -183,6 +183,12 @@
   background: transparent;
 }
 
+.paper-sheet-wrapper {
+  position: relative;
+  width: 794px;
+  margin: 0 auto;
+}
+
 .paper-sheet {
   width: 794px;
   /* Exact A4 at 96 DPI */
@@ -193,16 +199,23 @@
   border-radius: 3px;
   position: relative;
   transition: all 0.2s ease;
-  padding: 10mm 12mm;
+  padding: 0;
   font-size: 9.5pt;
   line-height: 1.42;
   color: #1e293b;
+  overflow: hidden;
+}
+
+/* Single column templates have standard 10mm 12mm A4 margins */
+.paper-sheet .template-modern-tech,
+.paper-sheet .template-minimal-ats,
+.paper-sheet .template-formal-legal {
+  padding: 10mm 12mm;
 }
 
 .paper-sheet .cv-container {
   box-shadow: none !important;
   margin: 0 !important;
-  padding: 0 !important;
   width: 100% !important;
   max-width: 100% !important;
   background: transparent !important;
@@ -219,7 +232,7 @@
   right: 0;
   border-bottom: 2px dashed #f43f5e;
   pointer-events: none;
-  z-index: 10;
+  z-index: 20;
   display: flex;
   justify-content: flex-end;
   padding-right: 14px;
@@ -235,6 +248,7 @@
   transform: translateY(-50%);
   letter-spacing: 0.3px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
 }
 
 /* Stats Sidebar */

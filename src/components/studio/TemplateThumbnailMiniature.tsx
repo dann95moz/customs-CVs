@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Chip, useTheme, alpha } from '@mui/material';
+import { Box, Typography, useTheme, alpha } from '@mui/material';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import { ThemeId, PaletteId } from '../../types/cv';
 import { getPaletteConfig } from '../../constants/palettes';
@@ -7,6 +7,7 @@ import { getPaletteConfig } from '../../constants/palettes';
 interface TemplateThumbnailMiniatureProps {
   themeId: ThemeId;
   paletteId: PaletteId;
+  customColor?: string;
   name: string;
   category: string;
   isSelected: boolean;
@@ -16,6 +17,7 @@ interface TemplateThumbnailMiniatureProps {
 export const TemplateThumbnailMiniature: React.FC<TemplateThumbnailMiniatureProps> = ({
   themeId,
   paletteId,
+  customColor,
   name,
   category,
   isSelected,
@@ -23,192 +25,214 @@ export const TemplateThumbnailMiniature: React.FC<TemplateThumbnailMiniatureProp
 }) => {
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
-  const pal = getPaletteConfig(paletteId);
+  const pal = getPaletteConfig(paletteId, customColor);
 
   const renderMiniLayout = () => {
     switch (themeId) {
-      case 'two-column':
+      case 'executive':
+        // Corporate Top Banner (Photo 2): Top colored banner with monogram box, 2 columns below
         return (
-          <div style={{ display: 'flex', height: '100%', width: '100%', overflow: 'hidden' }}>
-            {/* Left Sidebar */}
-            <div style={{ width: '36%', background: pal.accentColor, padding: '7px 5px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-              <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: 'rgba(255,255,255,0.3)', margin: '0 auto 3px' }} />
-              <div style={{ height: '3px', width: '85%', background: '#ffffff', borderRadius: '1px', margin: '0 auto' }} />
-              <div style={{ height: '2px', width: '65%', background: 'rgba(255,255,255,0.7)', borderRadius: '1px', margin: '0 auto 5px' }} />
-              
-              <div style={{ height: '2.5px', width: '75%', background: 'rgba(255,255,255,0.9)', margin: '0 auto 1px' }} />
-              <div style={{ height: '1.5px', width: '90%', background: 'rgba(255,255,255,0.5)', margin: '0 auto 1px' }} />
-              <div style={{ height: '1.5px', width: '80%', background: 'rgba(255,255,255,0.5)', margin: '0 auto 1px' }} />
-              <div style={{ height: '1.5px', width: '85%', background: 'rgba(255,255,255,0.5)', margin: '0 auto 4px' }} />
-
-              <div style={{ height: '2.5px', width: '75%', background: 'rgba(255,255,255,0.9)', margin: '0 auto 1px' }} />
-              <div style={{ height: '1.5px', width: '85%', background: 'rgba(255,255,255,0.5)', margin: '0 auto 1px' }} />
-              <div style={{ height: '1.5px', width: '80%', background: 'rgba(255,255,255,0.5)', margin: '0 auto' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', overflow: 'hidden' }}>
+            {/* Full-width Top Banner */}
+            <div style={{ background: pal.headerBg || pal.accentColor, padding: '5px 4px 4px', textAlign: 'center', flexShrink: 0 }}>
+              <div style={{ width: '10px', height: '10px', border: '1px solid rgba(255,255,255,0.85)', borderRadius: '1px', margin: '0 auto 2px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: '5px', color: '#ffffff', fontWeight: 800, lineHeight: 1 }}>DC</span>
+              </div>
+              <div style={{ height: '3px', width: '55%', background: '#ffffff', borderRadius: '1px', margin: '0 auto 1.5px' }} />
+              <div style={{ height: '1.5px', width: '35%', background: 'rgba(255,255,255,0.7)', borderRadius: '1px', margin: '0 auto' }} />
             </div>
-            {/* Right Main Content */}
-            <div style={{ flex: 1, padding: '7px 6px', display: 'flex', flexDirection: 'column', gap: '2.5px' }}>
-              <div style={{ height: '4px', width: '65%', background: '#0f172a', borderRadius: '1px' }} />
-              <div style={{ height: '2px', width: '45%', background: pal.accentColor, borderRadius: '1px', marginBottom: '3px' }} />
-              
-              <div style={{ height: '2.5px', width: '40%', background: '#0f172a' }} />
-              <div style={{ height: '1.5px', width: '98%', background: '#94a3b8' }} />
-              <div style={{ height: '1.5px', width: '92%', background: '#94a3b8' }} />
-              <div style={{ height: '1.5px', width: '85%', background: '#94a3b8', marginBottom: '3px' }} />
+            {/* 2-Column Body Below */}
+            <div style={{ display: 'grid', gridTemplateColumns: '62% 38%', gap: '4px', padding: '5px 4px', flex: 1 }}>
+              {/* Left Main */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <div style={{ height: '2px', width: '45%', background: '#0f172a' }} />
+                <div style={{ height: '1.2px', width: '98%', background: '#94a3b8' }} />
+                <div style={{ height: '1.2px', width: '90%', background: '#94a3b8', marginBottom: '2px' }} />
 
-              <div style={{ height: '2.5px', width: '40%', background: '#0f172a' }} />
-              <div style={{ height: '1.5px', width: '96%', background: '#94a3b8' }} />
-              <div style={{ height: '1.5px', width: '90%', background: '#94a3b8' }} />
-              <div style={{ height: '1.5px', width: '82%', background: '#94a3b8' }} />
+                <div style={{ height: '2px', width: '55%', background: '#0f172a' }} />
+                <div style={{ height: '1.2px', width: '96%', background: '#94a3b8' }} />
+                <div style={{ height: '1.2px', width: '92%', background: '#94a3b8' }} />
+                <div style={{ height: '1.2px', width: '85%', background: '#94a3b8' }} />
+              </div>
+              {/* Right Side */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', borderLeft: '0.5px solid #e2e8f0', paddingLeft: '3px' }}>
+                <div style={{ height: '1.5px', width: '80%', background: pal.accentColor }} />
+                <div style={{ height: '1.2px', width: '90%', background: '#64748b' }} />
+                <div style={{ height: '1.2px', width: '75%', background: '#64748b', marginBottom: '2px' }} />
+
+                <div style={{ height: '1.5px', width: '70%', background: '#0f172a' }} />
+                <div style={{ height: '1.2px', width: '85%', background: '#64748b' }} />
+                <div style={{ height: '1.2px', width: '80%', background: '#64748b' }} />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'two-column':
+        // Modern Contrast Sidebar (Photo 3): Solid colored right sidebar with white emblem
+        return (
+          <div style={{ display: 'grid', gridTemplateColumns: '62% 38%', height: '100%', width: '100%', overflow: 'hidden' }}>
+            {/* Left Main Content */}
+            <div style={{ padding: '6px 5px', display: 'flex', flexDirection: 'column', gap: '2.5px' }}>
+              <div style={{ height: '4px', width: '75%', background: pal.accentColor, borderRadius: '1px', marginBottom: '1px' }} />
+              <div style={{ height: '2px', width: '45%', background: '#475569', borderRadius: '1px', marginBottom: '3px' }} />
+              
+              <div style={{ height: '2px', width: '45%', background: '#0f172a' }} />
+              <div style={{ height: '1.2px', width: '98%', background: '#94a3b8' }} />
+              <div style={{ height: '1.2px', width: '90%', background: '#94a3b8', marginBottom: '2px' }} />
+
+              <div style={{ height: '2px', width: '50%', background: '#0f172a' }} />
+              <div style={{ height: '1.2px', width: '96%', background: '#94a3b8' }} />
+              <div style={{ height: '1.2px', width: '90%', background: '#94a3b8' }} />
+              <div style={{ height: '1.2px', width: '82%', background: '#94a3b8' }} />
+            </div>
+            {/* Right Solid Colored Sidebar */}
+            <div style={{ background: pal.sidebarBg || pal.accentColor, padding: '6px 4px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              {/* White Square Emblem */}
+              <div style={{ width: '12px', height: '12px', background: '#ffffff', borderRadius: '1.5px', margin: '0 auto 3px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '6px', height: '6px', transform: 'rotate(45deg)', background: pal.accentColor }} />
+              </div>
+              <div style={{ height: '1.5px', width: '85%', background: '#ffffff', margin: '0 auto 1px' }} />
+              <div style={{ height: '1.2px', width: '70%', background: 'rgba(255,255,255,0.7)', margin: '0 auto 3px' }} />
+              
+              <div style={{ height: '1.5px', width: '80%', background: '#ffffff', margin: '0 auto 1px' }} />
+              <div style={{ height: '1px', width: '90%', background: 'rgba(255,255,255,0.7)', margin: '0 auto 1px' }} />
+              <div style={{ height: '1px', width: '85%', background: 'rgba(255,255,255,0.7)', margin: '0 auto 1px' }} />
+              <div style={{ height: '1px', width: '75%', background: 'rgba(255,255,255,0.7)', margin: '0 auto 1px' }} />
             </div>
           </div>
         );
 
       case 'designer-uiux':
+        // Editorial Pastel Card (Photo 4): Top-left pastel card with name/contacts
         return (
-          <div style={{ padding: '8px 7px', height: '100%', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-            {/* Header with Title Pill */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '3px', marginBottom: '2px' }}>
-              <div>
-                <div style={{ height: '4.5px', width: '55px', background: '#0f172a', borderRadius: '1px', marginBottom: '2px' }} />
-                <div style={{ height: '2.5px', width: '38px', background: pal.accentColor, borderRadius: '6px' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', padding: '5px 4px', gap: '4px', overflow: 'hidden' }}>
+            {/* Top Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: '38% 62%', gap: '4px', alignItems: 'start' }}>
+              {/* Pastel Tinted Card */}
+              <div style={{ background: pal.badgeBg || pal.accentLight, border: `0.5px solid ${pal.accentBorder}`, borderRadius: '2px', padding: '3px 2.5px' }}>
+                <div style={{ height: '3px', width: '80%', background: '#0f172a', borderRadius: '1px', marginBottom: '1.5px' }} />
+                <div style={{ height: '1.5px', width: '60%', background: '#475569', marginBottom: '2px' }} />
+                <div style={{ height: '0.8px', background: 'rgba(0,0,0,0.1)', marginBottom: '2px' }} />
+                <div style={{ height: '1px', width: '85%', background: '#64748b', marginBottom: '1px' }} />
+                <div style={{ height: '1px', width: '75%', background: '#64748b' }} />
               </div>
-              <div style={{ width: '13px', height: '13px', borderRadius: '50%', background: pal.badgeBg, border: `1px solid ${pal.accentBorder}` }} />
+              {/* Top Summary */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px', paddingTop: '1px' }}>
+                <div style={{ height: '2px', width: '50%', background: '#0f172a' }} />
+                <div style={{ height: '1.2px', width: '98%', background: '#94a3b8' }} />
+                <div style={{ height: '1.2px', width: '92%', background: '#94a3b8' }} />
+                <div style={{ height: '1.2px', width: '85%', background: '#94a3b8' }} />
+              </div>
             </div>
-            {/* Skill tags */}
-            <div style={{ display: 'flex', gap: '2px', marginBottom: '2px' }}>
-              <div style={{ height: '3px', width: '15px', background: pal.badgeBg, borderRadius: '4px', border: `0.5px solid ${pal.accentBorder}` }} />
-              <div style={{ height: '3px', width: '18px', background: pal.badgeBg, borderRadius: '4px', border: `0.5px solid ${pal.accentBorder}` }} />
-              <div style={{ height: '3px', width: '14px', background: pal.badgeBg, borderRadius: '4px', border: `0.5px solid ${pal.accentBorder}` }} />
+            {/* Bottom 2 Columns */}
+            <div style={{ display: 'grid', gridTemplateColumns: '38% 62%', gap: '4px', flex: 1 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <div style={{ height: '1.8px', width: '60%', background: '#0f172a' }} />
+                <div style={{ height: '1.2px', width: '85%', background: '#64748b' }} />
+                <div style={{ height: '1.2px', width: '80%', background: '#64748b' }} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <div style={{ height: '1.8px', width: '50%', background: '#0f172a' }} />
+                <div style={{ height: '1.2px', width: '96%', background: '#94a3b8' }} />
+                <div style={{ height: '1.2px', width: '90%', background: '#94a3b8' }} />
+              </div>
             </div>
-            {/* Sections */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
-              <div style={{ width: '2.5px', height: '2.5px', borderRadius: '50%', background: pal.accentColor }} />
-              <div style={{ height: '2.5px', width: '40px', background: '#0f172a' }} />
-            </div>
-            <div style={{ height: '1.5px', width: '98%', background: '#cbd5e1' }} />
-            <div style={{ height: '1.5px', width: '88%', background: '#cbd5e1', marginBottom: '2px' }} />
+          </div>
+        );
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
-              <div style={{ width: '2.5px', height: '2.5px', borderRadius: '50%', background: pal.accentColor }} />
-              <div style={{ height: '2.5px', width: '45px', background: '#0f172a' }} />
+      case 'academic-research':
+        // Executive Dual-Tone (Photo 5): Dark slate left sidebar with monogram avatar, top-right soft banner
+        return (
+          <div style={{ display: 'grid', gridTemplateColumns: '36% 64%', height: '100%', width: '100%', overflow: 'hidden' }}>
+            {/* Dark Slate Left Sidebar */}
+            <div style={{ background: '#1e293b', padding: '6px 4px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              <div style={{ width: '14px', height: '14px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.1)', margin: '0 auto 3px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: '6px', color: '#ffffff', fontWeight: 800 }}>DC</span>
+              </div>
+              <div style={{ height: '1.2px', width: '80%', background: '#f8fafc', margin: '0 auto 1px' }} />
+              <div style={{ height: '1px', width: '85%', background: 'rgba(255,255,255,0.6)', margin: '0 auto 1px' }} />
+              <div style={{ height: '1px', width: '75%', background: 'rgba(255,255,255,0.6)', margin: '0 auto 3px' }} />
+              
+              <div style={{ height: '1.2px', width: '70%', background: '#f8fafc', margin: '0 auto 1px' }} />
+              <div style={{ height: '1px', width: '85%', background: 'rgba(255,255,255,0.6)', margin: '0 auto 1px' }} />
+              <div style={{ height: '1px', width: '80%', background: 'rgba(255,255,255,0.6)', margin: '0 auto' }} />
             </div>
-            <div style={{ height: '1.5px', width: '96%', background: '#cbd5e1' }} />
-            <div style={{ height: '1.5px', width: '90%', background: '#cbd5e1' }} />
-            <div style={{ height: '1.5px', width: '84%', background: '#cbd5e1' }} />
+            {/* Right Column with Soft Header Banner */}
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+              <div style={{ background: pal.accentLight, padding: '4px 5px', borderBottom: `0.5px solid ${pal.accentBorder}` }}>
+                <div style={{ height: '3.5px', width: '65%', background: pal.accentColor, borderRadius: '1px', marginBottom: '1.5px' }} />
+                <div style={{ height: '1.5px', width: '40%', background: '#475569' }} />
+              </div>
+              <div style={{ padding: '5px 5px', display: 'flex', flexDirection: 'column', gap: '2px', flex: 1 }}>
+                <div style={{ height: '2px', width: '45%', background: '#0f172a' }} />
+                <div style={{ height: '1.2px', width: '98%', background: '#94a3b8' }} />
+                <div style={{ height: '1.2px', width: '90%', background: '#94a3b8', marginBottom: '2px' }} />
+                <div style={{ height: '2px', width: '50%', background: '#0f172a' }} />
+                <div style={{ height: '1.2px', width: '95%', background: '#94a3b8' }} />
+                <div style={{ height: '1.2px', width: '88%', background: '#94a3b8' }} />
+              </div>
+            </div>
           </div>
         );
 
       case 'formal-legal':
         return (
-          <div style={{ padding: '8px 9px', height: '100%', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-            {/* Centered formal header with double border */}
+          <div style={{ padding: '7px 8px', height: '100%', display: 'flex', flexDirection: 'column', gap: '3px' }}>
             <div style={{ textAlign: 'center', borderBottom: `1.5px double ${pal.accentColor}`, paddingBottom: '3px', marginBottom: '3px' }}>
               <div style={{ height: '4px', width: '60px', background: pal.accentColor, margin: '0 auto 2px', borderRadius: '0.5px' }} />
               <div style={{ height: '2px', width: '38px', background: '#475569', margin: '0 auto 1.5px' }} />
               <div style={{ height: '1.5px', width: '50px', background: '#94a3b8', margin: '0 auto' }} />
             </div>
-            {/* Formal small-caps sections */}
             <div style={{ borderBottom: `0.5px solid ${pal.accentBorder}`, paddingBottom: '1px' }}>
               <div style={{ height: '2.5px', width: '48px', background: pal.accentColor }} />
             </div>
             <div style={{ height: '1.5px', width: '98%', background: '#475569' }} />
             <div style={{ height: '1.5px', width: '90%', background: '#475569', marginBottom: '2px' }} />
-
             <div style={{ borderBottom: `0.5px solid ${pal.accentBorder}`, paddingBottom: '1px' }}>
               <div style={{ height: '2.5px', width: '52px', background: pal.accentColor }} />
             </div>
             <div style={{ height: '1.5px', width: '96%', background: '#475569' }} />
             <div style={{ height: '1.5px', width: '92%', background: '#475569' }} />
-            <div style={{ height: '1.5px', width: '84%', background: '#475569' }} />
-          </div>
-        );
-
-      case 'executive':
-        return (
-          <div style={{ padding: '8px 8px', height: '100%', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-            {/* Centered serif header with solid accent underline */}
-            <div style={{ textAlign: 'center', borderBottom: `2px solid ${pal.accentColor}`, paddingBottom: '3px', marginBottom: '3px' }}>
-              <div style={{ height: '4.5px', width: '64px', background: pal.accentColor, margin: '0 auto 2px' }} />
-              <div style={{ height: '2px', width: '40px', background: '#334155', margin: '0 auto 1.5px' }} />
-              <div style={{ height: '1.5px', width: '52px', background: '#64748b', margin: '0 auto' }} />
-            </div>
-            {/* Narrative sections */}
-            <div style={{ height: '2.5px', width: '42px', background: '#0f172a' }} />
-            <div style={{ height: '1.5px', width: '98%', background: '#64748b' }} />
-            <div style={{ height: '1.5px', width: '90%', background: '#64748b', marginBottom: '2px' }} />
-
-            <div style={{ height: '2.5px', width: '48px', background: '#0f172a' }} />
-            <div style={{ height: '1.5px', width: '96%', background: '#64748b' }} />
-            <div style={{ height: '1.5px', width: '88%', background: '#64748b' }} />
-            <div style={{ height: '1.5px', width: '82%', background: '#64748b' }} />
-          </div>
-        );
-
-      case 'academic-research':
-        return (
-          <div style={{ padding: '8px 7px', height: '100%', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-            {/* Scholarly header */}
-            <div style={{ borderBottom: `1.5px solid ${pal.accentColor}`, paddingBottom: '3px', marginBottom: '3px' }}>
-              <div style={{ height: '4.5px', width: '58px', background: pal.accentColor, marginBottom: '2px' }} />
-              <div style={{ height: '2px', width: '38px', background: '#334155', marginBottom: '1.5px' }} />
-              <div style={{ height: '1.5px', width: '48px', background: '#64748b' }} />
-            </div>
-            {/* Publications & credentials */}
-            <div style={{ height: '2.5px', width: '48px', background: pal.accentColor }} />
-            <div style={{ height: '1.5px', width: '98%', background: '#64748b' }} />
-            <div style={{ height: '1.5px', width: '88%', background: '#64748b', marginBottom: '2px' }} />
-
-            <div style={{ height: '2.5px', width: '54px', background: pal.accentColor }} />
-            <div style={{ height: '1.5px', width: '95%', background: '#64748b' }} />
-            <div style={{ height: '1.5px', width: '90%', background: '#64748b' }} />
-            <div style={{ height: '1.5px', width: '82%', background: '#64748b' }} />
           </div>
         );
 
       case 'minimal-ats':
         return (
-          <div style={{ padding: '8px 8px', height: '100%', display: 'flex', flexDirection: 'column', gap: '2.5px' }}>
-            {/* Ultra-clean monochrome ATS layout */}
+          <div style={{ padding: '7px 8px', height: '100%', display: 'flex', flexDirection: 'column', gap: '2.5px' }}>
             <div style={{ borderBottom: '0.8px solid #0f172a', paddingBottom: '3px', marginBottom: '3px' }}>
               <div style={{ height: '4px', width: '52px', background: '#0f172a', marginBottom: '2px' }} />
               <div style={{ height: '2px', width: '34px', background: '#334155', marginBottom: '1.5px' }} />
               <div style={{ height: '1.5px', width: '46px', background: '#64748b' }} />
             </div>
-            {/* Clean text lines */}
             <div style={{ height: '2.5px', width: '38px', background: '#0f172a' }} />
             <div style={{ height: '1.5px', width: '98%', background: '#334155' }} />
             <div style={{ height: '1.5px', width: '88%', background: '#334155', marginBottom: '2px' }} />
-
             <div style={{ height: '2.5px', width: '42px', background: '#0f172a' }} />
             <div style={{ height: '1.5px', width: '96%', background: '#334155' }} />
             <div style={{ height: '1.5px', width: '90%', background: '#334155' }} />
-            <div style={{ height: '1.5px', width: '84%', background: '#334155' }} />
           </div>
         );
 
       case 'modern-tech':
       default:
         return (
-          <div style={{ padding: '8px 7px', height: '100%', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-            {/* Linear tech header */}
+          <div style={{ padding: '7px 7px', height: '100%', display: 'flex', flexDirection: 'column', gap: '3px' }}>
             <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '3px', marginBottom: '2px' }}>
               <div style={{ height: '4.5px', width: '54px', background: '#0f172a', borderRadius: '1px', marginBottom: '2px' }} />
               <div style={{ height: '2px', width: '36px', background: pal.accentColor, borderRadius: '1px' }} />
             </div>
-            {/* Tech badges bar */}
             <div style={{ display: 'flex', gap: '2px', marginBottom: '2px' }}>
               <div style={{ height: '2.5px', width: '14px', background: pal.badgeBg, borderRadius: '1px' }} />
               <div style={{ height: '2.5px', width: '18px', background: pal.badgeBg, borderRadius: '1px' }} />
               <div style={{ height: '2.5px', width: '12px', background: pal.badgeBg, borderRadius: '1px' }} />
             </div>
-            {/* Content blocks */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
               <div style={{ width: '2px', height: '3.5px', background: pal.accentColor, borderRadius: '0.5px' }} />
               <div style={{ height: '2.5px', width: '38px', background: '#0f172a' }} />
             </div>
             <div style={{ height: '1.5px', width: '98%', background: '#64748b' }} />
             <div style={{ height: '1.5px', width: '86%', background: '#64748b', marginBottom: '2px' }} />
-
             <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
               <div style={{ width: '2px', height: '3.5px', background: pal.accentColor, borderRadius: '0.5px' }} />
               <div style={{ height: '2.5px', width: '42px', background: '#0f172a' }} />

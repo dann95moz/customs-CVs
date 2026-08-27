@@ -104,12 +104,18 @@
     border: none !important;
     border-radius: 0 !important;
     margin: 0 auto !important;
-    padding: 10mm 12mm !important;
+    padding: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     min-height: auto !important;
     page-break-after: avoid;
     break-after: avoid;
+  }
+
+  .paper-sheet .template-modern-tech,
+  .paper-sheet .template-minimal-ats,
+  .paper-sheet .template-formal-legal {
+    padding: 10mm 12mm !important;
   }
 
   .paper-sheet .cv-container {
