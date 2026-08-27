@@ -121,6 +121,21 @@ flowchart TB
 
 ## ⚡ Quick Start & Common Commands
 
+### 0. 🧙‍♂️ Interactive Terminal Wizard (No Flags Needed!)
+For a guided experience without memorizing CLI flags, launch the interactive assistant:
+```bash
+npm run wizard
+# or
+npm run cli
+```
+Guides you through:
+* Selecting markdown CVs from `outputs/` via numbered choices.
+* Choosing from the 7 visual templates and 10 color palettes.
+* Calibrating typography, spacing density, and page budget.
+* Tailoring resumes with AI or running Quality & ATS audits.
+
+---
+
 ### 1. Interactive Studio Web UI
 Start the real-time visual studio with Hot Module Reloading (HMR):
 ```bash
@@ -270,6 +285,37 @@ If you are using an AI-assisted IDE (like **Google Antigravity**, Cursor, or VS 
 4. **Preview in Real Time:** Open `npm run dev` or inspect the generated PDF in `outputs/`.
 
 This workflow gives you **unlimited tokens**, **deep reasoning capability**, and **zero API billing costs** while utilizing the engine's compilation, formatting, and auto-fitting capabilities.
+
+---
+
+## 🌐 Cloud Deployment (Vercel)
+
+The CV Studio frontend is production-ready for deployment on **Vercel** with zero server costs:
+
+1. Push your repository to GitHub (keep it **Private**).
+2. Go to [Vercel Dashboard](https://vercel.com) and click **"Add New Project"**.
+3. Select this repository. Vercel automatically detects the preset from [vercel.json](file:///c:/Users/LeGo/Documents/customs%20CVs/vercel.json):
+   * **Framework Preset:** Vite
+   * **Build Command:** `npm run build`
+   * **Output Directory:** `dist`
+4. Click **Deploy**. Your studio will be live with instant sub-second global CDN delivery and automatic branch previews.
+
+---
+
+## 📦 Publishing the CLI to NPM (Protected Source)
+
+You can distribute the CLI tool publicly on npm without exposing your private GitHub repository:
+
+1. Build the standalone minified bundle:
+   ```bash
+   npm run build:cli
+   ```
+   Compiles the entire TypeScript CLI into a single, minified ~95KB bundle in `bin/cli.mjs`.
+2. Publish to npm:
+   ```bash
+   npm publish --access public
+   ```
+   *[.npmignore](file:///c:/Users/LeGo/Documents/customs%20CVs/.npmignore) strictly blocks `src/`, `master-data.md`, `target-job.md`, `.env`, and git configs, publishing only the compiled binary and themes.*
 
 ---
 
