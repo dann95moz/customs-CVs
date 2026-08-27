@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -85,7 +85,7 @@ export async function tailorCvWithGemini({
 
   let result;
   let usedModel = modelName;
-  let activeModel: any = null;
+  let activeModel: GenerativeModel | null = null;
 
   for (const m of modelsToTry) {
     try {
@@ -101,8 +101,9 @@ export async function tailorCvWithGemini({
       usedModel = m;
       activeModel = model;
       break;
-    } catch (err: any) {
-      console.warn(`⏳ Model ${m} unavailable (${err.message}). Trying next model...`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.warn(`⏳ Model ${m} unavailable (${msg}). Trying next model...`);
     }
   }
 
@@ -191,8 +192,9 @@ CONDENSATION RULES:
           baseDir: root
         });
       }
-    } catch (condenseErr: any) {
-      console.warn(`⚠️ Could not complete secondary auto-condensation: ${condenseErr.message}`);
+    } catch (condenseErr: unknown) {
+      const msg = condenseErr instanceof Error ? condenseErr.message : String(condenseErr);
+      console.warn(`⚠️ Could not complete secondary auto-condensation: ${msg}`);
     }
   }
 
@@ -206,8 +208,9 @@ CONDENSATION RULES:
       baseDir: root
     });
     qualityReportPath = auditRes.reportMdPath;
-  } catch (auditErr: any) {
-    console.warn(`⚠️ Could not generate quality report: ${auditErr.message}`);
+  } catch (auditErr: unknown) {
+    const msg = auditErr instanceof Error ? auditErr.message : String(auditErr);
+    console.warn(`⚠️ Could not generate quality report: ${msg}`);
   }
 
   return {

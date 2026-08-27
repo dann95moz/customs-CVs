@@ -343,9 +343,10 @@ export async function generateAllPdfs({ theme = 'modern-tech', baseDir }: { them
       });
       console.log(`✅ Creado: ${pdfPath}`);
       results.push(res);
-    } catch (err: any) {
-      console.error(`❌ Error en ${file}:`, err.message);
-      results.push({ success: false, file, error: err.message });
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      console.error(`❌ Error in ${file}:`, errorMessage);
+      results.push({ success: false, file, error: errorMessage });
     }
   }
 

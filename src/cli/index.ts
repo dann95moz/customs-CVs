@@ -176,8 +176,9 @@ async function main() {
         printHelp();
         process.exit(1);
     }
-  } catch (error: any) {
-    console.error(`\n❌ Error:`, error.message);
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error(`\n❌ Error:`, msg);
     process.exit(1);
   }
 }

@@ -65,7 +65,7 @@ export class GeminiStrategy implements AIProviderStrategy {
     const requestedModel = settings.model || 'gemini-3.6-flash';
     const modelsToTry = [requestedModel, 'gemini-3.5-flash', 'gemini-3.7-flash'].filter((v, i, a) => a.indexOf(v) === i);
 
-    let lastError: any = null;
+    let lastError: unknown = null;
     for (const m of modelsToTry) {
       try {
         const genAI = new GoogleGenerativeAI(apiKey);
@@ -84,13 +84,15 @@ export class GeminiStrategy implements AIProviderStrategy {
           text,
           modelUsed: `Google ${m}`
         };
-      } catch (err: any) {
+      } catch (err: unknown) {
         lastError = err;
-        console.warn(`Gemini model ${m} failed (${err.message}). Trying fallback model...`);
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`Gemini model ${m} failed (${msg}). Trying fallback model...`);
       }
     }
 
-    throw new Error(`Gemini API Error: ${lastError?.message || 'Failed to generate with Google Gemini'}`);
+    const finalErrMsg = lastError instanceof Error ? lastError.message : 'Failed to generate with Google Gemini';
+    throw new Error(`Gemini API Error: ${finalErrMsg}`);
   }
 }
 
@@ -151,8 +153,9 @@ export class OpenAICompatibleStrategy implements AIProviderStrategy {
         text,
         modelUsed: `${settings.provider.toUpperCase()} (${settings.model})`
       };
-    } catch (err: any) {
-      throw new Error(`${settings.provider.toUpperCase()} Error: ${err.message}`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      throw new Error(`${settings.provider.toUpperCase()} Error: ${msg}`);
     }
   }
 }
@@ -199,8 +202,9 @@ export class ClaudeStrategy implements AIProviderStrategy {
         text,
         modelUsed: `Anthropic ${settings.model || 'Claude 3.7 Sonnet'}`
       };
-    } catch (err: any) {
-      throw new Error(`Claude API Error: ${err.message}`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      throw new Error(`Claude API Error: ${msg}`);
     }
   }
 }
