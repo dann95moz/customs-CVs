@@ -5,30 +5,70 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { parseCvMarkdownToData, sanitizeFileName } from './parser';
 import { CVRenderer } from '../components/CVRenderer';
-import { ThemeId } from '../types/cv';
+import { ThemeId, PaletteId, FontFamilyId, SpacingDensity } from '../types/cv';
 import { getWorkspaceRoot, getOutputsDir } from './workspace';
 
-interface GeneratePdfOptions {
+export interface GeneratePdfOptions {
   markdownContent?: string;
   markdownFilePath?: string;
   outputPath?: string;
   theme?: ThemeId;
+  palette?: PaletteId;
+  customColor?: string;
+  fontFamily?: FontFamilyId;
+  spacingDensity?: SpacingDensity;
   format?: 'A4' | 'Letter';
   maxPages?: number;
   autoFit?: boolean;
   baseDir?: string;
 }
 
-export function renderCvToHtml(markdownContent: string, theme: ThemeId = 'modern-tech', baseDir?: string): string {
+export interface RenderCvOptions {
+  theme?: ThemeId;
+  palette?: PaletteId;
+  customColor?: string;
+  fontFamily?: FontFamilyId;
+  spacingDensity?: SpacingDensity;
+  baseDir?: string;
+}
+
+export function renderCvToHtml(
+  markdownContent: string,
+  themeOrOptions: ThemeId | RenderCvOptions = 'modern-tech',
+  legacyBaseDir?: string
+): string {
+  const options: RenderCvOptions = typeof themeOrOptions === 'string'
+    ? { theme: themeOrOptions, baseDir: legacyBaseDir }
+    : themeOrOptions;
+
+  const {
+    theme = 'modern-tech',
+    palette,
+    customColor,
+    fontFamily,
+    spacingDensity,
+    baseDir
+  } = options;
+
   const rootDir = getWorkspaceRoot(baseDir);
   const cvData = parseCvMarkdownToData(markdownContent);
 
-  // Render React component tree to static HTML markup
+  // Render React component tree to static HTML markup with complete design options
   const componentHtml = renderToStaticMarkup(
-    React.createElement(CVRenderer, { data: cvData, theme })
+    React.createElement(CVRenderer, {
+      data: cvData,
+      theme,
+      palette,
+      customColor,
+      fontFamily,
+      spacingDensity
+    })
   );
 
-  // Load theme CSS
+  // Load baseline shared CSS and active theme CSS
+  const cvBasePath = path.join(rootDir, 'src', 'themes', 'cv-base.css');
+  const cvBaseCss = fs.existsSync(cvBasePath) ? fs.readFileSync(cvBasePath, 'utf8') : '';
+
   const themePath = path.join(rootDir, 'src', 'themes', `${theme}.css`);
   const themeCss = fs.existsSync(themePath) ? fs.readFileSync(themePath, 'utf8') : '';
 
@@ -136,7 +176,8 @@ export function renderCvToHtml(markdownContent: string, theme: ThemeId = 'modern
       flex-shrink: 0;
     }
 
-    /* Injected Theme Styles */
+    /* Base Styles & Injected Theme Styles */
+    ${cvBaseCss}
     ${themeCss}
   </style>
 </head>
@@ -151,6 +192,10 @@ export async function generatePdfFromMarkdown({
   markdownFilePath,
   outputPath,
   theme = 'modern-tech',
+  palette,
+  customColor,
+  fontFamily,
+  spacingDensity,
   format = 'A4',
   maxPages,
   autoFit = true,
@@ -188,7 +233,14 @@ export async function generatePdfFromMarkdown({
   const wordCount = content.trim().split(/\s+/).length;
   const targetPages = maxPages || (wordCount > 520 ? 2 : 1);
 
-  const html = renderCvToHtml(content, theme, rootDir);
+  const html = renderCvToHtml(content, {
+    theme,
+    palette,
+    customColor,
+    fontFamily,
+    spacingDensity,
+    baseDir: rootDir
+  });
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -321,7 +373,25 @@ export async function generatePdfFromMarkdown({
   }
 }
 
-export async function generateAllPdfs({ theme = 'modern-tech', baseDir }: { theme?: ThemeId; baseDir?: string } = {}) {
+export interface GenerateAllPdfsOptions {
+  theme?: ThemeId;
+  palette?: PaletteId;
+  customColor?: string;
+  fontFamily?: FontFamilyId;
+  spacingDensity?: SpacingDensity;
+  maxPages?: number;
+  baseDir?: string;
+}
+
+export async function generateAllPdfs({
+  theme = 'modern-tech',
+  palette,
+  customColor,
+  fontFamily,
+  spacingDensity,
+  maxPages,
+  baseDir
+}: GenerateAllPdfsOptions = {}) {
   const rootDir = getWorkspaceRoot(baseDir);
   const outputsDir = getOutputsDir(baseDir);
 
@@ -333,12 +403,17 @@ export async function generateAllPdfs({ theme = 'modern-tech', baseDir }: { them
     const pdfName = file.replace(/\.md$/, '.pdf');
     const pdfPath = path.join(outputsDir, pdfName);
 
-    console.log(`📄 Procesando: ${file} (Tema: ${theme})...`);
+    console.log(`📄 Procesando: ${file} (Tema: ${theme}${palette ? `, Paleta: ${palette}` : ''})...`);
     try {
       const res = await generatePdfFromMarkdown({
         markdownFilePath: mdPath,
         outputPath: pdfPath,
         theme,
+        palette,
+        customColor,
+        fontFamily,
+        spacingDensity,
+        maxPages,
         baseDir: rootDir
       });
       console.log(`✅ Creado: ${pdfPath}`);

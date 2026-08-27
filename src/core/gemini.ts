@@ -10,7 +10,7 @@ import {
   parseCvMarkdownToData
 } from './parser';
 import { generateQualityAuditReport } from './audit';
-import { ThemeId } from '../types/cv';
+import { ThemeId, PaletteId, FontFamilyId, SpacingDensity } from '../types/cv';
 import { getWorkspaceRoot, getOutputsDir } from './workspace';
 import { buildPrompts } from './ai/prompt-builder';
 import { extractCvAndGap } from './ai/extractor';
@@ -20,24 +20,44 @@ dotenv.config();
 export interface TailorCvOptions {
   companyName?: string;
   theme?: ThemeId;
+  palette?: PaletteId;
+  customColor?: string;
+  fontFamily?: FontFamilyId;
+  spacingDensity?: SpacingDensity;
   modelName?: string;
   maxPages?: number;
   baseDir?: string;
+  masterDataPath?: string;
+  targetJobPath?: string;
+  rulesPath?: string;
 }
 
-function loadReferenceFiles(root: string) {
-  const masterDataPath = path.join(root, 'master-data.md');
-  const targetJobPath = path.join(root, 'target-job.md');
-  const rulesPath = path.join(root, 'rules.md');
+function loadReferenceFiles(
+  root: string,
+  customMaster?: string,
+  customJob?: string,
+  customRules?: string
+) {
+  const masterDataPath = customMaster
+    ? (path.isAbsolute(customMaster) ? customMaster : path.join(root, customMaster))
+    : path.join(root, 'master-data.md');
+
+  const targetJobPath = customJob
+    ? (path.isAbsolute(customJob) ? customJob : path.join(root, customJob))
+    : path.join(root, 'target-job.md');
+
+  const rulesPath = customRules
+    ? (path.isAbsolute(customRules) ? customRules : path.join(root, customRules))
+    : path.join(root, 'rules.md');
 
   if (!fs.existsSync(masterDataPath)) {
-    throw new Error(`File master-data.md not found at: ${masterDataPath}`);
+    throw new Error(`File master data not found at: ${masterDataPath}`);
   }
   if (!fs.existsSync(targetJobPath)) {
-    throw new Error(`File target-job.md not found at: ${targetJobPath}`);
+    throw new Error(`File target job not found at: ${targetJobPath}`);
   }
   if (!fs.existsSync(rulesPath)) {
-    throw new Error(`File rules.md not found at: ${rulesPath}`);
+    throw new Error(`File rules not found at: ${rulesPath}`);
   }
 
   return {
@@ -50,9 +70,16 @@ function loadReferenceFiles(root: string) {
 export async function tailorCvWithGemini({
   companyName = 'Target',
   theme = 'modern-tech',
+  palette,
+  customColor,
+  fontFamily,
+  spacingDensity,
   modelName = 'gemini-3.6-flash',
   maxPages = 1,
-  baseDir
+  baseDir,
+  masterDataPath,
+  targetJobPath,
+  rulesPath
 }: TailorCvOptions = {}) {
   const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
@@ -65,7 +92,7 @@ export async function tailorCvWithGemini({
   }
 
   const root = getWorkspaceRoot(baseDir);
-  const { masterData, targetJob, rules } = loadReferenceFiles(root);
+  const { masterData, targetJob, rules } = loadReferenceFiles(root, masterDataPath, targetJobPath, rulesPath);
 
   const prompts = buildPrompts({
     masterData,
@@ -146,6 +173,10 @@ export async function tailorCvWithGemini({
     markdownFilePath: cvMdPath,
     outputPath: pdfPath,
     theme,
+    palette,
+    customColor,
+    fontFamily,
+    spacingDensity,
     maxPages,
     baseDir: root
   });
@@ -188,6 +219,10 @@ CONDENSATION RULES:
           markdownFilePath: cvMdPath,
           outputPath: pdfPath,
           theme,
+          palette,
+          customColor,
+          fontFamily,
+          spacingDensity,
           maxPages,
           baseDir: root
         });
