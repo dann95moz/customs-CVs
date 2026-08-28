@@ -36,6 +36,8 @@ export const PageBudgetSelector: React.FC<PageBudgetSelectorProps> = ({
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
+        height: '100%',
+        boxSizing: 'border-box',
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
@@ -50,65 +52,86 @@ export const PageBudgetSelector: React.FC<PageBudgetSelectorProps> = ({
         </Box>
       </Box>
 
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
+      <Stack direction="column" spacing={1.5} sx={{ flex: 1, justifyContent: 'center' }}>
         <ButtonBase
           onClick={() => onPageBudgetChange(1)}
           sx={{
-            flex: 1,
-            p: 2,
+            width: '100%',
+            p: 1.75,
             borderRadius: '12px',
             textAlign: 'left',
             display: 'flex',
-            flexDirection: 'column',
             alignItems: 'flex-start',
-            justifyContent: 'space-between',
+            gap: 1.5,
             border: '2px solid',
             borderColor: pageBudget === 1 ? theme.palette.primary.main : theme.palette.divider,
-            bgcolor: pageBudget === 1 ? alpha(theme.palette.primary.main, isDark ? 0.12 : 0.06) : 'transparent',
+            bgcolor: pageBudget === 1 ? alpha(theme.palette.primary.main, isDark ? 0.12 : 0.05) : 'transparent',
             transition: 'all 0.2s ease',
+            '&:hover': {
+              borderColor: pageBudget === 1 ? theme.palette.primary.main : alpha(theme.palette.primary.main, 0.4),
+              bgcolor: pageBudget === 1 ? alpha(theme.palette.primary.main, isDark ? 0.14 : 0.07) : alpha(theme.palette.action.hover, 0.04),
+            },
           }}
         >
-          <Box sx={{ width: '100%', mb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-              1 Page (A4 Standard)
-            </Typography>
-            <Chip label="Recommended" size="small" color="primary" sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }} />
-          </Box>
-          <Typography variant="caption" color="text.secondary" sx={{ mb: 1.5 }}>
-            Ideal for 30-second recruiter scans. Focuses on your highest-impact metrics.
-          </Typography>
-          <Box sx={{ alignSelf: 'flex-end', color: pageBudget === 1 ? theme.palette.primary.main : theme.palette.text.disabled }}>
+          <Box sx={{ color: pageBudget === 1 ? theme.palette.primary.main : theme.palette.text.disabled, mt: 0.25 }}>
             {pageBudget === 1 ? <RadioButtonCheckedRoundedIcon /> : <RadioButtonUncheckedRoundedIcon />}
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 0.5 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+                1 Page (A4 Standard)
+              </Typography>
+              <Chip
+                label="Recommended"
+                size="small"
+                color="primary"
+                sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
+              />
+            </Box>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.45 }}>
+              Ideal for 30-second recruiter scans. Prioritizes highest-impact metrics and Google XYZ accomplishments.
+            </Typography>
           </Box>
         </ButtonBase>
 
         <ButtonBase
           onClick={() => onPageBudgetChange(2)}
           sx={{
-            flex: 1,
-            p: 2,
+            width: '100%',
+            p: 1.75,
             borderRadius: '12px',
             textAlign: 'left',
             display: 'flex',
-            flexDirection: 'column',
             alignItems: 'flex-start',
-            justifyContent: 'space-between',
+            gap: 1.5,
             border: '2px solid',
             borderColor: pageBudget === 2 ? theme.palette.primary.main : theme.palette.divider,
-            bgcolor: pageBudget === 2 ? alpha(theme.palette.primary.main, isDark ? 0.12 : 0.06) : 'transparent',
+            bgcolor: pageBudget === 2 ? alpha(theme.palette.primary.main, isDark ? 0.12 : 0.05) : 'transparent',
             transition: 'all 0.2s ease',
+            '&:hover': {
+              borderColor: pageBudget === 2 ? theme.palette.primary.main : alpha(theme.palette.primary.main, 0.4),
+              bgcolor: pageBudget === 2 ? alpha(theme.palette.primary.main, isDark ? 0.14 : 0.07) : alpha(theme.palette.action.hover, 0.04),
+            },
           }}
         >
-          <Box sx={{ width: '100%', mb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-              2 Pages (Extended)
-            </Typography>
-          </Box>
-          <Typography variant="caption" color="text.secondary" sx={{ mb: 1.5 }}>
-            For directors, tech leads, or specialists with 8-10+ years of deep technical track records.
-          </Typography>
-          <Box sx={{ alignSelf: 'flex-end', color: pageBudget === 2 ? theme.palette.primary.main : theme.palette.text.disabled }}>
+          <Box sx={{ color: pageBudget === 2 ? theme.palette.primary.main : theme.palette.text.disabled, mt: 0.25 }}>
             {pageBudget === 2 ? <RadioButtonCheckedRoundedIcon /> : <RadioButtonUncheckedRoundedIcon />}
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 0.5 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+                2 Pages (Extended)
+              </Typography>
+              <Chip
+                label="Senior / Lead"
+                size="small"
+                variant="outlined"
+                sx={{ height: 20, fontSize: '0.68rem', fontWeight: 600 }}
+              />
+            </Box>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.45 }}>
+              For directors, tech leads, or specialists with 8–10+ years of deep technical track records and publications.
+            </Typography>
           </Box>
         </ButtonBase>
       </Stack>

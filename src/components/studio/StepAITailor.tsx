@@ -167,6 +167,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
             gap: 2.5,
+            alignItems: 'stretch',
           }}
         >
           <PageBudgetSelector
@@ -178,6 +179,8 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             selectedModelId={providerSettings.model}
             onSelectModel={handleModelSelect}
             disabled={isGenerating}
+            apiKey={providerSettings.apiKey}
+            provider={providerSettings.provider}
           />
         </Box>
 
