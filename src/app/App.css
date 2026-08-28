@@ -16,16 +16,17 @@
 /* 2. Core Tokens, Theming & Resets */
 @import '../styles/tokens.css';
 
-/* 3. Global App Chrome & Navigation */
+/* 3. Reusable Component Primitives (Buttons, Textareas, Cards, Banners) */
+@import '../styles/components.css';
+
+/* 4. Global App Chrome & Navigation */
 @import '../styles/navbar.css';
 @import '../styles/wizard.css';
 
-/* 4. Functional Workspaces & Steps */
-@import '../styles/master-data.css';
-@import '../styles/tailor.css';
+/* 5. Functional Workspaces & Steps */
 @import '../styles/preview.css';
-@import '../styles/audit-gap.css';
-@import '../styles/settings.css';
+@import '../styles/quality-audit.css';
+@import '../styles/gap-analysis.css';
 
-/* 5. Precision Print & PDF Isolation */
+/* 6. Precision Print & PDF Isolation */
 @import '../styles/print.css';

@@ -1,6 +1,8 @@
 /* ==========================================================================
-   VIEW 1: CV STUDIO & PREVIEW (SPLIT VIEW)
+   VIEW 1: CV STUDIO PREVIEW & DOCUMENT CANVAS
+   Single Responsibility: Paper sheet simulation & split markdown editor
    ========================================================================== */
+
 .preview-workspace-layout {
   flex: 1;
   display: flex;
@@ -9,89 +11,13 @@
   overflow: hidden;
 }
 
-.split-view-bar {
-  height: 44px;
-  background: var(--panel-bg);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-}
-
-.split-mode-buttons {
-  display: flex;
-  gap: 4px;
-}
-
-.split-toggle-btn {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.split-toggle-btn:hover {
-  color: var(--text-main);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.split-toggle-btn.active {
-  background: var(--card-bg);
-  color: var(--accent);
-  border-color: var(--border);
-}
-
-.split-quick-tags {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.quick-company-pill {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.04);
-  padding: 3px 8px;
-  border-radius: 4px;
-}
-
-.quick-company-pill strong {
-  color: var(--text-main);
-}
-
-.btn-quick-tailor {
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
-  color: var(--accent);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.btn-quick-tailor:hover {
-  background: rgba(56, 189, 248, 0.25);
-}
-
 .preview-content-split {
   flex: 1;
   display: flex;
   overflow: hidden;
 }
 
-/* Split Markdown Editor */
+/* Split Markdown Editor Pane */
 .split-pane-editor {
   flex: 1;
   min-width: 320px;
@@ -172,7 +98,7 @@
   overflow: hidden;
 }
 
-/* Right Canvas (A4 Sheet Simulation) */
+/* Document Canvas: Exact A4 Sheet Simulation at 96 DPI */
 .preview-pane-canvas {
   flex: 1;
   overflow-y: auto;
@@ -230,7 +156,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  border-bottom: 2px dashed #f43f5e;
+  border-bottom: 2px dashed var(--danger);
   pointer-events: none;
   z-index: 20;
   display: flex;
@@ -239,7 +165,7 @@
 }
 
 .page-break-guide span {
-  background: #f43f5e;
+  background: var(--danger);
   color: #ffffff;
   font-size: 0.68rem;
   font-weight: 700;
@@ -249,51 +175,4 @@
   letter-spacing: 0.3px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   pointer-events: none;
-}
-
-/* Stats Sidebar */
-.stats-sidebar {
-  width: 270px;
-  background: var(--panel-bg);
-  border-left: 1px solid var(--border);
-  padding: 16px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  flex-shrink: 0;
-}
-
-.stats-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px;
-}
-
-.stats-card h4 {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.82rem;
-  margin-bottom: 5px;
-  color: var(--text-muted);
-}
-
-.stat-row strong {
-  color: var(--text-main);
-}
-
-.sidebar-action-box {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: auto;
 }

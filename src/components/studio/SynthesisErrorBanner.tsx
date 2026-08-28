@@ -16,7 +16,7 @@ export const SynthesisErrorBanner: React.FC = () => {
         <p>{generationError}</p>
         <div className="error-banner-actions">
           <button
-            className="btn-studio-action btn-studio-primary"
+            className="studio-btn studio-btn-primary btn-xs"
             onClick={() => {
               setGenerationError(null);
               setActiveTab('settings');
@@ -25,7 +25,7 @@ export const SynthesisErrorBanner: React.FC = () => {
             ⚙️ Open AI Settings & Add Key
           </button>
           <button
-            className="btn-studio-action"
+            className="studio-btn studio-btn-secondary btn-xs"
             onClick={() => setGenerationError(null)}
           >
             Dismiss

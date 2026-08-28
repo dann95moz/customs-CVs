@@ -1,0 +1,208 @@
+/* ==========================================================================
+   CV STUDIO PRO - REUSABLE SHARED UI COMPONENTS
+   Single Responsibility: Generic buttons, cards, textareas & overlays
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Studio Buttons
+   -------------------------------------------------------------------------- */
+.studio-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.studio-btn-primary {
+  background: linear-gradient(135deg, var(--accent-hover) 0%, #2563eb 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 10px var(--accent-glow);
+}
+
+.studio-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.studio-btn-secondary {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+
+.studio-btn-secondary:hover {
+  background: var(--card-hover);
+  border-color: var(--border-light);
+}
+
+.studio-btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.studio-btn-danger:hover {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.78rem;
+}
+
+.btn-xs {
+  padding: 4px 8px;
+  font-size: 0.72rem;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 0.95rem;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   2. Textarea & Code Inputs
+   -------------------------------------------------------------------------- */
+.studio-textarea {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: var(--text-main);
+  border: none;
+  padding: 14px;
+  font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. Locked / Empty State Cards
+   -------------------------------------------------------------------------- */
+.locked-view-card {
+  width: 100%;
+  max-width: 600px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  box-shadow: var(--box-shadow);
+  margin: auto;
+}
+
+.locked-icon-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.locked-icon-badge.target {
+  background: rgba(2, 132, 199, 0.12);
+  border-color: rgba(2, 132, 199, 0.3);
+  color: var(--accent);
+}
+
+.locked-icon-badge.ai {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: var(--primary-purple);
+}
+
+.locked-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.locked-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  max-width: 480px;
+}
+
+.locked-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Synthesis Notification / Error Banner
+   -------------------------------------------------------------------------- */
+.synthesis-error-banner {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  max-width: 480px;
+  background: var(--panel-bg);
+  border: 1.5px solid var(--danger);
+  border-radius: 10px;
+  padding: 16px 20px;
+  box-shadow: var(--box-shadow);
+  z-index: 1000;
+  animation: slideUpError 0.25s ease-out;
+}
+
+@keyframes slideUpError {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-banner-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.error-banner-header h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--danger);
+  margin: 0;
+}
+
+.error-banner-content p {
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+  margin: 0 0 12px 0;
+}
+
+.error-banner-actions {
+  display: flex;
+  gap: 10px;
+}

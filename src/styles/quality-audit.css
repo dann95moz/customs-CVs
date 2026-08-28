@@ -1,5 +1,6 @@
 /* ==========================================================================
-   VIEW 4: QUALITY AUDIT (1-10 SCALE)
+   VIEW 4: QUALITY AUDIT (1-10 EXECUTIVE SCORING)
+   Single Responsibility: Dedicated stylesheet for quality evaluation view
    ========================================================================== */
 .audit-workspace-layout {
   flex: 1;
@@ -62,7 +63,7 @@
 
 .readiness-badge {
   font-size: 0.75rem;
-  color: #34d399;
+  color: var(--success);
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -150,7 +151,7 @@
 }
 
 .gaps-title {
-  color: #fbbf24;
+  color: var(--warning);
   font-weight: 700;
   display: block;
   margin-bottom: 4px;
@@ -249,124 +250,4 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-}
-
-/* ==========================================================================
-   VIEW 5: GAP ANALYSIS & MATCHING
-   ========================================================================== */
-.gap-workspace-layout {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-  display: flex;
-  justify-content: center;
-}
-
-.gap-analysis-container {
-  width: 100%;
-  max-width: 900px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.gap-hero-banner {
-  background: linear-gradient(135deg, var(--card-bg) 0%, var(--panel-bg) 100%);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.gap-score-badge {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
-}
-
-.score-percent {
-  font-size: 1.5rem;
-  font-weight: 800;
-}
-
-.score-label {
-  font-size: 0.65rem;
-  opacity: 0.85;
-}
-
-.gap-hero-text {
-  flex: 1;
-}
-
-.target-pill {
-  font-size: 0.75rem;
-  color: var(--accent);
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 6px;
-}
-
-.gap-title {
-  font-size: 1.25rem;
-  font-weight: 800;
-}
-
-.gap-desc {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-}
-
-.gap-card {
-  background: var(--panel-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.keywords-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.keyword-pill {
-  background: rgba(56, 189, 248, 0.12);
-  color: var(--accent);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.gap-markdown-rendered {
-  background: var(--input-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-}
-
-.gap-raw-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: var(--text-main);
-  white-space: pre-wrap;
 }

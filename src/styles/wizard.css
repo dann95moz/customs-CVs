@@ -1,6 +1,6 @@
 /* ==========================================================================
    CV STUDIO PRO - WIZARD & WORKSPACE CORE LAYOUT
-   Streamlined & focused layout definitions adhering to KISS & YAGNI.
+   Canonical layout definitions adhering to Single Responsibility.
    ========================================================================== */
 
 /* Main Workspace Body */
@@ -11,6 +11,7 @@
   height: calc(100vh - 64px);
   overflow: hidden;
   position: relative;
+  background: var(--bg-dark);
 }
 
 /* Wizard Stepper Sticky Bar */
