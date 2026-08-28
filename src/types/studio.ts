@@ -14,6 +14,7 @@ export type WizardStep =
   | 'preview';
 
 export type StudioTab = 
+  | 'landing'
   | 'wizard'
   | 'editor' 
   | 'preview' 

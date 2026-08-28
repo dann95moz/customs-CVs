@@ -97,6 +97,8 @@ export interface ResumeWorkspaceContextType {
   handleGenerate: () => Promise<void>;
   handleDownloadCvMarkdown: () => void;
   handleLoadDemoProfile: () => void;
+  handleExploreDemo: () => void;
+  handleStartWizard: () => void;
   handleStartBlank: () => void;
   handleResetWorkspace: () => void;
 }
@@ -110,9 +112,28 @@ const DEFAULT_AI_SETTINGS: AIProviderSettings = {
   temperature: 0.15,
 };
 
+const getInitialTab = (): StudioTab => {
+  if (typeof window !== 'undefined' && window.location.hash) {
+    const hash = window.location.hash.replace('#', '') as StudioTab;
+    const validTabs: StudioTab[] = ['landing', 'wizard', 'editor', 'preview', 'audit', 'gap', 'history', 'settings'];
+    if (validTabs.includes(hash)) {
+      return hash;
+    }
+  }
+  try {
+    const saved = localStorage.getItem('cv_active_tab');
+    if (saved && ['landing', 'wizard', 'editor', 'preview', 'audit', 'gap', 'history', 'settings'].includes(saved)) {
+      return saved as StudioTab;
+    }
+  } catch {
+    // Ignore
+  }
+  return 'landing';
+};
+
 export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Navigation State
-  const [activeTab, setActiveTab] = useLocalStorage<StudioTab>('cv_active_tab', 'wizard');
+  const [activeTab, setActiveTab] = useLocalStorage<StudioTab>('cv_active_tab', getInitialTab);
   const [wizardStep, setWizardStep] = useLocalStorage<WizardStep>('cv_wizard_step', 'profile');
   const [editorSplitView, setEditorSplitView] = useState<'split' | 'preview-only' | 'editor-only'>('split');
 
@@ -352,6 +373,40 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
     setTargetRole('Senior Frontend Engineer');
   };
 
+  // Hash synchronization with activeTab
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (typeof window === 'undefined') return;
+      const hash = window.location.hash.replace('#', '') as StudioTab;
+      const validTabs: StudioTab[] = ['landing', 'wizard', 'editor', 'preview', 'audit', 'gap', 'history', 'settings'];
+      if (validTabs.includes(hash) && hash !== activeTab) {
+        setActiveTab(hash);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [activeTab, setActiveTab]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && activeTab) {
+      if (window.location.hash !== `#${activeTab}`) {
+        window.location.hash = `#${activeTab}`;
+      }
+    }
+  }, [activeTab]);
+
+  const handleExploreDemo = () => {
+    handleLoadDemoProfile();
+    setActiveTab('wizard');
+    setWizardStep('preview');
+  };
+
+  const handleStartWizard = () => {
+    setActiveTab('wizard');
+    setWizardStep('profile');
+  };
+
   const handleStartBlank = () => {
     setMasterData(BLANK_MASTER_DATA);
     setTargetJob(BLANK_TARGET_JOB);
@@ -368,6 +423,7 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
       setPageBudget(1);
       setTheme('modern-tech');
       localStorage.clear();
+      setActiveTab('landing');
     }
   };
 
@@ -425,6 +481,8 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
     handleGenerate,
     handleDownloadCvMarkdown,
     handleLoadDemoProfile,
+    handleExploreDemo,
+    handleStartWizard,
     handleStartBlank,
     handleResetWorkspace,
   };

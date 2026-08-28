@@ -67,54 +67,56 @@ export const StudioNavbar: React.FC = () => {
         }}
       >
         {/* Brand Logo & Name */}
-        <Box
-          onClick={() => {
-            setActiveTab('wizard');
-            setWizardStep('preview');
-          }}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1.25,
-            cursor: 'pointer',
-            userSelect: 'none',
-            flexShrink: 0,
-          }}
-        >
+        <Tooltip title="View Product Overview & Guide">
           <Box
+            onClick={() => setActiveTab('landing')}
             sx={{
-              width: 32,
-              height: 32,
-              borderRadius: '8px',
-              background: 'linear-gradient(135deg, #0284c7 0%, #6366f1 100%)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              color: '#ffffff',
-              boxShadow: '0 2px 8px rgba(56, 189, 248, 0.3)',
+              gap: 1.25,
+              cursor: 'pointer',
+              userSelect: 'none',
+              flexShrink: 0,
+              transition: 'transform 0.15s ease',
+              '&:hover': {
+                transform: 'scale(1.02)',
+              },
             }}
           >
-            <AutoAwesomeRoundedIcon sx={{ fontSize: 18 }} />
+            <Box
+              sx={{
+                width: 32,
+                height: 32,
+                borderRadius: '8px',
+                background: 'linear-gradient(135deg, #0284c7 0%, #6366f1 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ffffff',
+                boxShadow: '0 2px 8px rgba(56, 189, 248, 0.3)',
+              }}
+            >
+              <AutoAwesomeRoundedIcon sx={{ fontSize: 18 }} />
+            </Box>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
+                background: 'linear-gradient(135deg, #38bdf8 0%, #a5b4fc 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                display: { xs: 'none', sm: 'block' },
+              }}
+            >
+              CV Studio
+            </Typography>
           </Box>
-          <Typography
-            variant="subtitle1"
-            sx={{
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              background: 'linear-gradient(135deg, #38bdf8 0%, #a5b4fc 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              display: { xs: 'none', sm: 'block' },
-            }}
-          >
-            CV Studio
-          </Typography>
-
-        </Box>
+        </Tooltip>
 
         {/* Primary Navigation Tabs */}
         <Tabs
-          value={activeTab}
+          value={activeTab === 'landing' ? false : activeTab}
           onChange={(_, val: StudioTab) => setActiveTab(val)}
           sx={{
             minHeight: 44,
@@ -226,18 +228,7 @@ export const StudioNavbar: React.FC = () => {
             </IconButton>
           </Tooltip>
 
-          {activeTab !== 'wizard' && (
-            <Button
-              variant="contained"
-              size="small"
-              color="primary"
-              startIcon={<PictureAsPdfRoundedIcon />}
-              onClick={() => window.print()}
-              sx={{ fontWeight: 700 }}
-            >
-              Download PDF
-            </Button>
-          )}
+
         </Box>
       </Toolbar>
     </AppBar>

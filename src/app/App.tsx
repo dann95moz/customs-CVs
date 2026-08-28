@@ -11,6 +11,7 @@ import { SettingsView } from '../components/studio/SettingsView';
 import { ApplicationsHistoryView } from '../components/studio/ApplicationsHistoryView';
 import { LockedViewCard } from '../components/studio/LockedViewCard';
 import { SynthesisErrorBanner } from '../components/studio/SynthesisErrorBanner';
+import { WelcomeLandingView } from '../components/landing/WelcomeLandingView';
 import { extractCandidateName } from '../core/parser';
 import {
   BLANK_MASTER_DATA,
@@ -70,6 +71,9 @@ export const App: React.FC = () => {
 
       {/* Main Workspace Body */}
       <div className="studio-body">
+        {/* VIEW: WELCOME & ONBOARDING LANDING */}
+        {activeTab === 'landing' && <WelcomeLandingView />}
+
         {/* WIZARD FLOW: 3 STREAMLINED STEPS */}
         {activeTab === 'wizard' && (
           <>
