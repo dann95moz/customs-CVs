@@ -217,8 +217,8 @@ export function renderCvToHtml(
 
     /* Print Setup */
     @page {
-      size: A4;
-      margin: 10mm 12mm 10mm 12mm;
+      size: auto;
+      margin: ${['academic-research', 'two-column', 'executive', 'designer-uiux'].includes(theme) ? '0mm' : '10mm 12mm 10mm 12mm'};
     }
 
     @media print {
@@ -475,12 +475,13 @@ export async function generatePdfFromMarkdown({
       fs.mkdirSync(outputDir, { recursive: true });
     }
 
+    const isBleedTemplate = ['academic-research', 'two-column', 'executive', 'designer-uiux'].includes(theme);
     await page.pdf({
       path: finalOutputPath,
       format,
       printBackground: true,
       preferCSSPageSize: true,
-      margin: {
+      margin: isBleedTemplate ? { top: '0', right: '0', bottom: '0', left: '0' } : {
         top: '10mm',
         right: '12mm',
         bottom: '10mm',

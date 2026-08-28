@@ -2,11 +2,18 @@
    PRINT SETUP — PERFECT A4 EXTRACTION (Zero Browser Chrome)
    ========================================================================== */
 @page {
-  size: A4 portrait;
-  margin: 0;
+  size: auto;
+  margin: 0mm;
 }
 
 @media print {
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   :root,
   html,
   body {
@@ -23,8 +30,6 @@
     overflow: visible !important;
     box-shadow: none !important;
     border: none !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
   }
 
   #root,
@@ -32,7 +37,8 @@
   .studio-body,
   .preview-workspace-layout,
   .preview-canvas-wrapper,
-  .preview-pane-canvas {
+  .preview-pane-canvas,
+  .paper-sheet-wrapper {
     background: #ffffff !important;
     background-color: #ffffff !important;
     color: #1e293b !important;
@@ -52,7 +58,6 @@
   .studio-navbar,
   .wizard-stepper,
   .MuiAppBar-root,
-  header:not(.cv-header),
   .preview-top-toolbar,
   .preview-side-rail,
   .preview-side-panel,
@@ -96,22 +101,25 @@
     left: -99999px !important;
   }
 
-  /* The printable sheet: exact A4 layout with NO dark drop shadow and pure white page */
+  /* The printable sheet: full-width extraction with NO drop shadow and edge-to-edge layout */
   .paper-sheet {
     background: #ffffff !important;
     background-color: #ffffff !important;
     box-shadow: none !important;
     border: none !important;
     border-radius: 0 !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    min-height: auto !important;
+    min-height: 100vh !important;
+    height: auto !important;
+    overflow: visible !important;
     page-break-after: avoid;
     break-after: avoid;
   }
 
+  /* Single-column ATS templates have standard inner margins */
   .paper-sheet .template-modern-tech,
   .paper-sheet .template-minimal-ats,
   .paper-sheet .template-formal-legal {
@@ -119,8 +127,6 @@
   }
 
   .paper-sheet .cv-container {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
     box-shadow: none !important;
     border: none !important;
     border-radius: 0 !important;
@@ -136,10 +142,21 @@
   }
 
   /* Ensure CV header, candidate name, contact list, and sections are ALWAYS visible on print */
+  .paper-sheet header,
   .paper-sheet header.cv-header,
   .paper-sheet .cv-header,
+  .paper-sheet .contrast-header,
+  .paper-sheet .banner-header,
+  .paper-sheet .dualtone-top-header,
   .paper-sheet .cv-name,
+  .paper-sheet .contrast-name,
+  .paper-sheet .banner-name,
+  .paper-sheet .dualtone-name,
+  .paper-sheet .pastel-card-name,
   .paper-sheet .cv-title,
+  .paper-sheet .contrast-title,
+  .paper-sheet .banner-title,
+  .paper-sheet .dualtone-title,
   .paper-sheet .cv-contact-list,
   .paper-sheet .cv-section,
   .paper-sheet main.cv-main,
@@ -147,6 +164,9 @@
     display: block !important;
     visibility: visible !important;
     height: auto !important;
+    width: auto !important;
+    position: relative !important;
+    left: auto !important;
     opacity: 1 !important;
   }
 
@@ -156,10 +176,47 @@
     opacity: 1 !important;
   }
 
-  .paper-sheet .template-two-column .cv-body-grid {
+  /* Full-bleed layout preservation in print across Paper Sizes (A4 & Letter) */
+  .paper-sheet .contrast-grid-layout,
+  .paper-sheet .dualtone-grid-layout,
+  .paper-sheet .banner-body-grid,
+  .paper-sheet .pastel-top-grid,
+  .paper-sheet .pastel-bottom-grid {
+    width: 100% !important;
+  }
+
+  .paper-sheet .contrast-grid-layout {
+    display: grid !important;
+    grid-template-columns: 66% 34% !important;
+    min-height: 100vh !important;
+  }
+
+  .paper-sheet .dualtone-grid-layout {
     display: grid !important;
     grid-template-columns: 34% 66% !important;
-    visibility: visible !important;
+    min-height: 100vh !important;
+  }
+
+  .paper-sheet .pastel-top-grid {
+    display: grid !important;
+    grid-template-columns: 32% 1fr !important;
+    padding: 24px 28px 12px 28px !important;
+    box-sizing: border-box !important;
+  }
+
+  .paper-sheet .pastel-bottom-grid {
+    display: grid !important;
+    grid-template-columns: 32% 1fr !important;
+    padding: 0 28px 24px 28px !important;
+    box-sizing: border-box !important;
+  }
+
+  .paper-sheet .banner-body-grid {
+    display: grid !important;
+    grid-template-columns: 58% 1fr !important;
+    gap: 26px !important;
+    padding: 20px 28px 24px 28px !important;
+    box-sizing: border-box !important;
   }
 
   .cv-section {
