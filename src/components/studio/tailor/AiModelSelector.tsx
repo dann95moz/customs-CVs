@@ -51,10 +51,10 @@ export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
         <PsychologyRoundedIcon color="secondary" />
         <Box>
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            2. Artificial Intelligence Engine
+            AI Engine Selection
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            Select and configure the AI model for resume synthesis.
+            Choose the AI model used to synthesize and tailor your resume.
           </Typography>
         </Box>
       </Box>

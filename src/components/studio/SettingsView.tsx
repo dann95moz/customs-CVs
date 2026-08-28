@@ -68,10 +68,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </Box>
           <Box>
             <Typography variant="h5" sx={{ fontWeight: 800 }}>
-              Studio Settings &amp; AI Configuration
+              Settings &amp; Configuration
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Manage your AI inference engine, API credentials, and resume synthesis rules.
+              Manage your AI engine, custom API credentials, and tailoring rules.
             </Typography>
           </Box>
         </Box>
