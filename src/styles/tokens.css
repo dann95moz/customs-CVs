@@ -33,10 +33,6 @@
   --container-lg: 960px;
   --container-xl: 1200px;
 
-  /* Document Page Dimensions (A4 at 96 DPI) */
-  --cv-page-width: 795px;
-  --cv-page-min-height: 1123px;
-
   /* Border Radiuses */
   --radius-xs: 4px;
   --radius-sm: 6px;
