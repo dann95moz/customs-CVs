@@ -71,6 +71,9 @@ export const App: React.FC = () => {
 
       {/* Main Workspace Body */}
       <div className="studio-body">
+        {/* Global Error Banner */}
+        <SynthesisErrorBanner />
+
         {/* VIEW: WELCOME & ONBOARDING LANDING */}
         {activeTab === 'landing' && <WelcomeLandingView />}
 

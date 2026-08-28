@@ -10,6 +10,7 @@ import {
   TextField,
   InputAdornment,
   CircularProgress,
+  LinearProgress,
   useTheme,
   alpha
 } from '@mui/material';
@@ -92,7 +93,6 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
     if (onGenerate) {
       onGenerate();
     }
-    onNextStep();
   };
 
   const handleSaveModalAndGenerate = (updatedSettings: typeof providerSettings) => {
@@ -101,7 +101,6 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
     if (onGenerate) {
       onGenerate();
     }
-    onNextStep();
   };
 
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
@@ -127,6 +126,52 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           gap: 2.5,
         }}
       >
+        {/* Active AI Synthesis Progress Banner */}
+        {isGenerating && (
+          <Paper
+            sx={{
+              p: { xs: 2, sm: 2.5 },
+              borderRadius: '16px',
+              border: `1.5px solid ${theme.palette.primary.main}`,
+              bgcolor: isDark ? alpha(theme.palette.primary.main, 0.12) : alpha(theme.palette.primary.main, 0.05),
+              boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.2)}`,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1.5,
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <CircularProgress size={28} thickness={4} color="primary" />
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'text.primary' }}>
+                  Synthesizing Tailored Resume with AI...
+                </Typography>
+                <Typography variant="body2" sx={{ color: theme.palette.primary.main, fontWeight: 600 }}>
+                  {generationStep || 'Cross-referencing competencies and synthesizing XYZ achievements...'}
+                </Typography>
+              </Box>
+              <Chip
+                icon={<AutoAwesomeRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                label="In Progress"
+                color="primary"
+                size="small"
+                sx={{ fontWeight: 700 }}
+              />
+            </Box>
+            <LinearProgress
+              variant="indeterminate"
+              sx={{
+                borderRadius: 4,
+                height: 5,
+                bgcolor: alpha(theme.palette.primary.main, 0.2),
+              }}
+            />
+            <Typography variant="caption" color="text.secondary">
+              ⚡ Applying factual integrity safeguards and Google XYZ formula metrics. You will be automatically redirected to your live CV as soon as generation completes.
+            </Typography>
+          </Paper>
+        )}
+
         {/* Simplified Guiding Hero Banner */}
         <Paper
           sx={{
