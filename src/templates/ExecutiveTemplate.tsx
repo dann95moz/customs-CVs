@@ -28,7 +28,7 @@ export const ExecutiveTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
     <div className={`theme-${theme} template-corporate-banner`}>
       <div className="cv-container">
         {/* Full-width Top Header Banner */}
-        <header className="banner-header">
+        <header className="banner-header cv-header">
           <div className="banner-monogram-box">
             <span className="banner-monogram">{initials}</span>
           </div>
@@ -101,7 +101,7 @@ export const ExecutiveTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
             {/* Skills */}
             {slots.skills && (
               <div className="banner-side-section">
-                <SkillsSlot data={slots.skills} variant="inline" />
+                <SkillsSlot data={slots.skills} variant="pills" />
               </div>
             )}
 

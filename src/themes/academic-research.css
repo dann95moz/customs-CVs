@@ -49,7 +49,7 @@
 }
 
 .theme-academic-research .dualtone-avatar-initials {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', sans-serif);
   font-size: 15pt;
   font-weight: 800;
   color: #ffffff;
@@ -61,7 +61,7 @@
 }
 
 .theme-academic-research .dualtone-side-title {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 9pt;
   font-weight: 700;
   text-transform: uppercase;
@@ -98,6 +98,13 @@
   justify-content: center;
   flex-shrink: 0;
   color: #ffffff;
+}
+
+.theme-academic-research .dualtone-icon-badge svg,
+.theme-academic-research .dualtone-icon-badge .icon {
+  margin: 0 !important;
+  vertical-align: middle !important;
+  display: block !important;
 }
 
 .theme-academic-research .dualtone-contact-item a {
@@ -165,6 +172,11 @@
   color: var(--cv-accent-color, #38bdf8);
 }
 
+.theme-academic-research .dualtone-edu-list li strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
 /* 2. Right Main Column */
 .theme-academic-research .dualtone-main-col {
   min-width: 0;
@@ -179,7 +191,7 @@
 }
 
 .theme-academic-research .dualtone-name {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 21pt;
   font-weight: 800;
   letter-spacing: 1px;
@@ -204,7 +216,7 @@
 }
 
 .theme-academic-research .cv-section-title {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 9.6pt;
   font-weight: 700;
   text-transform: uppercase;

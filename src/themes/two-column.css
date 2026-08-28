@@ -37,7 +37,7 @@
 }
 
 .theme-two-column .contrast-name {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 24pt;
   font-weight: 800;
   letter-spacing: -0.5px;
@@ -59,7 +59,7 @@
 }
 
 .theme-two-column .cv-section-title {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 9.6pt;
   font-weight: 700;
   text-transform: uppercase;
@@ -213,7 +213,7 @@
 }
 
 .theme-two-column .contrast-emblem-initials {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', sans-serif);
   font-size: 7.5pt;
   font-weight: 800;
   color: var(--cv-primary-color, #1e3a5f);
@@ -226,7 +226,7 @@
 }
 
 .theme-two-column .contrast-side-title {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 9pt;
   font-weight: 700;
   text-transform: uppercase;
@@ -263,6 +263,13 @@
   justify-content: center;
   flex-shrink: 0;
   color: #ffffff;
+}
+
+.theme-two-column .contrast-icon-badge svg,
+.theme-two-column .contrast-icon-badge .icon {
+  margin: 0 !important;
+  vertical-align: middle !important;
+  display: block !important;
 }
 
 .theme-two-column .contrast-contact-item a {
@@ -342,4 +349,9 @@
   position: absolute;
   left: 0;
   color: #ffffff;
+}
+
+.theme-two-column .contrast-skill-bullets li strong {
+  color: #ffffff;
+  font-weight: 700;
 }

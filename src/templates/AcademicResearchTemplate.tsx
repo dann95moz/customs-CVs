@@ -2,6 +2,7 @@ import React from 'react';
 import { CVTemplateProps } from './types';
 import { extractCandidateInitials } from '../core/parser';
 import { Icon } from '../components/Icons';
+import { marked } from 'marked';
 import { 
   SummarySlot, 
   SkillsSlot, 
@@ -40,7 +41,7 @@ export const AcademicResearchTemplate: React.FC<CVTemplateProps> = ({ slots, the
                 {basicContacts.map((c, i) => (
                   <li key={i} className="dualtone-contact-item">
                     <span className="dualtone-icon-badge">
-                      <Icon type={c.type} size={12} />
+                      <Icon type={c.type} size={11} style={{ margin: 0, verticalAlign: 'middle', display: 'block' }} />
                     </span>
                     {c.url ? (
                       <a href={c.url} target="_blank" rel="noopener noreferrer">
@@ -77,7 +78,10 @@ export const AcademicResearchTemplate: React.FC<CVTemplateProps> = ({ slots, the
               <h3 className="dualtone-side-title">Education</h3>
               <ul className="dualtone-edu-list">
                 {slots.education.items.map((item, eIdx) => (
-                  <li key={eIdx}>{item}</li>
+                  <li 
+                    key={eIdx}
+                    dangerouslySetInnerHTML={{ __html: marked.parseInline(item) as string }}
+                  />
                 ))}
               </ul>
             </div>
@@ -87,7 +91,7 @@ export const AcademicResearchTemplate: React.FC<CVTemplateProps> = ({ slots, the
         {/* RIGHT MAIN CONTENT AREA */}
         <main className="dualtone-main-col">
           {/* Top Header Banner with Soft Accent Tint */}
-          <header className="dualtone-top-header">
+          <header className="dualtone-top-header cv-header">
             <h1 className="dualtone-name">{slots.header.name}</h1>
             {slots.header.title && (
               <div className="dualtone-title">{slots.header.title}</div>

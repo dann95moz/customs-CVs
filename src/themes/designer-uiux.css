@@ -21,10 +21,11 @@
 /* 1. Top Region */
 .theme-designer-uiux .pastel-top-grid {
   display: grid;
-  grid-template-columns: 34% 66%;
-  gap: 22px;
-  padding: 20px 22px 12px;
+  grid-template-columns: 32% 1fr;
+  gap: 24px;
+  padding: 24px 28px 12px 28px;
   align-items: start;
+  box-sizing: border-box;
 }
 
 /* Pastel Tinted Card (Top-Left) */
@@ -36,7 +37,7 @@
 }
 
 .theme-designer-uiux .pastel-card-name {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 16pt;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -91,9 +92,10 @@
 /* 2. Lower Region */
 .theme-designer-uiux .pastel-bottom-grid {
   display: grid;
-  grid-template-columns: 34% 66%;
-  gap: 22px;
-  padding: 0 22px 20px;
+  grid-template-columns: 32% 1fr;
+  gap: 24px;
+  padding: 0 28px 24px 28px;
+  box-sizing: border-box;
 }
 
 .theme-designer-uiux .pastel-section {
@@ -101,7 +103,7 @@
 }
 
 .theme-designer-uiux .cv-section-title {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 9.6pt;
   font-weight: 700;
   text-transform: uppercase;
@@ -146,6 +148,10 @@
   font-size: 7.8pt;
   font-weight: 500;
   margin: 1px 2px 1px 0;
+}
+
+.theme-designer-uiux .skill-separator {
+  display: none !important;
 }
 
 .theme-designer-uiux .pastel-left-col .education-list {

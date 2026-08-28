@@ -40,7 +40,7 @@
 }
 
 .theme-executive .banner-monogram {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 11pt;
   font-weight: 700;
   letter-spacing: 1.8px;
@@ -49,7 +49,7 @@
 }
 
 .theme-executive .banner-name {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 21pt;
   font-weight: 800;
   letter-spacing: 1.5px;
@@ -68,9 +68,10 @@
 /* 2. Asymmetric 2-Column Body Layout */
 .theme-executive .banner-body-grid {
   display: grid;
-  grid-template-columns: 65% 35%;
-  gap: 22px;
-  padding: 16px 20px;
+  grid-template-columns: 58% 1fr;
+  gap: 26px;
+  padding: 20px 28px 24px 28px;
+  box-sizing: border-box;
 }
 
 /* Main Left Column */
@@ -83,7 +84,7 @@
 }
 
 .theme-executive .cv-section-title {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 9.6pt;
   font-weight: 700;
   text-transform: uppercase;
@@ -189,7 +190,7 @@
 }
 
 .theme-executive .banner-side-title {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 9.4pt;
   font-weight: 700;
   text-transform: uppercase;
@@ -257,6 +258,10 @@
   font-size: 7.8pt;
   font-weight: 500;
   margin: 1px 2px 1px 0;
+}
+
+.theme-executive .skill-separator {
+  display: none !important;
 }
 
 /* Education & Languages in sidebar */

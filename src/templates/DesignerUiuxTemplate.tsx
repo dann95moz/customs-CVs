@@ -65,7 +65,7 @@ export const DesignerUiuxTemplate: React.FC<CVTemplateProps> = ({ slots, theme }
           <aside className="pastel-left-col">
             {slots.skills && (
               <div className="pastel-section">
-                <SkillsSlot data={slots.skills} variant="inline" />
+                <SkillsSlot data={slots.skills} variant="pills" />
               </div>
             )}
 

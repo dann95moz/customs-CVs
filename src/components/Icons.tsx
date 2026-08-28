@@ -35,14 +35,16 @@ interface IconProps {
   type: IconType;
   className?: string;
   size?: number;
+  style?: React.CSSProperties;
 }
 
-export const Icon: React.FC<IconProps> = ({ type, className = 'icon', size = 14 }) => {
+export const Icon: React.FC<IconProps> = ({ type, className = 'icon', size = 14, style }) => {
   const baseStyle: React.CSSProperties = { 
     display: 'inline-flex', 
     verticalAlign: '-1.5px', 
     marginRight: '5px',
-    flexShrink: 0 
+    flexShrink: 0,
+    ...style
   };
 
   const svgProps = {

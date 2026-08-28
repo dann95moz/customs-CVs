@@ -2,6 +2,7 @@ import React from 'react';
 import { CVTemplateProps } from './types';
 import { extractCandidateInitials } from '../core/parser';
 import { Icon } from '../components/Icons';
+import { marked } from 'marked';
 import { 
   SummarySlot, 
   ExperienceSlot, 
@@ -27,7 +28,7 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
         {/* LEFT MAIN CONTENT AREA */}
         <main className="contrast-main-col">
           {/* Header Name & Title */}
-          <header className="contrast-header">
+          <header className="contrast-header cv-header">
             <h1 className="contrast-name">{slots.header.name}</h1>
             {slots.header.title && (
               <div className="contrast-title">{slots.header.title}</div>
@@ -84,7 +85,7 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
                 {basicContacts.map((c, i) => (
                   <li key={i} className="contrast-contact-item">
                     <span className="contrast-icon-badge">
-                      <Icon type={c.type} size={12} />
+                      <Icon type={c.type} size={11} style={{ margin: 0, verticalAlign: 'middle', display: 'block' }} />
                     </span>
                     {c.url ? (
                       <a href={c.url} target="_blank" rel="noopener noreferrer">
@@ -125,7 +126,10 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
                     <span className="contrast-skill-group-name">{group.category}:</span>
                     <ul className="contrast-skill-bullets">
                       {group.skills.map((skill, sIdx) => (
-                        <li key={sIdx}>{skill}</li>
+                        <li 
+                          key={sIdx}
+                          dangerouslySetInnerHTML={{ __html: marked.parseInline(skill) as string }}
+                        />
                       ))}
                     </ul>
                   </div>
@@ -140,7 +144,10 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
               <h3 className="contrast-side-title">Languages</h3>
               <ul className="contrast-skill-bullets">
                 {slots.languages.items.map((item, lIdx) => (
-                  <li key={lIdx}>{item}</li>
+                  <li 
+                    key={lIdx}
+                    dangerouslySetInnerHTML={{ __html: marked.parseInline(item) as string }}
+                  />
                 ))}
               </ul>
             </div>
