@@ -123,7 +123,6 @@ export const StudioNavbar: React.FC = () => {
           allowScrollButtonsMobile
           sx={{
             minHeight: 48,
-            flex: 1,
             '& .MuiTabs-scroller': {
               overflowX: 'auto !important',
             },
@@ -133,9 +132,9 @@ export const StudioNavbar: React.FC = () => {
             },
             '& .MuiTab-root': {
               minHeight: 48,
-              minWidth: { xs: 60, sm: 100, md: 120 },
-              px: { xs: 1, sm: 1.75 },
-              fontSize: { xs: '0.75rem', sm: '0.82rem' },
+              minWidth: { xs: 80, sm: 110, md: 130 },
+              px: { xs: 1.25, sm: 2 },
+              fontSize: { xs: '0.78rem', sm: '0.84rem' },
               fontWeight: 600,
               textTransform: 'none',
             },
@@ -145,49 +144,7 @@ export const StudioNavbar: React.FC = () => {
             value="wizard"
             icon={<AutoAwesomeRoundedIcon sx={{ fontSize: 18 }} />}
             iconPosition="start"
-            label="Resume Wizard"
-          />
-          <Tab
-            value="audit"
-            icon={<AssessmentRoundedIcon sx={{ fontSize: 18 }} />}
-            iconPosition="start"
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                <span>Quality Audit</span>
-                {hasGeneratedCv ? (
-                  <Chip
-                    label={`${auditReport.overallScore}/10`}
-                    size="small"
-                    color="success"
-                    sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }}
-                  />
-                ) : (
-                  <Chip label="Locked" size="small" variant="outlined" sx={{ height: 18, fontSize: '0.65rem', display: { xs: 'none', sm: 'inline-flex' } }} />
-                )}
-              </Box>
-            }
-          />
-          <Tab
-            value="gap"
-            icon={<TrackChangesRoundedIcon sx={{ fontSize: 18 }} />}
-            iconPosition="start"
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                <span>Gap Strategy</span>
-                {!hasTargetJob ? (
-                  <Chip label="No Job" size="small" variant="outlined" sx={{ height: 18, fontSize: '0.65rem', display: { xs: 'none', sm: 'inline-flex' } }} />
-                ) : hasGapReport ? (
-                  <Chip
-                    label={`${gapInfo.matchScore}%`}
-                    size="small"
-                    color="primary"
-                    sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }}
-                  />
-                ) : (
-                  <Chip label="Pending" size="small" color="warning" sx={{ height: 18, fontSize: '0.65rem' }} />
-                )}
-              </Box>
-            }
+            label="Resume Studio"
           />
           <Tab
             value="history"
@@ -195,7 +152,7 @@ export const StudioNavbar: React.FC = () => {
             iconPosition="start"
             label={
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                <span>Applications</span>
+                <span>My Applications</span>
                 {savedVersions.length > 0 && (
                   <Chip
                     label={savedVersions.length}
@@ -211,7 +168,7 @@ export const StudioNavbar: React.FC = () => {
             value="settings"
             icon={<SettingsRoundedIcon sx={{ fontSize: 18 }} />}
             iconPosition="start"
-            label="Settings"
+            label="Settings &amp; AI"
           />
         </Tabs>
 

@@ -22,7 +22,13 @@ import {
   PreviewSidePanelType,
   GeneratedCvVersion,
 } from './studio';
-import { AuditSectionResult, QualityAuditReport, ActionModalState } from './audit';
+import {
+  AuditSectionResult,
+  QualityAuditReport,
+  ActionModalState,
+} from './audit';
+
+export interface StepPreviewProps {}
 
 // ---------------------------------------------------------------------------
 // 1. Core Render & Icons
@@ -122,10 +128,23 @@ export interface WizardStepperProps {
   canNavigateTo?: (step: WizardStep) => boolean;
 }
 
-export interface StepAISetupProps {
+export interface ContextualAiModalProps {
+  open: boolean;
+  onClose: () => void;
   settings: AIProviderSettings;
-  onSettingsChange: (settings: AIProviderSettings) => void;
-  onNextStep: () => void;
+  onSaveAndGenerate: (updatedSettings: AIProviderSettings) => void;
+}
+
+export interface PreviewAuditGapDrawerProps {
+  auditReport: QualityAuditReport;
+  gapInfo: { matchScore: number; keywords: string[] };
+  gapMarkdown?: string;
+  companyName?: string;
+  targetRole?: string;
+  isOpen: boolean;
+  activeTab: 'audit' | 'gap';
+  onToggleTab: (tab: 'audit' | 'gap') => void;
+  onClose: () => void;
 }
 
 export interface StepMasterDataProps {

@@ -15,33 +15,32 @@ import { getTemplateMetadata } from '../../templates';
 import { usePrintPdf } from '../../hooks/usePrintPdf';
 import { StepPreviewToolbar } from './preview/StepPreviewToolbar';
 import { StepPreviewNavRail } from './preview/StepPreviewNavRail';
-import { PreviewViewMode, PreviewSidePanelType } from '../../types';
+import { PreviewViewMode, PreviewSidePanelType, StepPreviewProps } from '../../types';
 import { TemplatesPanel } from './preview/TemplatesPanel';
 import { DesignFormattingPanel } from './preview/DesignFormattingPanel';
 import { PreviewQualityAuditPanel } from './preview/PreviewQualityAuditPanel';
+import { PreviewAuditGapDrawer } from './preview/PreviewAuditGapDrawer';
 import { PreviewComparisonView } from './preview/PreviewComparisonView';
 import { DOCUMENT_DIMENSIONS } from '../../theme/dimensions';
+
+export type { StepPreviewProps };
 
 const A4_PAGE_PX = DOCUMENT_DIMENSIONS.pageHeightPx; // Exact A4 height at 96 DPI
 
 /**
- * Step 4: Master CV Preview & PDF Export Studio.
+ * Step 3: Master CV Preview & PDF Export Studio.
  * Composes dedicated components adhering to Single Responsibility and DRY.
  */
-export const StepPreview: React.FC = () => {
+export const StepPreview: React.FC<StepPreviewProps> = () => {
   const muiTheme = useTheme();
   const { handleDownloadPdf } = usePrintPdf();
 
   const {
-    companyName,
-    handleGenerate,
-    isGenerating,
     cvMarkdown,
     setCvMarkdown,
-    handleDownloadCvMarkdown,
     masterData,
-    parsedCv,
-    parsedMasterCv,
+    companyName,
+    targetRole,
     theme,
     setTheme,
     palette,
@@ -52,11 +51,16 @@ export const StepPreview: React.FC = () => {
     setFontFamily,
     spacingDensity,
     setSpacingDensity,
+    isGenerating,
+    handleGenerate,
+    handleDownloadCvMarkdown,
+    parsedCv,
+    parsedMasterCv,
+    gapMarkdown,
     auditReport,
     gapInfo,
     handleSaveCurrentVersion,
     setWizardStep,
-    setActiveTab,
   } = useResumeWorkspace();
 
   const [viewMode, setViewMode] = useState<PreviewViewMode>('tailored');
@@ -64,8 +68,12 @@ export const StepPreview: React.FC = () => {
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
   const paperRef = useRef<HTMLDivElement>(null);
 
-  // Side Drawer state ('templates' open by default)
+  // Left Side Drawer state ('templates' open by default)
   const [activeSidePanel, setActiveSidePanel] = useState<PreviewSidePanelType | null>('templates');
+
+  // Right Side Unified Audit & Gap Drawer state
+  const [isAuditGapOpen, setIsAuditGapOpen] = useState<boolean>(false);
+  const [auditGapTab, setAuditGapTab] = useState<'audit' | 'gap'>('audit');
 
   // Toggle between rendered sheet page (default) and raw markdown editor
   const [isEditingMarkdown, setIsEditingMarkdown] = useState<boolean>(false);
@@ -129,17 +137,24 @@ export const StepPreview: React.FC = () => {
         onDownloadPdf={onTriggerPrintPdf}
       />
 
-      {/* Main Studio Body: Vertical Left Rail + Side Drawer + Sheet Canvas */}
+      {/* Main Studio Body: Vertical Left Rail + Side Drawer + Sheet Canvas + Right Audit/Gap Drawer */}
       <Box sx={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
         {/* 1. Left Vertical Tool Rail */}
         <StepPreviewNavRail
           activeSidePanel={activeSidePanel}
-          onToggleSidePanel={(panel: PreviewSidePanelType) => setActiveSidePanel(prev => prev === panel ? null : panel)}
+          onToggleSidePanel={(panel: PreviewSidePanelType) => {
+            if (panel === 'audit') {
+              setIsAuditGapOpen(prev => !prev);
+              setAuditGapTab('audit');
+            } else {
+              setActiveSidePanel(prev => prev === panel ? null : panel);
+            }
+          }}
           isEditingMarkdown={isEditingMarkdown}
           onToggleMarkdown={() => setIsEditingMarkdown(prev => !prev)}
         />
 
-        {/* 2. Expandable Side Panel */}
+        {/* 2. Expandable Left Side Panel */}
         {activeSidePanel && (
           <Box
             className="no-print preview-side-panel"
@@ -189,21 +204,11 @@ export const StepPreview: React.FC = () => {
                 onClose={() => setActiveSidePanel(null)}
               />
             )}
-
-            {activeSidePanel === 'audit' && (
-              <PreviewQualityAuditPanel
-                overallScore={auditReport.overallScore}
-                matchScore={gapInfo.matchScore}
-                companyName={companyName}
-                onOpenFullAudit={() => setActiveTab('audit')}
-                onClose={() => setActiveSidePanel(null)}
-              />
-            )}
           </Box>
         )}
 
         {/* 3. Main Center Canvas: Raw Markdown or Pristine Document Sheet */}
-        <div className="preview-canvas-wrapper">
+        <div className="preview-canvas-wrapper" style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
           {isEditingMarkdown ? (
             <div className="split-pane-editor-full">
               <SplitMarkdownEditor
@@ -227,7 +232,7 @@ export const StepPreview: React.FC = () => {
               keywordsCount={gapInfo.keywords.length}
             />
           ) : (
-            <main className="preview-pane-canvas">
+            <main className="preview-pane-canvas" style={{ position: 'relative' }}>
               <div className="paper-sheet-wrapper">
                 <div
                   ref={paperRef}
@@ -274,7 +279,7 @@ export const StepPreview: React.FC = () => {
               onClick={() => setWizardStep('target')}
               size="small"
             >
-              Back to Target Vacancy (Step 3)
+              Back to Target Vacancy (Step 2)
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -284,6 +289,24 @@ export const StepPreview: React.FC = () => {
             </Box>
           </Paper>
         </div>
+
+        {/* 4. Unified Right-Side Audit & Gap Drawer (Floating Pills when collapsed, Side Panel when expanded) */}
+        {!isEditingMarkdown && viewMode !== 'compare' && (
+          <PreviewAuditGapDrawer
+            auditReport={auditReport}
+            gapInfo={gapInfo}
+            gapMarkdown={gapMarkdown}
+            companyName={companyName}
+            targetRole={targetRole}
+            isOpen={isAuditGapOpen}
+            activeTab={auditGapTab}
+            onToggleTab={(tab) => {
+              setIsAuditGapOpen(true);
+              setAuditGapTab(tab);
+            }}
+            onClose={() => setIsAuditGapOpen(false)}
+          />
+        )}
       </Box>
     </div>
   );
