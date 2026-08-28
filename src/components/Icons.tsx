@@ -1,42 +1,7 @@
 import React from 'react';
-import { ContactType } from '../types/cv';
+import { IconType, IconProps } from '../types';
 
-export type IconType = 
-  | ContactType 
-  | 'sparkles' 
-  | 'zap' 
-  | 'file-text' 
-  | 'upload' 
-  | 'download' 
-  | 'check' 
-  | 'copy' 
-  | 'shield' 
-  | 'settings' 
-  | 'refresh' 
-  | 'eye' 
-  | 'edit' 
-  | 'trash' 
-  | 'close' 
-  | 'play' 
-  | 'brain' 
-  | 'printer' 
-  | 'star' 
-  | 'external-link' 
-  | 'check-circle' 
-  | 'alert-circle'
-  | 'target'
-  | 'layers'
-  | 'gauge'
-  | 'user'
-  | 'arrow-right'
-  | 'arrow-left';
-
-interface IconProps {
-  type: IconType;
-  className?: string;
-  size?: number;
-  style?: React.CSSProperties;
-}
+export type { IconType, IconProps };
 
 export const Icon: React.FC<IconProps> = ({ type, className = 'icon', size = 14, style }) => {
   const baseStyle: React.CSSProperties = { 

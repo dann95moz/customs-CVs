@@ -14,24 +14,9 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import { WizardStep } from '../../types/cv';
+import { WizardStep, WizardStepperProps, StepMeta } from '../../types';
 
-interface WizardStepperProps {
-  currentStep: WizardStep;
-  onSelectStep: (step: WizardStep) => void;
-  hasMasterData: boolean;
-  hasTargetJob: boolean;
-  hasGeneratedCv: boolean;
-}
-
-interface StepMeta {
-  id: WizardStep;
-  number: number;
-  label: string;
-  shortLabel: string;
-  subtitle: string;
-  icon: React.ReactElement;
-}
+export type { WizardStepperProps, StepMeta };
 
 const STEPS: StepMeta[] = [
   {

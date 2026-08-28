@@ -1,11 +1,8 @@
 import React from 'react';
-import { ListSlotData } from '../../templates/types';
+import { ListSlotData, LanguagesSlotProps } from '../../templates/types';
 import { marked } from 'marked';
 
-export interface LanguagesSlotProps {
-  data: ListSlotData;
-  className?: string;
-}
+export type { LanguagesSlotProps };
 
 export const LanguagesSlot: React.FC<LanguagesSlotProps> = ({ data, className = '' }) => {
   return (

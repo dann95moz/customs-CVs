@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icons';
+import { SplitMarkdownEditorProps } from '../../types';
 
-interface SplitMarkdownEditorProps {
-  content: string;
-  onChange: (value: string) => void;
-  onDownload: () => void;
-  fileName?: string;
-}
+export type { SplitMarkdownEditorProps };
 
 export const SplitMarkdownEditor: React.FC<SplitMarkdownEditorProps> = ({
   content,

@@ -14,12 +14,9 @@ import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
 import { AVAILABLE_AI_MODELS } from '../../../core/ai-service';
+import { AiModelSelectorProps } from '../../../types';
 
-export interface AiModelSelectorProps {
-  selectedModelId: string;
-  onSelectModel: (modelId: string) => void;
-  disabled?: boolean;
-}
+export type { AiModelSelectorProps };
 
 /**
  * Component for selecting AI inference model from available models catalog.

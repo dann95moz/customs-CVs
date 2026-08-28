@@ -15,15 +15,9 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
 import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { ApplicationsStatsHeaderProps } from '../../../types';
 
-export interface ApplicationsStatsHeaderProps {
-  totalApplications: number;
-  avgMatchScore: number;
-  uniqueCompanies: number;
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
-  onNewApplication: () => void;
-}
+export type { ApplicationsStatsHeaderProps };
 
 /**
  * Header and stats bar for Applications History view.

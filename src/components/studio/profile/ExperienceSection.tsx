@@ -20,19 +20,9 @@ import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import { ExperienceItem } from '../../../types/cv';
+import { ExperienceItem, ExperienceSectionProps } from '../../../types';
 
-export interface ExperienceSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
-  experience: ExperienceItem[];
-  onFieldChange: (index: number, field: keyof ExperienceItem, value: string | string[]) => void;
-  onAddExperience: () => void;
-  onRemoveExperience: (index: number) => void;
-  onAddBullet: (expIndex: number) => void;
-  onUpdateBullet: (expIndex: number, bulletIndex: number, text: string) => void;
-  onRemoveBullet: (expIndex: number, bulletIndex: number) => void;
-}
+export type { ExperienceSectionProps };
 
 /**
  * Section for career experience and accomplishments with Google XYZ Formula assistance.

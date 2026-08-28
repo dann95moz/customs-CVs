@@ -22,13 +22,10 @@ import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
-import { AIProviderId, AIProviderSettings } from '../../../types/cv';
+import { AIProviderId, AIProviderSettings, SettingsAiTabProps } from '../../../types';
 import { AVAILABLE_AI_MODELS } from '../../../core/ai-service';
 
-export interface SettingsAiTabProps {
-  settings: AIProviderSettings;
-  onSettingsChange: (settings: AIProviderSettings) => void;
-}
+export type { SettingsAiTabProps };
 
 /**
  * Tab panel for configuring AI providers, API keys, and model parameters.

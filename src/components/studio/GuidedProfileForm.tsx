@@ -8,11 +8,9 @@ import { SkillsSection } from './profile/SkillsSection';
 import { ExperienceSection } from './profile/ExperienceSection';
 import { EducationSection } from './profile/EducationSection';
 import { LanguagesSection } from './profile/LanguagesSection';
+import { GuidedProfileFormProps } from '../../types';
 
-export interface GuidedProfileFormProps {
-  markdownContent: string;
-  onChange: (newMarkdown: string) => void;
-}
+export type { GuidedProfileFormProps };
 
 /**
  * Step 1: Guided visual profile editor orchestrating structured CV sections.

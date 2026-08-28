@@ -4,15 +4,9 @@ import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import FormatPaintRoundedIcon from '@mui/icons-material/FormatPaintRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import SpellcheckRoundedIcon from '@mui/icons-material/SpellcheckRounded';
+import { PreviewSidePanelType, StepPreviewNavRailProps } from '../../../types';
 
-export type PreviewSidePanelType = 'templates' | 'design' | 'audit';
-
-export interface StepPreviewNavRailProps {
-  activeSidePanel: PreviewSidePanelType | null;
-  onToggleSidePanel: (panel: PreviewSidePanelType) => void;
-  isEditingMarkdown: boolean;
-  onToggleMarkdown: () => void;
-}
+export type { PreviewSidePanelType, StepPreviewNavRailProps };
 
 /**
  * Vertical tool navigation rail for Step 4 Preview workspace.
@@ -134,50 +128,7 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
         </Typography>
       </Box>
 
-      {/* Edit Markdown Rail Button */}
-      <Box
-        onClick={onToggleMarkdown}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          cursor: 'pointer',
-          width: '100%',
-          px: 0.5,
-          gap: 0.5,
-          color: isEditingMarkdown ? 'primary.main' : 'text.secondary',
-          transition: 'all 0.15s ease',
-          '&:hover': { color: 'text.primary' }
-        }}
-      >
-        <Box
-          sx={{
-            width: 46,
-            height: 46,
-            borderRadius: '14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bgcolor: isEditingMarkdown
-              ? alpha(theme.palette.primary.main, isDark ? 0.2 : 0.1)
-              : 'transparent',
-            color: isEditingMarkdown ? 'primary.main' : 'inherit',
-            transition: 'all 0.15s ease',
-          }}
-        >
-          <EditRoundedIcon sx={{ fontSize: 24 }} />
-        </Box>
-        <Typography
-          variant="caption"
-          sx={{
-            fontSize: '0.68rem',
-            fontWeight: isEditingMarkdown ? 700 : 500,
-            textAlign: 'center'
-          }}
-        >
-          Markdown
-        </Typography>
-      </Box>
+
 
       {/* Spell Check / Audit Rail Button */}
       <Box

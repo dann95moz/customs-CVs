@@ -61,3 +61,43 @@ export interface TemplateMetadata {
   defaultMaxPages: number;
   icon?: string;
 }
+
+export interface HeaderSlotProps {
+  data: HeaderSlotData;
+  className?: string;
+  showContactsInHeader?: boolean;
+}
+
+export interface SummarySlotProps {
+  data: SummarySlotData;
+  className?: string;
+}
+
+export interface SkillsSlotProps {
+  data: SkillsSlotData;
+  className?: string;
+  variant?: 'pills' | 'inline' | 'compact';
+}
+
+export interface ExperienceSlotProps {
+  data: ExperienceSlotData;
+  className?: string;
+  maxItems?: number;
+}
+
+export interface EducationSlotProps {
+  data: ListSlotData;
+  className?: string;
+  maxItems?: number;
+}
+
+export interface LanguagesSlotProps {
+  data: ListSlotData;
+  className?: string;
+}
+
+export interface GenericSlotProps {
+  data: GenericSlotData;
+  className?: string;
+}
+

@@ -1,12 +1,8 @@
 import React from 'react';
-import { ListSlotData } from '../../templates/types';
+import { ListSlotData, EducationSlotProps } from '../../templates/types';
 import { marked } from 'marked';
 
-export interface EducationSlotProps {
-  data: ListSlotData;
-  className?: string;
-  maxItems?: number;
-}
+export type { EducationSlotProps };
 
 export const EducationSlot: React.FC<EducationSlotProps> = ({ 
   data, 

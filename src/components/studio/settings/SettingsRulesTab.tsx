@@ -7,12 +7,9 @@ import {
   useTheme,
 } from '@mui/material';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+import { SettingsRulesTabProps } from '../../../types';
 
-export interface SettingsRulesTabProps {
-  rules: string;
-  onRulesChange: (rules: string) => void;
-  defaultRules: string;
-}
+export type { SettingsRulesTabProps };
 
 /**
  * Tab panel for editing AI synthesis guidelines & rules.

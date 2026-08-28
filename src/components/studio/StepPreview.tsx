@@ -13,8 +13,9 @@ import { SplitMarkdownEditor } from './SplitMarkdownEditor';
 import { extractCandidateName, sanitizeFileName } from '../../core/parser';
 import { getTemplateMetadata } from '../../templates';
 import { usePrintPdf } from '../../hooks/usePrintPdf';
-import { StepPreviewToolbar, PreviewViewMode } from './preview/StepPreviewToolbar';
-import { StepPreviewNavRail, PreviewSidePanelType } from './preview/StepPreviewNavRail';
+import { StepPreviewToolbar } from './preview/StepPreviewToolbar';
+import { StepPreviewNavRail } from './preview/StepPreviewNavRail';
+import { PreviewViewMode, PreviewSidePanelType } from '../../types';
 import { TemplatesPanel } from './preview/TemplatesPanel';
 import { DesignFormattingPanel } from './preview/DesignFormattingPanel';
 import { PreviewQualityAuditPanel } from './preview/PreviewQualityAuditPanel';
@@ -112,7 +113,7 @@ export const StepPreview: React.FC = () => {
       {/* Top Studio Control Bar */}
       <StepPreviewToolbar
         viewMode={viewMode}
-        onViewModeChange={(mode) => {
+        onViewModeChange={(mode: PreviewViewMode) => {
           setViewMode(mode);
           setIsEditingMarkdown(false);
         }}
@@ -133,7 +134,7 @@ export const StepPreview: React.FC = () => {
         {/* 1. Left Vertical Tool Rail */}
         <StepPreviewNavRail
           activeSidePanel={activeSidePanel}
-          onToggleSidePanel={(panel) => setActiveSidePanel(prev => prev === panel ? null : panel)}
+          onToggleSidePanel={(panel: PreviewSidePanelType) => setActiveSidePanel(prev => prev === panel ? null : panel)}
           isEditingMarkdown={isEditingMarkdown}
           onToggleMarkdown={() => setIsEditingMarkdown(prev => !prev)}
         />

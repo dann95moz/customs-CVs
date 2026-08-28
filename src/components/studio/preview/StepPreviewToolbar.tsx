@@ -19,23 +19,9 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
+import { PreviewViewMode, StepPreviewToolbarProps } from '../../../types';
 
-export type PreviewViewMode = 'tailored' | 'generic' | 'compare';
-
-export interface StepPreviewToolbarProps {
-  viewMode: PreviewViewMode;
-  onViewModeChange: (mode: PreviewViewMode) => void;
-  activeTemplateName: string;
-  onOpenTemplates: () => void;
-  isEditingMarkdown: boolean;
-  onToggleMarkdown: () => void;
-  onSaveAndExitMarkdown: () => void;
-  onSaveVersion: () => void;
-  savedSuccess: boolean;
-  onReTailor: () => void;
-  isGenerating: boolean;
-  onDownloadPdf: () => void;
-}
+export type { PreviewViewMode, StepPreviewToolbarProps };
 
 /**
  * Top control bar for Step 4 Preview workspace.

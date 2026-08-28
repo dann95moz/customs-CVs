@@ -15,23 +15,10 @@ import {
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
-import { PaletteId, FontFamilyId, SpacingDensity } from '../../../types/cv';
+import { PaletteId, FontFamilyId, SpacingDensity, DesignFormattingPanelProps } from '../../../types';
 import { getAllPalettes } from '../../../constants/palettes';
 
-export interface DesignFormattingPanelProps {
-  customColor: string;
-  onCustomColorChange: (hex: string) => void;
-  palette: PaletteId;
-  onSelectPalette: (id: PaletteId) => void;
-  fontFamily: FontFamilyId;
-  onFontFamilyChange: (font: FontFamilyId) => void;
-  spacingDensity: SpacingDensity;
-  onSpacingDensityChange: (density: SpacingDensity) => void;
-  sheetHeight: number;
-  a4PagePx: number;
-  estimatedPages: number;
-  onClose: () => void;
-}
+export type { DesignFormattingPanelProps };
 
 /**
  * Slide-out panel for brand colors, typography, density, and page budget calculation.

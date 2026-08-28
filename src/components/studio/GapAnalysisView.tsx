@@ -1,14 +1,8 @@
 import React from 'react';
 import { Icon } from '../Icons';
+import { GapAnalysisViewProps } from '../../types';
 
-interface GapAnalysisViewProps {
-  gapMarkdown: string;
-  matchScore: number;
-  keywords: string[];
-  companyName: string;
-  targetRole: string;
-  onDownload: () => void;
-}
+export type { GapAnalysisViewProps };
 
 export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
   gapMarkdown,

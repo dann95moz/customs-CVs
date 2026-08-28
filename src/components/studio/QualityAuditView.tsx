@@ -5,15 +5,12 @@ import {
   useTheme,
 } from '@mui/material';
 import { Icon } from '../Icons';
-import { QualityAuditReport } from '../../types/cv';
+import { QualityAuditReport, ActionModalState, QualityAuditViewProps } from '../../types';
 import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
-import { ActionModalState, AuditImprovementModal } from './audit/AuditImprovementModal';
+import { AuditImprovementModal } from './audit/AuditImprovementModal';
 import { AuditSectionCard } from './audit/AuditSectionCard';
 
-export interface QualityAuditViewProps {
-  report: QualityAuditReport;
-  onRefresh: () => void;
-}
+export type { QualityAuditViewProps };
 
 /**
  * Quality Audit view orchestrator displaying 1-10 executive scoring, growth pillars, and action modal.
@@ -298,7 +295,7 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
       <AuditImprovementModal
         modalState={modalState}
         onClose={() => setModalState(prev => ({ ...prev, open: false }))}
-        onInputChange={(val) => setModalState(prev => ({ ...prev, inputValue: val }))}
+        onInputChange={(val: string) => setModalState(prev => ({ ...prev, inputValue: val }))}
         onApply={handleApplyAction}
       />
 

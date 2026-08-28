@@ -11,13 +11,9 @@ import {
 } from '@mui/material';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
+import { SummarySectionProps } from '../../../types';
 
-export interface SummarySectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
-  summary: string;
-  onSummaryChange: (val: string) => void;
-}
+export type { SummarySectionProps };
 
 /**
  * Section for candidate executive summary and career pitch.

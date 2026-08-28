@@ -17,15 +17,10 @@ import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
 import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import { GeneratedCvVersion } from '../../../types/cv';
+import { GeneratedCvVersion, ApplicationCardProps } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
 
-export interface ApplicationCardProps {
-  version: GeneratedCvVersion;
-  onLoad: (id: string) => void;
-  onDelete: (id: string) => void;
-  onDownload: (v: GeneratedCvVersion) => void;
-}
+export type { ApplicationCardProps };
 
 /**
  * Card rendering an individual saved CV version with metrics and action buttons.

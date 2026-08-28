@@ -1,11 +1,8 @@
 import React from 'react';
-import { SummarySlotData } from '../../templates/types';
+import { SummarySlotData, SummarySlotProps } from '../../templates/types';
 import { marked } from 'marked';
 
-export interface SummarySlotProps {
-  data: SummarySlotData;
-  className?: string;
-}
+export type { SummarySlotProps };
 
 export const SummarySlot: React.FC<SummarySlotProps> = ({ data, className = '' }) => {
   return (

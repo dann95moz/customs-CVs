@@ -15,15 +15,9 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { LanguagesSectionProps } from '../../../types';
 
-export interface LanguagesSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
-  languages: string[];
-  onUpdateLanguage: (index: number, val: string) => void;
-  onAddLanguage: () => void;
-  onRemoveLanguage: (index: number) => void;
-}
+export type { LanguagesSectionProps };
 
 /**
  * Section for candidate languages and CEFR proficiencies.

@@ -22,22 +22,9 @@ import {
 } from '../../core/ai-service';
 import { PageBudgetSelector } from './tailor/PageBudgetSelector';
 import { AiModelSelector } from './tailor/AiModelSelector';
+import { StepAITailorProps } from '../../types';
 
-export interface StepAITailorProps {
-  candidateName: string;
-  companyName: string;
-  targetRole: string;
-  pageBudget: 1 | 2;
-  onPageBudgetChange: (val: 1 | 2) => void;
-  providerSettings: AIProviderSettings;
-  onSettingsChange: (settings: AIProviderSettings) => void;
-  onGenerate: () => Promise<void>;
-  isGenerating: boolean;
-  generationStep: string;
-  hasGeneratedCv: boolean;
-  onPrevStep: () => void;
-  onNextStep: () => void;
-}
+export type { StepAITailorProps };
 
 /**
  * Step 3: AI Resume Tailoring Studio.

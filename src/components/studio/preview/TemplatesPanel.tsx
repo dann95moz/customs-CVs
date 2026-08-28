@@ -9,20 +9,12 @@ import {
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import FormatPaintRoundedIcon from '@mui/icons-material/FormatPaintRounded';
-import { ThemeId, PaletteId } from '../../../types/cv';
+import { ThemeId, PaletteId, TemplatesPanelProps } from '../../../types';
 import { getAllPalettes } from '../../../constants/palettes';
 import { getAllTemplates } from '../../../templates';
 import { TemplateThumbnailMiniature } from '../TemplateThumbnailMiniature';
 
-export interface TemplatesPanelProps {
-  theme: ThemeId;
-  onSelectTheme: (id: ThemeId) => void;
-  palette: PaletteId;
-  onSelectPalette: (id: PaletteId) => void;
-  customColor: string;
-  onCustomColorChange: (hex: string) => void;
-  onClose: () => void;
-}
+export type { TemplatesPanelProps };
 
 /**
  * Slide-out panel for browsing and picking CV templates and accent palettes.

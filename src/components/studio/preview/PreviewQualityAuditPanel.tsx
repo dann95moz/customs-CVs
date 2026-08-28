@@ -9,14 +9,9 @@ import {
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
+import { PreviewQualityAuditPanelProps } from '../../../types';
 
-export interface PreviewQualityAuditPanelProps {
-  overallScore: number;
-  matchScore: number;
-  companyName: string;
-  onOpenFullAudit: () => void;
-  onClose: () => void;
-}
+export type { PreviewQualityAuditPanelProps };
 
 /**
  * Slide-out panel providing a quick executive ATS audit summary and link to full audit.

@@ -1,16 +1,8 @@
 import React from 'react';
 import { Icon } from '../Icons';
+import { LockedViewCardProps } from '../../types';
 
-interface LockedViewCardProps {
-  iconType: 'gauge' | 'target' | 'zap' | 'file-text';
-  badgeVariant?: 'default' | 'target' | 'ai';
-  title: string;
-  description: React.ReactNode;
-  actionText: string;
-  actionIcon?: 'zap' | 'file-text' | 'layers';
-  onAction: () => void;
-  isDisabled?: boolean;
-}
+export type { LockedViewCardProps };
 
 export const LockedViewCard: React.FC<LockedViewCardProps> = ({
   iconType,

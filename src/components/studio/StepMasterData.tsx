@@ -28,14 +28,9 @@ import { GuidedProfileForm } from './GuidedProfileForm';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { ButtonGroup } from '@mui/material';
+import { StepMasterDataProps } from '../../types';
 
-interface StepMasterDataProps {
-  content: string;
-  onChange: (value: string) => void;
-  onLoadSample: () => void;
-  onResetTemplate: () => void;
-  onNextStep: () => void;
-}
+export type { StepMasterDataProps };
 
 export const StepMasterData: React.FC<StepMasterDataProps> = ({
   content,

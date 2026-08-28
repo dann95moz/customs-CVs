@@ -11,18 +11,9 @@ import {
 } from '@mui/material';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { ContactItem, ContactType } from '../../../types/cv';
+import { ContactItem, ContactType, PersonalInfoSectionProps } from '../../../types';
 
-export interface PersonalInfoSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
-  name: string;
-  title: string;
-  contacts: ContactItem[];
-  onNameChange: (val: string) => void;
-  onTitleChange: (val: string) => void;
-  onContactChange: (type: ContactType, label: string, url?: string) => void;
-}
+export type { PersonalInfoSectionProps };
 
 /**
  * Section for candidate identity and contact items.

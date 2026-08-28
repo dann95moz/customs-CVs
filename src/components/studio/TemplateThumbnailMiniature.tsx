@@ -1,18 +1,10 @@
 import React from 'react';
 import { Box, Typography, useTheme, alpha } from '@mui/material';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import { ThemeId, PaletteId } from '../../types/cv';
+import { ThemeId, PaletteId, TemplateThumbnailMiniatureProps } from '../../types';
 import { getPaletteConfig } from '../../constants/palettes';
 
-interface TemplateThumbnailMiniatureProps {
-  themeId: ThemeId;
-  paletteId: PaletteId;
-  customColor?: string;
-  name: string;
-  category: string;
-  isSelected: boolean;
-  onClick: () => void;
-}
+export type { TemplateThumbnailMiniatureProps };
 
 export const TemplateThumbnailMiniature: React.FC<TemplateThumbnailMiniatureProps> = ({
   themeId,

@@ -14,23 +14,9 @@ import {
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import { ActionModalState, AuditImprovementModalProps } from '../../../types';
 
-export interface ActionModalState {
-  open: boolean;
-  sectionName: string;
-  title: string;
-  description: string;
-  type: 'certification' | 'summary_metric' | 'github_link' | 'google_xyz' | 'skills_3cat' | 'generic';
-  inputValue: string;
-  presets: string[];
-}
-
-export interface AuditImprovementModalProps {
-  modalState: ActionModalState;
-  onClose: () => void;
-  onInputChange: (val: string) => void;
-  onApply: () => void;
-}
+export type { ActionModalState, AuditImprovementModalProps };
 
 /**
  * Modal dialog for applying targeted AI/executive score improvements to the CV.
@@ -67,7 +53,7 @@ export const AuditImprovementModal: React.FC<AuditImprovementModalProps> = ({
               Quick Suggestions (Click to apply):
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
-              {modalState.presets.map((preset, idx) => (
+              {modalState.presets.map((preset: string, idx: number) => (
                 <Chip
                   key={idx}
                   label={preset}

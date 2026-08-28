@@ -1,11 +1,8 @@
 import React from 'react';
-import { GenericSlotData } from '../../templates/types';
+import { GenericSlotData, GenericSlotProps } from '../../templates/types';
 import { marked } from 'marked';
 
-export interface GenericSlotProps {
-  data: GenericSlotData;
-  className?: string;
-}
+export type { GenericSlotProps };
 
 export const GenericSlot: React.FC<GenericSlotProps> = ({ data, className = '' }) => {
   return (

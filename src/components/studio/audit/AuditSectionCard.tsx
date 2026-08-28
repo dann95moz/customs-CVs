@@ -2,14 +2,9 @@ import React from 'react';
 import { Box, Typography, Button, Stack } from '@mui/material';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import { AuditSectionResult } from '../../../types/cv';
+import { AuditSectionResult, AuditSectionCardProps } from '../../../types';
 
-export interface AuditSectionCardProps {
-  section: AuditSectionResult;
-  scoreColor: string;
-  onExecuteAction: (actionText: string, sectionName: string) => void;
-  getActionButtonLabel: (action: string) => string;
-}
+export type { AuditSectionCardProps };
 
 /**
  * Card rendering diagnostic scores and action levers for an individual CV section.

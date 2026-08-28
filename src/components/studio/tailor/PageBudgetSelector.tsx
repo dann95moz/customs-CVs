@@ -12,11 +12,9 @@ import {
 import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
 import RadioButtonUncheckedRoundedIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
 import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonCheckedRounded';
+import { PageBudgetSelectorProps } from '../../../types';
 
-export interface PageBudgetSelectorProps {
-  pageBudget: 1 | 2;
-  onPageBudgetChange: (val: 1 | 2) => void;
-}
+export type { PageBudgetSelectorProps };
 
 /**
  * Component for selecting target resume page length (1 Page vs. 2 Pages).

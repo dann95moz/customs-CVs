@@ -17,18 +17,9 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import { SkillCategory } from '../../../types/cv';
+import { SkillCategory, SkillsSectionProps } from '../../../types';
 
-export interface SkillsSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
-  skillGroups: SkillCategory[];
-  skillsTextMap: Record<number, string>;
-  onCategoryChange: (index: number, newCategory: string) => void;
-  onSkillsChange: (index: number, skillsStr: string) => void;
-  onAddCategory: () => void;
-  onRemoveCategory: (index: number) => void;
-}
+export type { SkillsSectionProps };
 
 /**
  * Section for categorized tech stack and technical skills.

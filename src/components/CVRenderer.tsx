@@ -1,16 +1,8 @@
-import React from 'react';
-import { CVData, ThemeId, PaletteId, FontFamilyId, SpacingDensity } from '../types/cv';
+import { CVData, ThemeId, PaletteId, FontFamilyId, SpacingDensity, CVRendererProps } from '../types';
 import { getTemplate, mapDataToSlots } from '../templates';
 import { getPaletteConfig } from '../constants/palettes';
 
-export interface CVRendererProps {
-  data: CVData;
-  theme?: ThemeId;
-  palette?: PaletteId;
-  customColor?: string;
-  fontFamily?: FontFamilyId;
-  spacingDensity?: SpacingDensity;
-}
+export type { CVRendererProps };
 
 const FONT_MAP: Record<FontFamilyId, string> = {
   inter: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",

@@ -15,15 +15,9 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { EducationSectionProps } from '../../../types';
 
-export interface EducationSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
-  education: string[];
-  onUpdateEducation: (index: number, val: string) => void;
-  onAddEducation: () => void;
-  onRemoveEducation: (index: number) => void;
-}
+export type { EducationSectionProps };
 
 /**
  * Section for education degrees, universities, and industry certifications.

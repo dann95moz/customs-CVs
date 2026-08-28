@@ -1,12 +1,8 @@
 import React from 'react';
-import { ExperienceSlotData } from '../../templates/types';
+import { ExperienceSlotData, ExperienceSlotProps } from '../../templates/types';
 import { marked } from 'marked';
 
-export interface ExperienceSlotProps {
-  data: ExperienceSlotData;
-  className?: string;
-  maxItems?: number;
-}
+export type { ExperienceSlotProps };
 
 export const ExperienceSlot: React.FC<ExperienceSlotProps> = ({ 
   data, 

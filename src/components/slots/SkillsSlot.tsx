@@ -1,11 +1,7 @@
 import React from 'react';
-import { SkillsSlotData } from '../../templates/types';
+import { SkillsSlotData, SkillsSlotProps } from '../../templates/types';
 
-export interface SkillsSlotProps {
-  data: SkillsSlotData;
-  className?: string;
-  variant?: 'pills' | 'inline' | 'compact';
-}
+export type { SkillsSlotProps };
 
 export const SkillsSlot: React.FC<SkillsSlotProps> = ({ 
   data, 

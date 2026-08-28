@@ -25,18 +25,9 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
+import { StepTargetJobProps } from '../../types';
 
-interface StepTargetJobProps {
-  content: string;
-  onChange: (value: string) => void;
-  companyName: string;
-  onCompanyChange: (value: string) => void;
-  targetRole: string;
-  onRoleChange: (value: string) => void;
-  onLoadSample: () => void;
-  onPrevStep: () => void;
-  onNextStep: () => void;
-}
+export type { StepTargetJobProps };
 
 export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   content,

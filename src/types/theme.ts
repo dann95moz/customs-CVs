@@ -1,0 +1,38 @@
+/**
+ * CV Studio Pro - Theme & Styling Types
+ * 
+ * Domain-specific type definitions for CV document themes, palettes,
+ * font families, and density configurations.
+ */
+
+export type ThemeId = 
+  | 'modern-tech' 
+  | 'executive' 
+  | 'minimal-ats' 
+  | 'two-column'
+  | 'designer-uiux'
+  | 'formal-legal'
+  | 'academic-research';
+
+export type PaletteId = 
+  | 'corporate-blue' 
+  | 'accent-teal' 
+  | 'editorial-black' 
+  | 'minimal-slate' 
+  | 'modern-indigo' 
+  | 'executive-burgundy' 
+  | 'forest-green' 
+  | 'warm-amber' 
+  | 'creative-coral'
+  | 'custom';
+
+export type FontFamilyId = 'inter' | 'outfit' | 'serif' | 'mono';
+export type SpacingDensity = 'compact' | 'standard' | 'spacious';
+
+export interface ThemeConfig {
+  id: ThemeId;
+  name: string;
+  description: string;
+  accentColor: string;
+  isTwoColumn?: boolean;
+}

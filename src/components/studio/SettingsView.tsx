@@ -17,14 +17,9 @@ import { AIProviderSettings } from '../../types/cv';
 import { DEFAULT_RULES } from '../../core/ai-service';
 import { SettingsAiTab } from './settings/SettingsAiTab';
 import { SettingsRulesTab } from './settings/SettingsRulesTab';
+import { SettingsViewProps } from '../../types';
 
-export interface SettingsViewProps {
-  settings: AIProviderSettings;
-  onSettingsChange: (settings: AIProviderSettings) => void;
-  rules: string;
-  onRulesChange: (rules: string) => void;
-  onResetDefaults: () => void;
-}
+export type { SettingsViewProps };
 
 /**
  * Settings view orchestrator managing AI credentials, synthesis rules, and danger zone resets.

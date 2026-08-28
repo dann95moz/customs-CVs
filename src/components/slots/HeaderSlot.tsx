@@ -1,12 +1,8 @@
 import React from 'react';
-import { HeaderSlotData } from '../../templates/types';
+import { HeaderSlotData, HeaderSlotProps } from '../../templates/types';
 import { Icon } from '../Icons';
 
-export interface HeaderSlotProps {
-  data: HeaderSlotData;
-  className?: string;
-  showContactsInHeader?: boolean;
-}
+export type { HeaderSlotProps };
 
 export const HeaderSlot: React.FC<HeaderSlotProps> = ({ 
   data, 

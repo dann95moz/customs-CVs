@@ -2,20 +2,9 @@ import React from 'react';
 import { Box, Typography, Chip, useTheme, alpha } from '@mui/material';
 import CompareArrowsRoundedIcon from '@mui/icons-material/CompareArrowsRounded';
 import { CVRenderer } from '../../CVRenderer';
-import { CVData, ThemeId, PaletteId, FontFamilyId, SpacingDensity } from '../../../types/cv';
+import { CVData, ThemeId, PaletteId, FontFamilyId, SpacingDensity, PreviewComparisonViewProps } from '../../../types';
 
-export interface PreviewComparisonViewProps {
-  parsedMasterCv: CVData;
-  parsedCv: CVData;
-  theme: ThemeId;
-  palette: PaletteId;
-  customColor?: string;
-  fontFamily: FontFamilyId;
-  spacingDensity: SpacingDensity;
-  companyName: string;
-  matchScore: number;
-  keywordsCount: number;
-}
+export type { PreviewComparisonViewProps };
 
 /**
  * Side-by-side comparison layout showing Generic Master Dossier vs. AI-Tailored CV.
