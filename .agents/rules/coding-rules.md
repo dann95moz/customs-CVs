@@ -50,6 +50,7 @@ Nunca sacrifiques legibilidad por "cleverness". Código simple y explícito
 código denso e ingenioso.
 
 Si generas o modificas múltiples archivos, mantenlos consistentes entre sí (mismos imports, convenciones de nombrado, estilo).
+Los archivos de estilo deben tener centralizados los colores de forma que sean escalables y reutilizables, ya sean en archivos de estilos centralizados en los temas de MUI
 
 
 Todo el texto hardcoded debe estar en inglés

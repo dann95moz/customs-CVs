@@ -1,53 +1,30 @@
 import { createTheme, ThemeOptions, alpha } from '@mui/material/styles';
+import {
+  DARK_THEME_TOKENS,
+  LIGHT_THEME_TOKENS,
+  getCssVariablesFromTokens,
+} from './colors';
 
 export type ThemeMode = 'light' | 'dark';
 
 const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
   const isDark = mode === 'dark';
+  const tokens = isDark ? DARK_THEME_TOKENS : LIGHT_THEME_TOKENS;
 
   return {
     palette: {
       mode,
-      primary: {
-        main: isDark ? '#38bdf8' : '#0284c7',
-        light: isDark ? '#7dd3fc' : '#38bdf8',
-        dark: isDark ? '#0284c7' : '#0369a1',
-        contrastText: isDark ? '#0b0f19' : '#ffffff',
-      },
-      secondary: {
-        main: isDark ? '#a78bfa' : '#7c3aed',
-        light: isDark ? '#c4b5fd' : '#8b5cf6',
-        dark: isDark ? '#7c3aed' : '#6d28d9',
-        contrastText: '#ffffff',
-      },
-      success: {
-        main: isDark ? '#10b981' : '#059669',
-        light: isDark ? '#34d399' : '#10b981',
-        dark: isDark ? '#059669' : '#047857',
-        contrastText: '#ffffff',
-      },
-      warning: {
-        main: isDark ? '#f59e0b' : '#d97706',
-        light: isDark ? '#fbbf24' : '#f59e0b',
-        dark: isDark ? '#b45309' : '#92400e',
-        contrastText: '#ffffff',
-      },
-      error: {
-        main: isDark ? '#ef4444' : '#dc2626',
-        light: isDark ? '#f87171' : '#ef4444',
-        dark: isDark ? '#b91c1c' : '#991b1b',
-        contrastText: '#ffffff',
-      },
+      primary: tokens.primary,
+      secondary: tokens.secondary,
+      success: tokens.success,
+      warning: tokens.warning,
+      error: tokens.error,
       background: {
-        default: isDark ? '#080b12' : '#f8fafc',
-        paper: isDark ? '#101623' : '#ffffff',
+        default: tokens.background.default,
+        paper: tokens.background.paper,
       },
-      text: {
-        primary: isDark ? '#f8fafc' : '#0f172a',
-        secondary: isDark ? '#94a3b8' : '#475569',
-        disabled: isDark ? '#64748b' : '#94a3b8',
-      },
-      divider: isDark ? '#232f48' : '#e2e8f0',
+      text: tokens.text,
+      divider: tokens.border.default,
     },
     shape: {
       borderRadius: 12,
@@ -69,39 +46,21 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
     components: {
       MuiCssBaseline: {
         styleOverrides: {
-          ':root': {
-            '--bg-dark': isDark ? '#080b12' : '#f8fafc',
-            '--panel-bg': isDark ? '#101623' : '#ffffff',
-            '--card-bg': isDark ? '#151d2e' : '#ffffff',
-            '--card-hover': isDark ? '#1b243b' : '#f1f5f9',
-            '--border': isDark ? '#232f48' : '#e2e8f0',
-            '--border-light': isDark ? '#334155' : '#cbd5e1',
-            '--accent': isDark ? '#38bdf8' : '#0284c7',
-            '--accent-glow': isDark ? 'rgba(56, 189, 248, 0.25)' : 'rgba(2, 132, 199, 0.2)',
-            '--accent-hover': isDark ? '#0284c7' : '#0369a1',
-            '--primary-purple': isDark ? '#818cf8' : '#7c3aed',
-            '--success': isDark ? '#10b981' : '#059669',
-            '--warning': isDark ? '#f59e0b' : '#d97706',
-            '--danger': isDark ? '#ef4444' : '#dc2626',
-            '--text-main': isDark ? '#f8fafc' : '#0f172a',
-            '--text-muted': isDark ? '#94a3b8' : '#475569',
-            '--text-dim': isDark ? '#64748b' : '#94a3b8',
-            '--input-bg': isDark ? '#0b0f19' : '#f8fafc',
-            '--code-bg': isDark ? '#0b0f19' : '#f1f5f9',
-            '--box-shadow': isDark ? '0 4px 20px -2px rgba(0, 0, 0, 0.4)' : '0 4px 20px -2px rgba(0, 0, 0, 0.06)',
-          },
+          ':root': getCssVariablesFromTokens(tokens),
           body: {
-            scrollbarColor: isDark ? '#334155 #0b0f19' : '#cbd5e1 #f8fafc',
+            scrollbarColor: isDark
+              ? `${tokens.border.light} ${tokens.background.input}`
+              : `${tokens.border.light} ${tokens.background.default}`,
             '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
               width: 8,
               height: 8,
             },
             '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
               borderRadius: 8,
-              backgroundColor: isDark ? '#334155' : '#cbd5e1',
+              backgroundColor: tokens.border.light,
             },
             '&::-webkit-scrollbar-track, & *::-webkit-scrollbar-track': {
-              backgroundColor: isDark ? '#0b0f19' : '#f8fafc',
+              backgroundColor: tokens.background.input,
             },
           },
         },
@@ -122,7 +81,7 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
               ? 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)'
               : 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
             color: '#ffffff',
-            boxShadow: isDark 
+            boxShadow: isDark
               ? '0 2px 10px rgba(2, 132, 199, 0.4)'
               : '0 2px 10px rgba(2, 132, 199, 0.25)',
             '&:hover': {
@@ -142,8 +101,8 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
           outlined: {
             borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)',
             '&:hover': {
-              borderColor: isDark ? '#38bdf8' : '#0284c7',
-              backgroundColor: isDark ? alpha('#38bdf8', 0.08) : alpha('#0284c7', 0.06),
+              borderColor: tokens.primary.main,
+              backgroundColor: alpha(tokens.primary.main, isDark ? 0.08 : 0.06),
             },
             '&.Mui-disabled': {
               borderColor: isDark ? 'rgba(255, 255, 255, 0.08) !important' : 'rgba(0, 0, 0, 0.08) !important',
@@ -157,10 +116,8 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
           root: {
             borderRadius: 16,
             backgroundImage: 'none',
-            border: `1px solid ${isDark ? '#232f48' : '#e2e8f0'}`,
-            boxShadow: isDark
-              ? '0 4px 20px -2px rgba(0, 0, 0, 0.5)'
-              : '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            border: `1px solid ${tokens.border.default}`,
+            boxShadow: tokens.shadow.box,
           },
         },
       },
@@ -182,19 +139,19 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
             fontSize: '0.78rem',
           },
           colorPrimary: {
-            backgroundColor: isDark ? alpha('#38bdf8', 0.15) : undefined,
-            color: isDark ? '#7dd3fc' : undefined,
-            border: isDark ? `1px solid ${alpha('#38bdf8', 0.3)}` : undefined,
+            backgroundColor: isDark ? alpha(tokens.primary.main, 0.15) : undefined,
+            color: isDark ? tokens.primary.light : undefined,
+            border: isDark ? `1px solid ${alpha(tokens.primary.main, 0.3)}` : undefined,
           },
           colorSuccess: {
-            backgroundColor: isDark ? alpha('#10b981', 0.15) : undefined,
-            color: isDark ? '#34d399' : undefined,
-            border: isDark ? `1px solid ${alpha('#10b981', 0.3)}` : undefined,
+            backgroundColor: isDark ? alpha(tokens.success.main, 0.15) : undefined,
+            color: isDark ? tokens.success.light : undefined,
+            border: isDark ? `1px solid ${alpha(tokens.success.main, 0.3)}` : undefined,
           },
           colorWarning: {
-            backgroundColor: isDark ? alpha('#f59e0b', 0.15) : undefined,
-            color: isDark ? '#fbbf24' : undefined,
-            border: isDark ? `1px solid ${alpha('#f59e0b', 0.3)}` : undefined,
+            backgroundColor: isDark ? alpha(tokens.warning.main, 0.15) : undefined,
+            color: isDark ? tokens.warning.light : undefined,
+            border: isDark ? `1px solid ${alpha(tokens.warning.main, 0.3)}` : undefined,
           },
         },
       },
@@ -208,15 +165,15 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
         styleOverrides: {
           root: {
             borderRadius: 10,
-            backgroundColor: isDark ? '#0b0f19' : '#ffffff',
+            backgroundColor: tokens.background.input,
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: isDark ? '#232f48' : '#e2e8f0',
+              borderColor: tokens.border.default,
             },
             '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: isDark ? '#38bdf8' : '#0284c7',
+              borderColor: tokens.primary.main,
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: isDark ? '#38bdf8' : '#0284c7',
+              borderColor: tokens.primary.main,
             },
           },
         },
@@ -244,9 +201,9 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
             borderRadius: 8,
             fontSize: '0.75rem',
             fontWeight: 500,
-            backgroundColor: isDark ? '#151d2e' : '#0f172a',
-            border: `1px solid ${isDark ? '#232f48' : '#1e293b'}`,
-            color: '#f8fafc',
+            backgroundColor: tokens.background.card,
+            border: `1px solid ${tokens.border.default}`,
+            color: tokens.text.primary,
             boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
           },
         },

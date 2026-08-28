@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Button,
   Snackbar,
+  useTheme,
 } from '@mui/material';
 import { Icon } from '../Icons';
 import { QualityAuditReport } from '../../types/cv';
@@ -22,6 +23,7 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
   report,
   onRefresh
 }) => {
+  const theme = useTheme();
   const { cvMarkdown, setCvMarkdown, masterData, setMasterData } = useResumeWorkspace();
 
   const [modalState, setModalState] = useState<ActionModalState>({
@@ -47,10 +49,10 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 9.0) return '#10b981';
-    if (score >= 8.0) return '#38bdf8';
-    if (score >= 7.0) return '#f59e0b';
-    return '#ef4444';
+    if (score >= 9.0) return theme.palette.success.main;
+    if (score >= 8.0) return theme.palette.primary.main;
+    if (score >= 7.0) return theme.palette.warning.main;
+    return theme.palette.error.main;
   };
 
   // Open targeted action modal based on lever text
