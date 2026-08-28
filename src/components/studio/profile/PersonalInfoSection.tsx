@@ -51,9 +51,13 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <PersonRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            1. Candidate Identity &amp; Contact
+            1. Personal Info &amp; Contact
           </Typography>
-          <Chip label="Essential" size="small" color="primary" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+          {Boolean(name && name.trim()) ? (
+            <Chip label="Added" size="small" color="success" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+          ) : (
+            <Chip label="Essential" size="small" color="primary" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+          )}
         </Box>
       </AccordionSummary>
       <AccordionDetails sx={{ pt: 1, pb: 3 }}>

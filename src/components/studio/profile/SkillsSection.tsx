@@ -37,6 +37,8 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
 }) => {
   const theme = useTheme();
 
+  const totalSkillsCount = skillGroups.reduce((acc, g) => acc + (g.skills?.length || 0), 0);
+
   return (
     <Accordion
       expanded={isExpanded}
@@ -52,14 +54,22 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <CodeRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            3. Master Tech Stack &amp; Competencies
+            3. Skills &amp; Technologies
           </Typography>
-          <Chip label="High-Density Stack" size="small" color="primary" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+          {totalSkillsCount > 0 && (
+            <Chip
+              label={`${totalSkillsCount} Skills`}
+              size="small"
+              color="success"
+              variant="outlined"
+              sx={{ height: 20, fontSize: '0.7rem' }}
+            />
+          )}
         </Box>
       </AccordionSummary>
       <AccordionDetails sx={{ pt: 1, pb: 3 }}>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          Organize competencies into high-density categories. Separate individual technologies with commas.
+          Group your skills into categories (e.g. Languages, Frameworks, Cloud &amp; Tools). Separate items with commas.
         </Typography>
         <Stack spacing={2}>
           {skillGroups.map((group, idx) => {

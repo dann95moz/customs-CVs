@@ -57,24 +57,26 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <WorkRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            4. Career History &amp; Achievements
+            4. Work Experience &amp; Roles
           </Typography>
-          <Chip
-            label={`${experience.length} Roles Recorded`}
-            size="small"
-            color="success"
-            variant="outlined"
-            sx={{ height: 20, fontSize: '0.7rem' }}
-          />
+          {experience.length > 0 && (
+            <Chip
+              label={`${experience.length} ${experience.length === 1 ? 'Role' : 'Roles'}`}
+              size="small"
+              color="success"
+              variant="outlined"
+              sx={{ height: 20, fontSize: '0.7rem' }}
+            />
+          )}
         </Box>
       </AccordionSummary>
       <AccordionDetails sx={{ pt: 1, pb: 3 }}>
         <Box sx={{ mb: 2, p: 1.5, bgcolor: isDark ? alpha(theme.palette.primary.main, 0.08) : '#f0f9ff', borderRadius: '8px' }}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: theme.palette.primary.main, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <AutoAwesomeRoundedIcon fontSize="inherit" /> Google XYZ Achievement Formula:
+            <AutoAwesomeRoundedIcon fontSize="inherit" /> Impact Tip:
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            &quot;Accomplished <strong>[X]</strong> as measured by <strong>[Y%]</strong> by implementing <strong>[Z]</strong>&quot; (e.g. &quot;Reduced CI/CD build times by 50% through Docker pipeline automation&quot;).
+            Include measurable impact where possible (e.g. &quot;Reduced build times by 45% through CI/CD pipeline automation&quot;).
           </Typography>
         </Box>
 

@@ -64,8 +64,18 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   const expCount = parsed.experience?.length || 0;
   const skillsCount = parsed.skillGroups?.reduce((acc, curr) => acc + curr.skills.length, 0) || 0;
 
-  const hasData = content.trim().length > 50 && !content.includes('[CANDIDATE FULL NAME]');
+  const completedSections = [
+    Boolean(parsed.name && parsed.name.trim() && !parsed.name.includes('[CANDIDATE')),
+    Boolean(parsed.summary && parsed.summary.trim() && !parsed.summary.includes('[Write freely')),
+    Boolean(parsed.skillGroups && parsed.skillGroups.length > 0 && parsed.skillGroups.some(g => g.skills.length > 0)),
+    Boolean(parsed.experience && parsed.experience.length > 0),
+    Boolean(parsed.education && parsed.education.length > 0),
+    Boolean(parsed.languages && parsed.languages.length > 0)
+  ];
+  const completedCount = completedSections.filter(Boolean).length;
+  const progressPercent = Math.round((completedCount / 6) * 100);
 
+  const hasData = content.trim().length > 50 && !content.includes('[CANDIDATE FULL NAME]');
 
   return (
     <Box
@@ -87,7 +97,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           gap: 2.5,
         }}
       >
-        {/* Guiding Hero Banner */}
+        {/* Simplified Guiding Hero Banner */}
         <Paper
           sx={{
             p: { xs: 2, md: 2.5 },
@@ -105,18 +115,24 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           <Box sx={{ maxWidth: 900 }}>
             <Chip
               icon={<PersonRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label="Step 1 of 4 • Master Career Dossier (SSOT)"
+              label="Step 1 of 3 • Candidate Profile"
               size="small"
               color="primary"
               variant="outlined"
               sx={{ mb: 1, fontWeight: 700 }}
             />
             <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
-              Your Master Professional Profile
+              Your Career Profile
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              This dossier holds your permanent career history, technical stack, and achievements.
-              <strong> The AI strictly uses this as its Single Source of Truth</strong> to synthesize targeted resumes without hallucinations.
+            <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+              Add your career history and skills once. We&apos;ll automatically adapt it for every job you apply to.
+              <Chip
+                icon={<InfoRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                label="Factual integrity safeguard active"
+                size="small"
+                variant="outlined"
+                sx={{ height: 20, fontSize: '0.7rem', color: 'text.secondary' }}
+              />
             </Typography>
           </Box>
 
@@ -167,24 +183,51 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           </Stack>
         </Paper>
 
-        {/* Summary Metrics Strip */}
-        <Box
+        {/* Profile Completion & Summary Strip */}
+        <Paper
           sx={{
+            p: 2,
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
-            gap: 1.5,
+            gridTemplateColumns: { xs: '1fr', md: '1.2fr repeat(3, 1fr)' },
+            gap: 2,
+            alignItems: 'center',
+            bgcolor: 'background.paper',
+            border: `1px solid ${theme.palette.divider}`,
           }}
         >
-          <Paper
-            sx={{
-              p: 1.5,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-              bgcolor: 'background.paper',
-              border: `1px solid ${theme.palette.divider}`,
-            }}
-          >
+          {/* Progress Bar Item */}
+          <Box sx={{ pr: { md: 1 } }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.75 }}>
+              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>
+                Profile Completion
+              </Typography>
+              <Typography variant="caption" sx={{ fontWeight: 800, color: progressPercent === 100 ? 'success.main' : 'primary.main' }}>
+                {completedCount} of 6 Complete ({progressPercent}%)
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                height: 8,
+                borderRadius: 4,
+                bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                overflow: 'hidden',
+              }}
+            >
+              <Box
+                sx={{
+                  width: `${progressPercent}%`,
+                  height: '100%',
+                  borderRadius: 4,
+                  bgcolor: progressPercent === 100 ? theme.palette.success.main : theme.palette.primary.main,
+                  transition: 'width 0.4s ease',
+                }}
+              />
+            </Box>
+          </Box>
+
+          {/* Candidate Name */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, minWidth: 0 }}>
             <Box
               sx={{
                 width: 36,
@@ -195,6 +238,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
               }}
             >
               <PersonRoundedIcon fontSize="small" />
@@ -207,18 +251,10 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 {candidateName}
               </Typography>
             </Box>
-          </Paper>
+          </Box>
 
-          <Paper
-            sx={{
-              p: 1.5,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-              bgcolor: 'background.paper',
-              border: `1px solid ${theme.palette.divider}`,
-            }}
-          >
+          {/* Experience Roles */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Box
               sx={{
                 width: 36,
@@ -229,30 +265,23 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
               }}
             >
               <LayersRoundedIcon fontSize="small" />
             </Box>
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                Experience Roles
+                Work History
               </Typography>
               <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                {expCount} roles recorded
+                {expCount > 0 ? `${expCount} roles added` : 'No roles added yet'}
               </Typography>
             </Box>
-          </Paper>
+          </Box>
 
-          <Paper
-            sx={{
-              p: 1.5,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-              bgcolor: 'background.paper',
-              border: `1px solid ${theme.palette.divider}`,
-            }}
-          >
+          {/* Skills Count */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Box
               sx={{
                 width: 36,
@@ -263,54 +292,21 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
               }}
             >
               <StarRoundedIcon fontSize="small" />
             </Box>
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                Tech Competencies
+                Tech &amp; Skills
               </Typography>
               <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                {skillsCount} technologies
+                {skillsCount > 0 ? `${skillsCount} skills added` : 'No skills added yet'}
               </Typography>
             </Box>
-          </Paper>
-
-          <Paper
-            sx={{
-              p: 1.5,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-              bgcolor: 'background.paper',
-              border: `1px solid ${theme.palette.divider}`,
-            }}
-          >
-            <Box
-              sx={{
-                width: 36,
-                height: 36,
-                borderRadius: '10px',
-                bgcolor: alpha(theme.palette.success.main, 0.12),
-                color: theme.palette.success.main,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <DescriptionRoundedIcon fontSize="small" />
-            </Box>
-            <Box sx={{ minWidth: 0 }}>
-              <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                Profile Length
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                {wordCount} words
-              </Typography>
-            </Box>
-          </Paper>
-        </Box>
+          </Box>
+        </Paper>
 
         {/* Mode Switcher & Dedicated Editor Area */}
         <Paper

@@ -3,6 +3,7 @@ import {
   Box,
   Typography,
   TextField,
+  Chip,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -48,8 +49,17 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <SchoolRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            5. Education &amp; Industry Certifications
+            5. Education &amp; Certifications
           </Typography>
+          {education.length > 0 && (
+            <Chip
+              label={`${education.length} ${education.length === 1 ? 'Entry' : 'Entries'}`}
+              size="small"
+              color="success"
+              variant="outlined"
+              sx={{ height: 20, fontSize: '0.7rem' }}
+            />
+          )}
         </Box>
       </AccordionSummary>
       <AccordionDetails sx={{ pt: 1, pb: 3 }}>

@@ -3,6 +3,7 @@ import {
   Box,
   Typography,
   TextField,
+  Chip,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -48,8 +49,17 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <TranslateRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            6. Languages &amp; CEFR Proficiencies
+            6. Languages &amp; Proficiency
           </Typography>
+          {languages.length > 0 && (
+            <Chip
+              label={`${languages.length} ${languages.length === 1 ? 'Language' : 'Languages'}`}
+              size="small"
+              color="success"
+              variant="outlined"
+              sx={{ height: 20, fontSize: '0.7rem' }}
+            />
+          )}
         </Box>
       </AccordionSummary>
       <AccordionDetails sx={{ pt: 1, pb: 3 }}>

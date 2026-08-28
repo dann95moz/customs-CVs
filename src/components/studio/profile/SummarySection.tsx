@@ -42,14 +42,16 @@ export const SummarySection: React.FC<SummarySectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <DescriptionRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            2. Career Trajectory &amp; Executive Pitch
+            2. Professional Summary
           </Typography>
-          <Chip label="Natural Narrative" size="small" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+          {Boolean(summary && summary.trim()) && (
+            <Chip label="Added" size="small" color="success" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+          )}
         </Box>
       </AccordionSummary>
       <AccordionDetails sx={{ pt: 1, pb: 3 }}>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
-          Write freely about your career trajectory, core technical domain, architectural capabilities, and high-level engineering achievements. The AI uses this narrative to build targeted executive hooks.
+          A short summary of your background, core strengths, and key specializations.
         </Typography>
         <TextField
           multiline
