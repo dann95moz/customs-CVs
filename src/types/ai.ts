@@ -37,7 +37,7 @@ export interface TailorRequest {
   rules?: string;
   companyName?: string;
   targetRole?: string;
-  pageBudget: 1 | 2;
+  pageBudget?: 1 | 2;
   providerSettings: AIProviderSettings;
 }
 

@@ -24,7 +24,7 @@ const STEPS: StepMeta[] = [
     number: 1,
     label: 'Candidate Profile',
     shortLabel: 'Profile',
-    subtitle: 'Career history & SSOT',
+    subtitle: 'Career history & skills',
     icon: <PersonRoundedIcon fontSize="small" />
   },
   {
@@ -32,23 +32,15 @@ const STEPS: StepMeta[] = [
     number: 2,
     label: 'Target Vacancy',
     shortLabel: 'Target Job',
-    subtitle: 'Employer & vacancy specs',
+    subtitle: 'Job description & tailoring',
     icon: <WorkRoundedIcon fontSize="small" />
   },
   {
-    id: 'tailor',
-    number: 3,
-    label: 'AI Tailor & Synthesize',
-    shortLabel: 'AI Tailor',
-    subtitle: 'Google XYZ alignment',
-    icon: <AutoAwesomeRoundedIcon fontSize="small" />
-  },
-  {
     id: 'preview',
-    number: 4,
+    number: 3,
     label: 'Live CV & PDF Export',
     shortLabel: 'CV & PDF',
-    subtitle: 'Pixel-perfect A4 export',
+    subtitle: 'Preview & download PDF',
     icon: <PictureAsPdfRoundedIcon fontSize="small" />
   }
 ];
@@ -69,8 +61,6 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
         return hasMasterData;
       case 'target':
         return hasTargetJob;
-      case 'tailor':
-        return hasGeneratedCv;
       case 'preview':
         return hasGeneratedCv;
       default:

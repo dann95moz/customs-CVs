@@ -265,10 +265,10 @@ export const StepPreview: React.FC = () => {
             <Button
               variant="outlined"
               startIcon={<ArrowBackRoundedIcon />}
-              onClick={() => setWizardStep('tailor')}
+              onClick={() => setWizardStep('target')}
               size="small"
             >
-              Back to Tailoring (Step 3)
+              Back to Target Vacancy (Step 2)
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

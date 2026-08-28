@@ -4,7 +4,6 @@ import { StudioNavbar } from '../components/studio/StudioNavbar';
 import { WizardStepper } from '../components/studio/WizardStepper';
 import { StepMasterData } from '../components/studio/StepMasterData';
 import { StepTargetJob } from '../components/studio/StepTargetJob';
-import { StepAITailor } from '../components/studio/StepAITailor';
 import { StepPreview } from '../components/studio/StepPreview';
 import { QualityAuditView } from '../components/studio/QualityAuditView';
 import { GapAnalysisView } from '../components/studio/GapAnalysisView';
@@ -71,7 +70,7 @@ export const App: React.FC = () => {
 
       {/* Main Workspace Body */}
       <div className="studio-body">
-        {/* WIZARD FLOW: 4 SEPARATE, DEDICATED STEPS */}
+        {/* WIZARD FLOW: 3 STREAMLINED STEPS */}
         {activeTab === 'wizard' && (
           <>
             {wizardStep === 'profile' && (
@@ -98,29 +97,15 @@ export const App: React.FC = () => {
                   setTargetRole('Senior Frontend Engineer');
                 }}
                 onPrevStep={() => setWizardStep('profile')}
-                onNextStep={() => setWizardStep('tailor')}
-              />
-            )}
-
-            {wizardStep === 'tailor' && (
-              <StepAITailor
-                candidateName={extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ')}
-                companyName={companyName}
-                targetRole={targetRole}
-                pageBudget={pageBudget}
-                onPageBudgetChange={setPageBudget}
-                providerSettings={providerSettings}
-                onSettingsChange={setProviderSettings}
+                onNextStep={() => setWizardStep('preview')}
                 onGenerate={handleGenerate}
                 isGenerating={isGenerating}
                 generationStep={generationStep}
                 hasGeneratedCv={hasGeneratedCv}
-                onPrevStep={() => setWizardStep('target')}
-                onNextStep={() => setWizardStep('preview')}
               />
             )}
 
-            {wizardStep === 'preview' && <StepPreview />}
+            {(wizardStep === 'preview' || wizardStep === 'tailor') && <StepPreview />}
           </>
         )}
 
@@ -137,11 +122,11 @@ export const App: React.FC = () => {
                 iconType="gauge"
                 title="Quality Audit Requires a Tailored CV"
                 description="The calibrated 1–10 executive scoring engine evaluates real achievement density, Google XYZ formula percentages, and ATS compliance. Please create or synthesize your tailored CV first to unlock section-by-section scoring."
-                actionText="Go to Wizard & Tailor"
+                actionText="Go to Target Job & Tailor"
                 actionIcon="zap"
                 onAction={() => {
                   setActiveTab('wizard');
-                  setWizardStep('tailor');
+                  setWizardStep('target');
                 }}
               />
             )}

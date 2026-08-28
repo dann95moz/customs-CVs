@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Paper,
   Typography,
   Button,
   Chip,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   LinearProgress,
   CircularProgress,
   useTheme,
@@ -16,6 +19,8 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import TargetIcon from '@mui/icons-material/TrackChangesRounded';
+import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { 
   AVAILABLE_AI_MODELS, 
   AIProviderSettings 
@@ -47,6 +52,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+  const [advancedExpanded, setAdvancedExpanded] = useState(false);
 
   const handleModelSelect = (modelId: string) => {
     const selected = AVAILABLE_AI_MODELS.find(m => m.id === modelId);
@@ -58,6 +64,8 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
       });
     }
   };
+
+  const currentModel = AVAILABLE_AI_MODELS.find(m => m.id === providerSettings.model) || AVAILABLE_AI_MODELS[0];
 
   return (
     <Box
@@ -79,7 +87,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
           gap: 2.5,
         }}
       >
-        {/* Guiding Hero Banner */}
+        {/* Simplified Hero Banner */}
         <Paper
           sx={{
             p: { xs: 2, md: 2.5 },
@@ -95,18 +103,17 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
           <Box>
             <Chip
               icon={<AutoAwesomeRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label="Step 3 of 4 • Intelligent AI Tailoring Studio"
+              label="Step 3 of 4 • AI Tailor"
               size="small"
               color="primary"
               variant="outlined"
               sx={{ mb: 1, fontWeight: 700 }}
             />
             <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
-              Surgically Tailor Your Resume with AI
+              Tailor Your Resume with AI
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 1000 }}>
-              The AI cross-references your career history with the target vacancy requirements.
-              <strong> It aligns your top achievements, embeds crucial keywords, and calibrates measurable outcomes</strong> (Google XYZ formula) to impress hiring managers and maximize ATS scores.
+              The AI aligns your real achievements and skills with <strong>{companyName || 'the target role'}</strong> without altering your master profile.
             </Typography>
           </Box>
         </Paper>
@@ -161,28 +168,11 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
           </Box>
         </Paper>
 
-        {/* Options Grid: Page Budget & AI Model */}
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
-            gap: 2.5,
-            alignItems: 'stretch',
-          }}
-        >
-          <PageBudgetSelector
-            pageBudget={pageBudget}
-            onPageBudgetChange={onPageBudgetChange}
-          />
-
-          <AiModelSelector
-            selectedModelId={providerSettings.model}
-            onSelectModel={handleModelSelect}
-            disabled={isGenerating}
-            apiKey={providerSettings.apiKey}
-            provider={providerSettings.provider}
-          />
-        </Box>
+        {/* Page Budget (Resume Length) Option */}
+        <PageBudgetSelector
+          pageBudget={pageBudget}
+          onPageBudgetChange={onPageBudgetChange}
+        />
 
         {/* Synthesis Launch & Real-Time Progress Pipeline */}
         <Paper
@@ -327,7 +317,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
                     Tailored resume for {companyName || 'this vacancy'} generated successfully!
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    Your resume has been aligned with critical keywords and Google XYZ formula. Compare it side-by-side or download your PDF.
+                    Your resume has been aligned with critical keywords and metrics. Compare it side-by-side or download your PDF.
                   </Typography>
                 </Box>
               </Box>
@@ -339,11 +329,52 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
                 onClick={onNextStep}
                 sx={{ fontWeight: 700, borderRadius: '8px', whiteSpace: 'nowrap' }}
               >
-                View CV &amp; Compare
+                View CV &amp; Export
               </Button>
             </Box>
           )}
         </Paper>
+
+        {/* Collapsible Advanced AI Model Settings */}
+        <Accordion
+          expanded={advancedExpanded}
+          onChange={(_, isExp) => setAdvancedExpanded(isExp)}
+          sx={{
+            borderRadius: '12px !important',
+            border: `1px solid ${theme.palette.divider}`,
+            overflow: 'hidden',
+            bgcolor: 'background.paper',
+            '&:before': { display: 'none' },
+          }}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+              <TuneRoundedIcon color="action" fontSize="small" />
+              <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                Advanced AI &amp; Model Settings (Optional)
+              </Typography>
+              <Chip
+                label={`Active: ${currentModel.name}`}
+                size="small"
+                variant="outlined"
+                color="secondary"
+                sx={{ height: 20, fontSize: '0.7rem' }}
+              />
+            </Box>
+          </AccordionSummary>
+          <AccordionDetails sx={{ pt: 1, pb: 2.5 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
+              A high-accuracy model is selected automatically by default. You can customize the specific AI engine or provider if desired.
+            </Typography>
+            <AiModelSelector
+              selectedModelId={providerSettings.model}
+              onSelectModel={handleModelSelect}
+              disabled={isGenerating}
+              apiKey={providerSettings.apiKey}
+              provider={providerSettings.provider}
+            />
+          </AccordionDetails>
+        </Accordion>
 
         {/* Navigation Footer */}
         <Paper

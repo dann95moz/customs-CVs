@@ -141,6 +141,12 @@ export interface StepTargetJobProps {
   onLoadSample: () => void;
   onPrevStep: () => void;
   onNextStep: () => void;
+  pageBudget?: 1 | 2;
+  onPageBudgetChange?: (budget: 1 | 2) => void;
+  onGenerate?: () => Promise<void> | void;
+  isGenerating?: boolean;
+  generationStep?: string;
+  hasGeneratedCv?: boolean;
   onContinue?: () => void;
   onBack?: () => void;
 }
@@ -355,6 +361,8 @@ export interface AuditSectionCardProps {
   onExecuteAction: (actionText: string, sectionName: string) => void;
   getActionButtonLabel: (action: string) => string;
   onActionClick?: (sectionName: string, itemText: string, itemType: 'gap' | 'action') => void;
+  isExpanded?: boolean;
+  onToggle?: () => void;
 }
 
 export interface AuditImprovementModalProps {

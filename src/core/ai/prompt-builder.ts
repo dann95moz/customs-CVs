@@ -79,10 +79,11 @@ ${rules}
 - List each degree and each certification as its OWN individual bullet point on a new line (vertical column format).
 - NEVER compress certifications inline into a single bullet with pipes or commas.
 
-=== PAGE FIT TARGET ===
-${req.pageBudget === 1
-    ? "- PAGE BUDGET: 1 PAGE EXACT (420–480 words). Fill 80%–90% of an A4 page harmoniously. Keep exactly 2-3 bullets per experience, dense summary, and 3 skill categories."
-    : "- PAGE BUDGET: 2 PAGES (750–850 words). Fill 2 full pages with extensive project, leadership, and technical details."}
+=== SMART ADAPTIVE LENGTH & PAGE FIT ===
+- Automatically determine and calibrate the ideal CV length and density based on the candidate's experience depth and target role:
+  - Standard / High-Impact (1 Page, 380–480 words): Prioritize the top 2-3 most relevant roles with 2-3 metric-driven XYZ bullets each, dense skills, and a quantitative summary to fit cleanly on an A4 page.
+  - Comprehensive / Senior Scope (2 Pages, 700–850 words): If the candidate possesses 7+ years of extensive experience or the target position demands deep architectural/staff-level leadership scope.
+- Avoid orphan bullet points and maintain clean visual rhythm.
 
 === STRICT OUTPUT FORMAT ===
 Deliver your entire response in English with exactly two clearly delimited Markdown code blocks:
