@@ -65,28 +65,12 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
           </Typography>
         </div>
 
-        {/* 4 Streamlined Process Cards */}
+        {/* 3 Streamlined Process Cards */}
         <div className="welcome-steps-grid">
           {/* Step 1 */}
           <div className="welcome-step-card">
             <div className="welcome-step-header">
               <span className="welcome-step-number">STEP 01</span>
-              <div className="welcome-step-icon">
-                <AutoAwesomeRoundedIcon fontSize="small" />
-              </div>
-            </div>
-            <Typography variant="h6" className="welcome-step-title">
-              AI Engine Setup
-            </Typography>
-            <Typography variant="body2" className="welcome-step-desc">
-              Choose between 100% offline Local AI (Ollama / LM Studio) or Cloud AI (Gemini, Groq, OpenAI, Claude).
-            </Typography>
-          </div>
-
-          {/* Step 2 */}
-          <div className="welcome-step-card">
-            <div className="welcome-step-header">
-              <span className="welcome-step-number">STEP 02</span>
               <div className="welcome-step-icon">
                 <DescriptionRoundedIcon fontSize="small" />
               </div>
@@ -99,10 +83,10 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
             </Typography>
           </div>
 
-          {/* Step 3 */}
+          {/* Step 2 */}
           <div className="welcome-step-card">
             <div className="welcome-step-header">
-              <span className="welcome-step-number">STEP 03</span>
+              <span className="welcome-step-number">STEP 02</span>
               <div className="welcome-step-icon">
                 <TrackChangesRoundedIcon fontSize="small" />
               </div>
@@ -115,16 +99,16 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
             </Typography>
           </div>
 
-          {/* Step 4 */}
+          {/* Step 3 */}
           <div className="welcome-step-card">
             <div className="welcome-step-header">
-              <span className="welcome-step-number">STEP 04</span>
+              <span className="welcome-step-number">STEP 03</span>
               <div className="welcome-step-icon">
                 <AssessmentRoundedIcon fontSize="small" />
               </div>
             </div>
             <Typography variant="h6" className="welcome-step-title">
-              Live CV &amp; PDF Export
+              Live CV &amp; Quality Audit
             </Typography>
             <Typography variant="body2" className="welcome-step-desc">
               Inspect calibrated 1–10 quality scores, customize across 7 ATS themes, and export print-perfect PDFs.

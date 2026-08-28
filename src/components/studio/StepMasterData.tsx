@@ -117,7 +117,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           <Box sx={{ maxWidth: 900 }}>
             <Chip
               icon={<PersonRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label="Step 2 of 4 • Candidate Profile"
+              label="Step 1 of 3 • Candidate Profile"
               size="small"
               color="primary"
               variant="outlined"
@@ -298,17 +298,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
-            {onPrevStep && (
-              <Button
-                variant="outlined"
-                size="small"
-                startIcon={<ArrowBackRoundedIcon />}
-                onClick={onPrevStep}
-              >
-                Back to AI Setup
-              </Button>
-            )}
-
             {hasData ? (
               <Chip
                 icon={<CheckCircleRoundedIcon />}
@@ -337,7 +326,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             onClick={onNextStep}
             sx={{ fontWeight: 700, px: 3 }}
           >
-            Continue to Target Vacancy (Step 3)
+            Continue to Target Vacancy (Step 2)
           </Button>
         </Paper>
       </Box>

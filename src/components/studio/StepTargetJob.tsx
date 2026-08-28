@@ -31,6 +31,8 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { marked } from 'marked';
 import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
+import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
+import { ContextualAiModal } from './ai/ContextualAiModal';
 import { StepTargetJobProps } from '../../types';
 
 export type { StepTargetJobProps };
@@ -52,7 +54,9 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+  const { providerSettings, setProviderSettings } = useResumeWorkspace();
   const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
+  const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
 
   const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
     onFileLoaded: (text) => {
@@ -74,7 +78,26 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
     URL.revokeObjectURL(url);
   };
 
-  const handleTailorAndProceed = async () => {
+  const handleTailorAndProceed = () => {
+    const isConfigured = Boolean(
+      (providerSettings.provider === 'local') ||
+      (providerSettings.apiKey && providerSettings.apiKey.trim().length > 5)
+    );
+
+    if (!isConfigured) {
+      setAiModalOpen(true);
+      return;
+    }
+
+    if (onGenerate) {
+      onGenerate();
+    }
+    onNextStep();
+  };
+
+  const handleSaveModalAndGenerate = (updatedSettings: typeof providerSettings) => {
+    setProviderSettings(updatedSettings);
+    setAiModalOpen(false);
     if (onGenerate) {
       onGenerate();
     }
@@ -122,7 +145,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           <Box sx={{ maxWidth: 900 }}>
             <Chip
               icon={<WorkRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label="Step 3 of 4 • Target Vacancy &amp; Tailoring"
+              label="Step 2 of 3 • Target Vacancy &amp; Tailoring"
               size="small"
               color="secondary"
               variant="outlined"
@@ -374,7 +397,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             onClick={onPrevStep}
             disabled={isGenerating}
           >
-            Back to Profile (Step 2)
+            Back to Profile (Step 1)
           </Button>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
@@ -429,6 +452,14 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           </Box>
         </Paper>
       </Box>
+
+      {/* Contextual AI Setup Modal (opens on click if key is missing) */}
+      <ContextualAiModal
+        open={aiModalOpen}
+        onClose={() => setAiModalOpen(false)}
+        settings={providerSettings}
+        onSaveAndGenerate={handleSaveModalAndGenerate}
+      />
     </Box>
   );
 };

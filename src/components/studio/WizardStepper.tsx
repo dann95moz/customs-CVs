@@ -20,16 +20,8 @@ export type { WizardStepperProps, StepMeta };
 
 const STEPS: StepMeta[] = [
   {
-    id: 'ai',
-    number: 1,
-    label: 'AI Engine Setup',
-    shortLabel: 'AI Engine',
-    subtitle: 'Local AI or API key',
-    icon: <PsychologyRoundedIcon fontSize="small" />
-  },
-  {
     id: 'profile',
-    number: 2,
+    number: 1,
     label: 'Candidate Profile',
     shortLabel: 'Profile',
     subtitle: 'Career history & skills',
@@ -37,7 +29,7 @@ const STEPS: StepMeta[] = [
   },
   {
     id: 'target',
-    number: 3,
+    number: 2,
     label: 'Target Vacancy',
     shortLabel: 'Target Job',
     subtitle: 'Job posting & tailoring',
@@ -45,7 +37,7 @@ const STEPS: StepMeta[] = [
   },
   {
     id: 'preview',
-    number: 4,
+    number: 3,
     label: 'Live CV & PDF Export',
     shortLabel: 'CV & PDF',
     subtitle: 'Preview & download PDF',
@@ -65,8 +57,6 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
 
   const isStepComplete = (stepId: WizardStep): boolean => {
     switch (stepId) {
-      case 'ai':
-        return true;
       case 'profile':
         return hasMasterData;
       case 'target':

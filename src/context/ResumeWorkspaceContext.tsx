@@ -135,7 +135,7 @@ const getInitialTab = (): StudioTab => {
 export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Navigation State
   const [activeTab, setActiveTab] = useLocalStorage<StudioTab>('cv_active_tab', getInitialTab);
-  const [wizardStep, setWizardStep] = useLocalStorage<WizardStep>('cv_wizard_step', 'ai');
+  const [wizardStep, setWizardStep] = useLocalStorage<WizardStep>('cv_wizard_step', 'profile');
   const [editorSplitView, setEditorSplitView] = useState<'split' | 'preview-only' | 'editor-only'>('split');
 
   // Core Data States
@@ -154,7 +154,7 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
   const [spacingDensity, setSpacingDensity] = useLocalStorage<SpacingDensity>('cv_spacing_density', 'standard');
   const [providerSettings, setProviderSettings] = useLocalStorage<AIProviderSettings>('cv_ai_settings', DEFAULT_AI_SETTINGS);
 
-  // Auto-migrate legacy provider if stored in localStorage
+  // Auto-migrate legacy provider and step if stored in localStorage
   useEffect(() => {
     if (providerSettings && (providerSettings.provider as string) === 'free-pollinations') {
       setProviderSettings({
@@ -162,7 +162,10 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
         apiKey: providerSettings.apiKey || ''
       });
     }
-  }, [providerSettings, setProviderSettings]);
+    if ((wizardStep as string) === 'ai') {
+      setWizardStep('profile');
+    }
+  }, [providerSettings, setProviderSettings, wizardStep, setWizardStep]);
 
   // Version History Management Hook
   const {
@@ -415,7 +418,7 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
 
   const handleStartWizard = () => {
     setActiveTab('wizard');
-    setWizardStep('ai');
+    setWizardStep('profile');
   };
 
   const handleStartBlank = () => {
