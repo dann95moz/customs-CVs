@@ -22,6 +22,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { extractCandidateName, parseCvMarkdownToData } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { GuidedProfileForm } from './GuidedProfileForm';
@@ -37,6 +38,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   onChange,
   onLoadSample,
   onResetTemplate,
+  onPrevStep,
   onNextStep
 }) => {
   const theme = useTheme();
@@ -115,7 +117,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           <Box sx={{ maxWidth: 900 }}>
             <Chip
               icon={<PersonRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label="Step 1 of 3 • Candidate Profile"
+              label="Step 2 of 4 • Candidate Profile"
               size="small"
               color="primary"
               variant="outlined"
@@ -290,9 +292,23 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             justifyContent: 'space-between',
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
+            borderRadius: '12px',
+            flexWrap: 'wrap',
+            gap: 1.5,
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+            {onPrevStep && (
+              <Button
+                variant="outlined"
+                size="small"
+                startIcon={<ArrowBackRoundedIcon />}
+                onClick={onPrevStep}
+              >
+                Back to AI Setup
+              </Button>
+            )}
+
             {hasData ? (
               <Chip
                 icon={<CheckCircleRoundedIcon />}
@@ -321,7 +337,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             onClick={onNextStep}
             sx={{ fontWeight: 700, px: 3 }}
           >
-            Continue to Target Job
+            Continue to Target Vacancy (Step 3)
           </Button>
         </Paper>
       </Box>

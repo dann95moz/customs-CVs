@@ -8,6 +8,7 @@
 import { ThemeId, PaletteId } from './theme';
 
 export type WizardStep = 
+  | 'ai'
   | 'profile' 
   | 'target' 
   | 'tailor' 

@@ -12,8 +12,9 @@ import {
   alpha
 } from '@mui/material';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
-import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
+import LaptopRoundedIcon from '@mui/icons-material/LaptopRounded';
 import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
+import CloudQueueRoundedIcon from '@mui/icons-material/CloudQueueRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { AVAILABLE_AI_MODELS } from '../../../core/ai-service';
 import { AiModelSelectorProps } from '../../../types';
@@ -72,10 +73,12 @@ export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
               const model = AVAILABLE_AI_MODELS.find(m => m.id === selectedId) || currentModel;
               return (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, overflow: 'hidden' }}>
-                  {model.isFree ? (
-                    <PublicRoundedIcon color="success" sx={{ fontSize: 18, flexShrink: 0 }} />
-                  ) : (
+                  {model.provider === 'local' ? (
+                    <LaptopRoundedIcon color="secondary" sx={{ fontSize: 18, flexShrink: 0 }} />
+                  ) : model.requiresKey ? (
                     <KeyRoundedIcon color="warning" sx={{ fontSize: 18, flexShrink: 0 }} />
+                  ) : (
+                    <CloudQueueRoundedIcon color="primary" sx={{ fontSize: 18, flexShrink: 0 }} />
                   )}
                   <Typography variant="body2" noWrap sx={{ fontWeight: 700, textOverflow: 'ellipsis', overflow: 'hidden' }}>
                     {model.name}
@@ -88,10 +91,12 @@ export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
               <MenuItem key={m.id} value={m.id} sx={{ py: 1.25 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, width: '100%' }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    {m.isFree ? (
-                      <PublicRoundedIcon color="success" sx={{ fontSize: 18, flexShrink: 0 }} />
-                    ) : (
+                    {m.provider === 'local' ? (
+                      <LaptopRoundedIcon color="secondary" sx={{ fontSize: 18, flexShrink: 0 }} />
+                    ) : m.requiresKey ? (
                       <KeyRoundedIcon color="warning" sx={{ fontSize: 18, flexShrink: 0 }} />
+                    ) : (
+                      <CloudQueueRoundedIcon color="primary" sx={{ fontSize: 18, flexShrink: 0 }} />
                     )}
                     <Typography variant="body2" sx={{ fontWeight: 700 }}>
                       {m.name}
@@ -124,7 +129,7 @@ export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
               <Chip
                 label={currentModel.provider.toUpperCase()}
                 size="small"
-                color="secondary"
+                color={currentModel.provider === 'local' ? 'secondary' : 'primary'}
                 variant="outlined"
                 sx={{ height: 20, fontSize: '0.65rem', fontWeight: 800, letterSpacing: 0.5 }}
               />
@@ -133,10 +138,10 @@ export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
               </Typography>
             </Box>
             <Chip
-              icon={currentModel.isFree ? <PublicRoundedIcon sx={{ fontSize: '14px !important' }} /> : <KeyRoundedIcon sx={{ fontSize: '14px !important' }} />}
-              label={currentModel.isFree ? 'Free Public Model' : (apiKey ? 'API Key Configured' : 'Requires API Key')}
+              icon={currentModel.provider === 'local' ? <LaptopRoundedIcon sx={{ fontSize: '14px !important' }} /> : <KeyRoundedIcon sx={{ fontSize: '14px !important' }} />}
+              label={currentModel.provider === 'local' ? 'Offline Local Model' : (apiKey ? 'API Key Configured' : 'Requires API Key')}
               size="small"
-              color={currentModel.isFree ? 'success' : (apiKey ? 'info' : 'warning')}
+              color={currentModel.provider === 'local' ? 'secondary' : (apiKey ? 'info' : 'warning')}
               sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
             />
           </Box>

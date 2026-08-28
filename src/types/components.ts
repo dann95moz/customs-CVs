@@ -122,11 +122,18 @@ export interface WizardStepperProps {
   canNavigateTo?: (step: WizardStep) => boolean;
 }
 
+export interface StepAISetupProps {
+  settings: AIProviderSettings;
+  onSettingsChange: (settings: AIProviderSettings) => void;
+  onNextStep: () => void;
+}
+
 export interface StepMasterDataProps {
   content: string;
   onChange: (value: string) => void;
   onLoadSample: () => void;
   onResetTemplate: () => void;
+  onPrevStep?: () => void;
   onNextStep: () => void;
   onContinue?: () => void;
 }

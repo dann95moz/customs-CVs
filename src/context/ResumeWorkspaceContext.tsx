@@ -106,10 +106,11 @@ export interface ResumeWorkspaceContextType {
 const ResumeWorkspaceContext = createContext<ResumeWorkspaceContextType | null>(null);
 
 const DEFAULT_AI_SETTINGS: AIProviderSettings = {
-  provider: 'free-pollinations',
-  model: 'free-openai',
+  provider: 'gemini',
+  model: 'gemini-3.6-flash',
   apiKey: '',
   temperature: 0.15,
+  customEndpoint: 'http://localhost:11434/v1',
 };
 
 const getInitialTab = (): StudioTab => {
@@ -134,7 +135,7 @@ const getInitialTab = (): StudioTab => {
 export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Navigation State
   const [activeTab, setActiveTab] = useLocalStorage<StudioTab>('cv_active_tab', getInitialTab);
-  const [wizardStep, setWizardStep] = useLocalStorage<WizardStep>('cv_wizard_step', 'profile');
+  const [wizardStep, setWizardStep] = useLocalStorage<WizardStep>('cv_wizard_step', 'ai');
   const [editorSplitView, setEditorSplitView] = useState<'split' | 'preview-only' | 'editor-only'>('split');
 
   // Core Data States
@@ -152,6 +153,16 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
   const [fontFamily, setFontFamily] = useLocalStorage<FontFamilyId>('cv_font_family', 'inter');
   const [spacingDensity, setSpacingDensity] = useLocalStorage<SpacingDensity>('cv_spacing_density', 'standard');
   const [providerSettings, setProviderSettings] = useLocalStorage<AIProviderSettings>('cv_ai_settings', DEFAULT_AI_SETTINGS);
+
+  // Auto-migrate legacy provider if stored in localStorage
+  useEffect(() => {
+    if (providerSettings && (providerSettings.provider as string) === 'free-pollinations') {
+      setProviderSettings({
+        ...DEFAULT_AI_SETTINGS,
+        apiKey: providerSettings.apiKey || ''
+      });
+    }
+  }, [providerSettings, setProviderSettings]);
 
   // Version History Management Hook
   const {
@@ -404,7 +415,7 @@ export const ResumeWorkspaceProvider: React.FC<{ children: React.ReactNode }> = 
 
   const handleStartWizard = () => {
     setActiveTab('wizard');
-    setWizardStep('profile');
+    setWizardStep('ai');
   };
 
   const handleStartBlank = () => {

@@ -122,7 +122,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           <Box sx={{ maxWidth: 900 }}>
             <Chip
               icon={<WorkRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label="Step 2 of 3 • Target Vacancy &amp; Tailoring"
+              label="Step 3 of 4 • Target Vacancy &amp; Tailoring"
               size="small"
               color="secondary"
               variant="outlined"
@@ -374,7 +374,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             onClick={onPrevStep}
             disabled={isGenerating}
           >
-            Back to Profile
+            Back to Profile (Step 2)
           </Button>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>

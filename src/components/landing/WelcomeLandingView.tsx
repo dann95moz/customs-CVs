@@ -65,21 +65,21 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
           </Typography>
         </div>
 
-        {/* 3 Streamlined Process Cards */}
+        {/* 4 Streamlined Process Cards */}
         <div className="welcome-steps-grid">
           {/* Step 1 */}
           <div className="welcome-step-card">
             <div className="welcome-step-header">
               <span className="welcome-step-number">STEP 01</span>
               <div className="welcome-step-icon">
-                <DescriptionRoundedIcon fontSize="small" />
+                <AutoAwesomeRoundedIcon fontSize="small" />
               </div>
             </div>
             <Typography variant="h6" className="welcome-step-title">
-              Master Career Vault
+              AI Engine Setup
             </Typography>
             <Typography variant="body2" className="welcome-step-desc">
-              Store your complete career history, technical stack, projects, and achievements once in structured Markdown or guided forms.
+              Choose between 100% offline Local AI (Ollama / LM Studio) or Cloud AI (Gemini, Groq, OpenAI, Claude).
             </Typography>
           </div>
 
@@ -88,14 +88,14 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
             <div className="welcome-step-header">
               <span className="welcome-step-number">STEP 02</span>
               <div className="welcome-step-icon">
-                <TrackChangesRoundedIcon fontSize="small" />
+                <DescriptionRoundedIcon fontSize="small" />
               </div>
             </div>
             <Typography variant="h6" className="welcome-step-title">
-              Target Vacancy & AI Tailoring
+              Master Career Vault
             </Typography>
             <Typography variant="body2" className="welcome-step-desc">
-              Paste target job postings to synthesize aligned bullets using the Google XYZ formula and extract critical employer keywords.
+              Store your complete career history, technical stack, projects, and achievements in structured Markdown or guided forms.
             </Typography>
           </div>
 
@@ -104,14 +104,30 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
             <div className="welcome-step-header">
               <span className="welcome-step-number">STEP 03</span>
               <div className="welcome-step-icon">
+                <TrackChangesRoundedIcon fontSize="small" />
+              </div>
+            </div>
+            <Typography variant="h6" className="welcome-step-title">
+              Target Vacancy &amp; Tailoring
+            </Typography>
+            <Typography variant="body2" className="welcome-step-desc">
+              Paste target job postings to synthesize aligned bullets with Google XYZ formula and employer keywords.
+            </Typography>
+          </div>
+
+          {/* Step 4 */}
+          <div className="welcome-step-card">
+            <div className="welcome-step-header">
+              <span className="welcome-step-number">STEP 04</span>
+              <div className="welcome-step-icon">
                 <AssessmentRoundedIcon fontSize="small" />
               </div>
             </div>
             <Typography variant="h6" className="welcome-step-title">
-              Calibrated Audit & 1-Page PDF
+              Live CV &amp; PDF Export
             </Typography>
             <Typography variant="body2" className="welcome-step-desc">
-              Inspect section-by-section 1–10 quality scores, customize across 7 ATS-safe themes, and export high-resolution PDFs.
+              Inspect calibrated 1–10 quality scores, customize across 7 ATS themes, and export print-perfect PDFs.
             </Typography>
           </div>
         </div>

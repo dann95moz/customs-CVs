@@ -2,6 +2,7 @@ import React from 'react';
 import { useResumeWorkspace } from '../context/ResumeWorkspaceContext';
 import { StudioNavbar } from '../components/studio/StudioNavbar';
 import { WizardStepper } from '../components/studio/WizardStepper';
+import { StepAISetup } from '../components/studio/StepAISetup';
 import { StepMasterData } from '../components/studio/StepMasterData';
 import { StepTargetJob } from '../components/studio/StepTargetJob';
 import { StepPreview } from '../components/studio/StepPreview';
@@ -74,15 +75,24 @@ export const App: React.FC = () => {
         {/* VIEW: WELCOME & ONBOARDING LANDING */}
         {activeTab === 'landing' && <WelcomeLandingView />}
 
-        {/* WIZARD FLOW: 3 STREAMLINED STEPS */}
+        {/* WIZARD FLOW: 4 STREAMLINED STEPS */}
         {activeTab === 'wizard' && (
           <>
+            {wizardStep === 'ai' && (
+              <StepAISetup
+                settings={providerSettings}
+                onSettingsChange={setProviderSettings}
+                onNextStep={() => setWizardStep('profile')}
+              />
+            )}
+
             {wizardStep === 'profile' && (
               <StepMasterData
                 content={masterData}
                 onChange={setMasterData}
                 onLoadSample={() => setMasterData(DEMO_MASTER_DATA)}
                 onResetTemplate={() => setMasterData(BLANK_MASTER_DATA)}
+                onPrevStep={() => setWizardStep('ai')}
                 onNextStep={() => setWizardStep('target')}
               />
             )}
