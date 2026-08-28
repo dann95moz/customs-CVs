@@ -126,3 +126,19 @@
 .cv-bullet-item strong {
   font-weight: 700;
 }
+
+/* Universal Typography Cascade */
+.cv-palette-wrapper {
+  font-family: var(--cv-font-family, 'Inter', -apple-system, sans-serif);
+}
+
+[class*="theme-"] {
+  font-family: var(--cv-font-family, 'Inter', -apple-system, sans-serif);
+}
+
+/* Chips / Pills Skill Separator Suppression: Never display commas between chips */
+.variant-pills .skill-separator,
+.variant-compact .skill-separator {
+  display: none !important;
+}
+

@@ -1,6 +1,6 @@
 /* Theme: Minimal ATS (Strict Applicant Tracking System compliance) */
 .theme-minimal-ats {
-  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-family: var(--cv-font-family, 'Inter', Arial, Helvetica, sans-serif);
   color: #000000;
   background-color: #ffffff;
 }

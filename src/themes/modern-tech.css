@@ -1,6 +1,6 @@
 /* Theme: Modern Tech (Linear / Stripe inspired) */
 .theme-modern-tech {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--cv-font-family, 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   color: #1e293b;
   background-color: #f8fafc;
 }
@@ -22,7 +22,7 @@
 }
 
 .theme-modern-tech .cv-name {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 20pt;
   font-weight: 800;
   letter-spacing: -0.5px;
@@ -75,7 +75,7 @@
 }
 
 .theme-modern-tech .cv-section-title {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: var(--cv-font-family, 'Outfit', 'Inter', sans-serif);
   font-size: 10pt;
   font-weight: 700;
   text-transform: uppercase;
