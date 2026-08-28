@@ -34,6 +34,28 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
   });
 
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
+  const [expandedSections, setExpandedSections] = useState<Record<number, boolean>>({});
+
+  const allExpanded = report.sections.length > 0 && report.sections.every((_, idx) => expandedSections[idx]);
+
+  const handleToggleAll = () => {
+    if (allExpanded) {
+      setExpandedSections({});
+    } else {
+      const all: Record<number, boolean> = {};
+      report.sections.forEach((_, idx) => {
+        all[idx] = true;
+      });
+      setExpandedSections(all);
+    }
+  };
+
+  const handleToggleSection = (idx: number) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
+    }));
+  };
 
   const handleDownloadReport = () => {
     const blob = new Blob([report.markdownReport], { type: 'text/markdown;charset=utf-8;' });
@@ -237,11 +259,21 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
         </div>
       </div>
 
-      {/* 7-Pillar Section Breakdown */}
+      {/* Section Breakdown */}
       <div className="audit-section-group">
-        <h3 className="section-group-title">
-          <Icon type="gauge" size={18} /> 1. Section-by-Section Calibrated Diagnostic &amp; Action Levers
-        </h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
+          <h3 className="section-group-title" style={{ margin: 0 }}>
+            <Icon type="gauge" size={18} /> Section Diagnostic &amp; Action Levers
+          </h3>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={handleToggleAll}
+            sx={{ fontSize: '0.75rem', fontWeight: 600, py: 0.25, px: 1.5, borderRadius: '8px' }}
+          >
+            {allExpanded ? 'Collapse All Sections' : 'Expand All Sections'}
+          </Button>
+        </div>
 
         <div className="audit-cards-grid">
           {report.sections.map((sec, idx) => (
@@ -251,6 +283,8 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
               scoreColor={getScoreColor(sec.score)}
               onExecuteAction={handleOpenAction}
               getActionButtonLabel={getActionButtonLabel}
+              isExpanded={Boolean(expandedSections[idx])}
+              onToggle={() => handleToggleSection(idx)}
             />
           ))}
         </div>

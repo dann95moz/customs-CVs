@@ -108,13 +108,75 @@
   background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: 24px;
+  color: var(--text-main);
+  line-height: 1.65;
+}
+
+.gap-markdown-rendered h1,
+.gap-markdown-rendered h2,
+.gap-markdown-rendered h3,
+.gap-markdown-rendered h4 {
+  color: var(--text-main);
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.gap-markdown-rendered h1 {
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.gap-markdown-rendered h2 {
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.gap-markdown-rendered h3 {
+  font-size: 0.95rem;
+}
+
+.gap-markdown-rendered p {
+  font-size: 0.88rem;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.gap-markdown-rendered ul,
+.gap-markdown-rendered ol {
+  padding-left: 24px;
+  margin-bottom: 14px;
+  font-size: 0.88rem;
+}
+
+.gap-markdown-rendered li {
+  margin-bottom: 6px;
+}
+
+.gap-markdown-rendered strong {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.gap-markdown-rendered blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 12px 0;
+  padding: 8px 16px;
+  background: rgba(56, 189, 248, 0.06);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
 .gap-raw-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.82rem;
   line-height: 1.6;
   color: var(--text-main);
   white-space: pre-wrap;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
 }

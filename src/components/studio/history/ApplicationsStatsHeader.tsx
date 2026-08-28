@@ -53,17 +53,17 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
         <Box>
           <Chip
             icon={<BusinessRoundedIcon sx={{ fontSize: '16px !important' }} />}
-            label="Application History • 1 Master Profile ➔ N Target CVs"
+            label="Application History"
             size="small"
             color="primary"
             variant="outlined"
             sx={{ mb: 1, fontWeight: 700 }}
           />
           <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
-            Generated Resumes Dashboard
+            Tailored Applications Dashboard
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Manage your tailored resumes across target companies and roles. Each version preserves its calibrated scores, palette, and ATS alignment.
+            Manage your tailored resumes across companies and roles.
           </Typography>
         </Box>
 
@@ -74,7 +74,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
           onClick={onNewApplication}
           sx={{ fontWeight: 700, borderRadius: '10px', whiteSpace: 'nowrap' }}
         >
-          + New AI Tailored Resume
+          + New Tailored Resume
         </Button>
       </Paper>
 

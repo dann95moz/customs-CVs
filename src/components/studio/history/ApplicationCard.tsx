@@ -50,6 +50,22 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
     }
   };
 
+  const cleanSnippet = (text?: string): string => {
+    if (!text) return '';
+    return text
+      .replace(/^#+\s+/gm, '')
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/\*([^*]+)\*/g, '$1')
+      .replace(/__([^_]+)__/g, '$1')
+      .replace(/_([^_]+)_/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
+  const snippet = cleanSnippet(version.targetJobSnippet);
+
   return (
     <Card
       variant="outlined"
@@ -138,8 +154,8 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
           />
         </Box>
 
-        {/* Target Job Snippet */}
-        {version.targetJobSnippet && (
+        {/* Clean Target Job Snippet */}
+        {snippet && (
           <Typography
             variant="caption"
             color="text.secondary"
@@ -152,7 +168,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
               fontStyle: 'italic',
             }}
           >
-            &quot;{version.targetJobSnippet}...&quot;
+            &quot;{snippet}...&quot;
           </Typography>
         )}
       </CardContent>
