@@ -5,8 +5,8 @@
 
 .theme-two-column {
   font-family: var(--cv-font-family, 'Inter', -apple-system, sans-serif);
-  color: #1e293b;
-  background-color: #ffffff;
+  color: var(--cv-text-primary);
+  background-color: var(--cv-paper-bg);
   font-size: var(--cv-font-size, 9.5pt);
   line-height: var(--cv-line-height, 1.42);
 }
@@ -15,7 +15,7 @@
   max-width: 100%;
   margin: 0;
   padding: 0;
-  background: #ffffff;
+  background: var(--cv-paper-bg);
 }
 
 .theme-two-column .contrast-grid-layout {
@@ -31,7 +31,7 @@
 }
 
 .theme-two-column .contrast-header {
-  border-bottom: 2px solid #f1f5f9;
+  border-bottom: 2px solid var(--cv-border-light);
   padding-bottom: 12px;
   margin-bottom: 14px;
 }
@@ -43,14 +43,14 @@
   letter-spacing: -0.5px;
   line-height: 1.1;
   text-transform: uppercase;
-  color: var(--cv-primary-color, #1e3a5f);
+  color: var(--cv-primary-color);
   margin: 0 0 4px;
 }
 
 .theme-two-column .contrast-title {
   font-size: 10.5pt;
   font-weight: 600;
-  color: #475569;
+  color: var(--cv-text-muted);
   letter-spacing: 0.2px;
 }
 
@@ -64,8 +64,8 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  color: #0f172a;
-  border-bottom: 1.5px solid var(--cv-accent-border, #e2e8f0);
+  color: var(--cv-text-heading);
+  border-bottom: 1.5px solid var(--cv-accent-border, var(--cv-border-color));
   padding-bottom: 3px;
   margin-bottom: 6px;
 }
@@ -73,11 +73,11 @@
 .theme-two-column .cv-summary {
   font-size: var(--cv-font-size, 9.2pt);
   line-height: var(--cv-line-height, 1.42);
-  color: #334155;
+  color: var(--cv-text-secondary);
 }
 
 .theme-two-column .cv-summary strong {
-  color: #0f172a;
+  color: var(--cv-text-heading);
   font-weight: 700;
 }
 
@@ -98,12 +98,12 @@
 .theme-two-column .item-company {
   font-size: 9.6pt;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--cv-text-heading);
 }
 
 .theme-two-column .item-location {
   font-size: 8.2pt;
-  color: #64748b;
+  color: var(--cv-text-muted);
 }
 
 .theme-two-column .item-sub-header {
@@ -116,14 +116,14 @@
 .theme-two-column .item-role {
   font-size: 8.8pt;
   font-weight: 600;
-  color: var(--cv-primary-color, #1e3a5f);
+  color: var(--cv-primary-color);
   font-style: italic;
 }
 
 .theme-two-column .item-date {
   font-size: 8.2pt;
   font-weight: 600;
-  color: #475569;
+  color: var(--cv-text-muted);
 }
 
 .theme-two-column ul.item-bullets {
@@ -138,20 +138,20 @@
   margin-bottom: 2.5px;
   font-size: 8.6pt;
   line-height: 1.36;
-  color: #334155;
+  color: var(--cv-text-secondary);
 }
 
 .theme-two-column ul.item-bullets li::before {
   content: "•";
   position: absolute;
   left: 0;
-  color: var(--cv-primary-color, #1e3a5f);
+  color: var(--cv-primary-color);
   font-size: 10pt;
   line-height: 1.2;
 }
 
 .theme-two-column ul.item-bullets li strong {
-  color: #090d16;
+  color: var(--cv-text-strong);
   font-weight: 700;
 }
 
@@ -164,7 +164,7 @@
 .theme-two-column .education-list li {
   font-size: 8.6pt;
   line-height: 1.36;
-  color: #334155;
+  color: var(--cv-text-secondary);
   margin-bottom: 4px;
   position: relative;
   padding-left: 11px;
@@ -174,16 +174,16 @@
   content: "•";
   position: absolute;
   left: 0;
-  color: var(--cv-primary-color, #1e3a5f);
+  color: var(--cv-primary-color);
 }
 
 .theme-two-column .education-list li strong {
-  color: #0f172a;
+  color: var(--cv-text-heading);
 }
 
 /* 2. Right Solid Colored Sidebar */
 .theme-two-column .contrast-sidebar-col {
-  background: var(--cv-sidebar-bg, var(--cv-primary-color, #1e3a5f));
+  background: var(--cv-sidebar-bg, var(--cv-primary-color));
   color: #ffffff;
   padding: 26px 18px;
   min-width: 0;
@@ -209,14 +209,14 @@
 .theme-two-column .contrast-emblem-svg {
   width: 28px;
   height: 28px;
-  fill: var(--cv-primary-color, #1e3a5f);
+  fill: var(--cv-primary-color);
 }
 
 .theme-two-column .contrast-emblem-initials {
   font-family: var(--cv-font-family, 'Outfit', sans-serif);
   font-size: 7.5pt;
   font-weight: 800;
-  color: var(--cv-primary-color, #1e3a5f);
+  color: var(--cv-primary-color);
   letter-spacing: 1px;
   margin-top: 1px;
 }
@@ -337,7 +337,7 @@
 
 .theme-two-column .contrast-skill-bullets li {
   font-size: 8.3pt;
-  color: #f8fafc;
+  color: var(--cv-border-light);
   margin-bottom: 2.5px;
   position: relative;
   padding-left: 10px;

@@ -1,7 +1,32 @@
 /* ==========================================================================
    CV BASE - Universal CV Template Structural Layout (DRY Shared Styles)
-   Each theme builds upon these baseline layout rules.
+   Each theme builds upon these baseline layout rules and neutral tokens.
    ========================================================================== */
+
+:root,
+.cv-palette-wrapper,
+[class*="theme-"] {
+  --cv-paper-bg: #ffffff;
+  --cv-text-primary: #1e293b;
+  --cv-text-heading: #0f172a;
+  --cv-text-secondary: #334155;
+  --cv-text-strong: #090d16;
+  --cv-text-muted: #64748b;
+  --cv-text-dim: #94a3b8;
+  --cv-border-color: #e2e8f0;
+  --cv-border-light: #f1f5f9;
+
+  /* Default accent fallbacks matching corporate-blue */
+  --cv-primary-color: #1d4ed8;
+  --cv-accent-color: #1d4ed8;
+  --cv-accent-light: rgba(29, 78, 216, 0.08);
+  --cv-accent-border: rgba(29, 78, 216, 0.22);
+  --cv-accent-hover: #1e40af;
+  --cv-header-bg: #1e3a5f;
+  --cv-sidebar-bg: #1e3a5f;
+  --cv-badge-bg: #eff6ff;
+  --cv-badge-text: #1e40af;
+}
 
 /* Universal Container */
 .cv-container {

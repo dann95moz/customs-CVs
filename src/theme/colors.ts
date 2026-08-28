@@ -191,3 +191,22 @@ export function getCssVariablesFromTokens(tokens: ThemeColorTokens): Record<stri
     '--box-shadow': tokens.shadow.box,
   };
 }
+
+/**
+ * CV Document Engine Neutral & Base Design Tokens
+ * 
+ * Standardized neutral palette for CV document templates guaranteeing 100% ATS readability.
+ * Body text always remains high-contrast charcoal/slate; paper is always clean white.
+ */
+export const CV_DOCUMENT_TOKENS = {
+  paperBg: '#ffffff',
+  textPrimary: '#1e293b',
+  textHeading: '#0f172a',
+  textSecondary: '#334155',
+  textStrong: '#090d16',
+  textMuted: '#64748b',
+  textDim: '#94a3b8',
+  borderColor: '#e2e8f0',
+  borderLight: '#f1f5f9',
+};
+

@@ -120,7 +120,7 @@
   /* Exact A4 at 96 DPI */
   min-height: 1123px;
   /* Exact A4 at 96 DPI */
-  background: #ffffff;
+  background: var(--cv-paper-bg, #ffffff);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85);
   border-radius: 3px;
   position: relative;
@@ -128,7 +128,7 @@
   padding: 0;
   font-size: 9.5pt;
   line-height: 1.42;
-  color: #1e293b;
+  color: var(--cv-text-primary, #1e293b);
   overflow: hidden;
 }
 
