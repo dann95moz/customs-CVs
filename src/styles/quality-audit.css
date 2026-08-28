@@ -260,3 +260,35 @@
   align-items: flex-start;
   gap: 8px;
 }
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS (QUALITY AUDIT)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .audit-workspace-layout {
+    padding: 16px 12px;
+  }
+
+  .audit-score-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .score-gauge-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .audit-hero-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .audit-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

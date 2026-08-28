@@ -62,32 +62,35 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
       }}
     >
       {/* Left: View Mode Switcher (Tailored vs. Generic vs. Compare) */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
         <ButtonGroup size="small" variant="outlined" sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.03)' : '#ffffff' }}>
           <Button
             variant={viewMode === 'tailored' ? 'contained' : 'outlined'}
             onClick={() => onViewModeChange('tailored')}
             startIcon={<AutoAwesomeRoundedIcon />}
-            sx={{ fontWeight: 700, fontSize: '0.78rem' }}
+            sx={{ fontWeight: 700, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 1, sm: 1.5 } }}
           >
-            Tailored CV (AI)
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Tailored CV (AI)</Box>
+            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Tailored</Box>
           </Button>
           <Button
             variant={viewMode === 'generic' ? 'contained' : 'outlined'}
             onClick={() => onViewModeChange('generic')}
             startIcon={<TrackChangesRoundedIcon />}
-            sx={{ fontWeight: 600, fontSize: '0.78rem' }}
+            sx={{ fontWeight: 600, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 1, sm: 1.5 } }}
           >
-            Base Profile (Generic)
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Base Profile</Box>
+            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Base</Box>
           </Button>
           <Button
             variant={viewMode === 'compare' ? 'contained' : 'outlined'}
             onClick={() => onViewModeChange('compare')}
             startIcon={<CompareArrowsRoundedIcon />}
             color="secondary"
-            sx={{ fontWeight: 700, fontSize: '0.78rem' }}
+            sx={{ fontWeight: 700, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 1, sm: 1.5 } }}
           >
-            Side-by-Side Comparison
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Comparison</Box>
+            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Compare</Box>
           </Button>
         </ButtonGroup>
 
@@ -102,8 +105,8 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
         />
       </Box>
 
-      {/* Right: Quick Tools + Pencil / Floppy Disk Switcher */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      {/* Right: Quick Tools + Action Buttons */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
         {!isEditingMarkdown ? (
           <Tooltip title="Edit Markdown">
             <IconButton
@@ -150,7 +153,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           </Tooltip>
         )}
 
-        <Divider orientation="vertical" flexItem sx={{ mx: 0.5, height: 24, my: 'auto' }} />
+        <Divider orientation="vertical" flexItem sx={{ mx: 0.25, height: 24, my: 'auto', display: { xs: 'none', sm: 'block' } }} />
 
         <Button
           size="small"
@@ -158,7 +161,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           color="inherit"
           startIcon={<BookmarkBorderRoundedIcon />}
           onClick={onSaveVersion}
-          sx={{ fontSize: '0.78rem', fontWeight: 600 }}
+          sx={{ fontSize: { xs: '0.72rem', sm: '0.78rem' }, fontWeight: 600, display: { xs: 'none', sm: 'inline-flex' } }}
         >
           {savedSuccess ? 'Saved!' : 'Save Version'}
         </Button>
@@ -170,9 +173,9 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           startIcon={<AutoAwesomeRoundedIcon />}
           onClick={onReTailor}
           disabled={isGenerating}
-          sx={{ fontSize: '0.78rem', fontWeight: 700 }}
+          sx={{ fontSize: { xs: '0.72rem', sm: '0.78rem' }, fontWeight: 700, display: { xs: 'none', md: 'inline-flex' } }}
         >
-          {isGenerating ? 'Synthesizing...' : 'Re-Tailor with AI'}
+          {isGenerating ? 'Synthesizing...' : 'Re-Tailor'}
         </Button>
 
         <Button
@@ -181,9 +184,9 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           color="primary"
           startIcon={<PictureAsPdfRoundedIcon />}
           onClick={onDownloadPdf}
-          sx={{ fontWeight: 800, fontSize: '0.78rem', px: 2 }}
+          sx={{ fontWeight: 800, fontSize: { xs: '0.75rem', sm: '0.78rem' }, px: { xs: 1.5, sm: 2 } }}
         >
-          Download PDF
+          PDF Export
         </Button>
       </Box>
     </Paper>

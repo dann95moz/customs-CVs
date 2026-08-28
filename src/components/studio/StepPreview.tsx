@@ -144,7 +144,12 @@ export const StepPreview: React.FC = () => {
           <Box
             className="no-print preview-side-panel"
             sx={{
-              width: { xs: 290, sm: 330 },
+              position: { xs: 'absolute', md: 'relative' },
+              left: { xs: 76, md: 'auto' },
+              top: 0,
+              bottom: 0,
+              width: { xs: 'calc(100% - 76px)', sm: 330 },
+              maxWidth: 360,
               borderRight: `1px solid ${muiTheme.palette.divider}`,
               bgcolor: 'background.paper',
               display: 'flex',
@@ -152,7 +157,8 @@ export const StepPreview: React.FC = () => {
               height: '100%',
               overflowY: 'auto',
               flexShrink: 0,
-              zIndex: 9,
+              zIndex: 35,
+              boxShadow: { xs: '4px 0 24px rgba(0,0,0,0.3)', md: 'none' },
             }}
           >
             {activeSidePanel === 'templates' && (
@@ -268,7 +274,7 @@ export const StepPreview: React.FC = () => {
               onClick={() => setWizardStep('target')}
               size="small"
             >
-              Back to Target Vacancy (Step 2)
+              Back to Target Vacancy (Step 3)
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

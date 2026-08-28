@@ -97,19 +97,26 @@
   max-width: 680px;
 }
 
-/* 3-Step Process Cards */
+/* 4-Step Process Cards */
 .welcome-steps-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
   width: 100%;
   text-align: left;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
+  .welcome-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
   .welcome-steps-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
   }
 }
 

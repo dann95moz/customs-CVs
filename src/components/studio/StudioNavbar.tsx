@@ -118,11 +118,26 @@ export const StudioNavbar: React.FC = () => {
         <Tabs
           value={activeTab === 'landing' ? false : activeTab}
           onChange={(_, val: StudioTab) => setActiveTab(val)}
+          variant="scrollable"
+          scrollButtons="auto"
+          allowScrollButtonsMobile
           sx={{
-            minHeight: 44,
+            minHeight: 48,
+            flex: 1,
+            '& .MuiTabs-scroller': {
+              overflowX: 'auto !important',
+            },
             '& .MuiTabs-indicator': {
               height: 3,
               borderRadius: '3px 3px 0 0',
+            },
+            '& .MuiTab-root': {
+              minHeight: 48,
+              minWidth: { xs: 60, sm: 100, md: 120 },
+              px: { xs: 1, sm: 1.75 },
+              fontSize: { xs: '0.75rem', sm: '0.82rem' },
+              fontWeight: 600,
+              textTransform: 'none',
             },
           }}
         >
@@ -147,7 +162,7 @@ export const StudioNavbar: React.FC = () => {
                     sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }}
                   />
                 ) : (
-                  <Chip label="Locked" size="small" variant="outlined" sx={{ height: 18, fontSize: '0.65rem' }} />
+                  <Chip label="Locked" size="small" variant="outlined" sx={{ height: 18, fontSize: '0.65rem', display: { xs: 'none', sm: 'inline-flex' } }} />
                 )}
               </Box>
             }
@@ -160,7 +175,7 @@ export const StudioNavbar: React.FC = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
                 <span>Gap Strategy</span>
                 {!hasTargetJob ? (
-                  <Chip label="No Job" size="small" variant="outlined" sx={{ height: 18, fontSize: '0.65rem' }} />
+                  <Chip label="No Job" size="small" variant="outlined" sx={{ height: 18, fontSize: '0.65rem', display: { xs: 'none', sm: 'inline-flex' } }} />
                 ) : hasGapReport ? (
                   <Chip
                     label={`${gapInfo.matchScore}%`}
@@ -180,7 +195,7 @@ export const StudioNavbar: React.FC = () => {
             iconPosition="start"
             label={
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                <span>My Applications</span>
+                <span>Applications</span>
                 {savedVersions.length > 0 && (
                   <Chip
                     label={savedVersions.length}
@@ -196,7 +211,7 @@ export const StudioNavbar: React.FC = () => {
             value="settings"
             icon={<SettingsRoundedIcon sx={{ fontSize: 18 }} />}
             iconPosition="start"
-            label="Settings & API"
+            label="Settings"
           />
         </Tabs>
 
