@@ -19,8 +19,9 @@ import { TemplatesPanel } from './preview/TemplatesPanel';
 import { DesignFormattingPanel } from './preview/DesignFormattingPanel';
 import { PreviewQualityAuditPanel } from './preview/PreviewQualityAuditPanel';
 import { PreviewComparisonView } from './preview/PreviewComparisonView';
+import { DOCUMENT_DIMENSIONS } from '../../theme/dimensions';
 
-const A4_PAGE_PX = 1123; // Exact A4 height at 96 DPI
+const A4_PAGE_PX = DOCUMENT_DIMENSIONS.pageHeightPx; // Exact A4 height at 96 DPI
 
 /**
  * Step 4: Master CV Preview & PDF Export Studio.

@@ -16,6 +16,10 @@
   --cv-border-color: #e2e8f0;
   --cv-border-light: #f1f5f9;
 
+  /* Standard Document Page Simulation Dimensions (A4 at 96 DPI) */
+  --cv-page-width: 795px;
+  --cv-page-min-height: 1123px;
+
   /* Default accent fallbacks matching corporate-blue */
   --cv-primary-color: #1d4ed8;
   --cv-accent-color: #1d4ed8;

@@ -4,6 +4,7 @@ import {
   LIGHT_THEME_TOKENS,
   getCssVariablesFromTokens,
 } from './colors';
+import { getDimensionCssVariables, RADIUS_TOKENS } from './dimensions';
 
 export type ThemeMode = 'light' | 'dark';
 
@@ -27,7 +28,7 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
       divider: tokens.border.default,
     },
     shape: {
-      borderRadius: 12,
+      borderRadius: parseInt(RADIUS_TOKENS.xl, 10),
     },
     typography: {
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
@@ -46,7 +47,10 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
     components: {
       MuiCssBaseline: {
         styleOverrides: {
-          ':root': getCssVariablesFromTokens(tokens),
+          ':root': {
+            ...getCssVariablesFromTokens(tokens),
+            ...getDimensionCssVariables(),
+          },
           body: {
             scrollbarColor: isDark
               ? `${tokens.border.light} ${tokens.background.input}`

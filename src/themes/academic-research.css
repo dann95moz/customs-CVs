@@ -21,7 +21,7 @@
 .theme-academic-research .dualtone-grid-layout {
   display: grid;
   grid-template-columns: 34% 66%;
-  min-height: 1123px;
+  min-height: var(--cv-page-min-height);
 }
 
 /* 1. Left Dark Charcoal Sidebar */

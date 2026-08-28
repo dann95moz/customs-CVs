@@ -3,7 +3,7 @@
    Cleaned & streamlined: Obsolete legacy buttons/tabs migrated to MUI
    ========================================================================== */
 .studio-navbar {
-  height: 64px;
+  height: var(--navbar-height);
   background: var(--panel-bg);
   border-bottom: 1px solid var(--border);
   display: flex;

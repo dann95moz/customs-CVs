@@ -14,7 +14,7 @@
   font-weight: 600;
   font-size: 0.85rem;
   padding: 8px 16px;
-  border-radius: 7px;
+  border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -96,10 +96,10 @@
    -------------------------------------------------------------------------- */
 .locked-view-card {
   width: 100%;
-  max-width: 600px;
+  max-width: var(--container-sm);
   background: var(--panel-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
   padding: 40px 32px;
   display: flex;
   flex-direction: column;
@@ -113,7 +113,7 @@
 .locked-icon-badge {
   width: 64px;
   height: 64px;
-  border-radius: 16px;
+  border-radius: var(--radius-2xl);
   background: rgba(148, 163, 184, 0.1);
   border: 1px solid rgba(148, 163, 184, 0.2);
   display: flex;
@@ -163,7 +163,7 @@
   max-width: 480px;
   background: var(--panel-bg);
   border: 1.5px solid var(--danger);
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   padding: 16px 20px;
   box-shadow: var(--box-shadow);
   z-index: 1000;

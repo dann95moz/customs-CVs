@@ -21,7 +21,7 @@
 .theme-two-column .contrast-grid-layout {
   display: grid;
   grid-template-columns: 66% 34%;
-  min-height: 1123px;
+  min-height: var(--cv-page-min-height);
 }
 
 /* 1. Left Main Content Area */

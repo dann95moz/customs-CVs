@@ -12,7 +12,7 @@
 
 .audit-dashboard-container {
   width: 100%;
-  max-width: 960px;
+  max-width: var(--container-lg);
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -21,7 +21,7 @@
 .audit-score-hero {
   background: linear-gradient(135deg, var(--card-bg) 0%, var(--panel-bg) 100%);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
   padding: 24px 28px;
   display: flex;
   align-items: center;
@@ -104,7 +104,7 @@
 .audit-metric-card {
   background: var(--panel-bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -126,7 +126,7 @@
   font-size: 0.78rem;
   font-weight: 800;
   padding: 2px 8px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid transparent;
 }
 
@@ -145,7 +145,7 @@
 .metric-gaps-box {
   background: rgba(245, 158, 11, 0.08);
   border: 1px solid rgba(245, 158, 11, 0.2);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 8px 10px;
   font-size: 0.75rem;
 }
@@ -165,7 +165,7 @@
 .metric-action-box {
   background: rgba(56, 189, 248, 0.08);
   border: 1px solid rgba(56, 189, 248, 0.2);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 8px 10px;
   font-size: 0.75rem;
 }
@@ -191,7 +191,7 @@
 .growth-pillar-card {
   background: var(--panel-bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -214,7 +214,7 @@
   font-size: 0.7rem;
   font-weight: 700;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
 }
 
 .impact-badge.high {
@@ -243,7 +243,7 @@
 .pillar-action {
   background: rgba(16, 185, 129, 0.08);
   border: 1px solid rgba(16, 185, 129, 0.25);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 8px 12px;
   font-size: 0.78rem;
   color: var(--text-main);
