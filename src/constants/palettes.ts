@@ -24,12 +24,15 @@ export interface PaletteConfig {
 }
 
 export function hexToRgba(hex: string, alpha = 1): string {
+  if (!hex || typeof hex !== 'string') return `rgba(29, 78, 216, ${alpha})`;
   let cleanHex = hex.replace('#', '').trim();
   if (cleanHex.length === 3) {
     cleanHex = cleanHex.split('').map(c => c + c).join('');
   }
+  if (!/^[0-9a-fA-F]{6}$/.test(cleanHex)) {
+    return `rgba(29, 78, 216, ${alpha})`;
+  }
   const num = parseInt(cleanHex, 16);
-  if (isNaN(num)) return `rgba(29, 78, 216, ${alpha})`;
   const r = (num >> 16) & 255;
   const g = (num >> 8) & 255;
   const b = num & 255;
@@ -37,7 +40,8 @@ export function hexToRgba(hex: string, alpha = 1): string {
 }
 
 export function createCustomPalette(hexColor: string): PaletteConfig {
-  const primary = hexColor.startsWith('#') ? hexColor : `#${hexColor}`;
+  const clean = hexColor?.trim() || '#1d4ed8';
+  const primary = clean.startsWith('#') ? clean : `#${clean}`;
   return {
     id: 'custom',
     name: 'Custom Brand Color',
@@ -196,7 +200,7 @@ export const CURATED_PALETTES: Record<Exclude<PaletteId, 'custom'>, PaletteConfi
 export const DEFAULT_PALETTE_ID: Exclude<PaletteId, 'custom'> = 'corporate-blue';
 
 export function getPaletteConfig(id: PaletteId = DEFAULT_PALETTE_ID, customHex?: string): PaletteConfig {
-  if (id === 'custom' || customHex) {
+  if (id === 'custom') {
     return createCustomPalette(customHex || '#1d4ed8');
   }
   const key = id as Exclude<PaletteId, 'custom'>;

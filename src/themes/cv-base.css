@@ -3,9 +3,7 @@
    Each theme builds upon these baseline layout rules and neutral tokens.
    ========================================================================== */
 
-:root,
-.cv-palette-wrapper,
-[class*="theme-"] {
+:root {
   --cv-paper-bg: #ffffff;
   --cv-text-primary: #1e293b;
   --cv-text-heading: #0f172a;

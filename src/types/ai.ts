@@ -6,11 +6,11 @@
  */
 
 export type AIProviderId = 
-  | 'free-pollinations' 
+  | 'local' 
   | 'gemini' 
+  | 'groq' 
   | 'openai' 
   | 'claude' 
-  | 'groq' 
   | 'openrouter' 
   | 'custom';
 
@@ -29,6 +29,13 @@ export interface AIProviderSettings {
   apiKey?: string;
   customEndpoint?: string;
   temperature?: number;
+  localServerType?: 'ollama' | 'lm-studio' | 'custom';
+}
+
+export interface AIConnectionTestResult {
+  success: boolean;
+  message: string;
+  detectedModels?: string[];
 }
 
 export interface TailorRequest {

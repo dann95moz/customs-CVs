@@ -12,43 +12,66 @@ export interface AIProviderStrategy {
 }
 
 /**
- * Strategy: Public Free AI via Pollinations
+ * Strategy: Local AI (Ollama, LM Studio, LocalAI, vLLM, text-generation-webui)
  */
-export class PollinationsStrategy implements AIProviderStrategy {
+export class LocalAIStrategy implements AIProviderStrategy {
   async execute(prompts: PromptBundle, settings: AIProviderSettings): Promise<StrategyResult> {
-    const modelParam = settings.model === 'free-deepseek' ? 'deepseek' : (settings.model === 'free-gemini' ? 'gemini' : 'openai');
-
-    const response = await fetch('https://text.pollinations.ai/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        messages: [
-          { role: 'system', content: prompts.systemInstruction },
-          { role: 'user', content: prompts.userPrompt }
-        ],
-        model: modelParam,
-        temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15,
-        seed: 42
-      })
-    }).catch((err) => {
-      throw new Error(`Public Free AI connection error (${err.message}). The public endpoint may be rate-limited or blocked by browser CORS. Please use Google Gemini 3.6 Flash (Free key at aistudio.google.com) or configure your key in Settings.`);
-    });
-
-    if (!response.ok) {
-      throw new Error(`Public Free AI error (HTTP ${response.status} ${response.statusText}). Public inference is currently rate-limited. Please use Google Gemini 3.6 Flash (Free API Key available at aistudio.google.com) or enter your API key in Settings.`);
+    const rawEndpoint = settings.customEndpoint?.trim() || 'http://localhost:11434/v1';
+    let endpoint = rawEndpoint.replace(/\/$/, '');
+    if (!endpoint.endsWith('/chat/completions')) {
+      endpoint = `${endpoint}/chat/completions`;
     }
 
-    const text = await response.text();
-    if (!text || text.length < 100) {
-      throw new Error('Empty response received from public AI service. Please select another model or enter your API Key.');
-    }
-
-    return {
-      text,
-      modelUsed: `Free AI (${modelParam.toUpperCase()})`
+    const modelName = settings.model?.trim() || 'llama3.2';
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
     };
+    if (settings.apiKey?.trim()) {
+      headers['Authorization'] = `Bearer ${settings.apiKey.trim()}`;
+    }
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          model: modelName,
+          messages: [
+            { role: 'system', content: prompts.systemInstruction },
+            { role: 'user', content: prompts.userPrompt }
+          ],
+          temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15
+        })
+      });
+
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        const errDetail = errJson.error?.message || errJson.message || `HTTP ${response.status} ${response.statusText}`;
+        throw new Error(`Local model error: ${errDetail}`);
+      }
+
+      const data = await response.json();
+      const text = data.choices?.[0]?.message?.content || data.message?.content || '';
+
+      if (!text || text.trim().length === 0) {
+        throw new Error(`Empty response from local AI (${modelName}). Please check if the model is loaded in your local server.`);
+      }
+
+      return {
+        text,
+        modelUsed: `Local AI (${modelName})`
+      };
+    } catch (err: unknown) {
+      if (err instanceof Error && (err.message.startsWith('Local model error:') || err.message.startsWith('Empty response'))) {
+        throw err;
+      }
+      const msg = err instanceof Error ? err.message : String(err);
+      throw new Error(
+        `Failed to connect to Local AI at ${rawEndpoint} (${msg}). ` +
+        `Please ensure your local AI server (Ollama / LM Studio) is running. ` +
+        `For Ollama, enable CORS by running: OLLAMA_ORIGINS="*" ollama serve`
+      );
+    }
   }
 }
 
@@ -210,7 +233,7 @@ export class ClaudeStrategy implements AIProviderStrategy {
 }
 
 // Strategy instances singleton cache
-const pollinationsStrategy = new PollinationsStrategy();
+const localAIStrategy = new LocalAIStrategy();
 const geminiStrategy = new GeminiStrategy();
 const openAICompatibleStrategy = new OpenAICompatibleStrategy();
 const claudeStrategy = new ClaudeStrategy();
@@ -220,8 +243,8 @@ const claudeStrategy = new ClaudeStrategy();
  */
 export function getAIStrategy(provider: AIProviderId): AIProviderStrategy {
   switch (provider) {
-    case 'free-pollinations':
-      return pollinationsStrategy;
+    case 'local':
+      return localAIStrategy;
     case 'gemini':
       return geminiStrategy;
     case 'claude':
