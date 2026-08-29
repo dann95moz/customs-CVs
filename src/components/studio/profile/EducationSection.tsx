@@ -16,14 +16,11 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { useTranslation } from 'react-i18next';
 import { EducationSectionProps } from '../../../types';
 
 export type { EducationSectionProps };
 
-/**
- * Section for education degrees, universities, and industry certifications.
- * Principle: Single Responsibility (S) - focuses exclusively on academic and credential background.
- */
 export const EducationSection: React.FC<EducationSectionProps> = ({
   isExpanded,
   onToggle,
@@ -32,6 +29,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
   onAddEducation,
   onRemoveEducation,
 }) => {
+  const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
 
   return (
@@ -49,7 +47,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <SchoolRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            5. Education &amp; Certifications
+            {t('profile:sections.education.title', '5. Education & Certifications')}
           </Typography>
           {education.length > 0 && (
             <Chip
@@ -71,13 +69,13 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
                 fullWidth
                 value={edu}
                 onChange={(e) => onUpdateEducation(idx, e.target.value)}
-                placeholder="**B.S. in Computer Science** – UC Berkeley, 2019"
+                placeholder={t('profile:sections.education.degree', '**B.S. in Computer Science** – UC Berkeley, 2019')}
               />
               <IconButton
                 size="small"
                 color="error"
                 onClick={() => onRemoveEducation(idx)}
-                title="Remove entry"
+                title={t('profile:sections.education.remove', 'Remove entry')}
               >
                 <DeleteOutlineRoundedIcon fontSize="small" />
               </IconButton>
@@ -91,7 +89,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
             onClick={onAddEducation}
             sx={{ alignSelf: 'flex-start' }}
           >
-            Add Degree or Certification
+            {t('profile:sections.education.addEducation', 'Add Degree or Certification')}
           </Button>
         </Stack>
       </AccordionDetails>

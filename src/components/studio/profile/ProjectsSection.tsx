@@ -20,6 +20,7 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { useTranslation } from 'react-i18next';
 import { ProjectsSectionProps } from '../../../types';
 
 export type { ProjectsSectionProps };
@@ -37,10 +38,6 @@ const CATEGORY_SUGGESTIONS: string[] = [
   'Community Leadership',
 ];
 
-/**
- * Section 7: Projects, publications, volunteering, awards, and extras.
- * Principle: Single Responsibility (S) - provides a flexible, non-rigid catalog for non-work accomplishments.
- */
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   isExpanded,
   onToggle,
@@ -49,6 +46,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   onAddProject,
   onRemoveProject,
 }) => {
+  const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -67,10 +65,10 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <AutoAwesomeRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            7. Projects &amp; Extras
+            {t('profile:sections.projects.title', '7. Projects & Extras')}
           </Typography>
           <Chip
-            label="Optional"
+            label={t('common:badge.optional', 'Optional')}
             size="small"
             sx={{
               height: 20,
@@ -95,7 +93,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
       <AccordionDetails sx={{ pt: 1, pb: 3 }}>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          Add anything that doesn&apos;t fit above — projects, publications, volunteering. We&apos;ll pick what to show based on each job vacancy.
+          {t('profile:sections.projects.title', 'Add anything that doesn\'t fit above — projects, publications, volunteering. We\'ll pick what to show based on each job vacancy.')}
         </Typography>
 
         <Stack spacing={2.5}>
@@ -107,13 +105,13 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                 <CardContent sx={{ p: 2 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
                     <Typography variant="subtitle2" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
-                      Item #{projIdx + 1}: {proj.company || 'New Entry'}
+                      {t('profile:sections.projects.projectName', 'Item')} #{projIdx + 1}: {proj.company || 'New Entry'}
                     </Typography>
                     <IconButton
                       size="small"
                       color="error"
                       onClick={() => onRemoveProject(projIdx)}
-                      title="Remove this item"
+                      title={t('profile:sections.projects.remove', 'Remove this item')}
                     >
                       <DeleteOutlineRoundedIcon fontSize="small" />
                     </IconButton>
@@ -121,7 +119,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
                   <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1.5fr 1fr' }, gap: 1.5, mb: 1.5 }}>
                     <TextField
-                      label="Title / Name"
+                      label={t('profile:sections.projects.projectName', 'Title / Name')}
                       size="small"
                       value={proj.company || ''}
                       onChange={(e) => onFieldChange(projIdx, 'company', e.target.value)}
@@ -138,7 +136,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Category"
+                          label={t('profile:sections.projects.role', 'Category')}
                           size="small"
                           placeholder="e.g. Personal Project"
                         />
@@ -148,7 +146,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
                   <Box sx={{ mb: 1.5 }}>
                     <TextField
-                      label="Description / Key Highlights"
+                      label={t('profile:sections.projects.bullets', 'Description / Key Highlights')}
                       size="small"
                       multiline
                       rows={2}
@@ -167,14 +165,14 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
                   <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
                     <TextField
-                      label="Link / URL (Optional)"
+                      label={t('profile:sections.projects.link', 'Link / URL (Optional)')}
                       size="small"
                       value={proj.location || ''}
                       onChange={(e) => onFieldChange(projIdx, 'location', e.target.value)}
                       placeholder="e.g. https://github.com/username/project"
                     />
                     <TextField
-                      label="Date / Period (Optional)"
+                      label={t('profile:sections.projects.date', 'Date / Period (Optional)')}
                       size="small"
                       value={proj.date || ''}
                       onChange={(e) => onFieldChange(projIdx, 'date', e.target.value)}
@@ -193,7 +191,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
             onClick={onAddProject}
             sx={{ alignSelf: 'flex-start' }}
           >
-            Add Project / Extra
+            {t('profile:sections.projects.addProject', 'Add Project / Extra')}
           </Button>
         </Stack>
       </AccordionDetails>

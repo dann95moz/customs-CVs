@@ -31,6 +31,7 @@ import { GuidedProfileForm } from './GuidedProfileForm';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { ButtonGroup } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { StepMasterDataProps } from '../../types';
 
 export type { StepMasterDataProps };
@@ -43,6 +44,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   onPrevStep,
   onNextStep
 }) => {
+  const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -119,19 +121,19 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           <Box sx={{ maxWidth: 900 }}>
             <Chip
               icon={<PersonRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label="Step 1 of 3 • Candidate Profile"
+              label={t('profile:stepBadge', 'Step 1 of 3 • Candidate Profile')}
               size="small"
               color="primary"
               variant="outlined"
               sx={{ mb: 1, fontWeight: 700 }}
             />
             <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
-              Your Career Profile
+              {t('profile:title', 'Your Career Profile')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
-              Add your career history and skills once. We&apos;ll automatically adapt it for every job you apply to.
+              {t('profile:subtitle', "Add your career history and skills once. We'll automatically adapt it for every job you apply to.")}
               <Tooltip
-                title="Integrity safeguard active: Guarantees tailored resumes stay 100% faithful to your real experience without hallucinating skills or fake metrics."
+                title={t('common:safeguard.tooltip', 'Integrity safeguard active: Guarantees tailored resumes stay 100% faithful to your real experience without hallucinating skills or fake metrics.')}
                 arrow
                 placement="top"
               >
@@ -160,7 +162,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               startIcon={<RefreshRoundedIcon />}
               onClick={onLoadSample}
             >
-              Load Sample Profile
+              {t('profile:actions.loadSample', 'Load Sample Profile')}
             </Button>
 
             <input
@@ -176,7 +178,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               startIcon={<CloudUploadRoundedIcon />}
               onClick={() => fileInputRef.current?.click()}
             >
-              Upload File (.md)
+              {t('profile:actions.uploadFile', 'Upload File (.md)')}
             </Button>
 
             <Button
@@ -185,7 +187,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               startIcon={<FileDownloadRoundedIcon />}
               onClick={handleDownload}
             >
-              Export Backup
+              {t('profile:actions.exportBackup', 'Export Backup')}
             </Button>
 
             <Button
@@ -195,13 +197,10 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               startIcon={<RestartAltRoundedIcon />}
               onClick={onResetTemplate}
             >
-              Start Blank
+              {t('profile:actions.startBlank', 'Start Blank')}
             </Button>
           </Stack>
         </Paper>
-
-        {/* Profile Completion & Summary Strip */}
-
 
         {/* Mode Switcher & Dedicated Editor Area */}
         <Paper
@@ -231,7 +230,9 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <EditNoteRoundedIcon fontSize="small" color="primary" />
               <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                {editMode === 'markdown' ? 'Natural Freeform Dossier (Markdown / Natural Language)' : 'Structured Profile Assistant'}
+                {editMode === 'markdown'
+                  ? t('profile:modes.markdownTitle', 'Natural Freeform Dossier (Markdown / Natural Language)')
+                  : t('profile:modes.guidedTitle', 'Structured Profile Assistant')}
               </Typography>
             </Box>
 
@@ -242,7 +243,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 onClick={() => setEditMode('guided')}
                 sx={{ fontWeight: 600, fontSize: '0.8rem' }}
               >
-                Guided Assistant
+                {t('profile:modes.guidedAssistant', 'Guided Assistant')}
               </Button>
               <Button
                 variant={editMode === 'markdown' ? 'contained' : 'outlined'}
@@ -250,13 +251,10 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 onClick={() => setEditMode('markdown')}
                 sx={{ fontWeight: 600, fontSize: '0.8rem' }}
               >
-                Mardown Editor
+                {t('profile:modes.markdownEditor', 'Markdown Editor')}
               </Button>
-
             </ButtonGroup>
           </Box>
-
-          {/* Natural Language Freedom Tip */}
 
           {editMode === 'guided' ? (
             <Box sx={{ flex: 1, overflowY: 'auto', maxHeight: 'calc(100vh - 350px)' }}>
@@ -316,7 +314,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             {hasData ? (
               <Chip
                 icon={<CheckCircleRoundedIcon />}
-                label="Master profile ready for tailoring"
+                label={t('profile:status.ready', 'Master profile ready for tailoring')}
                 color="success"
                 variant="outlined"
                 size="small"
@@ -325,7 +323,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             ) : (
               <Chip
                 icon={<InfoRoundedIcon />}
-                label="Tip: Click 'Load Sample Profile' to test right away"
+                label={t('profile:status.tipLoadSample', "Tip: Click 'Load Sample Profile' to test right away")}
                 color="warning"
                 variant="outlined"
                 size="small"
@@ -341,7 +339,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             onClick={onNextStep}
             sx={{ fontWeight: 700, px: 3 }}
           >
-            Continue to Target Vacancy (Step 2)
+            {t('profile:actions.continueToTarget', 'Continue to Target Vacancy (Step 2)')}
           </Button>
         </Paper>
       </Box>

@@ -16,14 +16,11 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { useTranslation } from 'react-i18next';
 import { LanguagesSectionProps } from '../../../types';
 
 export type { LanguagesSectionProps };
 
-/**
- * Section for candidate languages and CEFR proficiencies.
- * Principle: Single Responsibility (S) - focuses exclusively on language proficiencies.
- */
 export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
   isExpanded,
   onToggle,
@@ -32,6 +29,7 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
   onAddLanguage,
   onRemoveLanguage,
 }) => {
+  const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
 
   return (
@@ -49,7 +47,7 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <TranslateRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            6. Languages &amp; Proficiency
+            {t('profile:sections.languages.title', '6. Languages & Proficiency')}
           </Typography>
           {languages.length > 0 && (
             <Chip
@@ -71,13 +69,13 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
                 fullWidth
                 value={lang}
                 onChange={(e) => onUpdateLanguage(idx, e.target.value)}
-                placeholder="**English:** Native / Professional Working Proficiency"
+                placeholder={t('profile:sections.languages.proficiency', '**English:** Native / Professional Working Proficiency')}
               />
               <IconButton
                 size="small"
                 color="error"
                 onClick={() => onRemoveLanguage(idx)}
-                title="Remove language"
+                title={t('profile:sections.languages.remove', 'Remove language')}
               >
                 <DeleteOutlineRoundedIcon fontSize="small" />
               </IconButton>
@@ -91,7 +89,7 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
             onClick={onAddLanguage}
             sx={{ alignSelf: 'flex-start' }}
           >
-            Add Language
+            {t('profile:sections.languages.addLanguage', 'Add Language')}
           </Button>
         </Stack>
       </AccordionDetails>

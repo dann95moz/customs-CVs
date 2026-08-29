@@ -11,14 +11,11 @@ import {
 } from '@mui/material';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import { useTranslation } from 'react-i18next';
 import { ContactItem, ContactType, PersonalInfoSectionProps } from '../../../types';
 
 export type { PersonalInfoSectionProps };
 
-/**
- * Section for candidate identity and contact items.
- * Principle: Single Responsibility (S) - focuses exclusively on personal information.
- */
 export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   isExpanded,
   onToggle,
@@ -29,6 +26,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   onTitleChange,
   onContactChange,
 }) => {
+  const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
 
   const getContactVal = (type: ContactType): string => {
@@ -51,7 +49,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <PersonRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            1. Personal Info &amp; Contact
+            {t('profile:sections.personalInfo.title', '1. Personal Info & Contact')}
           </Typography>
           {Boolean(name && name.trim()) ? (
             <Chip label="Added" size="small" color="success" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
@@ -63,7 +61,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       <AccordionDetails sx={{ pt: 1, pb: 3 }}>
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
           <TextField
-            label="Full Name"
+            label={t('profile:sections.personalInfo.fullName', 'Full Name')}
             variant="outlined"
             size="small"
             value={name || ''}
@@ -72,7 +70,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             fullWidth
           />
           <TextField
-            label="Primary Professional Role / Specialization"
+            label={t('profile:sections.personalInfo.jobTitle', 'Primary Professional Role / Specialization')}
             variant="outlined"
             size="small"
             value={title || ''}
@@ -81,7 +79,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             fullWidth
           />
           <TextField
-            label="Location"
+            label={t('profile:sections.personalInfo.location', 'Location')}
             variant="outlined"
             size="small"
             value={getContactVal('location')}
@@ -90,7 +88,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             fullWidth
           />
           <TextField
-            label="Email Address"
+            label={t('profile:sections.personalInfo.email', 'Email Address')}
             variant="outlined"
             size="small"
             value={getContactVal('email')}
@@ -99,7 +97,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             fullWidth
           />
           <TextField
-            label="Phone Number"
+            label={t('profile:sections.personalInfo.phone', 'Phone Number')}
             variant="outlined"
             size="small"
             value={getContactVal('phone')}
@@ -108,7 +106,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             fullWidth
           />
           <TextField
-            label="LinkedIn URL"
+            label={t('profile:sections.personalInfo.linkedin', 'LinkedIn URL')}
             variant="outlined"
             size="small"
             value={getContactVal('linkedin')}
@@ -117,7 +115,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             fullWidth
           />
           <TextField
-            label="GitHub URL (Optional)"
+            label={t('profile:sections.personalInfo.github', 'GitHub URL (Optional)')}
             variant="outlined"
             size="small"
             value={getContactVal('github')}
@@ -126,7 +124,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             fullWidth
           />
           <TextField
-            label="Portfolio / Personal Website (Optional)"
+            label={t('profile:sections.personalInfo.portfolio', 'Portfolio / Personal Website (Optional)')}
             variant="outlined"
             size="small"
             value={getContactVal('globe')}

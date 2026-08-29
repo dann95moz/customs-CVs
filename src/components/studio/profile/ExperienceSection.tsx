@@ -20,14 +20,11 @@ import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import { useTranslation } from 'react-i18next';
 import { ExperienceItem, ExperienceSectionProps } from '../../../types';
 
 export type { ExperienceSectionProps };
 
-/**
- * Section for career experience and accomplishments with Google XYZ Formula assistance.
- * Principle: Single Responsibility (S) - focuses exclusively on work history and measurable impacts.
- */
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   isExpanded,
   onToggle,
@@ -39,6 +36,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   onUpdateBullet,
   onRemoveBullet,
 }) => {
+  const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -57,7 +55,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <WorkRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            4. Work Experience &amp; Roles
+            {t('profile:sections.experience.title', '4. Work Experience & Roles')}
           </Typography>
           {experience.length > 0 && (
             <Chip
@@ -76,7 +74,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
             <AutoAwesomeRoundedIcon fontSize="inherit" /> Impact Tip:
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            Include measurable impact where possible (e.g. &quot;Reduced build times by 45% through CI/CD pipeline automation&quot;).
+            {t('profile:sections.experience.bullets', 'Include measurable impact where possible with XYZ formula (Accomplished X as measured by Y by doing Z).')}
           </Typography>
         </Box>
 
@@ -86,13 +84,13 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               <CardContent sx={{ p: 2 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
-                    Role #{expIdx + 1}: {exp.company || 'Company'}
+                    {t('profile:sections.experience.role', 'Role')} #{expIdx + 1}: {exp.company || 'Company'}
                   </Typography>
                   <IconButton
                     size="small"
                     color="error"
                     onClick={() => onRemoveExperience(expIdx)}
-                    title="Remove this role"
+                    title={t('profile:sections.experience.removeRole', 'Remove this role')}
                   >
                     <DeleteOutlineRoundedIcon fontSize="small" />
                   </IconButton>
@@ -100,28 +98,28 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
 
                 <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5, mb: 2 }}>
                   <TextField
-                    label="Company Name"
+                    label={t('profile:sections.experience.company', 'Company Name')}
                     size="small"
                     value={exp.company}
                     onChange={(e) => onFieldChange(expIdx, 'company', e.target.value)}
                     placeholder="e.g. FinScale Technologies"
                   />
                   <TextField
-                    label="Job Title / Seniority"
+                    label={t('profile:sections.experience.role', 'Job Title / Seniority')}
                     size="small"
                     value={exp.role || ''}
                     onChange={(e) => onFieldChange(expIdx, 'role', e.target.value)}
                     placeholder="e.g. Staff Frontend Engineer"
                   />
                   <TextField
-                    label="Employment Dates"
+                    label={t('profile:sections.experience.dates', 'Employment Dates')}
                     size="small"
                     value={exp.date || ''}
                     onChange={(e) => onFieldChange(expIdx, 'date', e.target.value)}
                     placeholder="e.g. Oct 2022 – Present"
                   />
                   <TextField
-                    label="Location / Mode"
+                    label={t('profile:sections.experience.location', 'Location / Mode')}
                     size="small"
                     value={exp.location || ''}
                     onChange={(e) => onFieldChange(expIdx, 'location', e.target.value)}
@@ -130,7 +128,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                 </Box>
 
                 <Typography variant="caption" sx={{ fontWeight: 700, mb: 1, display: 'block' }}>
-                  Accomplishments &amp; Impact Bullets:
+                  {t('profile:sections.experience.bullets', 'Accomplishments & Impact Bullets:')}
                 </Typography>
 
                 <Stack spacing={1} sx={{ mb: 1.5 }}>
@@ -167,7 +165,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                   onClick={() => onAddBullet(expIdx)}
                   sx={{ fontSize: '0.8rem' }}
                 >
-                  Add Impact Bullet
+                  {t('profile:sections.experience.addBullet', 'Add Impact Bullet')}
                 </Button>
               </CardContent>
             </Card>
@@ -179,7 +177,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
             onClick={onAddExperience}
             sx={{ alignSelf: 'flex-start' }}
           >
-            Add Another Experience
+            {t('profile:sections.experience.addRole', 'Add Another Experience')}
           </Button>
         </Stack>
       </AccordionDetails>
