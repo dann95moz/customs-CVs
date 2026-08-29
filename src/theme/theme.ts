@@ -8,6 +8,17 @@ import { getDimensionCssVariables, RADIUS_TOKENS } from './dimensions';
 
 export type ThemeMode = 'light' | 'dark';
 
+declare module '@mui/material/styles' {
+  interface PaletteColor {
+    container?: string;
+    onContainer?: string;
+  }
+  interface SimplePaletteColorOptions {
+    container?: string;
+    onContainer?: string;
+  }
+}
+
 const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
   const isDark = mode === 'dark';
   const tokens = isDark ? DARK_THEME_TOKENS : LIGHT_THEME_TOKENS;
@@ -34,13 +45,36 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
     },
     typography: {
       fontFamily: bodyFont,
-      h1: { fontFamily: displayFont, fontWeight: 700, letterSpacing: '-0.02em' },
-      h2: { fontFamily: displayFont, fontWeight: 700, letterSpacing: '-0.015em' },
-      h3: { fontFamily: displayFont, fontWeight: 600, letterSpacing: '-0.01em' },
-      h4: { fontWeight: 700, letterSpacing: '-0.01em' },
-      h5: { fontWeight: 600 },
-      h6: { fontWeight: 600 },
-      subtitle1: { fontWeight: 500 },
+      h1: {
+        fontFamily: displayFont,
+        fontWeight: 800,
+        fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
+        lineHeight: 1.2,
+        letterSpacing: '-0.025em',
+      },
+      h2: {
+        fontFamily: displayFont,
+        fontWeight: 700,
+        fontSize: 'clamp(1.4rem, 3.2vw, 2.25rem)',
+        lineHeight: 1.25,
+        letterSpacing: '-0.02em',
+      },
+      h3: {
+        fontFamily: displayFont,
+        fontWeight: 600,
+        fontSize: 'clamp(1.2rem, 2.5vw, 1.75rem)',
+        lineHeight: 1.3,
+        letterSpacing: '-0.015em',
+      },
+      h4: {
+        fontWeight: 700,
+        fontSize: 'clamp(1.05rem, 2vw, 1.35rem)',
+        lineHeight: 1.35,
+        letterSpacing: '-0.01em',
+      },
+      h5: { fontWeight: 600, fontSize: '1.05rem', lineHeight: 1.4 },
+      h6: { fontWeight: 600, fontSize: '0.95rem', lineHeight: 1.4 },
+      subtitle1: { fontWeight: 500, fontSize: '0.95rem' },
       subtitle2: { fontWeight: 600, fontSize: '0.825rem' },
       body1: { fontSize: '0.925rem', lineHeight: 1.6 },
       body2: { fontSize: '0.85rem', lineHeight: 1.5 },

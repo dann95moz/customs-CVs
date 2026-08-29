@@ -50,7 +50,8 @@ Nunca sacrifiques legibilidad por "cleverness". Código simple y explícito
 código denso e ingenioso.
 
 Si generas o modificas múltiples archivos, mantenlos consistentes entre sí (mismos imports, convenciones de nombrado, estilo).
-Los archivos de estilo deben tener centralizados los colores y dimensiones (tamaños, bordes, espaciados) de forma que sean escalables y reutilizables, ya sea en tokens de diseño o en los temas de MUI
+Los archivos de estilo deben tener centralizados los colores y dimensiones (tamaños, bordes, espaciados) de forma que sean escalables y reutilizables, ya sea en tokens de diseño o en los temas de MUI.
+En caso de tener cambios arquitectonicos es necesario revisar el readme y actualizarlo con la documentación pertinente.
 
 
 Todo el texto hardcoded debe estar en inglés

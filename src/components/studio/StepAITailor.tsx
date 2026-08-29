@@ -279,16 +279,15 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
                 onClick={onGenerate}
                 disabled={isGenerating}
                 sx={{
-                  py: 1.5,
+                  py: 1.25,
                   px: 3.5,
-                  fontSize: '1rem',
-                  fontWeight: 800,
-                  borderRadius: '12px',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
                   whiteSpace: 'nowrap',
                   boxShadow: isDark ? '0 4px 14px rgba(2, 132, 199, 0.5)' : '0 4px 14px rgba(2, 132, 199, 0.3)',
                 }}
               >
-                {t('target:actions.tailorNow', '✨ Tailor My Resume Now')}
+                {t('target:actions.tailorNow', 'Tailor Resume Now')}
               </Button>
             </Box>
           )}

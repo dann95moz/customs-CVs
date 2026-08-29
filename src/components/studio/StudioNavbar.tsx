@@ -122,6 +122,7 @@ export const StudioNavbar: React.FC = () => {
           allowScrollButtonsMobile
           sx={{
             minHeight: 48,
+            flex: { xs: 1, sm: '0 1 auto' },
             '& .MuiTabs-scroller': {
               overflowX: 'auto !important',
             },
@@ -131,33 +132,53 @@ export const StudioNavbar: React.FC = () => {
             },
             '& .MuiTab-root': {
               minHeight: 48,
-              minWidth: { xs: 80, sm: 110, md: 130 },
-              px: { xs: 1.25, sm: 2 },
-              fontSize: { xs: '0.78rem', sm: '0.84rem' },
+              minWidth: { xs: 64, sm: 100, md: 120 },
+              px: { xs: 0.75, sm: 1.5, md: 2 },
+              fontSize: { xs: '0.74rem', sm: '0.84rem' },
               fontWeight: 600,
               textTransform: 'none',
+              gap: { xs: 0.5, sm: 0.75 },
             },
           }}
         >
           <Tab
             value="wizard"
-            icon={<AutoAwesomeRoundedIcon sx={{ fontSize: 18 }} />}
+            icon={<AutoAwesomeRoundedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
             iconPosition="start"
-            label={t('nav.resumeStudio', 'Resume Studio')}
+            label={
+              <>
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                  {t('nav.resumeStudio', 'Resume Studio')}
+                </Box>
+                <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                  {t('nav.studio', 'Studio')}
+                </Box>
+              </>
+            }
           />
           <Tab
             value="history"
-            icon={<BusinessRoundedIcon sx={{ fontSize: 18 }} />}
+            icon={<BusinessRoundedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
             iconPosition="start"
             label={
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                <span>{t('nav.myApplications', 'My Applications')}</span>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                  {t('nav.myApplications', 'My Applications')}
+                </Box>
+                <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                  {t('nav.applicationsShort', 'Apps')}
+                </Box>
                 {savedVersionsCount > 0 && (
                   <Chip
                     label={savedVersionsCount}
                     size="small"
                     color="primary"
-                    sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }}
+                    sx={{
+                      height: 16,
+                      fontSize: '0.65rem',
+                      fontWeight: 700,
+                      '& .MuiChip-label': { px: 0.6 },
+                    }}
                   />
                 )}
               </Box>
@@ -165,9 +186,18 @@ export const StudioNavbar: React.FC = () => {
           />
           <Tab
             value="settings"
-            icon={<SettingsRoundedIcon sx={{ fontSize: 18 }} />}
+            icon={<SettingsRoundedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
             iconPosition="start"
-            label={t('nav.settingsAndAi', 'Settings & AI')}
+            label={
+              <>
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                  {t('nav.settingsAndAi', 'Settings & AI')}
+                </Box>
+                <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                  {t('nav.settingsShort', 'Settings')}
+                </Box>
+              </>
+            }
           />
         </Tabs>
 

@@ -302,23 +302,17 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
             type="submit"
             fullWidth
             variant="contained"
+            color="primary"
             size="large"
             disabled={!canSubmit}
+            startIcon={<BoltRoundedIcon />}
             sx={{
-              py: 1.4,
-              borderRadius: '12px',
-              fontWeight: 800,
-              fontSize: '1rem',
-              letterSpacing: '-0.01em',
-              textTransform: 'none',
-              bgcolor: isDark ? 'primary.main' : '#0f172a',
-              color: '#ffffff',
-              '&:hover': {
-                bgcolor: isDark ? 'primary.dark' : '#1e293b',
-              },
+              py: 1.2,
+              fontWeight: 700,
+              fontSize: '0.95rem',
             }}
           >
-            {t('target:actions.tailorNow', '✨ Tailor Resume Now')}
+            {t('target:actions.tailorNow', 'Tailor Resume Now')}
           </Button>
 
           {/* Accordion / Toggle for Alternative Providers */}

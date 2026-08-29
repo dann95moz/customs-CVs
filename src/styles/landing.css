@@ -11,12 +11,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 32px 20px;
+  justify-content: flex-start;
+  padding: 36px 20px 64px;
   background: radial-gradient(circle at 50% 0%, var(--accent-glow) 0%, transparent 65%),
               radial-gradient(circle at 80% 90%, rgba(129, 140, 248, 0.08) 0%, transparent 50%),
               var(--bg-dark);
   position: relative;
+  -webkit-overflow-scrolling: touch;
 }
 
 .welcome-landing-content {
@@ -26,9 +27,9 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 32px;
+  gap: 28px;
   z-index: 1;
-  margin: auto;
+  margin: 0 auto;
 }
 
 /* Header & Badge */
@@ -74,27 +75,34 @@
   align-items: center;
   gap: 12px;
   max-width: 800px;
+  width: 100%;
 }
 
 .welcome-hero-title {
-  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-size: clamp(1.65rem, 5vw, 2.75rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.15;
+  line-height: 1.18;
   color: var(--text-main);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .welcome-gradient-text {
   background: linear-gradient(135deg, var(--accent) 0%, var(--primary-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline;
+  word-break: break-word;
 }
 
 .welcome-hero-subtitle {
-  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   color: var(--text-muted);
   line-height: 1.6;
   max-width: 680px;
+  word-break: break-word;
 }
 
 /* 3-Step Process Cards */
@@ -222,12 +230,19 @@
   border-color: var(--border-light);
 }
 
-/* Footer / Disclaimer Note */
-.welcome-footer-note {
-  font-size: 0.76rem;
-  color: var(--text-dim);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: -8px;
+@media (max-width: 600px) {
+  .welcome-landing-wrapper {
+    padding: 20px 14px 48px;
+  }
+  .welcome-landing-content {
+    gap: 20px;
+  }
+  .welcome-actions-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  .welcome-actions-row .MuiButton-root {
+    width: 100%;
+  }
 }

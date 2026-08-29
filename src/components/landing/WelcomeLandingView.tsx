@@ -189,10 +189,13 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
         </div>
 
         {/* Footer Note */}
-        <div className="welcome-footer-note" style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'center' }}>
+        <div className="welcome-footer-note" style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
           <span>{t('common:footer.privacyNote', 'All data remains in your browser storage. You can switch back here anytime via the top logo.')}</span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-            {t('common:footer.craftedBy', 'Crafted by')} <strong>{APP_LINKS.AUTHOR_NAME}</strong> ·{' '}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span>
+              {t('common:footer.craftedBy', 'Crafted by')} <strong>{APP_LINKS.AUTHOR_NAME}</strong>
+            </span>
+            <span style={{ opacity: 0.4 }}>•</span>
             <a
               href={APP_LINKS.GITHUB_REPO}
               target="_blank"
@@ -202,14 +205,14 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '3px',
+                gap: '4px',
                 fontWeight: 600,
                 borderBottom: '1px dotted currentColor',
               }}
             >
-              {t('common:footer.openSource', 'Open source on GitHub')} <StarRoundedIcon sx={{ fontSize: 13, color: 'primary.main', verticalAlign: 'middle' }} />
+              {t('common:footer.openSource', 'Open source on GitHub')} <StarRoundedIcon sx={{ fontSize: 14, color: 'primary.main' }} />
             </a>
-          </span>
+          </div>
         </div>
       </div>
     </div>
