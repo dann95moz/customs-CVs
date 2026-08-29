@@ -23,6 +23,7 @@ This document defines the strict styling, formatting, content, and ATS optimizat
   - ❌ Do NOT list high schools or secondary education if higher university education exists.
 - **Zero Hallucination (Strict SSOT):**
   - ❌ NEVER invent companies, job roles, dates, technologies, metrics, or certifications that are not present in `master-data.md`.
+  If master-data.md contains fewer than 2 verifiable quantitative metrics for a given role, use the metrics available and rely on scope/scale qualifiers (team size, technologies owned, system criticality) instead of fabricating numbers. Never pad a bullet with an invented percentage to satisfy the format.
 
 ---
 
@@ -45,10 +46,17 @@ This document defines the strict styling, formatting, content, and ATS optimizat
   2. **Technical Alignment:** Direct architectural connection addressing the core requirements in `target-job.md`.
   3. **Mandatory Closing Impact Metrics:** Must conclude with 2–3 verified quantitative metrics from `master-data.md` (e.g., *"Proven track record of cutting Jenkins CI/CD pipeline build times by 50%, reducing production runtime errors by 40% through TypeScript migrations, and accelerating feature delivery cycles by 35%."*).
 
-### C. Clean Metrics & Zero Parenthetical Noise
-- **No Parenthetical Breakdowns:** Do NOT add redundant parenthetical notes like `(from 40m down to 20m)` or `(from 40s to 15s)`. The percentage reduction (`by 50%`) delivers the message with conciseness and punch.
-- **No Trivial Counters:** Do NOT count trivial items like *"7 microfrontends"*, *"12 endpoints"*, or *"100 meetings"*. Highlight the architectural scale and technical scope instead (*"architecting modular microfrontends across multi-bank financial design systems"*).
-- **Clean Impact Percentages:** State the performance gain directly (*"cutting CI/CD pipeline build times by 50%"*, *"reducing runtime errors by 40%"*, *"accelerating sprint delivery cycles by 35%"*).
+- **No Trivial Counters, But Scale Counters Are Encouraged:**
+  - ❌ Do NOT count administrative or low-signal items: *"100 meetings"*,
+    *"50 tickets closed"*, *"7 microfrontends"*, *"12 endpoints"*. These read
+    as busywork, not impact.
+  - ✅ DO include legitimate scale/context counters that convey seniority and
+    magnitude: team size led (*"led a team of 6 engineers"*), user/traffic
+    volume (*"serving 2M+ monthly active users"*, *"handling 10K+
+    requests/second"*), or organizational reach (*"across 4 product squads"*).
+  - **Distinction rule:** if the number communicates the *scope or blast
+    radius* of the work, include it. If it only communicates *activity
+    volume* with no bearing on impact, omit it.
 
 ### D. Technical Leadership & Active Ownership Verbs
 - **Replace passive phrasing:** Instead of *"mentored junior developers"*, use proactive leadership verbs:
@@ -58,10 +66,19 @@ This document defines the strict styling, formatting, content, and ATS optimizat
   - *Optimization:* **Streamlined, Reduced, Accelerated, Scaled, Eliminated.**
 
 ### E. Universal 3-Category Skills Architecture
-- Regardless of role (Frontend, Backend, Fullstack, Data, DevOps, Mobile, QA, Product), group technical competencies into **exactly 3 strategic categories**:
-  1. **Category 1 (Languages & Core Fundamentals):** Core programming languages, base protocols, and fundamentals.
-  2. **Category 2 (Frameworks, Architecture & Ecosystem):** Primary frameworks, state management, APIs, databases, or platform architecture.
-  3. **Category 3 (Tooling, Testing, CI/CD & AI Integrations):** Testing frameworks, CI/CD pipelines, cloud, build tools, and modern developer tooling.
+- Regardless of role or discipline (Frontend, Backend, Fullstack, Data, DevOps,
+  Mobile, QA, Product, Design, Marketing, etc.), group core competencies into
+  **exactly 3 strategic categories relevant to the candidate's domain**, derived
+  from `master-data.md` and `target-job.md` — not from a fixed engineering-only
+  taxonomy. Choose the 3 categories that best represent the candidate's actual
+  expertise clusters.
+  - *Example (Software Engineering):* Languages & Core Fundamentals /
+    Frameworks, Architecture & Ecosystem / Tooling, Testing, CI/CD & AI
+    Integrations.
+  - *Example (Product Management):* Product Strategy & Discovery /
+    Analytics & Experimentation / Stakeholder & Cross-Functional Leadership.
+  - *Example (Design):* Design Systems & Tooling / UX Research & Testing /
+    Cross-Functional Collaboration.
 - Render each category as a single dense line with comma-separated items.
 
 ### F. Google XYZ Achievement Formula
@@ -82,6 +99,14 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
 ## 3. 🎯 ATS Optimization & Formatting Consistency
 
 - **Keyword Integration:** Seamlessly incorporate high-priority skills, methodologies (CI/CD, Microfrontends, Agile), and tooling explicitly mentioned in `target-job.md`.
+- **Natural Keyword Integration (No Verbatim Copying):**
+  - Integrate `target-job.md` keywords and terminology naturally into the
+    candidate's own achievements and phrasing.
+  - ❌ Never copy phrases verbatim from the job posting into the CV — this
+    reads as keyword-stuffing to both recruiters and modern ATS semantic
+    matching, and can flag as low-effort or automated.
+  - ✅ Rephrase the underlying skill or requirement in the candidate's own
+    voice, backed by their actual experience from `master-data.md`.
 - **Target Role Title Alignment:** Align the sub-header title to the target role while maintaining factual career accuracy.
 - **Strict Date Fidelity (SSOT):**
   - Copy exact start and end dates from `master-data.md` (e.g., `Oct 2024 – Apr 2026`).
@@ -92,8 +117,17 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
   - ❌ Do NOT combine multiple certifications into a single inline line separated by pipes `|` or commas (e.g. NEVER output `- **Certifications:** Cert 1 | Cert 2`).
   - ✅ Format: `- **[Certification Name]** – [Issuer], [Year]`.
 - **Language Uniformity (100% English Standard):**
-  - All CV generation, section titles, executive summaries, and experience bullets must be strictly in professional English (`PROFESSIONAL SUMMARY`, `TECHNICAL SKILLS`, `PROFESSIONAL EXPERIENCE`, `EDUCATION & CERTIFICATIONS`, `LANGUAGES`), regardless of whether input job postings or raw notes contain text in other languages.
-
+  - Generate the CV in the same language as target-job.md. If the job posting's language cannot be reliably detected, default to English. Section headers (PROFESSIONAL SUMMARY, etc.) must also be translated accordingly — never mixed languages within the same document.
+- **Optional Projects & Extras Selection:**
+  - Items in the candidate's optional "Projects & Extras" pool (personal
+    projects, publications, volunteer work, talks, awards, etc.) are **not
+    included automatically or in full**.
+  - Select only the items most relevant to `target-job.md`, using the same
+    relevance criteria applied to Professional Experience bullets.
+  - If none of the pool items are relevant to the target role, omit the
+    section entirely rather than padding the CV with unrelated content.
+  - Never fabricate or expand details beyond what the candidate provided for
+    each item — the same Zero Hallucination / Strict SSOT rule applies here.
 ---
 
 ## 4. 📊 Quality Audit & Scoring Standard (Quality Report)
