@@ -49,7 +49,11 @@
     },
     "skills": {
       "title": "Competenze Tecniche",
-      "addGroup": "Aggiungi Gruppo di Competenze",
+      "desc": "Organizza le tue competenze in categorie chiare. Digita una competenza e premi Invio, o clicca sui suggerimenti.",
+      "empty": "Nessuna competenza aggiunta in questo gruppo. Digita sotto o scegli un suggerimento.",
+      "addPlaceholder": "Aggiungi competenza (Invio o virgola)...",
+      "quickSuggestions": "Aggiunta rapida:",
+      "addGroup": "Aggiungi gruppo di competenze",
       "groupName": "Nome Categoria (es. Linguaggi & Framework)",
       "skillsList": "Competenze (separate da virgole)",
       "removeGroup": "Rimuovi Categoria"

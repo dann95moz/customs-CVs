@@ -49,7 +49,11 @@
     },
     "skills": {
       "title": "Habilidades Técnicas y Competencias",
-      "addGroup": "Agregar Grupo de Habilidades",
+      "desc": "Organiza tus competencias técnicas en categorías claras. Escribe una habilidad y presiona Enter, o haz clic en sugerencias.",
+      "empty": "No hay habilidades agregadas en este grupo. Escribe abajo o elige una sugerencia.",
+      "addPlaceholder": "Añadir habilidad (Enter o coma)...",
+      "quickSuggestions": "Añadir rápido:",
+      "addGroup": "Agregar Grupo de Competencia",
       "groupName": "Nombre de Categoría (ej. Lenguajes y Frameworks)",
       "skillsList": "Habilidades (separadas por comas)",
       "removeGroup": "Eliminar Categoría"

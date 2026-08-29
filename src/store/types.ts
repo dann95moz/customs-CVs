@@ -3,6 +3,7 @@ import {
   PaletteId,
   FontFamilyId,
   SpacingDensity,
+  PageFormat,
   StudioTab,
   WizardStep,
   AIProviderSettings,
@@ -43,12 +44,14 @@ export interface CvDataSlice {
 
 export interface DesignSlice {
   pageBudget: 1 | 2;
+  pageFormat: PageFormat;
   theme: ThemeId;
   palette: PaletteId;
   customColor: string;
   fontFamily: FontFamilyId;
   spacingDensity: SpacingDensity;
   setPageBudget: (val: 1 | 2) => void;
+  setPageFormat: (val: PageFormat) => void;
   setTheme: (val: ThemeId) => void;
   setPalette: (val: PaletteId) => void;
   setCustomColor: (val: string) => void;

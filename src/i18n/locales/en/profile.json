@@ -49,6 +49,10 @@
     },
     "skills": {
       "title": "Technical Skills & Competencies",
+      "desc": "Organize your technical competencies into clean categories. Type a skill and press Enter, or click suggestions.",
+      "empty": "No skills added yet in this group. Type below or pick a suggestion.",
+      "addPlaceholder": "Add skill (press Enter or comma)...",
+      "quickSuggestions": "Quick add:",
       "addGroup": "Add Skill Group",
       "groupName": "Category Name (e.g. Languages & Frameworks)",
       "skillsList": "Skills (comma separated)",

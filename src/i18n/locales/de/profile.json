@@ -48,11 +48,15 @@
       "removeRole": "Position entfernen"
     },
     "skills": {
-      "title": "Fachkenntnisse & Fähigkeiten",
-      "addGroup": "Gruppe hinzufügen",
+      "title": "Technische Fähigkeiten & Kompetenzen",
+      "desc": "Organisieren Sie Ihre Kompetenzen in klare Kategorien. Geben Sie eine Fähigkeit ein und drücken Sie Enter, oder wählen Sie Vorschläge.",
+      "empty": "Noch keine Fähigkeiten hinzugefügt. Tippen Sie unten oder wählen Sie einen Vorschlag.",
+      "addPlaceholder": "Fähigkeit hinzufügen (Enter oder Komma)...",
+      "quickSuggestions": "Schnell hinzufügen:",
+      "addGroup": "Fähigkeitengruppe hinzufügen",
       "groupName": "Kategoriename (z. B. Sprachen & Frameworks)",
-      "skillsList": "Fähigkeiten (kommagetrennt)",
-      "removeGroup": "Gruppe entfernen"
+      "skillsList": "Fähigkeiten (durch Kommas getrennt)",
+      "removeGroup": "Kategorie entfernen"
     },
     "education": {
       "title": "Ausbildung & Zertifikate",

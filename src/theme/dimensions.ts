@@ -1,17 +1,59 @@
-/**
- * CV Studio Pro - Centralized Dimension & Spacing Design Tokens
- * 
- * Single source of truth for element sizes, container constraints,
- * paper document dimensions (A4/Letter), and border radiuses.
- * Adheres to DRY & SOLID principles.
- */
+import { PageFormat } from '../types/theme';
+
+export interface PageFormatConfig {
+  id: PageFormat;
+  name: string;
+  shortLabel: string;
+  width: string;
+  height: string;
+  widthPx: number;
+  heightPx: number;
+  printSize: string;
+}
+
+export const PAGE_FORMAT_CONFIGS: Record<PageFormat, PageFormatConfig> = {
+  a4: {
+    id: 'a4',
+    name: 'A4 Standard (210 × 297 mm)',
+    shortLabel: 'A4',
+    width: '794px',
+    height: '1123px',
+    widthPx: 794,
+    heightPx: 1123,
+    printSize: 'A4 portrait',
+  },
+  letter: {
+    id: 'letter',
+    name: 'US Letter (8.5 × 11 in)',
+    shortLabel: 'Letter',
+    width: '816px',
+    height: '1056px',
+    widthPx: 816,
+    heightPx: 1056,
+    printSize: 'letter portrait',
+  },
+  legal: {
+    id: 'legal',
+    name: 'US Legal (8.5 × 14 in)',
+    shortLabel: 'Legal',
+    width: '816px',
+    height: '1344px',
+    widthPx: 816,
+    heightPx: 1344,
+    printSize: 'legal portrait',
+  },
+};
 
 export const DOCUMENT_DIMENSIONS = {
-  pageWidth: '795px',
+  pageWidth: '794px',
   pageHeight: '1123px',
   pageHeightPx: 1123,
   marginSingleCol: '10mm 12mm',
 } as const;
+
+export function getPageFormatConfig(format: PageFormat = 'a4'): PageFormatConfig {
+  return PAGE_FORMAT_CONFIGS[format] || PAGE_FORMAT_CONFIGS.a4;
+}
 
 export const LAYOUT_DIMENSIONS = {
   navbarHeight: '64px',

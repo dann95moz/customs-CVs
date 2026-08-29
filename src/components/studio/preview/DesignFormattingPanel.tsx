@@ -16,7 +16,7 @@ import {
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
 import { useTranslation } from 'react-i18next';
-import { PaletteId, FontFamilyId, SpacingDensity, DesignFormattingPanelProps } from '../../../types';
+import { PaletteId, FontFamilyId, SpacingDensity, PageFormat, DesignFormattingPanelProps } from '../../../types';
 import { getAllPalettes } from '../../../constants/palettes';
 
 export type { DesignFormattingPanelProps };
@@ -30,6 +30,9 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
   onFontFamilyChange,
   spacingDensity,
   onSpacingDensityChange,
+  pageFormat = 'a4',
+  onPageFormatChange,
+  onAutoFit,
   sheetHeight,
   a4PagePx,
   estimatedPages,
@@ -223,14 +226,55 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       <Divider sx={{ my: 2 }} />
 
-      {/* Section 4: Page Budget & Scale Meter */}
-      <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1 }}>
-        {t('preview:toolbar.pageFit', 'Page Budget & Scale')}
+      {/* Section 4: Page Paper Format */}
+      <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>
+        {t('preview:panels.design.pageFormat', 'Paper Format')}
       </Typography>
+      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.2, lineHeight: 1.4 }}>
+        Select standard international A4 or North American Letter/Legal.
+      </Typography>
+
+      <ToggleButtonGroup
+        value={pageFormat}
+        exclusive
+        onChange={(_, val) => val && onPageFormatChange && onPageFormatChange(val as PageFormat)}
+        size="small"
+        fullWidth
+        sx={{ mb: 2.5 }}
+      >
+        <ToggleButton value="a4" sx={{ fontSize: '0.72rem', fontWeight: 700, py: 0.6 }}>
+          A4 (210×297)
+        </ToggleButton>
+        <ToggleButton value="letter" sx={{ fontSize: '0.72rem', fontWeight: 700, py: 0.6 }}>
+          Letter (8.5×11")
+        </ToggleButton>
+        <ToggleButton value="legal" sx={{ fontSize: '0.72rem', fontWeight: 700, py: 0.6 }}>
+          Legal (8.5×14")
+        </ToggleButton>
+      </ToggleButtonGroup>
+
+      <Divider sx={{ my: 2 }} />
+
+      {/* Section 5: Page Budget & Scale Meter */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+          {t('preview:toolbar.pageFit', 'Page Budget & Scale')}
+        </Typography>
+        {onAutoFit && (
+          <Chip
+            label="⚡ Auto-Fit"
+            size="small"
+            color={estimatedPages > 1 ? 'warning' : 'primary'}
+            onClick={onAutoFit}
+            clickable
+            sx={{ fontWeight: 800, height: 22, fontSize: '0.7rem' }}
+          />
+        )}
+      </Box>
       <Paper variant="outlined" sx={{ p: 1.5, borderRadius: '8px' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-          <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>Target Format:</Typography>
-          <Typography variant="caption" sx={{ fontWeight: 700 }}>A4 Standard (1 Page)</Typography>
+          <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>Paper Standard:</Typography>
+          <Typography variant="caption" sx={{ fontWeight: 700 }}>{pageFormat.toUpperCase()} ({a4PagePx}px)</Typography>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>Rendered Height:</Typography>
@@ -250,7 +294,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           sx={{ height: 6, borderRadius: 3 }}
         />
         <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.66rem', mt: 0.5, display: 'block', textAlign: 'right' }}>
-          {Math.round((sheetHeight / a4PagePx) * 100)}% of 1 A4 Page
+          {Math.round((sheetHeight / a4PagePx) * 100)}% of 1 {pageFormat.toUpperCase()} Page
         </Typography>
       </Paper>
     </Box>

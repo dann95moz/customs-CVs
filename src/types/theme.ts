@@ -28,6 +28,7 @@ export type PaletteId =
 
 export type FontFamilyId = 'inter' | 'outfit' | 'serif' | 'mono';
 export type SpacingDensity = 'compact' | 'standard' | 'spacious';
+export type PageFormat = 'a4' | 'letter' | 'legal';
 
 export interface ThemeConfig {
   id: ThemeId;
