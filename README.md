@@ -1,6 +1,6 @@
 # 🚀 CV Studio & Tailor Engine (v2.0)
 
-A modular, production-grade resume tailoring, preview, and PDF generation engine built with **TypeScript**, **React 19**, **Vite**, **Puppeteer**, and **Multi-Provider AI Strategies**.
+A modular, production-grade resume tailoring, preview, and PDF generation engine built with **TypeScript**, **React 19**, **MUI 9**, **Vite**, **Puppeteer**, and **Multi-Provider AI Strategies**.
 
 Designed to produce high-impact, pixel-perfect CVs optimized for **Applicant Tracking Systems (ATS)**, executive recruiters, and modern technical hiring managers.
 
@@ -18,12 +18,16 @@ flowchart TB
         RL["rules.md<br>(ATS & Google XYZ Formula Rules)"]
     end
 
+    subgraph STATE["🧠 Sliced State Management (Zustand)"]
+        STORE["useResumeStore<br>(cvDataSlice | designSlice | aiSlice | uiSlice | historySlice)"]
+    end
+
     subgraph AI["🤖 AI Synthesis & Tailoring Layer (Strategy Pattern)"]
         PB["Prompt Builder<br>(ATS Directives & Keyword Mapping)"]
         STRAT{"Provider Strategy"}
         GEM["Google Gemini<br>(Flash / Pro)"]
         GROQ["Groq<br>(Llama 3.3 / DeepSeek R1)"]
-        OAI["OpenAI / Claude / OpenRouter"]
+        OAI["OpenRouter / OpenAI / Claude"]
         OLLAMA["Local Ollama / LM Studio"]
         COND["Self-Healing Condenser<br>(Auto-fits to Page Budget)"]
     end
@@ -31,11 +35,11 @@ flowchart TB
     subgraph CORE["⚙️ Core Parser & AST Transformation"]
         PARSER["Markdown Parser & Slot Mapper"]
         CVAST["Normalized CVData AST<br>(Header, Summary, Experience, Skills, Education)"]
-        AUDIT["Quality & ATS Audit Engine<br>(1-10 Section Scores & Gap Analysis)"]
+        AUDIT["Quality & ATS Audit Engine<br>(6 Dimensions, 1-10 Scores & Gap Analysis)"]
     end
 
     subgraph RENDER["🎨 Design System & Visual Renderer"]
-        REGISTRY["Template Registry (7 Templates)"]
+        REGISTRY["Template Registry (7 ATS Templates)"]
         PALETTES["Palette System (10 Curated + Custom HEX)"]
         TYPO["Typography & Density Tokens<br>(Inter, Outfit, Serif, Mono | Compact, Standard, Spacious)"]
         ICONS["Zero-Dependency Vector SVGs<br>(Lucide/Feather Style for ATS)"]
@@ -43,16 +47,17 @@ flowchart TB
     end
 
     subgraph TARGETS["🖥️ Dual Export Targets"]
-        STUDIO["CV Studio Web (Vite + React 19)<br>Real-time Editing & Live A4 Height Calibration"]
+        STUDIO["CV Studio Web (Vite + React 19)<br>3-Step Wizard, Split Editor & Live A4 Height Calibration"]
         PUPPETEER["Headless CLI SSR (Puppeteer)<br>Static Markup + Auto-Fit Scaling + Vector PDF"]
     end
 
-    MD & TJ & RL --> PB
+    MD & TJ & RL --> STORE
+    STORE --> PB
     PB --> STRAT
     STRAT --> GEM & GROQ & OAI & OLLAMA
     GEM & GROQ & OAI & OLLAMA --> COND
-    COND --> PARSER
-    MD --> PARSER
+    COND --> STORE
+    STORE --> PARSER
     PARSER --> CVAST
     CVAST --> AUDIT
     CVAST --> CVR
@@ -66,11 +71,11 @@ flowchart TB
 ### Architectural Pillars
 
 1. **Immutable Single Source of Truth (SSOT):**
-   * [master-data.md](file:///c:/Users/LeGo/Documents/customs%20CVs/master-data.md) is **strictly read-only**.
+   * [`master-data.md`](file:///c:/Users/LeGo/Documents/customs%20CVs/master-data.md) is **strictly read-only**.
    * The AI engines and CLI never overwrite your career history. Every application produces an isolated, versioned artifact in `outputs/` (e.g. `outputs/CV_Jane_Doe_Stripe.md` and `outputs/CV_Jane_Doe_Stripe.pdf`).
 
 2. **Dual-Engine Architecture (Frontend Studio + Headless CLI):**
-   * **Browser Studio ([src/components/studio/](file:///c:/Users/LeGo/Documents/customs%20CVs/src/components/studio/)):** Interactive Vite + React SPA featuring side-by-side markdown comparison, real-time A4 height measurement, live page boundary indicator, and ATS keyword extraction.
+   * **Browser Studio ([src/components/studio/](file:///c:/Users/LeGo/Documents/customs%20CVs/src/components/studio/)):** Interactive Vite + React 19 SPA featuring a 3-step guided wizard, side-by-side markdown comparison, real-time A4 height measurement, live page boundary indicator, quality audit drawer, and non-intrusive floating toasts.
    * **Headless Node Engine ([src/core/pdf-generator.ts](file:///c:/Users/LeGo/Documents/customs%20CVs/src/core/pdf-generator.ts)):** Server-side rendering using `renderToStaticMarkup` without browser overhead, driving headless Puppeteer to generate print-calibrated A4 vector PDFs with sub-millimeter margins.
 
 3. **100% Parity Between CLI and UI:**
@@ -86,6 +91,9 @@ flowchart TB
 6. **Self-Healing AI Condensation Loop:**
    * If a generated resume slightly overshoots the requested page budget (e.g. 1.15 pages for a 1-page target), the engine automatically executes a precision condensation pass using the Google XYZ formula before finalizing the PDF.
 
+7. **Centralized Design System & Tokens:**
+   * Colors, dimensions, and typography are managed via a single source of truth in [src/theme/](file:///c:/Users/LeGo/Documents/customs%20CVs/src/theme/), feeding both MUI themes and `:root` CSS custom properties with native Dark/Light mode support.
+
 ---
 
 ## 📁 Project Directory Structure
@@ -98,20 +106,33 @@ flowchart TB
 ├── outputs/                     # 📤 Generated tailored CVs, Gap Reports, and vector PDFs
 ├── prompts/                     # 🤖 Standalone AI prompt templates
 ├── src/
-│   ├── cli/                     # CLI orchestrator and argument parser (npm run ...)
+│   ├── app/                     # Main Application root & layout orchestrator (App.tsx)
+│   ├── cli/                     # CLI orchestrator and interactive wizard (index.ts, commands)
 │   ├── components/              # Universal React components (CVRenderer, Icons, Slots)
+│   │   ├── landing/             # Welcome & Onboarding view
 │   │   ├── slots/               # Reusable atomic CV content slots (Header, Experience, etc.)
-│   │   └── studio/              # CV Studio Web UI (Navbar, Preview, Stepper, Settings)
-│   ├── constants/               # Design tokens (10 curated palettes, typography, metrics)
+│   │   └── studio/              # CV Studio Web UI
+│   │       ├── ai/              # Quick AI configuration & model testing modals
+│   │       ├── audit/           # Quality audit cards & interactive improvement modals
+│   │       ├── history/         # Application versions & history browser
+│   │       ├── preview/         # Preview toolbar, nav rail, side panels & audit drawer
+│   │       ├── profile/         # Master data form & profile inspector
+│   │       ├── settings/        # AI credentials, synthesis rules & community credits
+│   │       └── tailor/          # AI model selector & page budget selector
+│   ├── constants/               # Curated palettes, typography tokens, and project links
 │   ├── core/                    # Core business logic & services
-│   │   ├── ai/                  # AI Strategy pattern, prompt builder, and regex extractors
-│   │   ├── audit.ts             # 1-10 quality audit score evaluator
-│   │   ├── parser.ts            # Markdown AST parser & sanitizer
+│   │   ├── ai/                  # AI Strategy pattern, prompt builder & auto-condenser
+│   │   ├── parser/              # Markdown AST parser, serializer & slot mapper
+│   │   ├── audit-engine.ts      # 6-dimension quality & ATS audit evaluator
 │   │   ├── pdf-generator.ts     # React SSR -> Puppeteer vector PDF compiler
 │   │   └── workspace.ts         # Path resolution and workspace discovery
-│   ├── templates/               # 7 Professional CV visual templates & registry
-│   ├── themes/                  # Universal CSS reset (cv-base.css) + 7 theme stylesheets
-│   └── types/                   # TypeScript interfaces (CVData, ThemeId, PaletteId, etc.)
+│   ├── hooks/                   # Custom stateful hooks (useGitHubStarPrompt, useAuditActions, etc.)
+│   ├── store/                   # Sliced Zustand store (cvData, design, ai, ui, history)
+│   ├── styles/                  # Clean vanilla CSS modules (tokens, preview, print, audit)
+│   ├── templates/               # 7 Professional CV visual templates & template registry
+│   ├── theme/                   # Centralized design tokens (colors, dimensions, MUI theme)
+│   ├── themes/                  # Universal CSS stylesheets for the 7 templates
+│   └── types/                   # TypeScript interfaces & shared domain types
 ├── index.html                   # CV Studio Web entry point
 ├── package.json                 # Scripts and dependency declarations
 └── vite.config.ts               # Vite server configuration
@@ -122,7 +143,7 @@ flowchart TB
 ## ⚡ Quick Start & Common Commands
 
 ### 0. 🧙‍♂️ Interactive Terminal Wizard (No Flags Needed!)
-For a guided experience without memorizing CLI flags, launch the interactive assistant:
+For a guided CLI experience without memorizing flags:
 ```bash
 npm run wizard
 # or
@@ -261,7 +282,7 @@ All palettes are calibrated for **WCAG AA contrast** and ensure body copy remain
 
 * **Font Families (`--font`):**
   * `inter`: Clean, high-readability sans-serif optimized for screens and ATS readers (Default).
-  * `outfit`: Contemporary geometric sans-serif (Plus Jakarta Sans companion) for modern tech aesthetics.
+  * `outfit`: Contemporary geometric sans-serif for modern tech aesthetics.
   * `serif`: Formal Merriweather / EB Garamond for executive, legal, and academic resumes.
   * `mono`: Technical JetBrains Mono accent for dev-heavy resumes.
 * **Spacing Density (`--density`):**
@@ -275,7 +296,7 @@ All palettes are calibrated for **WCAG AA contrast** and ensure body copy remain
 
 If you are using an AI-assisted IDE (like **Google Antigravity**, Cursor, or VS Code with Claude/Gemini):
 
-1. **Configure Job:** Paste the vacancy requirements into [target-job.md](file:///c:/Users/LeGo/Documents/customs%20CVs/target-job.md).
+1. **Configure Job:** Paste the vacancy requirements into [`target-job.md`](file:///c:/Users/LeGo/Documents/customs%20CVs/target-job.md).
 2. **Prompt the IDE Assistant:** In your IDE chat, simply ask:
    > *"Read `rules.md`, `master-data.md`, and `target-job.md`. Tailor my resume for Stripe into 1 page and save it to `outputs/CV_Daniel_Corredor_Acosta_Stripe.md`"*.
 3. **Compile via CLI with your preferred style:**
@@ -294,7 +315,7 @@ The CV Studio frontend is production-ready for deployment on **Vercel** with zer
 
 1. Push your repository to GitHub (keep it **Private**).
 2. Go to [Vercel Dashboard](https://vercel.com) and click **"Add New Project"**.
-3. Select this repository. Vercel automatically detects the preset from [vercel.json](file:///c:/Users/LeGo/Documents/customs%20CVs/vercel.json):
+3. Select this repository. Vercel automatically detects the preset from [`vercel.json`](file:///c:/Users/LeGo/Documents/customs%20CVs/vercel.json):
    * **Framework Preset:** Vite
    * **Build Command:** `npm run build`
    * **Output Directory:** `dist`
@@ -315,7 +336,7 @@ You can distribute the CLI tool publicly on npm without exposing your private Gi
    ```bash
    npm publish --access public
    ```
-   *[.npmignore](file:///c:/Users/LeGo/Documents/customs%20CVs/.npmignore) strictly blocks `src/`, `master-data.md`, `target-job.md`, `.env`, and git configs, publishing only the compiled binary and themes.*
+   *[`..npmignore`](file:///c:/Users/LeGo/Documents/customs%20CVs/.npmignore) strictly blocks `src/`, `master-data.md`, `target-job.md`, `.env`, and git configs, publishing only the compiled binary and themes.*
 
 ---
 
