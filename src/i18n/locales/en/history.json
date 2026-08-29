@@ -1,0 +1,35 @@
+{
+  "title": "Tailored Applications Dashboard",
+  "subtitle": "Review and manage all your tailored applications, target companies, and generated resume versions.",
+  "badge": "Application History",
+  "newApplication": "+ New Tailored Resume",
+  "searchPlaceholder": "Filter by company name or target role...",
+  "stats": {
+    "total": "Total Tailored CVs",
+    "avgMatch": "Avg. Match Score",
+    "companies": "Target Companies",
+    "applied": "Applied",
+    "interviews": "Interviews",
+    "offers": "Offers"
+  },
+  "status": {
+    "draft": "Saved Draft",
+    "applied": "Applied",
+    "interviewing": "Interviewing",
+    "offer": "Offer Received",
+    "rejected": "Rejected",
+    "archived": "Archived"
+  },
+  "card": {
+    "openInStudio": "View & Edit in Studio",
+    "exportPdf": "Export PDF",
+    "viewGap": "View Gap Report",
+    "delete": "Delete Version",
+    "lastModified": "Tailored"
+  },
+  "empty": {
+    "title": "No Applications Saved Yet",
+    "desc": "Whenever you synthesize a tailored resume for a specific company, it will be automatically saved here for tracking.",
+    "action": "Start New Application"
+  }
+}

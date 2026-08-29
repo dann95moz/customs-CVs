@@ -1,0 +1,20 @@
+{
+  "title": "Stratégie d'Alignement & Rapport d'Écarts",
+  "subtitle": "Croise votre parcours avec les exigences du recruteur et met en valeur la stratégie de mitigation.",
+  "matchScore": "Adéquation Estimée",
+  "companyTarget": "Opportunité Cible",
+  "integratedKeywords": "Mots-clés Stratégiques Intégrés",
+  "matched": "Correspondants",
+  "missing": "Atténués / Écarts",
+  "downloadReport": "Exporter le Rapport (.md)",
+  "lockedNoJob": {
+    "title": "Aucune offre cible renseignée",
+    "desc": "L'analyse d'écarts compare votre profil aux exigences spécifiques du recruteur. Veuillez d'abord coller ou téléverser une offre dans l'assistant.",
+    "action": "Ajouter une Offre dans l'Assistant"
+  },
+  "lockedNoReport": {
+    "title": "Prêt à Générer la Stratégie d'Alignement",
+    "desc": "Vous avez renseigné les détails de l'offre pour {{company}}. Cliquez ci-dessous pour synthétiser votre CV adapté et générer le rapport d'analyse.",
+    "action": "✨ Générer le CV Adapté Maintenant"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "stepBadge": "Paso 2 de 3 • Oferta Objetivo y Adaptación",
+  "title": "Oferta Laboral Objetivo",
+  "subtitle": "Pega la descripción de la oferta laboral. La IA calibrará automáticamente la longitud óptima, las métricas de impacto y la concordancia de palabras clave.",
+  "actions": {
+    "loadSample": "Cargar Oferta de Ejemplo",
+    "uploadFile": "Subir Archivo de Oferta",
+    "exportFile": "Exportar Archivo",
+    "backToProfile": "Volver a Perfil (Paso 1)",
+    "tailorNow": "✨ Adaptar Currículum Ahora",
+    "tailoring": "✨ Adaptando Currículum...",
+    "viewExisting": "Ver CV Existente"
+  },
+  "fields": {
+    "company": "Empresa / Empleador Objetivo",
+    "companyPlaceholder": "ej. Stripe, Airbnb, Google",
+    "role": "Puesto / Cargo Objetivo",
+    "rolePlaceholder": "ej. Senior Frontend Engineer",
+    "vacancyLength": "Longitud de la Oferta",
+    "words": "palabras"
+  },
+  "editor": {
+    "editText": "Editar Texto",
+    "formattedPreview": "Vista Previa Formateada",
+    "editModeTitle": "Descripción de la Oferta (Texto Plano / Markdown)",
+    "previewModeTitle": "Vista Previa de la Oferta",
+    "placeholder": "Pega aquí la descripción de la oferta desde LinkedIn, Indeed o la página de empleo...\n\nSobre el puesto:\nBuscamos un ingeniero con experiencia...\n\nRequisitos clave:\n• Experiencia en tecnologías web modernas\n• Trayectoria demostrada en resolución de problemas",
+    "noJobPasted": "*Aún no has pegado la descripción del trabajo. Cambia a Editar Texto para agregarla.*"
+  },
+  "progress": {
+    "title": "Sintetizando Currículum Adaptado con IA...",
+    "step1": "Analizando requisitos del puesto y extrayendo palabras clave...",
+    "step2": "Cruzando con perfil maestro (cero alucinaciones)...",
+    "step3": "Sintetizando Markdown optimizado para ATS y reporte de brechas...",
+    "defaultStep": "Cruzando competencias y sintetizando logros con fórmula XYZ...",
+    "note": "⚡ Aplicando salvaguardas de fidelidad fáctica y métricas Google XYZ. Serás redirigido automáticamente a tu CV en vivo cuando termine la generación."
+  },
+  "status": {
+    "ready": "Detalles de la oferta listos",
+    "missing": "Pega una oferta de trabajo para adaptar"
+  },
+  "modal": {
+    "title": "Configurar Proveedor de IA",
+    "subtitle": "Selecciona un modelo de IA o ingresa tu clave API para sintetizar tu currículum adaptado.",
+    "saveAndGenerate": "Guardar y Adaptar Currículum"
+  },
+  "pageBudget": {
+    "title": "1. Longitud del Currículum (Presupuesto de Páginas)",
+    "subtitle": "Selecciona la longitud objetivo calibrada para tu nivel de experiencia.",
+    "onePage": "1 Página (Estándar A4)",
+    "onePageDesc": "Ideal para escaneos de reclutadores de 30 segundos. Prioriza métricas de alto impacto y logros XYZ de Google.",
+    "twoPages": "2 Páginas (Extendido)",
+    "twoPagesBadge": "Senior / Líder",
+    "twoPagesDesc": "Para directores, líderes técnicos o especialistas con 8-10+ años de sólida trayectoria y publicaciones."
+  }
+}

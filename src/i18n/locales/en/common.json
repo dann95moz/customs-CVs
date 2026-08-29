@@ -1,0 +1,63 @@
+{
+  "appName": "CV Studio",
+  "tagline": "AI-Powered Resume Engine",
+  "nav": {
+    "resumeStudio": "Resume Studio",
+    "myApplications": "My Applications",
+    "settingsAndAi": "Settings & AI",
+    "settings": "Settings",
+    "viewOverview": "View Product Overview & Guide",
+    "starGithub": "Star on GitHub ⭐",
+    "switchTheme": "Switch to {{mode}} mode",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "badge": {
+    "optional": "Optional",
+    "recommended": "Recommended",
+    "added": "Added",
+    "essential": "Essential"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "back": "Back",
+    "done": "Done",
+    "close": "Close",
+    "edit": "Edit",
+    "delete": "Delete",
+    "copy": "Copy",
+    "download": "Download",
+    "upload": "Upload",
+    "export": "Export",
+    "reset": "Reset",
+    "refresh": "Refresh",
+    "loadSample": "Load Sample",
+    "startBlank": "Start Blank",
+    "search": "Search",
+    "filter": "Filter",
+    "apply": "Apply",
+    "retry": "Retry"
+  },
+  "language": {
+    "selectLanguage": "Language",
+    "chooseLanguage": "Select language"
+  },
+  "status": {
+    "inProgress": "In Progress",
+    "ready": "Ready",
+    "completed": "Completed",
+    "locked": "Locked",
+    "error": "AI Generation Notice",
+    "step": "Step {{number}}"
+  },
+  "safeguard": {
+    "tooltip": "Integrity safeguard active: Guarantees tailored resumes stay 100% faithful to your real experience without hallucinating skills or fake metrics."
+  },
+  "footer": {
+    "privacyNote": "All data remains in your browser storage. You can switch back here anytime via the top logo.",
+    "craftedBy": "Crafted by",
+    "openSource": "Open source on GitHub"
+  }
+}

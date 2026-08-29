@@ -1,0 +1,92 @@
+{
+  "stepBadge": "Step 1 of 3 • Candidate Profile",
+  "title": "Your Career Profile",
+  "subtitle": "Add your career history and skills once. We'll automatically adapt it for every job you apply to.",
+  "actions": {
+    "loadSample": "Load Sample Profile",
+    "uploadFile": "Upload File (.md)",
+    "exportBackup": "Export Backup",
+    "startBlank": "Start Blank",
+    "continueToTarget": "Continue to Target Vacancy (Step 2)"
+  },
+  "modes": {
+    "guidedAssistant": "Guided Assistant",
+    "markdownEditor": "Markdown Editor",
+    "guidedTitle": "Structured Profile Assistant",
+    "markdownTitle": "Natural Freeform Dossier (Markdown / Natural Language)"
+  },
+  "status": {
+    "ready": "Master profile ready for tailoring",
+    "tipLoadSample": "Tip: Click 'Load Sample Profile' to test right away"
+  },
+  "sections": {
+    "personalInfo": {
+      "title": "Personal Information & Contacts",
+      "fullName": "Full Name",
+      "jobTitle": "Professional Title / Headline",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "location": "Location / City, Country",
+      "linkedin": "LinkedIn URL",
+      "github": "GitHub URL",
+      "portfolio": "Portfolio / Website"
+    },
+    "summary": {
+      "title": "Professional Summary",
+      "label": "Executive Summary & Core Value Proposition",
+      "placeholder": "Write 3-4 impactful sentences highlighting your core engineering expertise, architectural strengths, and quantitative track record..."
+    },
+    "experience": {
+      "title": "Work Experience & Roles",
+      "addRole": "Add Experience Role",
+      "company": "Company / Organization",
+      "role": "Role / Title",
+      "dates": "Dates (e.g. 2021 – Present)",
+      "location": "Location",
+      "bullets": "Achievements & Responsibilities (XYZ Formula)",
+      "addBullet": "Add Bullet Point",
+      "removeRole": "Remove Role"
+    },
+    "skills": {
+      "title": "Technical Skills & Competencies",
+      "addGroup": "Add Skill Group",
+      "groupName": "Category Name (e.g. Languages & Frameworks)",
+      "skillsList": "Skills (comma separated)",
+      "removeGroup": "Remove Category"
+    },
+    "education": {
+      "title": "Education & Certifications",
+      "addEducation": "Add Degree / Certification",
+      "degree": "Degree / Certification Title",
+      "institution": "Institution / Issuer",
+      "year": "Year / Graduation",
+      "location": "Location (optional)",
+      "remove": "Remove"
+    },
+    "languages": {
+      "title": "Languages",
+      "addLanguage": "Add Language",
+      "language": "Language",
+      "proficiency": "Proficiency (e.g. Native, Fluent, Professional)",
+      "remove": "Remove"
+    },
+    "projects": {
+      "title": "Key Projects & Open Source (Optional)",
+      "addProject": "Add Project",
+      "projectName": "Project Title",
+      "role": "Role / Technology",
+      "date": "Date / Year",
+      "link": "Project URL / Repository",
+      "bullets": "Highlights & Metrics",
+      "remove": "Remove Project"
+    }
+  },
+  "stepper": {
+    "profileLabel": "Candidate Profile",
+    "profileSubtitle": "Career history & skills",
+    "targetLabel": "Target Vacancy",
+    "targetSubtitle": "Job posting & tailoring",
+    "previewLabel": "Live CV & PDF Export",
+    "previewSubtitle": "Preview & download PDF"
+  }
+}

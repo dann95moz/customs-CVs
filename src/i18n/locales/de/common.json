@@ -1,0 +1,63 @@
+{
+  "appName": "CV Studio",
+  "tagline": "KI-gestützte Lebenslauf-Engine",
+  "nav": {
+    "resumeStudio": "Lebenslauf Studio",
+    "myApplications": "Meine Bewerbungen",
+    "settingsAndAi": "Einstellungen & KI",
+    "settings": "Einstellungen",
+    "viewOverview": "Produktübersicht & Anleitung anzeigen",
+    "starGithub": "Stern auf GitHub vergeben ⭐",
+    "switchTheme": "Zu {{mode}}-Modus wechseln",
+    "light": "Hell",
+    "dark": "Dunkel"
+  },
+  "badge": {
+    "optional": "Optional",
+    "recommended": "Empfohlen",
+    "added": "Hinzugefügt",
+    "essential": "Erforderlich"
+  },
+  "actions": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "continue": "Weiter",
+    "back": "Zurück",
+    "done": "Fertig",
+    "close": "Schließen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "copy": "Kopieren",
+    "download": "Herunterladen",
+    "upload": "Hochladen",
+    "export": "Exportieren",
+    "reset": "Zurücksetzen",
+    "refresh": "Aktualisieren",
+    "loadSample": "Beispiel laden",
+    "startBlank": "Leer beginnen",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "apply": "Anwenden",
+    "retry": "Wiederholen"
+  },
+  "language": {
+    "selectLanguage": "Sprache",
+    "chooseLanguage": "Sprache auswählen"
+  },
+  "status": {
+    "inProgress": "In Bearbeitung",
+    "ready": "Bereit",
+    "completed": "Abgeschlossen",
+    "locked": "Gesperrt",
+    "error": "KI-Generierungshinweis",
+    "step": "Schritt {{number}}"
+  },
+  "safeguard": {
+    "tooltip": "Integritätsschutz aktiv: Garantiert, dass angepasste Lebensläufe zu 100% Ihrer tatsächlichen Erfahrung entsprechen, ohne Erfindung von Fähigkeiten oder falschen Metriken."
+  },
+  "footer": {
+    "privacyNote": "Alle Daten verbleiben in Ihrem Browser-Speicher. Über das obere Logo können Sie jederzeit hierher zurückkehren.",
+    "craftedBy": "Erstellt von",
+    "openSource": "Open Source auf GitHub"
+  }
+}

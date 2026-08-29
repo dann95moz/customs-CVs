@@ -1,0 +1,56 @@
+{
+  "stepBadge": "Passo 2 di 3 • Offerta Obiettivo & Adattamento",
+  "title": "Offerta di Lavoro Obiettivo",
+  "subtitle": "Incolla la descrizione della posizione. L'IA calibrerà automaticamente la lunghezza ideale, le metriche di impatto e le parole chiave.",
+  "actions": {
+    "loadSample": "Carica Offerta di Esempio",
+    "uploadFile": "Carica File Offerta",
+    "exportFile": "Esporta File",
+    "backToProfile": "Torna al Profilo (Passo 1)",
+    "tailorNow": "✨ Adatta il Curriculum Ora",
+    "tailoring": "✨ Adattamento in corso...",
+    "viewExisting": "Visualizza CV Esistente"
+  },
+  "fields": {
+    "company": "Azienda / Datore di Lavoro Obiettivo",
+    "companyPlaceholder": "es. Stripe, Airbnb, Google",
+    "role": "Ruolo / Posizione Obiettivo",
+    "rolePlaceholder": "es. Senior Frontend Engineer",
+    "vacancyLength": "Lunghezza Descrizione",
+    "words": "parole"
+  },
+  "editor": {
+    "editText": "Modifica Testo",
+    "formattedPreview": "Anteprima Formattata",
+    "editModeTitle": "Descrizione Posizione (Testo / Markdown)",
+    "previewModeTitle": "Anteprima dell'Offerta",
+    "placeholder": "Incolla qui la descrizione da LinkedIn, Indeed o dalla pagina carriere...\n\nInformazioni sul ruolo:\nCerchiamo un ingegnere esperto...\n\nRequisiti chiave:\n• Esperienza con tecnologie web moderne\n• Comprovata capacità di problem solving",
+    "noJobPasted": "*Nessuna offerta ancora incollata. Passa a 'Modifica Testo' per aggiungerne una.*"
+  },
+  "progress": {
+    "title": "Sintesi del Curriculum Adattato con IA...",
+    "step1": "Analisi dei requisiti ed estrazione delle parole chiave...",
+    "step2": "Confronto con il profilo master (zero allucinazioni)...",
+    "step3": "Generazione del Markdown ottimizzato ATS e report di corrispondenza...",
+    "defaultStep": "Confronto delle competenze e sintesi dei risultati con formula XYZ...",
+    "note": "⚡ Applicazione delle misure di integrità e della formula Google XYZ. Verrai reindirizzato automaticamente al tuo CV al termine."
+  },
+  "status": {
+    "ready": "Dati offerta pronti",
+    "missing": "Incolla una descrizione di lavoro per personalizzare"
+  },
+  "modal": {
+    "title": "Configura Provider IA",
+    "subtitle": "Seleziona un modello IA o inserisci la tua chiave API per personalizzare il tuo curriculum.",
+    "saveAndGenerate": "Salva e Personalizza CV"
+  },
+  "pageBudget": {
+    "title": "1. Lunghezza Curriculum (Budget Pagine)",
+    "subtitle": "Seleziona la lunghezza ideale in base alla tua esperienza professionale.",
+    "onePage": "1 Pagina (Standard A4)",
+    "onePageDesc": "Ideale per una scansione di 30 secondi dei selezionatori. Massimizza l'impatto con formule XYZ.",
+    "twoPages": "2 Pagine (Esteso)",
+    "twoPagesBadge": "Senior / Lead",
+    "twoPagesDesc": "Per dirigenti, tech lead o specialisti con oltre 8-10 anni di comprovata esperienza tecnica."
+  }
+}

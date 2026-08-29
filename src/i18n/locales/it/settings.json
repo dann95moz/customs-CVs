@@ -1,0 +1,34 @@
+{
+  "title": "Impostazioni & Configurazione IA",
+  "subtitle": "Gestisci i provider di IA, le regole di personalizzazione e le preferenze dell'applicazione.",
+  "tabs": {
+    "providers": "Provider IA",
+    "rules": "Regole Prompt & ATS",
+    "general": "Generale & Lingua"
+  },
+  "providers": {
+    "title": "Provider IA Configurato",
+    "subtitle": "Scegli tra modelli locali offline gratuiti o API cloud ad alta velocità.",
+    "selectProvider": "Provider",
+    "apiKey": "Chiave API",
+    "apiKeyPlaceholder": "Inserisci la tua chiave API...",
+    "model": "Modello",
+    "customEndpoint": "URL Endpoint Personalizzato",
+    "testConnection": "Verifica Connessione",
+    "testing": "Verifica in corso...",
+    "success": "Connessione riuscita!",
+    "failed": "Connessione non riuscita"
+  },
+  "rules": {
+    "title": "Linee Guida di Adattamento & Regole ATS (rules.md)",
+    "subtitle": "Personalizza il prompt di sistema e le istruzioni di formato inviate al motore di sintesi IA.",
+    "resetRules": "Ripristina Regole Predefinite"
+  },
+  "general": {
+    "title": "Preferenze dell'Applicazione",
+    "language": "Lingua dell'Interfaccia",
+    "languageHelp": "Seleziona la lingua utilizzata per la navigazione, le istruzioni e i menu in CV Studio.",
+    "resetWorkspace": "Reimposta Spazio di Lavoro",
+    "resetConfirm": "Sei sicuro di voler reimpostare lo spazio di lavoro? Tutte le modifiche temporanee andranno perse."
+  }
+}

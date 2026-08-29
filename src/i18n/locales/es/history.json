@@ -1,0 +1,35 @@
+{
+  "title": "Panel de Candidaturas Personalizadas",
+  "subtitle": "Revisa y gestiona todas tus postulaciones, empresas objetivo y versiones de CV generadas.",
+  "badge": "Historial de Candidaturas",
+  "newApplication": "+ Nuevo CV Personalizado",
+  "searchPlaceholder": "Filtrar por empresa o puesto objetivo...",
+  "stats": {
+    "total": "Total CVs Personalizados",
+    "avgMatch": "Puntaje Medio de Ajuste",
+    "companies": "Empresas Objetivo",
+    "applied": "Postulado",
+    "interviews": "Entrevistas",
+    "offers": "Ofertas"
+  },
+  "status": {
+    "draft": "Borrador",
+    "applied": "Postulado",
+    "interviewing": "En Entrevista",
+    "offer": "Oferta Recibida",
+    "rejected": "Descartado",
+    "archived": "Archivado"
+  },
+  "card": {
+    "openInStudio": "Ver y Editar en Studio",
+    "exportPdf": "Exportar PDF",
+    "viewGap": "Ver Informe de Brechas",
+    "delete": "Eliminar Versión",
+    "lastModified": "Personalizado"
+  },
+  "empty": {
+    "title": "Aún No Hay Candidaturas Guardadas",
+    "desc": "Cuando generes un CV adaptado a una oferta específica, se guardará aquí automáticamente para su seguimiento.",
+    "action": "Iniciar Nueva Candidatura"
+  }
+}

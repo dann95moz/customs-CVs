@@ -1,0 +1,35 @@
+{
+  "badge": "Gratuito y 100% Privado",
+  "hero": {
+    "titlePrefix": "Adapta Currículums de Alto Impacto",
+    "titleGradient": "para Cada Oportunidad",
+    "subtitle": "Transforma tu trayectoria profesional en currículums personalizados compatibles con ATS, con viñetas basadas en la fórmula Google XYZ, puntuación de calidad 1–10 en tiempo real y diseño milimétrico en 1 página."
+  },
+  "steps": {
+    "step1": {
+      "number": "PASO 01",
+      "title": "Bóveda Maestra de Carrera",
+      "desc": "Almacena tu historial laboral completo, stack tecnológico, proyectos y logros en Markdown estructurado o mediante formularios guiados."
+    },
+    "step2": {
+      "number": "PASO 02",
+      "title": "Oferta Objetivo y Adaptación",
+      "desc": "Pega la descripción del puesto deseado para sintetizar viñetas alineadas con la fórmula Google XYZ y las palabras clave del empleador."
+    },
+    "step3": {
+      "number": "PASO 03",
+      "title": "CV en Vivo y Auditoría de Calidad",
+      "desc": "Inspecciona puntuaciones de calidad calibradas de 1 a 10, personaliza entre 7 plantillas ATS y exporta PDFs con formato de impresión perfecto."
+    }
+  },
+  "actions": {
+    "startBuilding": "Comenzar a Crear Currículum",
+    "trySample": "Probar con Datos de Ejemplo"
+  },
+  "capabilities": {
+    "privacy": "100% Local y Privado",
+    "googleXyz": "Fórmula Google XYZ",
+    "auditScore": "Auditoría Calibrada 1–10",
+    "themes": "7 Plantillas ATS de Precisión"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "title": "Bewerbungs-Dashboard",
+  "subtitle": "Verwalten Sie alle Ihre maßgeschneiderten Bewerbungen, Zielunternehmen und generierten Lebenslauf-Versionen.",
+  "badge": "Bewerbungshistorie",
+  "newApplication": "+ Neuer Maßgeschneiderter Lebenslauf",
+  "searchPlaceholder": "Nach Unternehmen oder Position filtern...",
+  "stats": {
+    "total": "Gesamte Lebensläufe",
+    "avgMatch": "Durchschn. Übereinstimmung",
+    "companies": "Zielunternehmen",
+    "applied": "Beworben",
+    "interviews": "Interviews",
+    "offers": "Angebote"
+  },
+  "status": {
+    "draft": "Entwurf gespeichert",
+    "applied": "Beworben",
+    "interviewing": "Im Interview-Prozess",
+    "offer": "Angebot erhalten",
+    "rejected": "Abgelehnt",
+    "archived": "Archiviert"
+  },
+  "card": {
+    "openInStudio": "Im Studio anzeigen & bearbeiten",
+    "exportPdf": "PDF exportieren",
+    "viewGap": "Lückenbericht ansehen",
+    "delete": "Version löschen",
+    "lastModified": "Erstellt am"
+  },
+  "empty": {
+    "title": "Noch keine Bewerbungen gespeichert",
+    "desc": "Sobald Sie einen Lebenslauf für ein bestimmtes Unternehmen erstellen, wird er hier automatisch für Sie gespeichert.",
+    "action": "Neue Bewerbung starten"
+  }
+}

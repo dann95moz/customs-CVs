@@ -1,0 +1,92 @@
+{
+  "stepBadge": "Paso 1 de 3 • Perfil del Candidato",
+  "title": "Tu Perfil Profesional",
+  "subtitle": "Ingresa tu trayectoria y habilidades una sola vez. Las adaptaremos automáticamente para cada oferta a la que postules.",
+  "actions": {
+    "loadSample": "Cargar Perfil de Ejemplo",
+    "uploadFile": "Subir Archivo (.md)",
+    "exportBackup": "Exportar Respaldo",
+    "startBlank": "Comenzar en Blanco",
+    "continueToTarget": "Continuar a Oferta Objetivo (Paso 2)"
+  },
+  "modes": {
+    "guidedAssistant": "Asistente Guiado",
+    "markdownEditor": "Editor Markdown",
+    "guidedTitle": "Asistente de Perfil Estructurado",
+    "markdownTitle": "Expediente Libre (Markdown / Lenguaje Natural)"
+  },
+  "status": {
+    "ready": "Perfil maestro listo para adaptación",
+    "tipLoadSample": "Consejo: Haz clic en 'Cargar Perfil de Ejemplo' para probar de inmediato"
+  },
+  "sections": {
+    "personalInfo": {
+      "title": "Información Personal y Contacto",
+      "fullName": "Nombre Completo",
+      "jobTitle": "Título Profesional / Especialización",
+      "email": "Correo Electrónico",
+      "phone": "Número de Teléfono",
+      "location": "Ubicación / Ciudad, País",
+      "linkedin": "Enlace a LinkedIn",
+      "github": "Enlace a GitHub",
+      "portfolio": "Portafolio / Sitio Web"
+    },
+    "summary": {
+      "title": "Resumen Profesional",
+      "label": "Resumen Ejecutivo y Propuesta de Valor",
+      "placeholder": "Escribe 3-4 oraciones de alto impacto destacando tu experiencia técnica principal, fortalezas de arquitectura y trayectoria cuantitativa..."
+    },
+    "experience": {
+      "title": "Experiencia Laboral",
+      "addRole": "Agregar Puesto de Trabajo",
+      "company": "Empresa / Organización",
+      "role": "Cargo / Puesto",
+      "dates": "Fechas (ej. 2021 – Presente)",
+      "location": "Ubicación",
+      "bullets": "Logros y Responsabilidades (Fórmula XYZ)",
+      "addBullet": "Agregar Viñeta de Logro",
+      "removeRole": "Eliminar Puesto"
+    },
+    "skills": {
+      "title": "Habilidades Técnicas y Competencias",
+      "addGroup": "Agregar Grupo de Habilidades",
+      "groupName": "Nombre de Categoría (ej. Lenguajes y Frameworks)",
+      "skillsList": "Habilidades (separadas por comas)",
+      "removeGroup": "Eliminar Categoría"
+    },
+    "education": {
+      "title": "Educación y Certificaciones",
+      "addEducation": "Agregar Título / Certificación",
+      "degree": "Título / Certificación",
+      "institution": "Institución / Emisor",
+      "year": "Año / Graduación",
+      "location": "Ubicación (opcional)",
+      "remove": "Eliminar"
+    },
+    "languages": {
+      "title": "Idiomas",
+      "addLanguage": "Agregar Idioma",
+      "language": "Idioma",
+      "proficiency": "Nivel de Dominio (ej. Nativo, Fluido, Profesional)",
+      "remove": "Eliminar"
+    },
+    "projects": {
+      "title": "Proyectos Destacados y Código Abierto (Opcional)",
+      "addProject": "Agregar Proyecto",
+      "projectName": "Título del Proyecto",
+      "role": "Rol / Tecnología",
+      "date": "Fecha / Año",
+      "link": "Enlace / Repositorio",
+      "bullets": "Logros y Métricas",
+      "remove": "Eliminar Proyecto"
+    }
+  },
+  "stepper": {
+    "profileLabel": "Perfil del Candidato",
+    "profileSubtitle": "Historial y habilidades",
+    "targetLabel": "Oferta Objetivo",
+    "targetSubtitle": "Puesto y personalización",
+    "previewLabel": "CV en Vivo y Exportación PDF",
+    "previewSubtitle": "Vista previa y descarga PDF"
+  }
+}

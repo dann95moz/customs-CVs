@@ -1,0 +1,63 @@
+{
+  "appName": "CV Studio",
+  "tagline": "Motore di CV Potenziato da IA",
+  "nav": {
+    "resumeStudio": "Studio CV",
+    "myApplications": "Le Mie Candidature",
+    "settingsAndAi": "Impostazioni e IA",
+    "settings": "Impostazioni",
+    "viewOverview": "Guida e Panoramica del Prodotto",
+    "starGithub": "Stella su GitHub ⭐",
+    "switchTheme": "Passa alla modalità {{mode}}",
+    "light": "Chiara",
+    "dark": "Scura"
+  },
+  "badge": {
+    "optional": "Opzionale",
+    "recommended": "Consigliato",
+    "added": "Aggiunto",
+    "essential": "Essenziale"
+  },
+  "actions": {
+    "save": "Salva",
+    "cancel": "Annulla",
+    "continue": "Continua",
+    "back": "Indietro",
+    "done": "Fatto",
+    "close": "Chiudi",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "copy": "Copia",
+    "download": "Scarica",
+    "upload": "Carica",
+    "export": "Esporta",
+    "reset": "Ripristina",
+    "refresh": "Aggiorna",
+    "loadSample": "Carica Esempio",
+    "startBlank": "Inizia da Zero",
+    "search": "Cerca",
+    "filter": "Filtra",
+    "apply": "Applica",
+    "retry": "Riprova"
+  },
+  "language": {
+    "selectLanguage": "Lingua",
+    "chooseLanguage": "Seleziona la lingua"
+  },
+  "status": {
+    "inProgress": "In Corso",
+    "ready": "Pronto",
+    "completed": "Completato",
+    "locked": "Bloccato",
+    "error": "Avviso Generazione IA",
+    "step": "Passo {{number}}"
+  },
+  "safeguard": {
+    "tooltip": "Protezione di integrità attiva: Garantisce che i curriculum personalizzati restino fedeli al 100% alla tua vera esperienza senza allucinazioni o metriche inventate."
+  },
+  "footer": {
+    "privacyNote": "Tutti i dati rimangono nella memoria del tuo browser. Puoi tornare qui in qualsiasi momento tramite il logo in alto.",
+    "craftedBy": "Creato da",
+    "openSource": "Open source su GitHub"
+  }
+}

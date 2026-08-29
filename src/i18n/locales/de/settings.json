@@ -1,0 +1,34 @@
+{
+  "title": "Einstellungen & KI-Konfiguration",
+  "subtitle": "Verwalten Sie Ihre KI-Anbieter, individuelle Anpassungsregeln und Anwendungseinstellungen.",
+  "tabs": {
+    "providers": "KI-Anbieter",
+    "rules": "Prompt- & ATS-Regeln",
+    "general": "Allgemein & Sprache"
+  },
+  "providers": {
+    "title": "Konfigurierter KI-Anbieter",
+    "subtitle": "Wählen Sie zwischen kostenlosen lokalen Offline-Modellen oder schnellen Cloud-APIs.",
+    "selectProvider": "Anbieter",
+    "apiKey": "API-Schlüssel",
+    "apiKeyPlaceholder": "API-Schlüssel eingeben...",
+    "model": "Modell",
+    "customEndpoint": "Benutzerdefinierte Endpunkt-URL",
+    "testConnection": "Verbindung testen",
+    "testing": "Verbindung wird getestet...",
+    "success": "Verbindung erfolgreich!",
+    "failed": "Verbindungsfehler"
+  },
+  "rules": {
+    "title": "Anpassungsrichtlinien & ATS-Regeln (rules.md)",
+    "subtitle": "Passen Sie den System-Prompt und die Formatierungsanweisungen für den KI-Synthesizer an.",
+    "resetRules": "Standardregeln wiederherstellen"
+  },
+  "general": {
+    "title": "Anwendungseinstellungen",
+    "language": "Anzeigesprache",
+    "languageHelp": "Wählen Sie die Sprache für Navigation, Anleitungen und Menüs in CV Studio.",
+    "resetWorkspace": "Gesamten Arbeitsbereich zurücksetzen",
+    "resetConfirm": "Sind Sie sicher, dass Sie den Arbeitsbereich zurücksetzen möchten? Dadurch werden temporäre Änderungen gelöscht."
+  }
+}

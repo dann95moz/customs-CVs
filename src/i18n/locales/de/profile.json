@@ -1,0 +1,92 @@
+{
+  "stepBadge": "Schritt 1 von 3 • Kandidatenprofil",
+  "title": "Ihr Karriereprofil",
+  "subtitle": "Erfassen Sie Ihren Werdegang und Ihre Fähigkeiten einmalig. Wir passen sie automatisch an jede Bewerbung an.",
+  "actions": {
+    "loadSample": "Beispielprofil laden",
+    "uploadFile": "Datei hochladen (.md)",
+    "exportBackup": "Sicherung exportieren",
+    "startBlank": "Leer starten",
+    "continueToTarget": "Weiter zur Ziel-Stellenanzeige (Schritt 2)"
+  },
+  "modes": {
+    "guidedAssistant": "Geführter Assistent",
+    "markdownEditor": "Markdown-Editor",
+    "guidedTitle": "Strukturierter Profil-Assistent",
+    "markdownTitle": "Freies Dossier (Markdown / Natürliche Sprache)"
+  },
+  "status": {
+    "ready": "Master-Profil bereit für die Anpassung",
+    "tipLoadSample": "Tipp: Klicken Sie auf 'Beispielprofil laden', um direkt zu testen"
+  },
+  "sections": {
+    "personalInfo": {
+      "title": "Persönliche Daten & Kontakt",
+      "fullName": "Vollständiger Name",
+      "jobTitle": "Berufsbezeichnung / Schwerpunkt",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "location": "Wohnort / Stadt, Land",
+      "linkedin": "LinkedIn-Profil",
+      "github": "GitHub-Profil",
+      "portfolio": "Portfolio / Webseite"
+    },
+    "summary": {
+      "title": "Berufliches Profil",
+      "label": "Kurzprofil & Kernkompetenzen",
+      "placeholder": "Verfassen Sie 3-4 prägnante Sätze zu Ihrer technischen Expertise, Ihren Architekturschwerpunkten und messbaren Erfolgen..."
+    },
+    "experience": {
+      "title": "Berufserfahrung",
+      "addRole": "Position hinzufügen",
+      "company": "Unternehmen / Organisation",
+      "role": "Position / Titel",
+      "dates": "Zeitraum (z. B. 2021 – Heute)",
+      "location": "Standort",
+      "bullets": "Erfolge & Aufgaben (XYZ-Formel)",
+      "addBullet": "Erfolgspunkt hinzufügen",
+      "removeRole": "Position entfernen"
+    },
+    "skills": {
+      "title": "Fachkenntnisse & Fähigkeiten",
+      "addGroup": "Gruppe hinzufügen",
+      "groupName": "Kategoriename (z. B. Sprachen & Frameworks)",
+      "skillsList": "Fähigkeiten (kommagetrennt)",
+      "removeGroup": "Gruppe entfernen"
+    },
+    "education": {
+      "title": "Ausbildung & Zertifikate",
+      "addEducation": "Abschluss / Zertifikat hinzufügen",
+      "degree": "Abschluss / Zertifikatstitel",
+      "institution": "Einrichtung / Aussteller",
+      "year": "Jahr / Abschlussjahr",
+      "location": "Ort (optional)",
+      "remove": "Entfernen"
+    },
+    "languages": {
+      "title": "Sprachen",
+      "addLanguage": "Sprache hinzufügen",
+      "language": "Sprache",
+      "proficiency": "Sprachniveau (z. B. Muttersprache, Verhandlungssicher)",
+      "remove": "Entfernen"
+    },
+    "projects": {
+      "title": "Wichtige Projekte & Open Source (Optional)",
+      "addProject": "Projekt hinzufügen",
+      "projectName": "Projekttitel",
+      "role": "Rolle / Technologie",
+      "date": "Datum / Jahr",
+      "link": "Projekt-Link / Repository",
+      "bullets": "Highlights & Kennzahlen",
+      "remove": "Projekt entfernen"
+    }
+  },
+  "stepper": {
+    "profileLabel": "Kandidatenprofil",
+    "profileSubtitle": "Werdegang & Fähigkeiten",
+    "targetLabel": "Ziel-Stellenanzeige",
+    "targetSubtitle": "Anzeige & Anpassung",
+    "previewLabel": "Live-CV & PDF-Export",
+    "previewSubtitle": "Vorschau & PDF-Download"
+  }
+}

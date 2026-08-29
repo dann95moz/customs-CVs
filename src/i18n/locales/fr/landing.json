@@ -1,0 +1,35 @@
+{
+  "badge": "Gratuit & 100% Privé",
+  "hero": {
+    "titlePrefix": "Adaptez des CVs à Fort Impact",
+    "titleGradient": "pour Chaque Opportunité",
+    "subtitle": "Transformez votre parcours professionnel en CVs sur mesure compatibles ATS, avec des puces basées sur la formule Google XYZ, un score de qualité 1–10 en temps réel et une précision sur 1 page."
+  },
+  "steps": {
+    "step1": {
+      "number": "ÉTAPE 01",
+      "title": "Coffre-fort de Carrière",
+      "desc": "Stockez votre historique professionnel complet, votre stack technique et vos réalisations en Markdown structuré ou via des formulaires guidés."
+    },
+    "step2": {
+      "number": "ÉTAPE 02",
+      "title": "Offre Cible & Adaptation",
+      "desc": "Collez l'offre d'emploi ciblée pour synthétiser des puces percutantes alignées avec la formule Google XYZ et les mots-clés de l'employeur."
+    },
+    "step3": {
+      "number": "ÉTAPE 03",
+      "title": "CV en Direct & Audit Qualité",
+      "desc": "Examinez des scores de qualité calibrés de 1 à 10, personnalisez parmi 7 thèmes ATS et exportez des PDF prêts pour l'impression."
+    }
+  },
+  "actions": {
+    "startBuilding": "Commencer à Créer un CV",
+    "trySample": "Essayer avec un Exemple"
+  },
+  "capabilities": {
+    "privacy": "100% Local & Privé",
+    "googleXyz": "Formule Google XYZ",
+    "auditScore": "Audit Calibré 1–10",
+    "themes": "7 Thèmes ATS de Précision"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "badge": "Kostenlos & 100% Privat",
+  "hero": {
+    "titlePrefix": "Wirkungsstarke Lebensläufe",
+    "titleGradient": "für jede Gelegenheit anpassen",
+    "subtitle": "Verwandeln Sie Ihre Karrieredaten in maßgeschneiderte, ATS-konforme Lebensläufe mit Google XYZ-Aufzählungspunkten, Echtzeit-Qualitätsbewertung 1–10 und 1-Seiten-Designpräzision."
+  },
+  "steps": {
+    "step1": {
+      "number": "SCHRITT 01",
+      "title": "Karriere-Master-Tresor",
+      "desc": "Speichern Sie Ihren gesamten beruflichen Werdegang, Tech-Stack, Projekte und Erfolge in strukturiertem Markdown oder über geführte Formulare."
+    },
+    "step2": {
+      "number": "SCHRITT 02",
+      "title": "Ziel-Stellenanzeige & Anpassung",
+      "desc": "Fügen Sie die Ziel-Stellenanzeige ein, um abgestimmte Aufzählungspunkte mit der Google XYZ-Formel und Schlüsselwörtern des Arbeitgebers zu erstellen."
+    },
+    "step3": {
+      "number": "SCHRITT 03",
+      "title": "Live-CV & Qualitätsprüfung",
+      "desc": "Prüfen Sie kalibrierte 1–10 Qualitätswerte, wählen Sie aus 7 ATS-Vorlagen und exportieren Sie druckperfekte PDFs."
+    }
+  },
+  "actions": {
+    "startBuilding": "Lebenslauf erstellen",
+    "trySample": "Mit Beispieldaten testen"
+  },
+  "capabilities": {
+    "privacy": "100% Lokal & Privat",
+    "googleXyz": "Google XYZ-Formel",
+    "auditScore": "Kalibriertes 1–10 Audit",
+    "themes": "7 Präzise ATS-Vorlagen"
+  }
+}

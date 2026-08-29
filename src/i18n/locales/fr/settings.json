@@ -1,0 +1,34 @@
+{
+  "title": "Paramètres & Configuration IA",
+  "subtitle": "Gérez vos fournisseurs d'IA, vos règles de personnalisation et vos préférences générales.",
+  "tabs": {
+    "providers": "Fournisseurs IA",
+    "rules": "Règles de Prompt & ATS",
+    "general": "Général & Langue"
+  },
+  "providers": {
+    "title": "Fournisseur d'IA Configuré",
+    "subtitle": "Choisissez entre des modèles locaux hors ligne 100% gratuits ou des APIs cloud ultra-rapides.",
+    "selectProvider": "Fournisseur",
+    "apiKey": "Clé API",
+    "apiKeyPlaceholder": "Saisissez votre clé API...",
+    "model": "Modèle",
+    "customEndpoint": "URL du Point d'Accès Personnalisé",
+    "testConnection": "Tester la Connexion",
+    "testing": "Test de Connexion en cours...",
+    "success": "Connexion réussie !",
+    "failed": "Échec de la connexion"
+  },
+  "rules": {
+    "title": "Directives d'Adaptation & Règles ATS (rules.md)",
+    "subtitle": "Personnalisez le prompt système et les instructions de format transmises au synthétiseur d'IA.",
+    "resetRules": "Rétablir les Règles par Défaut"
+  },
+  "general": {
+    "title": "Préférences de l'Application",
+    "language": "Langue d'Affichage",
+    "languageHelp": "Sélectionnez la langue utilisée pour la navigation, les instructions et les menus dans CV Studio.",
+    "resetWorkspace": "Réinitialiser l'Espace de Travail",
+    "resetConfirm": "Êtes-vous sûr de vouloir réinitialiser l'espace de travail ? Cela effacera les modifications temporaires."
+  }
+}

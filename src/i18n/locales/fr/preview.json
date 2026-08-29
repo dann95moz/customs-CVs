@@ -1,0 +1,56 @@
+{
+  "toolbar": {
+    "zoomIn": "Zoom Avant",
+    "zoomOut": "Zoom Arrière",
+    "resetZoom": "Ajuster à la Page",
+    "exportPdf": "Exporter en PDF (Imprimer)",
+    "exporting": "Ouverture de la boîte d'impression...",
+    "downloadMarkdown": "Télécharger en Markdown",
+    "copyMarkdown": "Copier le Markdown",
+    "copied": "Copié dans le presse-papiers !",
+    "pageFit": "Ajustement",
+    "singlePage": "Vue 1 Page",
+    "twoPage": "Vue 2 Pages"
+  },
+  "navRail": {
+    "templates": "Modèles",
+    "design": "Design & Format",
+    "audit": "Qualité & Écarts",
+    "compare": "Comparer"
+  },
+  "panels": {
+    "templates": {
+      "title": "Choisir un Modèle de CV",
+      "subtitle": "Sélectionnez parmi 7 modèles conçus pour passer les filtres ATS",
+      "palette": "Palette de Couleurs",
+      "all": "Tous",
+      "ats": "Compatible ATS",
+      "executive": "Exécutif / Cadre",
+      "tech": "Tech / Moderne",
+      "creative": "Design / UI"
+    },
+    "design": {
+      "title": "Design & Mise en Page",
+      "subtitle": "Personnalisez la typographie, l'espacement et les styles visuels",
+      "fontFamily": "Police d'Écriture",
+      "fontSize": "Taille de Police de Base",
+      "lineHeight": "Hauteur de Ligne",
+      "pageMargins": "Marges de Page",
+      "sectionSpacing": "Espacement des Sections",
+      "primaryColor": "Couleur d'Accentuation",
+      "pillSkills": "Badges de Compétences (Pilules)",
+      "resetDefaults": "Rétablir les Valeurs par Défaut"
+    },
+    "comparison": {
+      "title": "Profil Maître vs CV Adapté",
+      "subtitle": "Comparaison côte à côte entre votre profil source et le CV généré",
+      "masterProfile": "Profil Maître Original",
+      "tailoredCv": "CV Sur Mesure"
+    }
+  },
+  "drawer": {
+    "title": "Intelligence d'Audit & Écarts",
+    "scoreLabel": "Score Calibré",
+    "matchLabel": "Alignement Poste"
+  }
+}

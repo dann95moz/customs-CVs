@@ -1,0 +1,34 @@
+{
+  "title": "Settings & AI Configuration",
+  "subtitle": "Manage your AI providers, custom tailoring rules, and application preferences.",
+  "tabs": {
+    "providers": "AI Providers",
+    "rules": "Prompt & ATS Rules",
+    "general": "General & Language"
+  },
+  "providers": {
+    "title": "Configured AI Provider",
+    "subtitle": "Select between completely free local offline models or high-speed cloud APIs.",
+    "selectProvider": "Provider",
+    "apiKey": "API Key",
+    "apiKeyPlaceholder": "Enter your API key...",
+    "model": "Model",
+    "customEndpoint": "Custom Endpoint URL",
+    "testConnection": "Test Connection",
+    "testing": "Testing Connection...",
+    "success": "Connection successful!",
+    "failed": "Connection failed"
+  },
+  "rules": {
+    "title": "Tailoring Guidelines & ATS Rules (rules.md)",
+    "subtitle": "Customize the system prompt and formatting instructions sent to the AI synthesizer.",
+    "resetRules": "Restore Default Rules"
+  },
+  "general": {
+    "title": "Application Preferences",
+    "language": "App Display Language",
+    "languageHelp": "Select the language used for navigation, instructions, and menus across CV Studio.",
+    "resetWorkspace": "Reset Entire Workspace",
+    "resetConfirm": "Are you sure you want to reset the workspace? This will clear temporary edits."
+  }
+}

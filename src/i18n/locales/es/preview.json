@@ -1,0 +1,56 @@
+{
+  "toolbar": {
+    "zoomIn": "Acercar",
+    "zoomOut": "Alejar",
+    "resetZoom": "Ajustar a Página",
+    "exportPdf": "Exportar PDF (Imprimir)",
+    "exporting": "Abriendo Diálogo de Impresión...",
+    "downloadMarkdown": "Descargar Markdown",
+    "copyMarkdown": "Copiar Markdown",
+    "copied": "¡Copiado al portapapeles!",
+    "pageFit": "Ajuste de Página",
+    "singlePage": "Vista 1 Página",
+    "twoPage": "Vista 2 Páginas"
+  },
+  "navRail": {
+    "templates": "Plantillas",
+    "design": "Diseño & Formato",
+    "audit": "Calidad & Brechas",
+    "compare": "Comparar"
+  },
+  "panels": {
+    "templates": {
+      "title": "Seleccionar Plantilla de CV",
+      "subtitle": "Elige entre 7 plantillas profesionales optimizadas para ATS",
+      "palette": "Paleta de Colores",
+      "all": "Todas",
+      "ats": "ATS Friendly",
+      "executive": "Ejecutivo",
+      "tech": "Tecnología / Moderno",
+      "creative": "Diseño / UI"
+    },
+    "design": {
+      "title": "Diseño y Formato",
+      "subtitle": "Personaliza tipografía, espaciado y estilos visuales",
+      "fontFamily": "Familia Tipográfica",
+      "fontSize": "Tamaño de Fuente Base",
+      "lineHeight": "Interlineado",
+      "pageMargins": "Márgenes de Página",
+      "sectionSpacing": "Espaciado entre Secciones",
+      "primaryColor": "Color de Acento",
+      "pillSkills": "Insignias de Habilidades (Pills)",
+      "resetDefaults": "Restablecer Valores de Plantilla"
+    },
+    "comparison": {
+      "title": "Perfil Maestro vs CV Adaptado",
+      "subtitle": "Comparación lado a lado entre tu información original y el currículum sintetizado",
+      "masterProfile": "Perfil Maestro Original",
+      "tailoredCv": "Currículum Adaptado"
+    }
+  },
+  "drawer": {
+    "title": "Inteligencia de Auditoría y Brechas",
+    "scoreLabel": "Puntuación Calibrada",
+    "matchLabel": "Alineación de Puesto"
+  }
+}

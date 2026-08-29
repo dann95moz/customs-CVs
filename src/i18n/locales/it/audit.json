@@ -1,0 +1,47 @@
+{
+  "title": "Audit di Qualità e ATS",
+  "subtitle": "Valutazione esecutiva calibrata da 1 a 10 che analizza metriche Google XYZ, densità dei risultati e conformità ATS.",
+  "score": "Punteggio di Qualità",
+  "overallScore": "Punteggio Complessivo di Qualità",
+  "calibratedScale": "Scala Calibrata 1–10",
+  "refreshScore": "Aggiorna Audit",
+  "gapIdentified": "Divario Identificato",
+  "actionLevers": "Leve Strategiche per Raggiungere 10/10",
+  "quickSuggestions": "Suggerimenti Rapidi (Clicca per applicare):",
+  "proposedAddition": "Aggiunta di Contenuto Proposta",
+  "inputPlaceholder": "Inserisci il contenuto da iniettare in questa sezione...",
+  "applyImprovement": "Applica al CV Personalizzato",
+  "sections": {
+    "summary": "Riepilogo Professionale",
+    "experience": "Esperienza Lavorativa",
+    "skills": "Competenze Tecniche",
+    "education": "Istruzione e Formazione",
+    "ats": "Conformità ATS"
+  },
+  "metrics": {
+    "achievementDensity": "Densità dei Risultati",
+    "googleXyz": "Formula Google XYZ",
+    "actionVerbs": "Verbi d'Azione Proattivi",
+    "quantifiableMetrics": "Metriche Quantificabili",
+    "atsCompliance": "Conformità del Formato ATS"
+  },
+  "xyz": {
+    "title": "Formula d'Impatto Google XYZ",
+    "description": "Raggiunto [X] misurato da [Y] facendo [Z]"
+  },
+  "atsCheck": {
+    "title": "Controlli di Verifica",
+    "description": "Tipografia 100% sicura per parser ATS"
+  },
+  "locked": {
+    "title": "L'Audit di Qualità Richiede un CV Personalizzato",
+    "desc": "Il motore di valutazione 1-10 analizza la densità dei risultati reali, le percentuali della formula XYZ e la conformità ATS. Personalizza prima il tuo CV per sbloccare il punteggio per ogni sezione.",
+    "action": "Vai all'Offerta Obiettivo e Personalizza"
+  },
+  "modal": {
+    "title": "Miglioramento Suggerito",
+    "original": "Testo Attuale",
+    "suggested": "Ottimizzazione Consigliata",
+    "apply": "Applica Suggerimento"
+  }
+}

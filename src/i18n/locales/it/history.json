@@ -1,0 +1,35 @@
+{
+  "title": "Dashboard Candidature",
+  "subtitle": "Rivedi e gestisci tutte le tue candidature personalizzate, aziende target e versioni di curriculum generate.",
+  "badge": "Storico Candidature",
+  "newApplication": "+ Nuovo CV Personalizzato",
+  "searchPlaceholder": "Filtra per azienda o ruolo target...",
+  "stats": {
+    "total": "Totale CV Personalizzati",
+    "avgMatch": "Punteggio Medio",
+    "companies": "Aziende Target",
+    "applied": "Inviate",
+    "interviews": "Colloqui",
+    "offers": "Offerte"
+  },
+  "status": {
+    "draft": "Bozza Salvata",
+    "applied": "Candidato",
+    "interviewing": "Colloqui in corso",
+    "offer": "Offerta Ricevuta",
+    "rejected": "Rifiutato",
+    "archived": "Archiviato"
+  },
+  "card": {
+    "openInStudio": "Visualizza e Modifica nello Studio",
+    "exportPdf": "Esporta PDF",
+    "viewGap": "Visualizza Report Gap",
+    "delete": "Elimina Versione",
+    "lastModified": "Personalizzato"
+  },
+  "empty": {
+    "title": "Nessuna candidatura salvata al momento",
+    "desc": "Ogni volta che crei un curriculum per un'azienda specifica, verrà salvato automaticamente qui per il tuo tracciamento.",
+    "action": "Inizia Nuova Candidatura"
+  }
+}

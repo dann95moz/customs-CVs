@@ -1,0 +1,20 @@
+{
+  "title": "Estrategia de Alineación y Reporte de Brechas",
+  "subtitle": "Cruza tu trayectoria con los requisitos del empleador y destaca la estrategia de mitigación.",
+  "matchScore": "Alineación Estimada",
+  "companyTarget": "Oportunidad Objetivo",
+  "integratedKeywords": "Palabras Clave Críticas Integradas",
+  "matched": "Coincidentes",
+  "missing": "Mitigadas / Brecha",
+  "downloadReport": "Exportar Reporte de Brechas (.md)",
+  "lockedNoJob": {
+    "title": "Aún no se ha ingresado una oferta objetivo",
+    "desc": "El análisis de brechas cruza tu perfil con los requisitos específicos del empleador. Pega o sube una oferta laboral en el asistente primero.",
+    "action": "Agregar Oferta en el Asistente"
+  },
+  "lockedNoReport": {
+    "title": "Listo para Sintetizar Estrategia de Brechas",
+    "desc": "Has ingresado los detalles de la oferta para {{company}}. Haz clic abajo para sintetizar tu CV adaptado y generar el reporte estratégico de brechas.",
+    "action": "✨ Sintetizar Currículum Ahora"
+  }
+}

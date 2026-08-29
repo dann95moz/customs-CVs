@@ -1,0 +1,35 @@
+{
+  "badge": "Gratuito e 100% Privato",
+  "hero": {
+    "titlePrefix": "Adatta Curriculum ad Alto Impatto",
+    "titleGradient": "per Ogni Opportunità",
+    "subtitle": "Trasforma i dati della tua carriera in curriculum personalizzati compatibili con ATS, con punti elenco basati sulla formula Google XYZ, punteggio di qualità 1–10 in tempo reale e precisione su 1 pagina."
+  },
+  "steps": {
+    "step1": {
+      "number": "PASSO 01",
+      "title": "Cassaforte della Carriera",
+      "desc": "Conserva la tua storia lavorativa completa, competenze tecniche e risultati in Markdown strutturato o moduli guidati."
+    },
+    "step2": {
+      "number": "PASSO 02",
+      "title": "Offerta Obiettivo & Adattamento",
+      "desc": "Incolla la descrizione della posizione lavorativa per generare punti elenco allineati alla formula Google XYZ e alle parole chiave dell'azienda."
+    },
+    "step3": {
+      "number": "PASSO 03",
+      "title": "CV dal Vivo & Controllo Qualità",
+      "desc": "Esamina punteggi calibrati da 1 a 10, personalizza tra 7 temi ATS ed esporta PDF pronti per la stampa."
+    }
+  },
+  "actions": {
+    "startBuilding": "Inizia a Creare il CV",
+    "trySample": "Prova con Dati di Esempio"
+  },
+  "capabilities": {
+    "privacy": "100% Locale e Privato",
+    "googleXyz": "Formula Google XYZ",
+    "auditScore": "Audit Calibrato 1–10",
+    "themes": "7 Temi ATS di Precisione"
+  }
+}

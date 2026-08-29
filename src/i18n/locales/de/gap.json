@@ -1,0 +1,20 @@
+{
+  "title": "Passungsstrategie & Lückenanalyse",
+  "subtitle": "Gleicht Ihr Profil mit den Anforderungen des Arbeitgebers ab und zeigt strategische Lösungsansätze auf.",
+  "matchScore": "Geschätzte Passung",
+  "companyTarget": "Zielposition",
+  "integratedKeywords": "Integrierte Schlüsselbegriffe",
+  "matched": "Übereinstimmend",
+  "missing": "Adressiert / Lücke",
+  "downloadReport": "Lückenbericht exportieren (.md)",
+  "lockedNoJob": {
+    "title": "Noch keine Ziel-Stelle erfasst",
+    "desc": "Die Lückenanalyse gleicht Ihr Profil mit den spezifischen Anforderungen ab. Bitte fügen Sie zuerst eine Stellenanzeige im Assistenten ein.",
+    "action": "Ziel-Stelle im Assistenten erfassen"
+  },
+  "lockedNoReport": {
+    "title": "Bereit zur Synthese der Passungsstrategie",
+    "desc": "Sie haben die Stellendetails für {{company}} eingegeben. Klicken Sie unten, um Ihren angepassten Lebenslauf und den Lückenbericht zu generieren.",
+    "action": "✨ Lebenslauf jetzt synthetisieren"
+  }
+}

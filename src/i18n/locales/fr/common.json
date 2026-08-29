@@ -1,0 +1,63 @@
+{
+  "appName": "CV Studio",
+  "tagline": "Moteur de CV Propulsé par l'IA",
+  "nav": {
+    "resumeStudio": "Studio de CV",
+    "myApplications": "Mes Candidatures",
+    "settingsAndAi": "Paramètres & IA",
+    "settings": "Paramètres",
+    "viewOverview": "Voir l'Aperçu du Produit",
+    "starGithub": "Étoile sur GitHub ⭐",
+    "switchTheme": "Passer en mode {{mode}}",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "badge": {
+    "optional": "Optionnel",
+    "recommended": "Recommandé",
+    "added": "Ajouté",
+    "essential": "Essentiel"
+  },
+  "actions": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "continue": "Continuer",
+    "back": "Retour",
+    "done": "Terminé",
+    "close": "Fermer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "copy": "Copier",
+    "download": "Télécharger",
+    "upload": "Téléverser",
+    "export": "Exporter",
+    "reset": "Réinitialiser",
+    "refresh": "Actualiser",
+    "loadSample": "Charger un Exemple",
+    "startBlank": "Partir de Zéro",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "apply": "Appliquer",
+    "retry": "Réessayer"
+  },
+  "language": {
+    "selectLanguage": "Langue",
+    "chooseLanguage": "Choisir la langue"
+  },
+  "status": {
+    "inProgress": "En cours",
+    "ready": "Prêt",
+    "completed": "Terminé",
+    "locked": "Verrouillé",
+    "error": "Avis de Génération IA",
+    "step": "Étape {{number}}"
+  },
+  "safeguard": {
+    "tooltip": "Garde-fou d'intégrité actif : Garantit que les CV adaptés restent 100% fidèles à votre expérience réelle, sans halluciner de compétences ni de métriques fictives."
+  },
+  "footer": {
+    "privacyNote": "Toutes les données restent dans le stockage de votre navigateur. Vous pouvez revenir ici à tout moment via le logo supérieur.",
+    "craftedBy": "Créé par",
+    "openSource": "Open source sur GitHub"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Lebenslauf-Qualitäts- & ATS-Audit",
+  "subtitle": "Kalibrierte 1–10 Executive-Bewertung nach Google XYZ-Metriken, Erfolgsdichte und ATS-Konformität.",
+  "score": "Qualitätsbewertung",
+  "overallScore": "Gesamt-Qualitätsbewertung",
+  "calibratedScale": "Kalibrierte 1–10 Skala",
+  "refreshScore": "Audit aktualisieren",
+  "gapIdentified": "Identifizierte Lücke",
+  "actionLevers": "Strategische Hebel für 10/10",
+  "quickSuggestions": "Schnellvorschläge (Klicken zum Übernehmen):",
+  "proposedAddition": "Vorgeschlagene Inhaltsergänzung",
+  "inputPlaceholder": "Geben Sie den Inhalt ein, der in diesen Bereich eingefügt werden soll...",
+  "applyImprovement": "Auf optimierten Lebenslauf anwenden",
+  "sections": {
+    "summary": "Berufliches Profil",
+    "experience": "Berufserfahrung",
+    "skills": "Fachliche Kompetenzen",
+    "education": "Ausbildung & Format",
+    "ats": "ATS-Kompatibilität"
+  },
+  "metrics": {
+    "achievementDensity": "Erfolgsdichte",
+    "googleXyz": "Google XYZ-Formel",
+    "actionVerbs": "Proaktive Handlungsverben",
+    "quantifiableMetrics": "Quantifizierbare Metriken",
+    "atsCompliance": "ATS-Formatkonformität"
+  },
+  "xyz": {
+    "title": "Google XYZ-Wirkungsformel",
+    "description": "[X] erreicht, gemessen an [Y], durch [Z]"
+  },
+  "atsCheck": {
+    "title": "Verifizierungsprüfungen",
+    "description": "100% ATS-sichere Typografie"
+  },
+  "locked": {
+    "title": "Qualitätsaudit erfordert einen optimierten Lebenslauf",
+    "desc": "Die kalibrierte 1–10 Bewertung analysiert Erfolgsdichte, Google XYZ-Formeln und ATS-Konformität. Erstellen Sie zuerst Ihren maßgeschneiderten Lebenslauf, um die Detailbewertung freizuschalten.",
+    "action": "Zur Stellenanzeige & Anpassen"
+  },
+  "modal": {
+    "title": "Verbesserungsvorschlag",
+    "original": "Aktueller Text",
+    "suggested": "Empfohlene Optimierung",
+    "apply": "Vorschlag anwenden"
+  }
+}

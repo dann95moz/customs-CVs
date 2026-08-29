@@ -1,0 +1,35 @@
+{
+  "title": "Tableau de Bord des Candidatures",
+  "subtitle": "Consultez et gérez toutes vos candidatures ciblées, entreprises visées et versions de CV générées.",
+  "badge": "Historique des Candidatures",
+  "newApplication": "+ Nouveau CV Personnalisé",
+  "searchPlaceholder": "Filtrer par entreprise ou poste ciblé...",
+  "stats": {
+    "total": "Total des CVs Personnalisés",
+    "avgMatch": "Score Moyen d'Adéquation",
+    "companies": "Entreprises Cibles",
+    "applied": "Postulé",
+    "interviews": "Entretiens",
+    "offers": "Offres"
+  },
+  "status": {
+    "draft": "Brouillon Sauvegardé",
+    "applied": "Postulé",
+    "interviewing": "En Entretien",
+    "offer": "Offre Reçue",
+    "rejected": "Refusé",
+    "archived": "Archivé"
+  },
+  "card": {
+    "openInStudio": "Voir et Modifier dans Studio",
+    "exportPdf": "Exporter en PDF",
+    "viewGap": "Voir le Rapport d'Écarts",
+    "delete": "Supprimer la Version",
+    "lastModified": "Personnalisé"
+  },
+  "empty": {
+    "title": "Aucune Candidature Enregistrée",
+    "desc": "Dès que vous générez un CV ciblé pour une offre d'emploi, il sera automatiquement conservé ici pour votre suivi.",
+    "action": "Nouvelle Candidature"
+  }
+}

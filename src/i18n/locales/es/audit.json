@@ -1,0 +1,47 @@
+{
+  "title": "Auditoría de Calidad y ATS",
+  "subtitle": "Puntuación ejecutiva calibrada de 1 a 10 que evalúa métricas Google XYZ, densidad de logros y compatibilidad ATS.",
+  "score": "Puntuación de Calidad",
+  "overallScore": "Puntuación General de Calidad",
+  "calibratedScale": "Escala Calibrada 1–10",
+  "refreshScore": "Actualizar Auditoría",
+  "gapIdentified": "Brecha Identificada",
+  "actionLevers": "Palancas Estratégicas para Alcanzar 10/10",
+  "quickSuggestions": "Sugerencias Rápidas (Haz clic para aplicar):",
+  "proposedAddition": "Adición de Contenido Propuesta",
+  "inputPlaceholder": "Introduce el contenido a inyectar en esta sección...",
+  "applyImprovement": "Aplicar al CV Adaptado",
+  "sections": {
+    "summary": "Resumen Profesional",
+    "experience": "Experiencia Laboral",
+    "skills": "Habilidades Técnicas",
+    "education": "Educación y Formato",
+    "ats": "Compatibilidad ATS"
+  },
+  "metrics": {
+    "achievementDensity": "Densidad de Logros",
+    "googleXyz": "Fórmula XYZ de Google",
+    "actionVerbs": "Verbos de Acción Proactivos",
+    "quantifiableMetrics": "Métricas Cuantificables",
+    "atsCompliance": "Cumplimiento de Formato ATS"
+  },
+  "xyz": {
+    "title": "Fórmula de Impacto XYZ de Google",
+    "description": "Logrado [X] medido por [Y] haciendo [Z]"
+  },
+  "atsCheck": {
+    "title": "Verificaciones de Calidad",
+    "description": "Tipografía 100% segura para ATS"
+  },
+  "locked": {
+    "title": "La Auditoría Requiere un CV Adaptado",
+    "desc": "El motor de evaluación ejecutiva calibrado de 1 a 10 analiza la densidad real de logros, porcentajes de fórmula XYZ de Google y cumplimiento ATS. Crea o sintetiza tu CV adaptado primero para desbloquear la puntuación sección por sección.",
+    "action": "Ir a Oferta de Trabajo y Adaptar"
+  },
+  "modal": {
+    "title": "Mejora Sugerida",
+    "original": "Texto Actual",
+    "suggested": "Optimización Recomendada",
+    "apply": "Aplicar Sugerencia"
+  }
+}

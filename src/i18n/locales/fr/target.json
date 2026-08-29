@@ -1,0 +1,56 @@
+{
+  "stepBadge": "Étape 2 sur 3 • Offre Cible & Adaptation",
+  "title": "Offre d'Emploi Cible",
+  "subtitle": "Collez la description du poste. L'IA calibrera automatiquement la longueur optimale, les métriques d'impact et les mots-clés.",
+  "actions": {
+    "loadSample": "Charger une Offre Exemple",
+    "uploadFile": "Téléverser l'Offre",
+    "exportFile": "Exporter le Fichier",
+    "backToProfile": "Retour au Profil (Étape 1)",
+    "tailorNow": "✨ Adapter le CV Maintenant",
+    "tailoring": "✨ Adaptation du CV en cours...",
+    "viewExisting": "Voir le CV Existant"
+  },
+  "fields": {
+    "company": "Entreprise / Employeur Cible",
+    "companyPlaceholder": "ex. Stripe, Airbnb, Google",
+    "role": "Poste / Titre Cible",
+    "rolePlaceholder": "ex. Senior Frontend Engineer",
+    "vacancyLength": "Longueur de l'Offre",
+    "words": "mots"
+  },
+  "editor": {
+    "editText": "Modifier le Texte",
+    "formattedPreview": "Aperçu Formaté",
+    "editModeTitle": "Description du Poste (Texte Brut / Markdown)",
+    "previewModeTitle": "Aperçu de l'Offre",
+    "placeholder": "Collez ici la description du poste depuis LinkedIn, Indeed ou le site carrières...\n\nÀ propos du poste :\nNous recherchons un ingénieur expérimenté...\n\nCompétences requises :\n• Expérience avec les technologies web modernes\n• Capacité démontrée à résoudre des problèmes complexes",
+    "noJobPasted": "*Aucune offre collée pour l'instant. Basculez sur 'Modifier le Texte' pour en ajouter une.*"
+  },
+  "progress": {
+    "title": "Synthèse du CV Adapté par l'IA...",
+    "step1": "Analyse des prérequis et extraction des mots-clés...",
+    "step2": "Croisement avec le profil maître (zéro hallucination)...",
+    "step3": "Génération du Markdown optimisé ATS et du rapport de correspondance...",
+    "defaultStep": "Croisement des compétences et synthèse des réalisations selon la formule XYZ...",
+    "note": "⚡ Application des garde-fous d'intégrité et des métriques Google XYZ. Vous serez redirigé automatiquement vers votre CV dès que la génération sera terminée."
+  },
+  "status": {
+    "ready": "Détails de l'offre prêts",
+    "missing": "Collez une description de poste à adapter"
+  },
+  "modal": {
+    "title": "Configurer le Fournisseur IA",
+    "subtitle": "Sélectionnez un modèle IA ou entrez votre clé API pour générer votre CV sur mesure.",
+    "saveAndGenerate": "Enregistrer et Générer le CV"
+  },
+  "pageBudget": {
+    "title": "1. Longueur du CV (Budget de Pages)",
+    "subtitle": "Sélectionnez la longueur idéale selon votre niveau de séniorité.",
+    "onePage": "1 Page (Standard A4)",
+    "onePageDesc": "Idéal pour un scan recruteur de 30 secondes. Met l'accent sur les métriques à fort impact et les réalisations XYZ.",
+    "twoPages": "2 Pages (Étendu)",
+    "twoPagesBadge": "Senior / Lead",
+    "twoPagesDesc": "Pour directeurs, leads techniques ou spécialistes avec 8 à 10+ ans d'expérience approfondie."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "toolbar": {
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "resetZoom": "Fit Page",
+    "exportPdf": "Export PDF (Print Dialog)",
+    "exporting": "Opening Print Dialog...",
+    "downloadMarkdown": "Download Markdown",
+    "copyMarkdown": "Copy Markdown",
+    "copied": "Copied to clipboard!",
+    "pageFit": "Page Fit",
+    "singlePage": "1 Page View",
+    "twoPage": "2 Page View"
+  },
+  "navRail": {
+    "templates": "Templates",
+    "design": "Design & Format",
+    "audit": "Quality & Gaps",
+    "compare": "Compare"
+  },
+  "panels": {
+    "templates": {
+      "title": "Select Resume Theme",
+      "subtitle": "Choose from 7 engineered ATS-ready themes",
+      "palette": "Color Palette",
+      "all": "All",
+      "ats": "ATS Friendly",
+      "executive": "Executive",
+      "tech": "Tech / Modern",
+      "creative": "Design / UI"
+    },
+    "design": {
+      "title": "Design & Formatting",
+      "subtitle": "Customize typography, spacing, and styling tokens",
+      "fontFamily": "Font Family",
+      "fontSize": "Base Font Size",
+      "lineHeight": "Line Height",
+      "pageMargins": "Page Margins",
+      "sectionSpacing": "Section Spacing",
+      "primaryColor": "Accent Color",
+      "pillSkills": "Pill Skills Badges",
+      "resetDefaults": "Reset Theme Defaults"
+    },
+    "comparison": {
+      "title": "Master Profile vs Tailored CV",
+      "subtitle": "Side-by-side comparison of original knowledge base and synthesized resume",
+      "masterProfile": "Original Master Profile",
+      "tailoredCv": "Tailored Resume"
+    }
+  },
+  "drawer": {
+    "title": "Audit & Gap Intelligence",
+    "scoreLabel": "Calibrated Score",
+    "matchLabel": "Job Match"
+  }
+}

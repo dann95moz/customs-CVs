@@ -1,0 +1,63 @@
+{
+  "appName": "CV Studio",
+  "tagline": "Motor de CVs Potenciado por IA",
+  "nav": {
+    "resumeStudio": "Resume Studio",
+    "myApplications": "Mis Candidaturas",
+    "settingsAndAi": "Configuración e IA",
+    "settings": "Configuración",
+    "viewOverview": "Ver Resumen y Guía del Producto",
+    "starGithub": "Destacar en GitHub ⭐",
+    "switchTheme": "Cambiar a modo {{mode}}",
+    "light": "Claro",
+    "dark": "Oscuro"
+  },
+  "badge": {
+    "optional": "Opcional",
+    "recommended": "Recomendado",
+    "added": "Agregado",
+    "essential": "Esencial"
+  },
+  "actions": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "continue": "Continuar",
+    "back": "Volver",
+    "done": "Listo",
+    "close": "Cerrar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "copy": "Copiar",
+    "download": "Descargar",
+    "upload": "Subir",
+    "export": "Exportar",
+    "reset": "Restablecer",
+    "refresh": "Actualizar",
+    "loadSample": "Cargar Ejemplo",
+    "startBlank": "Empezar en Blanco",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "apply": "Aplicar",
+    "retry": "Reintentar"
+  },
+  "language": {
+    "selectLanguage": "Idioma",
+    "chooseLanguage": "Seleccionar idioma"
+  },
+  "status": {
+    "inProgress": "En Progreso",
+    "ready": "Listo",
+    "completed": "Completado",
+    "locked": "Bloqueado",
+    "error": "Aviso de Generación de IA",
+    "step": "Paso {{number}}"
+  },
+  "safeguard": {
+    "tooltip": "Salvaguarda de integridad activa: Garantiza que los currículums adaptados se mantengan 100% fieles a tu experiencia real sin alucinar habilidades ni métricas falsas."
+  },
+  "footer": {
+    "privacyNote": "Todos los datos permanecen en el almacenamiento de tu navegador. Puedes volver aquí en cualquier momento desde el logotipo superior.",
+    "craftedBy": "Creado por",
+    "openSource": "Código abierto en GitHub"
+  }
+}

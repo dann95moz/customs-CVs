@@ -1,0 +1,20 @@
+{
+  "title": "Matching Strategy & Gap Report",
+  "subtitle": "Cross-references your background against employer requirements and highlights strategic mitigation.",
+  "matchScore": "Estimated Job Match",
+  "companyTarget": "Target Opportunity",
+  "integratedKeywords": "Critical Integrated Keywords",
+  "matched": "Matched",
+  "missing": "Mitigated / Gap",
+  "downloadReport": "Export Gap Report (.md)",
+  "lockedNoJob": {
+    "title": "No Target Vacancy Entered Yet",
+    "desc": "Gap Strategy cross-references your candidate background against specific employer requirements. Please paste or upload a target job posting in the wizard first.",
+    "action": "Add Target Job in Wizard"
+  },
+  "lockedNoReport": {
+    "title": "Ready to Synthesize Gap Strategy",
+    "desc": "You have entered target vacancy details for {{company}}. Click below to synthesize your tailored CV and generate the matching strategy report with keyword extraction.",
+    "action": "✨ Synthesize Tailored CV Now"
+  }
+}

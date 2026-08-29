@@ -1,0 +1,56 @@
+{
+  "stepBadge": "Step 2 of 3 • Target Vacancy & Tailoring",
+  "title": "Target Job Vacancy",
+  "subtitle": "Paste the job posting description. The AI will automatically calibrate the optimal length, impact metrics, and keyword alignment.",
+  "actions": {
+    "loadSample": "Load Sample Vacancy",
+    "uploadFile": "Upload Job File",
+    "exportFile": "Export File",
+    "backToProfile": "Back to Profile (Step 1)",
+    "tailorNow": "✨ Tailor Resume Now",
+    "tailoring": "✨ Tailoring Resume...",
+    "viewExisting": "View Existing CV"
+  },
+  "fields": {
+    "company": "Target Company / Employer",
+    "companyPlaceholder": "e.g. Stripe, Airbnb, Google",
+    "role": "Target Role / Job Title",
+    "rolePlaceholder": "e.g. Senior Frontend Engineer",
+    "vacancyLength": "Vacancy Length",
+    "words": "words"
+  },
+  "editor": {
+    "editText": "Edit Text",
+    "formattedPreview": "Formatted Preview",
+    "editModeTitle": "Job Description (Plain Text / Markdown)",
+    "previewModeTitle": "Formatted Vacancy Preview",
+    "placeholder": "Paste the job description from LinkedIn, Indeed, or the careers page here...\n\nAbout the Role:\nWe are looking for an experienced engineer...\n\nKey Requirements:\n• Experience with modern web technologies\n• Proven problem solving track record",
+    "noJobPasted": "*No job description pasted yet. Switch to Edit Text to add one.*"
+  },
+  "progress": {
+    "title": "Synthesizing Tailored Resume with AI...",
+    "step1": "Analyzing Job Requirements & Extracting Keywords...",
+    "step2": "Cross-referencing Master Profile (Zero-Hallucination)...",
+    "step3": "Synthesizing ATS-Optimized Markdown & Gap Report...",
+    "defaultStep": "Cross-referencing competencies and synthesizing XYZ achievements...",
+    "note": "⚡ Applying factual integrity safeguards and Google XYZ formula metrics. You will be automatically redirected to your live CV as soon as generation completes."
+  },
+  "status": {
+    "ready": "Job details ready",
+    "missing": "Paste a job description to tailor"
+  },
+  "modal": {
+    "title": "Configure AI Provider",
+    "subtitle": "Select an AI model or enter your API key to synthesize your tailored resume.",
+    "saveAndGenerate": "Save & Tailor Resume"
+  },
+  "pageBudget": {
+    "title": "1. Resume Length (Page Budget)",
+    "subtitle": "Select the target length calibrated to your career seniority.",
+    "onePage": "1 Page (A4 Standard)",
+    "onePageDesc": "Ideal for 30-second recruiter scans. Prioritizes highest-impact metrics and Google XYZ accomplishments.",
+    "twoPages": "2 Pages (Extended)",
+    "twoPagesBadge": "Senior / Lead",
+    "twoPagesDesc": "For directors, tech leads, or specialists with 8–10+ years of deep technical track records and publications."
+  }
+}

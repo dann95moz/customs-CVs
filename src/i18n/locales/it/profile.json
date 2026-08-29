@@ -1,0 +1,92 @@
+{
+  "stepBadge": "Passo 1 di 3 • Profilo Candidato",
+  "title": "Il Tuo Profilo Professionale",
+  "subtitle": "Inserisci la tua esperienza e le tue competenze una sola volta. Le adatteremo automaticamente a ogni posizione per cui ti candidi.",
+  "actions": {
+    "loadSample": "Carica Profilo di Esempio",
+    "uploadFile": "Carica File (.md)",
+    "exportBackup": "Esporta Backup",
+    "startBlank": "Inizia da Zero",
+    "continueToTarget": "Continua all'Offerta Obiettivo (Passo 2)"
+  },
+  "modes": {
+    "guidedAssistant": "Assistente Guidato",
+    "markdownEditor": "Editor Markdown",
+    "guidedTitle": "Assistente Profilo Strutturato",
+    "markdownTitle": "Dossier Libero (Markdown / Linguaggio Naturale)"
+  },
+  "status": {
+    "ready": "Profilo master pronto per l'adattamento",
+    "tipLoadSample": "Suggerimento: Clicca su 'Carica Profilo di Esempio' per testare subito"
+  },
+  "sections": {
+    "personalInfo": {
+      "title": "Informazioni Personali & Contatti",
+      "fullName": "Nome Completo",
+      "jobTitle": "Titolo Professionale / Ruolo",
+      "email": "Indirizzo Email",
+      "phone": "Numero di Telefono",
+      "location": "Località / Città, Paese",
+      "linkedin": "Profilo LinkedIn",
+      "github": "Profilo GitHub",
+      "portfolio": "Portfolio / Sito Web"
+    },
+    "summary": {
+      "title": "Riepilogo Professionale",
+      "label": "Sintesi Esecutiva & Proposta di Valore",
+      "placeholder": "Scrivi 3-4 frasi incisive che evidenzino le tue competenze tecniche principali, i punti di forza nell'architettura software e i risultati quantificabili..."
+    },
+    "experience": {
+      "title": "Esperienza Lavorativa",
+      "addRole": "Aggiungi Posizione",
+      "company": "Azienda / Organizzazione",
+      "role": "Ruolo / Titolo",
+      "dates": "Periodo (es. 2021 – Presente)",
+      "location": "Sede",
+      "bullets": "Risultati & Responsabilità (Formula XYZ)",
+      "addBullet": "Aggiungi Punto Elenco",
+      "removeRole": "Rimuovi Posizione"
+    },
+    "skills": {
+      "title": "Competenze Tecniche",
+      "addGroup": "Aggiungi Gruppo di Competenze",
+      "groupName": "Nome Categoria (es. Linguaggi & Framework)",
+      "skillsList": "Competenze (separate da virgole)",
+      "removeGroup": "Rimuovi Categoria"
+    },
+    "education": {
+      "title": "Istruzione & Certificazioni",
+      "addEducation": "Aggiungi Titolo / Certificazione",
+      "degree": "Titolo di Studio / Certificazione",
+      "institution": "Istituto / Ente",
+      "year": "Anno / Conseguimento",
+      "location": "Sede (opzionale)",
+      "remove": "Rimuovi"
+    },
+    "languages": {
+      "title": "Lingue",
+      "addLanguage": "Aggiungi Lingua",
+      "language": "Lingua",
+      "proficiency": "Livello di Competenza (es. Madrelingua, Fluente, Professionale)",
+      "remove": "Rimuovi"
+    },
+    "projects": {
+      "title": "Progetti Principali & Open Source (Opzionale)",
+      "addProject": "Aggiungi Progetto",
+      "projectName": "Titolo del Progetto",
+      "role": "Ruolo / Tecnologie",
+      "date": "Data / Anno",
+      "link": "Link al Progetto / Repository",
+      "bullets": "Punti Chiave & Metriche",
+      "remove": "Rimuovi Progetto"
+    }
+  },
+  "stepper": {
+    "profileLabel": "Profilo Candidato",
+    "profileSubtitle": "Percorso & competenze",
+    "targetLabel": "Offerta Obiettivo",
+    "targetSubtitle": "Posizione & adattamento",
+    "previewLabel": "CV dal Vivo & PDF",
+    "previewSubtitle": "Anteprima & download PDF"
+  }
+}

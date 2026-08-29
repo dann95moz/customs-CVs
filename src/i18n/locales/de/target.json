@@ -1,0 +1,56 @@
+{
+  "stepBadge": "Schritt 2 von 3 • Ziel-Stelle & Anpassung",
+  "title": "Ziel-Stellenanzeige",
+  "subtitle": "Fügen Sie die Stellenbeschreibung ein. Die KI kalibriert automatisch die optimale Länge, Wirkungskennzahlen und Keyword-Übereinstimmung.",
+  "actions": {
+    "loadSample": "Beispiel-Stelle laden",
+    "uploadFile": "Stellendatei hochladen",
+    "exportFile": "Datei exportieren",
+    "backToProfile": "Zurück zum Profil (Schritt 1)",
+    "tailorNow": "✨ Lebenslauf jetzt anpassen",
+    "tailoring": "✨ Lebenslauf wird angepasst...",
+    "viewExisting": "Bestehenden CV ansehen"
+  },
+  "fields": {
+    "company": "Zielunternehmen / Arbeitgeber",
+    "companyPlaceholder": "z. B. Stripe, Airbnb, Google",
+    "role": "Zielposition / Berufsbezeichnung",
+    "rolePlaceholder": "z. B. Senior Frontend Engineer",
+    "vacancyLength": "Textlänge der Anzeige",
+    "words": "Wörter"
+  },
+  "editor": {
+    "editText": "Text bearbeiten",
+    "formattedPreview": "Formatierte Vorschau",
+    "editModeTitle": "Stellenbeschreibung (Klartext / Markdown)",
+    "previewModeTitle": "Vorschau der Stellenanzeige",
+    "placeholder": "Fügen Sie hier die Stellenbeschreibung von LinkedIn, Indeed oder der Karriereseite ein...\n\nÜber die Stelle:\nWir suchen einen erfahrenen Ingenieur...\n\nAnforderungen:\n• Erfahrung mit modernen Webtechnologien\n• Nachgewiesene Problemlösungskompetenz",
+    "noJobPasted": "*Noch keine Stellenbeschreibung eingefügt. Wechseln Sie zu 'Text bearbeiten', um eine hinzuzufügen.*"
+  },
+  "progress": {
+    "title": "Angepasster Lebenslauf wird mit KI synthetisiert...",
+    "step1": "Stellenanforderungen analysieren und Keywords extrahieren...",
+    "step2": "Mit Master-Profil abgleichen (Null Halluzination)...",
+    "step3": "ATS-optimiertes Markdown und Gap-Report generieren...",
+    "defaultStep": "Kompetenzen abgleichen und XYZ-Erfolge formulieren...",
+    "note": "⚡ Fällt unter Integritätsschutz und Google XYZ-Formel. Sie werden nach Fertigstellung automatisch zu Ihrem Live-CV weitergeleitet."
+  },
+  "status": {
+    "ready": "Stellendaten bereit",
+    "missing": "Stellenbeschreibung zum Anpassen einfügen"
+  },
+  "modal": {
+    "title": "KI-Anbieter konfigurieren",
+    "subtitle": "Wählen Sie ein KI-Modell oder geben Sie Ihren API-Schlüssel ein, um Ihren Lebenslauf anzupassen.",
+    "saveAndGenerate": "Speichern & Lebenslauf anpassen"
+  },
+  "pageBudget": {
+    "title": "1. Lebenslauflänge (Seitenbudget)",
+    "subtitle": "Wählen Sie die ideale Länge passend zu Ihrer Berufserfahrung.",
+    "onePage": "1 Seite (Standard A4)",
+    "onePageDesc": "Ideal für schnelles 30-Sekunden-Screening. Priorisiert wirkungsvolle Google XYZ-Erfolge.",
+    "twoPages": "2 Seiten (Erweitert)",
+    "twoPagesBadge": "Senior / Lead",
+    "twoPagesDesc": "Für Führungskräfte, Tech Leads oder Spezialisten mit mehr als 8–10 Jahren fundierter Erfahrung."
+  }
+}

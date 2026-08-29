@@ -1,0 +1,47 @@
+{
+  "title": "Resume Quality & ATS Audit",
+  "subtitle": "Calibrated 1–10 executive scoring evaluating Google XYZ metrics, achievement density, and ATS compliance.",
+  "score": "Quality Score",
+  "overallScore": "Overall Quality Score",
+  "calibratedScale": "Calibrated 1–10 Scale",
+  "refreshScore": "Refresh Audit",
+  "gapIdentified": "Identified Gap",
+  "actionLevers": "Strategic Levers to Reach 10/10",
+  "quickSuggestions": "Quick Suggestions (Click to apply):",
+  "proposedAddition": "Proposed Content Addition",
+  "inputPlaceholder": "Enter content to inject into this section...",
+  "applyImprovement": "Apply to Tailored CV",
+  "sections": {
+    "summary": "Professional Summary",
+    "experience": "Work Experience",
+    "skills": "Technical Skills",
+    "education": "Education & Format",
+    "ats": "ATS Compatibility"
+  },
+  "metrics": {
+    "achievementDensity": "Achievement Density",
+    "googleXyz": "Google XYZ Formula",
+    "actionVerbs": "Proactive Action Verbs",
+    "quantifiableMetrics": "Quantifiable Metrics",
+    "atsCompliance": "ATS Formatting Compliance"
+  },
+  "xyz": {
+    "title": "Google XYZ Impact Formula",
+    "description": "Accomplished [X] as measured by [Y] by doing [Z]"
+  },
+  "atsCheck": {
+    "title": "Verification Checks",
+    "description": "100% ATS Parser Safe Typography"
+  },
+  "locked": {
+    "title": "Quality Audit Requires a Tailored CV",
+    "desc": "The calibrated 1–10 executive scoring engine evaluates real achievement density, Google XYZ formula percentages, and ATS compliance. Please create or synthesize your tailored CV first to unlock section-by-section scoring.",
+    "action": "Go to Target Job & Tailor"
+  },
+  "modal": {
+    "title": "Suggested Improvement",
+    "original": "Current Text",
+    "suggested": "Recommended Optimization",
+    "apply": "Apply Suggestion"
+  }
+}

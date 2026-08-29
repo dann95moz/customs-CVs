@@ -1,0 +1,92 @@
+{
+  "stepBadge": "Étape 1 sur 3 • Profil du Candidat",
+  "title": "Votre Profil Professionnel",
+  "subtitle": "Renseignez votre parcours et vos compétences une seule fois. Nous les adapterons automatiquement à chaque offre.",
+  "actions": {
+    "loadSample": "Charger un Profil Exemple",
+    "uploadFile": "Téléverser un Fichier (.md)",
+    "exportBackup": "Exporter la Sauvegarde",
+    "startBlank": "Partir de Zéro",
+    "continueToTarget": "Continuer vers l'Offre Cible (Étape 2)"
+  },
+  "modes": {
+    "guidedAssistant": "Assistant Guidé",
+    "markdownEditor": "Éditeur Markdown",
+    "guidedTitle": "Assistant de Profil Structuré",
+    "markdownTitle": "Dossier Libre (Markdown / Langage Naturel)"
+  },
+  "status": {
+    "ready": "Profil maître prêt pour l'adaptation",
+    "tipLoadSample": "Astuce : Cliquez sur 'Charger un Profil Exemple' pour tester immédiatement"
+  },
+  "sections": {
+    "personalInfo": {
+      "title": "Informations Personnelles & Contact",
+      "fullName": "Nom Complet",
+      "jobTitle": "Titre Professionnel / Spécialité",
+      "email": "Adresse Email",
+      "phone": "Numéro de Téléphone",
+      "location": "Localisation / Ville, Pays",
+      "linkedin": "Lien LinkedIn",
+      "github": "Lien GitHub",
+      "portfolio": "Portfolio / Site Web"
+    },
+    "summary": {
+      "title": "Résumé Professionnel",
+      "label": "Synthèse Exécutive & Proposition de Valeur",
+      "placeholder": "Rédigez 3 à 4 phrases percutantes mettant en valeur votre expertise technique principale, vos compétences d'architecture et vos résultats chiffrés..."
+    },
+    "experience": {
+      "title": "Expérience Professionnelle",
+      "addRole": "Ajouter une Expérience",
+      "company": "Entreprise / Organisation",
+      "role": "Poste / Rôle",
+      "dates": "Période (ex. 2021 – Présent)",
+      "location": "Lieu",
+      "bullets": "Réalisations & Responsabilités (Formule XYZ)",
+      "addBullet": "Ajouter une Puce de Réalisation",
+      "removeRole": "Supprimer le Poste"
+    },
+    "skills": {
+      "title": "Compétences Techniques",
+      "addGroup": "Ajouter un Groupe de Compétences",
+      "groupName": "Nom de la Catégorie (ex. Langages & Frameworks)",
+      "skillsList": "Compétences (séparées par des virgules)",
+      "removeGroup": "Supprimer la Catégorie"
+    },
+    "education": {
+      "title": "Formation & Certifications",
+      "addEducation": "Ajouter un Diplôme / Certification",
+      "degree": "Diplôme / Titre de la Certification",
+      "institution": "Établissement / Organisme",
+      "year": "Année / Obtention",
+      "location": "Lieu (facultatif)",
+      "remove": "Supprimer"
+    },
+    "languages": {
+      "title": "Langues",
+      "addLanguage": "Ajouter une Langue",
+      "language": "Langue",
+      "proficiency": "Niveau (ex. Natif, Bilingue, Professionnel)",
+      "remove": "Supprimer"
+    },
+    "projects": {
+      "title": "Projets Notables & Open Source (Facultatif)",
+      "addProject": "Ajouter un Projet",
+      "projectName": "Titre du Projet",
+      "role": "Rôle / Technologies",
+      "date": "Date / Année",
+      "link": "Lien / Dépôt GitHub",
+      "bullets": "Points Clés & Métriques",
+      "remove": "Supprimer le Projet"
+    }
+  },
+  "stepper": {
+    "profileLabel": "Profil du Candidat",
+    "profileSubtitle": "Parcours & compétences",
+    "targetLabel": "Offre Cible",
+    "targetSubtitle": "Offre & adaptation",
+    "previewLabel": "CV en Direct & PDF",
+    "previewSubtitle": "Aperçu & téléchargement PDF"
+  }
+}

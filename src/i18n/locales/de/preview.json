@@ -1,0 +1,56 @@
+{
+  "toolbar": {
+    "zoomIn": "Vergrößern",
+    "zoomOut": "Verkleinern",
+    "resetZoom": "An Seite anpassen",
+    "exportPdf": "PDF exportieren (Drucken)",
+    "exporting": "Druckdialog wird geöffnet...",
+    "downloadMarkdown": "Markdown herunterladen",
+    "copyMarkdown": "Markdown kopieren",
+    "copied": "In die Zwischenablage kopiert!",
+    "pageFit": "Seitenansicht",
+    "singlePage": "1-Seiten-Ansicht",
+    "twoPage": "2-Seiten-Ansicht"
+  },
+  "navRail": {
+    "templates": "Vorlagen",
+    "design": "Design & Format",
+    "audit": "Qualität & Lücken",
+    "compare": "Vergleichen"
+  },
+  "panels": {
+    "templates": {
+      "title": "Lebenslauf-Vorlage auswählen",
+      "subtitle": "Wählen Sie aus 7 professionellen, ATS-optimierten Vorlagen",
+      "palette": "Farbpalette",
+      "all": "Alle",
+      "ats": "ATS-Freundlich",
+      "executive": "Executive / Führung",
+      "tech": "Tech / Modern",
+      "creative": "Design / UI"
+    },
+    "design": {
+      "title": "Design & Formatierung",
+      "subtitle": "Typografie, Abstände und visuelle Elemente anpassen",
+      "fontFamily": "Schriftfamilie",
+      "fontSize": "Basis-Schriftgröße",
+      "lineHeight": "Zeilenhöhe",
+      "pageMargins": "Seitenränder",
+      "sectionSpacing": "Abschnittsabstand",
+      "primaryColor": "Akzentfarbe",
+      "pillSkills": "Fähigkeiten-Badges (Pills)",
+      "resetDefaults": "Auf Standard zurücksetzen"
+    },
+    "comparison": {
+      "title": "Master-Profil vs. Angepasster CV",
+      "subtitle": "Direkter Vergleich zwischen Originalprofil und synthetisiertem Lebenslauf",
+      "masterProfile": "Original Master-Profil",
+      "tailoredCv": "Angepasster Lebenslauf"
+    }
+  },
+  "drawer": {
+    "title": "Audit- & Lückenanalyse",
+    "scoreLabel": "Kalibrierter Score",
+    "matchLabel": "Stellenabgleich"
+  }
+}

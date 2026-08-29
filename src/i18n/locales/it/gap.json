@@ -1,0 +1,20 @@
+{
+  "title": "Strategia di Corrispondenza & Report dei Gap",
+  "subtitle": "Confronta il tuo profilo con i requisiti aziendali ed evidenzia la strategia di mitigazione.",
+  "matchScore": "Allineamento Stimato",
+  "companyTarget": "Opportunità Obiettivo",
+  "integratedKeywords": "Parole Chiave Critiche Integrate",
+  "matched": "Corrispondenti",
+  "missing": "Mitigate / Gap",
+  "downloadReport": "Esporta Report (.md)",
+  "lockedNoJob": {
+    "title": "Nessuna offerta ancora inserita",
+    "desc": "L'analisi dei gap confronta il tuo profilo con i requisiti specifici. Inserisci o carica prima una descrizione di lavoro nell'assistente.",
+    "action": "Aggiungi Offerta nell'Assistente"
+  },
+  "lockedNoReport": {
+    "title": "Pronto per Sintetizzare la Strategia",
+    "desc": "Hai inserito i dettagli dell'offerta per {{company}}. Clicca qui sotto per sintetizzare il tuo CV personalizzato e generare il report.",
+    "action": "✨ Sintetizza il CV Adesso"
+  }
+}

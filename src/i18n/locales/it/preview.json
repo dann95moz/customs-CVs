@@ -1,0 +1,56 @@
+{
+  "toolbar": {
+    "zoomIn": "Ingrandisci",
+    "zoomOut": "Riduci",
+    "resetZoom": "Adatta alla Pagina",
+    "exportPdf": "Esporta PDF (Stampa)",
+    "exporting": "Apertura finestra di stampa...",
+    "downloadMarkdown": "Scarica Markdown",
+    "copyMarkdown": "Copia Markdown",
+    "copied": "Copiato negli appunti!",
+    "pageFit": "Adattamento",
+    "singlePage": "Vista 1 Pagina",
+    "twoPage": "Vista 2 Pagine"
+  },
+  "navRail": {
+    "templates": "Modelli",
+    "design": "Design & Formato",
+    "audit": "Qualità & Gap",
+    "compare": "Confronta"
+  },
+  "panels": {
+    "templates": {
+      "title": "Seleziona Modello di CV",
+      "subtitle": "Scegli tra 7 modelli professionali ottimizzati per ATS",
+      "palette": "Tavolozza Colori",
+      "all": "Tutti",
+      "ats": "Compatibile ATS",
+      "executive": "Executive / Dirigenziale",
+      "tech": "Tech / Moderno",
+      "creative": "Design / UI"
+    },
+    "design": {
+      "title": "Design & Formattazione",
+      "subtitle": "Personalizza tipografia, spaziatura e stili visivi",
+      "fontFamily": "Carattere",
+      "fontSize": "Dimensione Carattere Base",
+      "lineHeight": "Interlinea",
+      "pageMargins": "Margini di Pagina",
+      "sectionSpacing": "Spaziatura Sezioni",
+      "primaryColor": "Colore di Accento",
+      "pillSkills": "Badge Competenze (Pills)",
+      "resetDefaults": "Ripristina Impostazioni Predefinite"
+    },
+    "comparison": {
+      "title": "Profilo Master vs CV Adattato",
+      "subtitle": "Confronto affiancato tra la tua base di dati originaria e il curriculum sintetizzato",
+      "masterProfile": "Profilo Master Originale",
+      "tailoredCv": "Curriculum Personalizzato"
+    }
+  },
+  "drawer": {
+    "title": "Analisi di Qualità & Corrispondenza",
+    "scoreLabel": "Punteggio Calibrato",
+    "matchLabel": "Allineamento Posizione"
+  }
+}
