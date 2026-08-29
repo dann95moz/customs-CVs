@@ -57,7 +57,9 @@
   },
   "footer": {
     "privacyNote": "Todos los datos permanecen en el almacenamiento de tu navegador. Puedes volver aquí en cualquier momento desde el logotipo superior.",
+    "communityNote": "Si CV Studio te ayudó a conseguir una entrevista, una estrella en GitHub ayuda a que más personas lo encuentren.",
     "craftedBy": "Creado por",
-    "openSource": "Código abierto en GitHub"
+    "openSource": "Código abierto en GitHub",
+    "giveStar": "Dale una estrella"
   }
 }

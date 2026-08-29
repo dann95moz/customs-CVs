@@ -256,7 +256,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               {t('common:footer.openSource', 'Open Source & Community')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.78rem', sm: '0.875rem' } }}>
-              {t('common:footer.craftedBy', 'Crafted by')} <strong>{APP_LINKS.AUTHOR_NAME}</strong> · {t('common:footer.privacyNote', 'All data remains in your browser storage.')}
+              {t('common:footer.craftedBy', 'Crafted by')} <strong>{APP_LINKS.AUTHOR_NAME}</strong> · {t('common:footer.communityNote', 'If CV Studio helped you land an interview, a star on GitHub helps more people find it.')}
             </Typography>
           </Box>
         </Box>
@@ -294,7 +294,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             },
           }}
         >
-          {t('common:nav.starGithub', 'Star on GitHub')}
+          {t('common:footer.giveStar', 'Give a star')}
         </Button>
       </Paper>
 

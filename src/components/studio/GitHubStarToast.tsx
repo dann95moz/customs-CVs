@@ -128,7 +128,7 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
             lineHeight: 1.4,
           }}
         >
-          If CV Studio helped you tailor your resume, a star on GitHub supports this free, private project!
+          {t('common:footer.communityNote', 'If CV Studio helped you land an interview, a star on GitHub helps more people find it.')}
         </Typography>
 
         {/* Action Row */}
@@ -183,7 +183,7 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
               },
             }}
           >
-            Star on GitHub
+            {t('common:footer.giveStar', 'Give a star')}
           </Button>
         </Box>
       </Paper>

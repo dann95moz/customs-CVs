@@ -57,7 +57,9 @@
   },
   "footer": {
     "privacyNote": "All data remains in your browser storage. You can switch back here anytime via the top logo.",
+    "communityNote": "If CV Studio helped you land an interview, a star on GitHub helps more people find it.",
     "craftedBy": "Crafted by",
-    "openSource": "Open source on GitHub"
+    "openSource": "Open source on GitHub",
+    "giveStar": "Give a star"
   }
 }
