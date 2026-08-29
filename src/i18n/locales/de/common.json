@@ -64,8 +64,9 @@
     "generic": "Lade Ansicht..."
   },
   "safeguard": {
-    "tooltip": "Authentizitätsgarantie aktiv: Stellt sicher, dass Ihr Lebenslauf Ihre echten Erfolge hervorhebt, ohne falsche Erfahrungen oder Fähigkeiten zu erfinden.",
-    "guarantee": "Authentizitätsgarantie: 100 % treu zu Ihrem echten Werdegang"
+    "tooltip": "Wir erfinden niemals Erfolge, Erfahrungen oder Fähigkeiten, die nicht in Ihrem Profil stehen.",
+    "guarantee": "Authentizitätsgarantie: 100 % treu zu Ihrem echten Werdegang",
+    "ariaLabel": "Authentizitätsversprechen"
   },
   "footer": {
     "privacyNote": "Alle Daten verbleiben in Ihrem Browser-Speicher. Über das obere Logo können Sie jederzeit hierher zurückkehren.",

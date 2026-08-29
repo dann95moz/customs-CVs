@@ -64,8 +64,9 @@
     "generic": "Chargement de la vue..."
   },
   "safeguard": {
-    "tooltip": "Garantie d'Authenticité active : Assure que votre CV mette en valeur vos réussites réelles sans inventer de fausses compétences ni d'expériences fictives.",
-    "guarantee": "Garantie d'Authenticité : 100 % fidèle à votre parcours réel"
+    "tooltip": "Nous n'inventons jamais de réalisations, d'expériences ou de compétences absentes de votre profil.",
+    "guarantee": "Garantie d'Authenticité : 100 % fidèle à votre parcours réel",
+    "ariaLabel": "Promesse d'Authenticité"
   },
   "footer": {
     "privacyNote": "Toutes les données restent dans le stockage de votre navigateur. Vous pouvez revenir ici à tout moment via le logo supérieur.",

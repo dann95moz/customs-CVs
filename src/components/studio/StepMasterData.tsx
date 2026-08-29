@@ -4,6 +4,7 @@ import {
   Paper,
   Typography,
   Button,
+  IconButton,
   Chip,
   Stack,
   Tooltip,
@@ -121,24 +122,25 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
               {t('profile:subtitle', "Add your career history and skills once. We'll automatically adapt it for every job you apply to.")}
               <Tooltip
-                title={t('common:safeguard.tooltip', 'Career Authenticity Active: Ensures your tailored resume highlights your real achievements without inventing false experience or fake skills.')}
+                title={t('common:safeguard.tooltip', 'We never invent achievements, experience, or skills not in your profile.')}
                 arrow
                 placement="top"
+                enterTouchDelay={0}
+                leaveTouchDelay={4000}
               >
-                <Box
-                  component="span"
+                <IconButton
+                  size="small"
+                  aria-label={t('common:safeguard.ariaLabel', 'Career Authenticity Promise')}
                   sx={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    cursor: 'help',
-                    color: 'text.secondary',
-                    '&:hover': { color: 'primary.main' },
-                    transition: 'color 0.2s ease',
+                    p: 0.35,
+                    color: theme.palette.success.main,
+                    bgcolor: alpha(theme.palette.success.main, 0.08),
+                    borderRadius: '6px',
+                    '&:hover': { bgcolor: alpha(theme.palette.success.main, 0.16) },
                   }}
-                  aria-label="Career authenticity guarantee active"
                 >
-                  <ShieldRoundedIcon sx={{ fontSize: '1.05rem', color: theme.palette.success.main }} />
-                </Box>
+                  <ShieldRoundedIcon sx={{ fontSize: '0.95rem' }} />
+                </IconButton>
               </Tooltip>
             </Typography>
           </Box>
