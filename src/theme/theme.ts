@@ -11,7 +11,9 @@ export type ThemeMode = 'light' | 'dark';
 const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
   const isDark = mode === 'dark';
   const tokens = isDark ? DARK_THEME_TOKENS : LIGHT_THEME_TOKENS;
-
+  const bodyFont = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+  const displayFont = "'Space Grotesk', 'Inter', sans-serif"; // headings only
+  const dataFont = "'JetBrains Mono', 'IBM Plex Mono', monospace"; // scores, %, counts
   return {
     palette: {
       mode,
@@ -31,10 +33,10 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
       borderRadius: parseInt(RADIUS_TOKENS.xl, 10),
     },
     typography: {
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      h1: { fontWeight: 800, letterSpacing: '-0.025em' },
-      h2: { fontWeight: 700, letterSpacing: '-0.02em' },
-      h3: { fontWeight: 700, letterSpacing: '-0.015em' },
+      fontFamily: bodyFont,
+      h1: { fontFamily: displayFont, fontWeight: 700, letterSpacing: '-0.02em' },
+      h2: { fontFamily: displayFont, fontWeight: 700, letterSpacing: '-0.015em' },
+      h3: { fontFamily: displayFont, fontWeight: 600, letterSpacing: '-0.01em' },
       h4: { fontWeight: 700, letterSpacing: '-0.01em' },
       h5: { fontWeight: 600 },
       h6: { fontWeight: 600 },
@@ -75,26 +77,46 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
         },
         styleOverrides: {
           root: {
-            borderRadius: 10,
-            padding: '8px 18px',
+            borderRadius: RADIUS_TOKENS.full,
+            padding: '8px 20px',
             fontSize: '0.875rem',
-            transition: 'all 0.15s ease-in-out',
+            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+          },
+          sizeSmall: {
+            padding: '4px 14px',
+            fontSize: '0.78rem',
+            minHeight: 32,
+          },
+          sizeMedium: {
+            padding: '8px 20px',
+            fontSize: '0.875rem',
+            minHeight: 40,
+          },
+          sizeLarge: {
+            padding: '12px 28px',
+            fontSize: '0.95rem',
+            minHeight: 48,
           },
           contained: {
-            background: isDark
-              ? 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)'
-              : 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
-            color: '#ffffff',
-            boxShadow: isDark
-              ? '0 2px 10px rgba(2, 132, 199, 0.4)'
-              : '0 2px 10px rgba(2, 132, 199, 0.25)',
+            background: tokens.primary.main,
+            color: tokens.primary.contrastText,
+            boxShadow: 'none',
             '&:hover': {
-              background: isDark
-                ? 'linear-gradient(135deg, #0369a1 0%, #1e40af 100%)'
-                : 'linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%)',
-              boxShadow: isDark
-                ? '0 4px 14px rgba(2, 132, 199, 0.5)'
-                : '0 4px 14px rgba(2, 132, 199, 0.35)',
+              background: tokens.primary.dark,
+              boxShadow: `0 4px 14px ${tokens.accent.glow}`,
+              transform: 'translateY(-1px)',
+            },
+            '&:active': {
+              transform: 'translateY(0)',
+            },
+            '&.MuiButton-containedSecondary': {
+              background: tokens.secondary.main,
+              color: tokens.secondary.contrastText,
+              '&:hover': {
+                background: tokens.secondary.dark,
+                boxShadow: `0 4px 14px ${alpha(tokens.secondary.main, 0.3)}`,
+                transform: 'translateY(-1px)',
+              },
             },
             '&.Mui-disabled': {
               background: isDark ? 'rgba(255, 255, 255, 0.08) !important' : 'rgba(0, 0, 0, 0.08) !important',
@@ -106,11 +128,85 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
             borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)',
             '&:hover': {
               borderColor: tokens.primary.main,
-              backgroundColor: alpha(tokens.primary.main, isDark ? 0.08 : 0.06),
+              backgroundColor: tokens.primary.container,
+              transform: 'translateY(-1px)',
             },
             '&.Mui-disabled': {
               borderColor: isDark ? 'rgba(255, 255, 255, 0.08) !important' : 'rgba(0, 0, 0, 0.08) !important',
               color: isDark ? 'rgba(255, 255, 255, 0.3) !important' : 'rgba(0, 0, 0, 0.26) !important',
+            },
+          },
+          text: {
+            '&:hover': {
+              backgroundColor: alpha(tokens.primary.main, isDark ? 0.1 : 0.06),
+            },
+          },
+        },
+      },
+      MuiButtonGroup: {
+        styleOverrides: {
+          root: {
+            borderRadius: RADIUS_TOKENS.full,
+            overflow: 'hidden',
+            border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)'}`,
+            padding: 2,
+            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+            '& .MuiButton-root': {
+              borderRadius: RADIUS_TOKENS.full,
+              border: 'none !important',
+              margin: '0 1px',
+              padding: '6px 14px',
+              '&.MuiButton-contained': {
+                boxShadow: 'none',
+              },
+            },
+          },
+        },
+      },
+      MuiToggleButtonGroup: {
+        styleOverrides: {
+          root: {
+            borderRadius: RADIUS_TOKENS.full,
+            overflow: 'hidden',
+            border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)'}`,
+            padding: 2,
+            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+            gap: 2,
+          },
+        },
+      },
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: `${RADIUS_TOKENS.full} !important`,
+            border: 'none !important',
+            textTransform: 'none',
+            fontWeight: 600,
+            fontSize: '0.825rem',
+            padding: '6px 16px',
+            color: tokens.text.secondary,
+            transition: 'all 0.15s ease',
+            '&.Mui-selected': {
+              backgroundColor: tokens.primary.container,
+              color: tokens.primary.onContainer,
+              fontWeight: 700,
+              '&:hover': {
+                backgroundColor: tokens.primary.container,
+              },
+            },
+            '&:hover': {
+              backgroundColor: alpha(tokens.text.primary, 0.05),
+            },
+          },
+        },
+      },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: RADIUS_TOKENS.full,
+            transition: 'all 0.15s ease',
+            '&:hover': {
+              backgroundColor: alpha(tokens.primary.main, isDark ? 0.12 : 0.08),
             },
           },
         },
@@ -118,7 +214,7 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
       MuiCard: {
         styleOverrides: {
           root: {
-            borderRadius: 16,
+            borderRadius: parseInt(RADIUS_TOKENS.xl, 10),
             backgroundImage: 'none',
             border: `1px solid ${tokens.border.default}`,
             boxShadow: tokens.shadow.box,
@@ -131,31 +227,43 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
             backgroundImage: 'none',
           },
           rounded: {
-            borderRadius: 14,
+            borderRadius: parseInt(RADIUS_TOKENS.lg, 10),
           },
         },
       },
       MuiChip: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
+            borderRadius: RADIUS_TOKENS.full,
             fontWeight: 600,
             fontSize: '0.78rem',
+            padding: '0 4px',
+            transition: 'all 0.15s ease',
           },
           colorPrimary: {
-            backgroundColor: isDark ? alpha(tokens.primary.main, 0.15) : undefined,
-            color: isDark ? tokens.primary.light : undefined,
-            border: isDark ? `1px solid ${alpha(tokens.primary.main, 0.3)}` : undefined,
+            backgroundColor: tokens.primary.container,
+            color: tokens.primary.onContainer,
+            border: `1px solid ${alpha(tokens.primary.main, 0.25)}`,
+          },
+          colorSecondary: {
+            backgroundColor: tokens.secondary.container,
+            color: tokens.secondary.onContainer,
+            border: `1px solid ${alpha(tokens.secondary.main, 0.25)}`,
           },
           colorSuccess: {
-            backgroundColor: isDark ? alpha(tokens.success.main, 0.15) : undefined,
-            color: isDark ? tokens.success.light : undefined,
-            border: isDark ? `1px solid ${alpha(tokens.success.main, 0.3)}` : undefined,
+            backgroundColor: tokens.success.container,
+            color: tokens.success.onContainer,
+            border: `1px solid ${alpha(tokens.success.main, 0.25)}`,
           },
           colorWarning: {
-            backgroundColor: isDark ? alpha(tokens.warning.main, 0.15) : undefined,
-            color: isDark ? tokens.warning.light : undefined,
-            border: isDark ? `1px solid ${alpha(tokens.warning.main, 0.3)}` : undefined,
+            backgroundColor: tokens.warning.container,
+            color: tokens.warning.onContainer,
+            border: `1px solid ${alpha(tokens.warning.main, 0.25)}`,
+          },
+          colorError: {
+            backgroundColor: tokens.error.container,
+            color: tokens.error.onContainer,
+            border: `1px solid ${alpha(tokens.error.main, 0.25)}`,
           },
         },
       },
@@ -168,7 +276,7 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            borderRadius: 10,
+            borderRadius: parseInt(RADIUS_TOKENS.md, 10),
             backgroundColor: tokens.background.input,
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: tokens.border.default,
@@ -188,11 +296,14 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
             textTransform: 'none',
             fontWeight: 600,
             fontSize: '0.875rem',
-            minHeight: 44,
-            borderRadius: 8,
+            minHeight: 40,
+            borderRadius: RADIUS_TOKENS.full,
             margin: '0 4px',
-            padding: '6px 14px',
+            padding: '6px 16px',
             transition: 'all 0.15s ease',
+            '&.Mui-selected': {
+              color: tokens.primary.main,
+            },
           },
         },
       },
@@ -202,13 +313,22 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
         },
         styleOverrides: {
           tooltip: {
-            borderRadius: 8,
+            borderRadius: parseInt(RADIUS_TOKENS.sm, 10),
             fontSize: '0.75rem',
             fontWeight: 500,
             backgroundColor: tokens.background.card,
             border: `1px solid ${tokens.border.default}`,
             color: tokens.text.primary,
             boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+          },
+        },
+      },
+      MuiDialog: {
+        styleOverrides: {
+          paper: {
+            borderRadius: parseInt(RADIUS_TOKENS.xl, 10),
+            border: `1px solid ${tokens.border.default}`,
+            boxShadow: tokens.shadow.box,
           },
         },
       },

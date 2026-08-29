@@ -11,6 +11,8 @@ export interface PaletteColorTokens {
   light: string;
   dark: string;
   contrastText: string;
+  container: string;
+  onContainer: string;
 }
 
 export interface ThemeColorTokens {
@@ -24,6 +26,9 @@ export interface ThemeColorTokens {
     paper: string;
     card: string;
     cardHover: string;
+    surfaceContainerLow: string;
+    surfaceContainer: string;
+    surfaceContainerHigh: string;
     input: string;
     code: string;
   };
@@ -35,15 +40,20 @@ export interface ThemeColorTokens {
   border: {
     default: string;
     light: string;
+    outline: string;
+    outlineVariant: string;
   };
   accent: {
     main: string;
     hover: string;
     glow: string;
     purple: string;
+    container: string;
+    onContainer: string;
   };
   shadow: {
     box: string;
+    pill: string;
   };
 }
 
@@ -52,37 +62,50 @@ export const DARK_THEME_TOKENS: ThemeColorTokens = {
     main: '#38bdf8',
     light: '#7dd3fc',
     dark: '#0284c7',
-    contrastText: '#0b0f19',
+    contrastText: '#041e2e',
+    container: 'rgba(56, 189, 248, 0.14)',
+    onContainer: '#7dd3fc',
   },
   secondary: {
     main: '#a78bfa',
     light: '#c4b5fd',
     dark: '#7c3aed',
-    contrastText: '#ffffff',
+    contrastText: '#1e0a45',
+    container: 'rgba(167, 139, 250, 0.14)',
+    onContainer: '#c4b5fd',
   },
   success: {
     main: '#10b981',
     light: '#34d399',
     dark: '#059669',
     contrastText: '#ffffff',
+    container: 'rgba(16, 185, 129, 0.14)',
+    onContainer: '#34d399',
   },
   warning: {
     main: '#f59e0b',
     light: '#fbbf24',
     dark: '#b45309',
     contrastText: '#ffffff',
+    container: 'rgba(245, 158, 11, 0.14)',
+    onContainer: '#fbbf24',
   },
   error: {
     main: '#ef4444',
     light: '#f87171',
     dark: '#b91c1c',
     contrastText: '#ffffff',
+    container: 'rgba(239, 68, 68, 0.14)',
+    onContainer: '#f87171',
   },
   background: {
     default: '#080b12',
     paper: '#101623',
     card: '#151d2e',
     cardHover: '#1b243b',
+    surfaceContainerLow: '#0e1422',
+    surfaceContainer: '#151d2e',
+    surfaceContainerHigh: '#1c263c',
     input: '#0b0f19',
     code: '#0b0f19',
   },
@@ -94,15 +117,20 @@ export const DARK_THEME_TOKENS: ThemeColorTokens = {
   border: {
     default: '#232f48',
     light: '#334155',
+    outline: '#2b3956',
+    outlineVariant: 'rgba(255, 255, 255, 0.08)',
   },
   accent: {
     main: '#38bdf8',
     hover: '#0284c7',
     glow: 'rgba(56, 189, 248, 0.25)',
     purple: '#818cf8',
+    container: 'rgba(56, 189, 248, 0.14)',
+    onContainer: '#7dd3fc',
   },
   shadow: {
     box: '0 4px 20px -2px rgba(0, 0, 0, 0.4)',
+    pill: '0 2px 10px rgba(56, 189, 248, 0.25)',
   },
 };
 
@@ -112,36 +140,49 @@ export const LIGHT_THEME_TOKENS: ThemeColorTokens = {
     light: '#38bdf8',
     dark: '#0369a1',
     contrastText: '#ffffff',
+    container: 'rgba(2, 132, 199, 0.10)',
+    onContainer: '#0369a1',
   },
   secondary: {
     main: '#7c3aed',
     light: '#8b5cf6',
     dark: '#6d28d9',
     contrastText: '#ffffff',
+    container: 'rgba(124, 58, 237, 0.10)',
+    onContainer: '#6d28d9',
   },
   success: {
     main: '#059669',
     light: '#10b981',
     dark: '#047857',
     contrastText: '#ffffff',
+    container: 'rgba(5, 150, 105, 0.10)',
+    onContainer: '#047857',
   },
   warning: {
     main: '#d97706',
     light: '#f59e0b',
     dark: '#92400e',
     contrastText: '#ffffff',
+    container: 'rgba(217, 119, 6, 0.10)',
+    onContainer: '#92400e',
   },
   error: {
     main: '#dc2626',
     light: '#ef4444',
     dark: '#991b1b',
     contrastText: '#ffffff',
+    container: 'rgba(220, 38, 38, 0.10)',
+    onContainer: '#991b1b',
   },
   background: {
     default: '#f8fafc',
     paper: '#ffffff',
     card: '#ffffff',
     cardHover: '#f1f5f9',
+    surfaceContainerLow: '#f8fafc',
+    surfaceContainer: '#ffffff',
+    surfaceContainerHigh: '#f1f5f9',
     input: '#f8fafc',
     code: '#f1f5f9',
   },
@@ -153,15 +194,20 @@ export const LIGHT_THEME_TOKENS: ThemeColorTokens = {
   border: {
     default: '#e2e8f0',
     light: '#cbd5e1',
+    outline: '#cbd5e1',
+    outlineVariant: 'rgba(0, 0, 0, 0.06)',
   },
   accent: {
     main: '#0284c7',
     hover: '#0369a1',
     glow: 'rgba(2, 132, 199, 0.2)',
     purple: '#7c3aed',
+    container: 'rgba(2, 132, 199, 0.10)',
+    onContainer: '#0369a1',
   },
   shadow: {
     box: '0 4px 20px -2px rgba(0, 0, 0, 0.06)',
+    pill: '0 2px 10px rgba(2, 132, 199, 0.18)',
   },
 };
 
@@ -174,21 +220,34 @@ export function getCssVariablesFromTokens(tokens: ThemeColorTokens): Record<stri
     '--panel-bg': tokens.background.paper,
     '--card-bg': tokens.background.card,
     '--card-hover': tokens.background.cardHover,
+    '--surface-container-low': tokens.background.surfaceContainerLow,
+    '--surface-container': tokens.background.surfaceContainer,
+    '--surface-container-high': tokens.background.surfaceContainerHigh,
     '--border': tokens.border.default,
     '--border-light': tokens.border.light,
+    '--outline': tokens.border.outline,
+    '--outline-variant': tokens.border.outlineVariant,
     '--accent': tokens.accent.main,
     '--accent-glow': tokens.accent.glow,
     '--accent-hover': tokens.accent.hover,
     '--primary-purple': tokens.accent.purple,
+    '--primary-container': tokens.primary.container,
+    '--on-primary-container': tokens.primary.onContainer,
+    '--secondary-container': tokens.secondary.container,
+    '--on-secondary-container': tokens.secondary.onContainer,
     '--success': tokens.success.main,
+    '--success-container': tokens.success.container,
     '--warning': tokens.warning.main,
+    '--warning-container': tokens.warning.container,
     '--danger': tokens.error.main,
+    '--danger-container': tokens.error.container,
     '--text-main': tokens.text.primary,
     '--text-muted': tokens.text.secondary,
     '--text-dim': tokens.text.disabled,
     '--input-bg': tokens.background.input,
     '--code-bg': tokens.background.code,
     '--box-shadow': tokens.shadow.box,
+    '--pill-shadow': tokens.shadow.pill,
   };
 }
 

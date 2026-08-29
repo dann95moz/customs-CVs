@@ -24,12 +24,13 @@ export const LAYOUT_DIMENSIONS = {
 } as const;
 
 export const RADIUS_TOKENS = {
+  none: '0px',
   xs: '4px',
-  sm: '6px',
-  md: '8px',
-  lg: '10px',
-  xl: '12px',
-  '2xl': '16px',
+  sm: '8px',
+  md: '12px',
+  lg: '16px',
+  xl: '24px',
+  '2xl': '28px',
   full: '9999px',
 } as const;
 
@@ -53,6 +54,7 @@ export function getDimensionCssVariables(): Record<string, string> {
     '--container-xl': LAYOUT_DIMENSIONS.containerXl,
     '--cv-page-width': DOCUMENT_DIMENSIONS.pageWidth,
     '--cv-page-min-height': DOCUMENT_DIMENSIONS.pageHeight,
+    '--radius-none': RADIUS_TOKENS.none,
     '--radius-xs': RADIUS_TOKENS.xs,
     '--radius-sm': RADIUS_TOKENS.sm,
     '--radius-md': RADIUS_TOKENS.md,

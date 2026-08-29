@@ -116,19 +116,19 @@
 .welcome-step-card {
   background: var(--panel-bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-xl);
   padding: 24px 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   box-shadow: var(--box-shadow);
 }
 
 .welcome-step-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   border-color: var(--accent);
   box-shadow: 0 8px 24px var(--accent-glow);
 }
@@ -140,27 +140,27 @@
 }
 
 .welcome-step-number {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  background: rgba(56, 189, 248, 0.1);
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  letter-spacing: 0.06em;
+  color: var(--on-primary-container);
+  background: var(--primary-container);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--outline-variant);
 }
 
 .welcome-step-icon {
   width: 40px;
   height: 40px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--card-hover);
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-main);
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .welcome-step-card:hover .welcome-step-icon {
