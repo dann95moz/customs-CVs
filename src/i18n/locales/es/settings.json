@@ -1,10 +1,6 @@
 {
   "title": "Configuración & Parámetros de IA",
-  "subtitle": "Administra tus proveedores de IA y preferencias generales de la aplicación.",
-  "tabs": {
-    "providers": "Proveedores de IA",
-    "general": "General & Idioma"
-  },
+  "subtitle": "Configura tu proveedor de inteligencia artificial, modelos y parámetros de generación.",
   "providers": {
     "title": "Proveedor de IA Configurado",
     "subtitle": "Elige entre modelos locales fuera de línea 100% gratuitos o APIs en la nube de alta velocidad.",

@@ -1,10 +1,6 @@
 {
   "title": "Settings & AI Configuration",
-  "subtitle": "Manage your AI providers and application preferences.",
-  "tabs": {
-    "providers": "AI Providers",
-    "general": "General & Language"
-  },
+  "subtitle": "Configure your AI engine provider, model credentials, and generation parameters.",
   "providers": {
     "title": "Configured AI Provider",
     "subtitle": "Select between completely free local offline models or high-speed cloud APIs.",

@@ -1,10 +1,6 @@
 {
   "title": "Impostazioni & Configurazione IA",
-  "subtitle": "Gestisci i provider di IA e le preferenze dell'applicazione.",
-  "tabs": {
-    "providers": "Provider IA",
-    "general": "Generale & Lingua"
-  },
+  "subtitle": "Configura il tuo fornitore di intelligenza artificiale, credenziali e parametri di generazione.",
   "providers": {
     "title": "Provider IA Configurato",
     "subtitle": "Scegli tra modelli locali offline gratuiti o API cloud ad alta velocità.",

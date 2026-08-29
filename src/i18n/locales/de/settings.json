@@ -1,10 +1,6 @@
 {
   "title": "Einstellungen & KI-Konfiguration",
-  "subtitle": "Verwalten Sie Ihre KI-Anbieter und Anwendungseinstellungen.",
-  "tabs": {
-    "providers": "KI-Anbieter",
-    "general": "Allgemein & Sprache"
-  },
+  "subtitle": "Konfigurieren Sie KI-Anbieter, Modell-Zugangsdaten und Generierungsparameter.",
   "providers": {
     "title": "Konfigurierter KI-Anbieter",
     "subtitle": "Wählen Sie zwischen kostenlosen lokalen Offline-Modellen oder schnellen Cloud-APIs.",

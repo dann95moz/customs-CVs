@@ -1,10 +1,6 @@
 {
   "title": "Paramètres & Configuration IA",
-  "subtitle": "Gérez vos fournisseurs d'IA et vos préférences générales.",
-  "tabs": {
-    "providers": "Fournisseurs IA",
-    "general": "Général & Langue"
-  },
+  "subtitle": "Configurez vos fournisseurs d'IA, vos identifiants de modèles et vos paramètres de génération.",
   "providers": {
     "title": "Fournisseur d'IA Configuré",
     "subtitle": "Choisissez entre des modèles locaux hors ligne 100% gratuits ou des APIs cloud ultra-rapides.",
