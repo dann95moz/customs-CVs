@@ -298,8 +298,8 @@ export interface ProjectsSectionProps {
 // 3. Preview Studio Panels & Toolbar
 // ---------------------------------------------------------------------------
 export interface StepPreviewToolbarProps {
-  viewMode: PreviewViewMode;
-  onViewModeChange: (mode: PreviewViewMode) => void;
+  viewMode?: PreviewViewMode;
+  onViewModeChange?: (mode: PreviewViewMode) => void;
   activeTemplateName: string;
   onOpenTemplates: () => void;
   isEditingMarkdown: boolean;

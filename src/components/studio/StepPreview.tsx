@@ -13,7 +13,6 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import {
   useResumeStore,
   useParsedCv,
-  useParsedMasterCv,
   useAuditReport,
   useGapInfo,
 } from '../../store';
@@ -27,12 +26,10 @@ import { useGitHubStarPrompt } from '../../hooks/useGitHubStarPrompt';
 import { GitHubStarToast } from './GitHubStarToast';
 import { StepPreviewToolbar } from './preview/StepPreviewToolbar';
 import { StepPreviewNavRail } from './preview/StepPreviewNavRail';
-import { PreviewViewMode, PreviewSidePanelType, StepPreviewProps } from '../../types';
+import { PreviewSidePanelType, StepPreviewProps } from '../../types';
 import { TemplatesPanel } from './preview/TemplatesPanel';
 import { DesignFormattingPanel } from './preview/DesignFormattingPanel';
-import { PreviewQualityAuditPanel } from './preview/PreviewQualityAuditPanel';
 import { PreviewAuditGapDrawer } from './preview/PreviewAuditGapDrawer';
-import { PreviewComparisonView } from './preview/PreviewComparisonView';
 import { useTranslation } from 'react-i18next';
 import { DOCUMENT_DIMENSIONS } from '../../theme/dimensions';
 
@@ -70,13 +67,9 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
 
   // Derived parsed and audit data via memoized hooks
   const parsedCv = useParsedCv();
-  const parsedMasterCv = useParsedMasterCv();
   const auditReport = useAuditReport();
   const gapInfo = useGapInfo();
 
-
-
-  const [viewMode, setViewMode] = useState<PreviewViewMode>('tailored');
   const [sheetHeight, setSheetHeight] = useState<number>(0);
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
   const [zoomMode, setZoomMode] = useState<'fit' | '100%'>('fit');
@@ -119,7 +112,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     updateHeight();
     const timer = setTimeout(updateHeight, 150);
     return () => clearTimeout(timer);
-  }, [cvMarkdown, theme, palette, customColor, fontFamily, spacingDensity, isEditingMarkdown, viewMode]);
+  }, [cvMarkdown, theme, palette, customColor, fontFamily, spacingDensity, isEditingMarkdown]);
 
   const estimatedPages = Math.max(1, Math.ceil((sheetHeight - 24) / A4_PAGE_PX));
   const overflowPercentage = Math.max(0, Math.round(((sheetHeight - A4_PAGE_PX) / A4_PAGE_PX) * 100));
@@ -142,7 +135,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   };
 
   const candidateName = sanitizeFileName(
-    (viewMode === 'generic' ? parsedMasterCv.name : parsedCv.name) || extractCandidateName(masterData, 'Candidate')
+    parsedCv.name || extractCandidateName(masterData, 'Candidate')
   );
   const cleanCompany = sanitizeFileName(companyName || 'Target');
   const targetPdfName = `CV_${candidateName}_${cleanCompany}.pdf`;
@@ -156,11 +149,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     <div className="preview-workspace-layout" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       {/* Top Studio Control Bar */}
       <StepPreviewToolbar
-        viewMode={viewMode}
-        onViewModeChange={(mode: PreviewViewMode) => {
-          setViewMode(mode);
-          setIsEditingMarkdown(false);
-        }}
         activeTemplateName={activeTemplateMeta.name}
         onOpenTemplates={() => {
           setActiveSidePanel('templates');
@@ -260,25 +248,12 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           {isEditingMarkdown ? (
             <div className="split-pane-editor-full">
               <SplitMarkdownEditor
-                content={viewMode === 'generic' ? masterData : cvMarkdown}
-                onChange={viewMode === 'generic' ? () => {} : setCvMarkdown}
+                content={cvMarkdown}
+                onChange={setCvMarkdown}
                 onDownload={handleDownloadCvMarkdown}
-                fileName={`CV_${extractCandidateName(masterData, 'Candidate')}.md`}
+                fileName={`CV_${candidateName}.md`}
               />
             </div>
-          ) : viewMode === 'compare' ? (
-            <PreviewComparisonView
-              parsedMasterCv={parsedMasterCv}
-              parsedCv={parsedCv}
-              theme={theme}
-              palette={palette}
-              customColor={palette === 'custom' ? customColor : undefined}
-              fontFamily={fontFamily}
-              spacingDensity={spacingDensity}
-              companyName={companyName}
-              matchScore={gapInfo.matchScore}
-              keywordsCount={gapInfo.keywords.length}
-            />
           ) : (
             <main className="preview-pane-canvas" style={{ position: 'relative' }}>
               <div
@@ -301,9 +276,9 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                     margin: '0 auto',
                   }}
                 >
-                  <CvLiveEditProvider parsedCv={parsedCv} isEditable={viewMode === 'tailored'}>
+                  <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
                     <CVRenderer
-                      data={viewMode === 'generic' ? parsedMasterCv : parsedCv}
+                      data={parsedCv}
                       theme={theme}
                       palette={palette}
                       customColor={palette === 'custom' ? customColor : undefined}
@@ -356,7 +331,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              {viewMode === 'tailored' && !isEditingMarkdown && (
+              {!isEditingMarkdown && (
                 <Chip
                   icon={<EditRoundedIcon sx={{ fontSize: '13px !important' }} />}
                   label="Live Hot Edit • Click text to edit & re-audit"
@@ -400,7 +375,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         </div>
 
         {/* 4. Unified Right-Side Audit & Gap Drawer (Floating Pills when collapsed, Side Panel when expanded) */}
-        {!isEditingMarkdown && viewMode !== 'compare' && (
+        {!isEditingMarkdown && (
           <PreviewAuditGapDrawer
             auditReport={auditReport}
             gapInfo={gapInfo}

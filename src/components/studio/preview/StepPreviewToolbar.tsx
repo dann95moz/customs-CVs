@@ -12,8 +12,6 @@ import {
   alpha
 } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
-import CompareArrowsRoundedIcon from '@mui/icons-material/CompareArrowsRounded';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
@@ -23,14 +21,12 @@ import FormatBoldRoundedIcon from '@mui/icons-material/FormatBoldRounded';
 import FormatItalicRoundedIcon from '@mui/icons-material/FormatItalicRounded';
 import HighlightRoundedIcon from '@mui/icons-material/HighlightRounded';
 import { useTranslation } from 'react-i18next';
-import { PreviewViewMode, StepPreviewToolbarProps } from '../../../types';
+import { StepPreviewToolbarProps } from '../../../types';
 import { useCvLiveEdit } from './CvLiveEditContext';
 
-export type { PreviewViewMode, StepPreviewToolbarProps };
+export type { StepPreviewToolbarProps };
 
 export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
-  viewMode,
-  onViewModeChange,
   activeTemplateName,
   onOpenTemplates,
   isEditingMarkdown,
@@ -53,50 +49,19 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
       className="no-print preview-top-toolbar"
       sx={{
         py: 1,
-        px: 2.5,
+        px: { xs: 1.5, sm: 2.5 },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
         gap: 1.5,
         borderBottom: `1px solid ${theme.palette.divider}`,
         bgcolor: 'background.paper',
         zIndex: 20,
       }}
     >
-      {/* Left: View Mode Switcher (Tailored vs. Generic vs. Compare) */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-        <ButtonGroup size="small" variant="outlined" sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.03)' : '#ffffff' }}>
-          <Button
-            variant={viewMode === 'tailored' ? 'contained' : 'outlined'}
-            onClick={() => onViewModeChange('tailored')}
-            startIcon={<AutoAwesomeRoundedIcon />}
-            sx={{ fontWeight: 700, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 0.8, sm: 1.5 } }}
-          >
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('preview:panels.comparison.tailoredCv', 'Tailored CV')}</Box>
-            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>{t('preview:toolbar.tailoredShort', 'Tailored')}</Box>
-          </Button>
-          <Button
-            variant={viewMode === 'generic' ? 'contained' : 'outlined'}
-            onClick={() => onViewModeChange('generic')}
-            startIcon={<TrackChangesRoundedIcon />}
-            sx={{ fontWeight: 600, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 0.8, sm: 1.5 } }}
-          >
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('preview:panels.comparison.masterProfile', 'Base Profile')}</Box>
-            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Base</Box>
-          </Button>
-          <Button
-            variant={viewMode === 'compare' ? 'contained' : 'outlined'}
-            onClick={() => onViewModeChange('compare')}
-            startIcon={<CompareArrowsRoundedIcon />}
-            color="secondary"
-            sx={{ fontWeight: 700, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 0.8, sm: 1.5 } }}
-          >
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('preview:navRail.compare', 'Comparison')}</Box>
-            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>{t('preview:navRail.compare', 'Compare')}</Box>
-          </Button>
-        </ButtonGroup>
-
+      {/* Left: Live Document Text Formatting Tools + Active Template */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
         {/* Active Template & Palette Indicator */}
         <Chip
           icon={<StyleRoundedIcon sx={{ fontSize: '14px !important' }} />}
@@ -104,12 +69,21 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           size="small"
           variant="outlined"
           onClick={onOpenTemplates}
-          sx={{ fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer', display: { xs: 'none', md: 'inline-flex' } }}
+          sx={{
+            fontWeight: 700,
+            fontSize: '0.72rem',
+            cursor: 'pointer',
+            display: { xs: isEditingMarkdown ? 'inline-flex' : 'none', sm: 'inline-flex' },
+            '&:hover': {
+              borderColor: 'primary.main',
+              bgcolor: alpha(theme.palette.primary.main, 0.08),
+            }
+          }}
         />
 
         {/* Live Document Text Formatting Tools */}
-        {viewMode === 'tailored' && !isEditingMarkdown && (
-          <ButtonGroup size="small" variant="outlined" sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.03)' : '#ffffff' }}>
+        {!isEditingMarkdown && (
+          <ButtonGroup size="small" variant="outlined" sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.03)' : '#ffffff', flexShrink: 0 }}>
             <Tooltip title={t('preview:toolbar.formatBold', 'Bold Selected Text (Ctrl+B)')}>
               <IconButton
                 size="small"
@@ -157,7 +131,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
       </Box>
 
       {/* Right: Quick Tools + Action Buttons */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
         {!isEditingMarkdown ? (
           <Tooltip title={t('common:actions.edit', 'Edit Markdown')}>
             <IconButton
@@ -233,7 +207,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           color="primary"
           startIcon={<PictureAsPdfRoundedIcon />}
           onClick={onDownloadPdf}
-          sx={{ fontWeight: 800, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 1.2, sm: 2 } }}
+          sx={{ fontWeight: 800, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 1.2, sm: 2 }, whiteSpace: 'nowrap' }}
         >
           <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('preview:toolbar.exportPdf', 'PDF Export')}</Box>
           <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>{t('preview:toolbar.exportPdfShort', 'PDF')}</Box>
