@@ -13,7 +13,9 @@ import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import SpeedRoundedIcon from '@mui/icons-material/SpeedRounded';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { useResumeStore } from '../../store';
+import { APP_LINKS } from '../../constants/links';
 
 export interface WelcomeLandingViewProps {
   onStart?: () => void;
@@ -175,8 +177,27 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
         </div>
 
         {/* Footer Note */}
-        <div className="welcome-footer-note">
+        <div className="welcome-footer-note" style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'center' }}>
           <span>All data remains in your browser storage. You can switch back here anytime via the top logo.</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+            Crafted by <strong>{APP_LINKS.AUTHOR_NAME}</strong> ·{' '}
+            <a
+              href={APP_LINKS.GITHUB_REPO}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'inherit',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '3px',
+                fontWeight: 600,
+                borderBottom: '1px dotted currentColor',
+              }}
+            >
+              Open source on GitHub <StarRoundedIcon sx={{ fontSize: 13, color: 'primary.main', verticalAlign: 'middle' }} />
+            </a>
+          </span>
         </div>
       </div>
     </div>

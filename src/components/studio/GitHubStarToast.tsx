@@ -10,35 +10,40 @@ import {
   useTheme,
   alpha,
 } from '@mui/material';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
-import { useResumeStore } from '../../store';
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import { GitHubStarToastProps } from '../../types';
+
+export type { GitHubStarToastProps };
 
 /**
- * Discreet floating AI synthesis notice & settings toast.
- * Positioned in the bottom-left corner so it never blocks CV preview or toolbar actions.
- * Adheres to CV Studio's native glassmorphic dark/light design system.
+ * Native, non-intrusive floating GitHub star toast.
+ * Positioned in the bottom-right corner so it never obscures generated CV content.
+ * Styled natively with CV Studio's blue/cyan/slate design system.
+ * 
+ * Principles:
+ * - Single Responsibility: Focuses purely on presenting the GitHub star call-to-action.
+ * - Accessibility: Clear action targets, keyboard navigability, and dismiss button.
  */
-export const SynthesisErrorBanner: React.FC = () => {
+export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
+  open,
+  onClose,
+  onStarClick,
+}) => {
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
-  const generationError = useResumeStore((s) => s.generationError);
-  const setGenerationError = useResumeStore((s) => s.setGenerationError);
-  const setActiveTab = useResumeStore((s) => s.setActiveTab);
-
-  if (!generationError) return null;
 
   return (
     <Snackbar
-      open={Boolean(generationError)}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      open={open}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       sx={{
         bottom: { xs: 16, sm: 24 },
-        left: { xs: 16, sm: 24 },
-        right: 'auto !important',
+        right: { xs: 16, sm: 24 },
+        left: 'auto !important',
         zIndex: 1400,
-        maxWidth: { xs: 'calc(100vw - 32px)', sm: 400 },
+        maxWidth: { xs: 'calc(100vw - 32px)', sm: 360 },
       }}
     >
       <Paper
@@ -49,41 +54,42 @@ export const SynthesisErrorBanner: React.FC = () => {
           bgcolor: isDark ? 'rgba(16, 22, 35, 0.94)' : 'rgba(255, 255, 255, 0.96)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
-          border: `1px solid ${isDark ? 'rgba(239, 68, 68, 0.28)' : 'rgba(239, 68, 68, 0.22)'}`,
+          border: `1px solid ${isDark ? 'rgba(56, 189, 248, 0.22)' : 'rgba(2, 132, 199, 0.18)'}`,
           boxShadow: isDark
-            ? '0 16px 36px -4px rgba(0, 0, 0, 0.65), 0 0 20px rgba(239, 68, 68, 0.1)'
-            : '0 12px 32px -4px rgba(15, 23, 42, 0.12), 0 0 20px rgba(239, 68, 68, 0.08)',
+            ? '0 16px 36px -4px rgba(0, 0, 0, 0.65), 0 0 24px rgba(56, 189, 248, 0.12)'
+            : '0 12px 32px -4px rgba(15, 23, 42, 0.12), 0 0 20px rgba(2, 132, 199, 0.08)',
           display: 'flex',
           flexDirection: 'column',
           gap: 1.5,
           width: '100%',
-          animation: 'errorToastPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-          '@keyframes errorToastPopIn': {
+          animation: 'toastCornerPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          '@keyframes toastCornerPopIn': {
             '0%': { transform: 'translateY(16px) scale(0.96)', opacity: 0 },
             '100%': { transform: 'translateY(0) scale(1)', opacity: 1 },
           },
         }}
       >
-        {/* Header Row */}
+        {/* Header Row: Badge, Title & Close Button */}
         <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+            {/* Native Blue/Cyan Star Badge */}
             <Box
               sx={{
                 width: 34,
                 height: 34,
                 borderRadius: '10px',
-                background: isDark
-                  ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(185, 28, 28, 0.35) 100%)'
-                  : 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)',
-                border: `1px solid ${isDark ? 'rgba(239, 68, 68, 0.4)' : 'rgba(239, 68, 68, 0.3)'}`,
+                background: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: isDark ? '#f87171' : '#dc2626',
+                color: '#ffffff',
                 flexShrink: 0,
+                boxShadow: isDark
+                  ? '0 4px 12px rgba(2, 132, 199, 0.4)'
+                  : '0 4px 12px rgba(2, 132, 199, 0.25)',
               }}
             >
-              <ErrorOutlineRoundedIcon sx={{ fontSize: 20 }} />
+              <StarRoundedIcon sx={{ fontSize: 20, color: '#f8fafc' }} />
             </Box>
 
             <Typography
@@ -95,14 +101,14 @@ export const SynthesisErrorBanner: React.FC = () => {
                 lineHeight: 1.2,
               }}
             >
-              AI Generation Notice
+              Enjoying your CV?
             </Typography>
           </Box>
 
           <Tooltip title="Dismiss">
             <IconButton
               size="small"
-              onClick={() => setGenerationError(null)}
+              onClick={onClose}
               sx={{
                 color: 'text.secondary',
                 p: 0.5,
@@ -120,18 +126,16 @@ export const SynthesisErrorBanner: React.FC = () => {
           </Tooltip>
         </Box>
 
-        {/* Error Details */}
+        {/* Content Description */}
         <Typography
           variant="body2"
           sx={{
             color: 'text.secondary',
             fontSize: '0.8rem',
             lineHeight: 1.4,
-            maxHeight: 80,
-            overflowY: 'auto',
           }}
         >
-          {generationError}
+          If CV Studio helped you tailor your resume, a star on GitHub supports this free, private project!
         </Typography>
 
         {/* Action Row */}
@@ -139,7 +143,7 @@ export const SynthesisErrorBanner: React.FC = () => {
           <Button
             variant="text"
             size="small"
-            onClick={() => setGenerationError(null)}
+            onClick={onClose}
             sx={{
               fontWeight: 600,
               fontSize: '0.78rem',
@@ -154,17 +158,14 @@ export const SynthesisErrorBanner: React.FC = () => {
               },
             }}
           >
-            Dismiss
+            Maybe later
           </Button>
 
           <Button
             variant="contained"
             size="small"
-            startIcon={<SettingsRoundedIcon sx={{ fontSize: 15 }} />}
-            onClick={() => {
-              setGenerationError(null);
-              setActiveTab('settings');
-            }}
+            onClick={onStarClick}
+            endIcon={<OpenInNewRoundedIcon sx={{ fontSize: 14 }} />}
             sx={{
               fontWeight: 700,
               fontSize: '0.8rem',
@@ -189,7 +190,7 @@ export const SynthesisErrorBanner: React.FC = () => {
               },
             }}
           >
-            Open AI Settings
+            Star on GitHub
           </Button>
         </Box>
       </Paper>

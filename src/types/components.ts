@@ -458,3 +458,9 @@ export interface ApplicationCardProps {
   onDelete: (id: string) => void;
   onDownload: (v: GeneratedCvVersion) => void;
 }
+
+export interface GitHubStarToastProps {
+  open: boolean;
+  onClose: () => void;
+  onStarClick: () => void;
+}

@@ -13,11 +13,15 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { AIProviderSettings } from '../../types/cv';
 import { DEFAULT_RULES } from '../../core/ai-service';
 import { SettingsAiTab } from './settings/SettingsAiTab';
 import { SettingsRulesTab } from './settings/SettingsRulesTab';
 import { SettingsViewProps } from '../../types';
+import { APP_LINKS } from '../../constants/links';
 
 export type { SettingsViewProps };
 
@@ -116,6 +120,91 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           defaultRules={DEFAULT_RULES}
         />
       )}
+
+      {/* Open Source & Community Credit */}
+      <Paper
+        sx={{
+          p: 2.5,
+          border: `1px solid ${isDark ? 'rgba(56, 189, 248, 0.22)' : 'rgba(2, 132, 199, 0.18)'}`,
+          bgcolor: isDark ? 'rgba(16, 22, 35, 0.7)' : 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderRadius: '14px',
+          boxShadow: isDark
+            ? '0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.08)'
+            : '0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 0 16px rgba(2, 132, 199, 0.06)',
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { xs: 'flex-start', sm: 'center' },
+          justifyContent: 'space-between',
+          gap: 2,
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              width: 42,
+              height: 42,
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              boxShadow: isDark
+                ? '0 4px 14px rgba(2, 132, 199, 0.45)'
+                : '0 4px 12px rgba(2, 132, 199, 0.25)',
+            }}
+          >
+            <StarRoundedIcon sx={{ fontSize: 24, color: '#ffffff' }} />
+          </Box>
+          <Box>
+            <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'text.primary' }}>
+              Open Source &amp; Community
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Crafted by <strong>{APP_LINKS.AUTHOR_NAME}</strong> · Free, private, and open source. If CV Studio has helped your career, leave a star on GitHub!
+            </Typography>
+          </Box>
+        </Box>
+
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<StarRoundedIcon sx={{ fontSize: 18 }} />}
+          endIcon={<OpenInNewRoundedIcon sx={{ fontSize: 14 }} />}
+          href={APP_LINKS.GITHUB_REPO}
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            flexShrink: 0,
+            fontWeight: 700,
+            fontSize: '0.82rem',
+            textTransform: 'none',
+            borderRadius: '9px',
+            px: 2,
+            py: 0.85,
+            background: isDark
+              ? 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)'
+              : 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+            color: '#ffffff',
+            boxShadow: isDark
+              ? '0 2px 12px rgba(2, 132, 199, 0.4)'
+              : '0 2px 10px rgba(2, 132, 199, 0.25)',
+            '&:hover': {
+              background: isDark
+                ? 'linear-gradient(135deg, #0369a1 0%, #1e40af 100%)'
+                : 'linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%)',
+              boxShadow: isDark
+                ? '0 4px 16px rgba(2, 132, 199, 0.55)'
+                : '0 4px 14px rgba(2, 132, 199, 0.35)',
+            },
+          }}
+        >
+          Star on GitHub
+        </Button>
+      </Paper>
 
       {/* Danger Zone */}
       <Paper

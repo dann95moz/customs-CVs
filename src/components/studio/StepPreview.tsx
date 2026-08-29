@@ -19,6 +19,8 @@ import { SplitMarkdownEditor } from './SplitMarkdownEditor';
 import { extractCandidateName, sanitizeFileName } from '../../core/parser';
 import { getTemplateMetadata } from '../../templates';
 import { usePrintPdf } from '../../hooks/usePrintPdf';
+import { useGitHubStarPrompt } from '../../hooks/useGitHubStarPrompt';
+import { GitHubStarToast } from './GitHubStarToast';
 import { StepPreviewToolbar } from './preview/StepPreviewToolbar';
 import { StepPreviewNavRail } from './preview/StepPreviewNavRail';
 import { PreviewViewMode, PreviewSidePanelType, StepPreviewProps } from '../../types';
@@ -40,6 +42,7 @@ const A4_PAGE_PX = DOCUMENT_DIMENSIONS.pageHeightPx; // Exact A4 height at 96 DP
 export const StepPreview: React.FC<StepPreviewProps> = () => {
   const muiTheme = useTheme();
   const { handleDownloadPdf } = usePrintPdf();
+  const { isPromptOpen, triggerPrompt, dismissPrompt, openGitHubAndDismiss } = useGitHubStarPrompt();
 
   const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
   const setCvMarkdown = useResumeStore((s) => s.setCvMarkdown);
@@ -122,6 +125,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
 
   const onTriggerPrintPdf = () => {
     handleDownloadPdf(targetPdfName);
+    triggerPrompt(1000);
   };
 
   return (
@@ -328,6 +332,13 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           />
         )}
       </Box>
+
+      {/* One-Time Post-Export GitHub Star Satisfaction Toast */}
+      <GitHubStarToast
+        open={isPromptOpen}
+        onClose={dismissPrompt}
+        onStarClick={openGitHubAndDismiss}
+      />
     </div>
   );
 };

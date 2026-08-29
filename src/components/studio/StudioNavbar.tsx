@@ -12,6 +12,7 @@ import {
   Tooltip,
   Chip,
   useTheme,
+  alpha,
 } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
@@ -21,9 +22,12 @@ import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { useThemeMode } from '../../theme/ThemeContext';
 import { useResumeStore } from '../../store';
 import { StudioTab } from '../../types/cv';
+import { Icon } from '../Icons';
+import { APP_LINKS } from '../../constants/links';
 
 export const StudioNavbar: React.FC = () => {
   const { mode, toggleThemeMode } = useThemeMode();
@@ -166,6 +170,31 @@ export const StudioNavbar: React.FC = () => {
 
         {/* Quick Actions & Theme Switcher */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
+          {/* GitHub Star Link */}
+          <Tooltip title="Star on GitHub ⭐">
+            <IconButton
+              component="a"
+              href={APP_LINKS.GITHUB_REPO}
+              target="_blank"
+              rel="noopener noreferrer"
+              size="small"
+              sx={{
+                p: 0.75,
+                borderRadius: '10px',
+                border: `1px solid ${muiTheme.palette.divider}`,
+                color: 'text.secondary',
+                bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                  color: 'primary.main',
+                  borderColor: alpha(muiTheme.palette.primary.main, 0.5),
+                },
+              }}
+            >
+              <Icon type="github" size={16} style={{ margin: 0 }} />
+            </IconButton>
+          </Tooltip>
 
           {/* Dark / Light Mode Toggle */}
           <Tooltip title={`Switch to ${mode === 'dark' ? 'Light' : 'Dark'} mode`}>
@@ -191,8 +220,6 @@ export const StudioNavbar: React.FC = () => {
               )}
             </IconButton>
           </Tooltip>
-
-
         </Box>
       </Toolbar>
     </AppBar>
