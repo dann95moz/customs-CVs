@@ -15,7 +15,18 @@
     "copied": "Copied to clipboard!",
     "pageFit": "Page Fit",
     "singlePage": "1 Page View",
-    "twoPage": "2 Page View"
+    "twoPage": "2 Page View",
+    "pageFormatTooltip": "Paper Format (A4, US Letter, US Legal)",
+    "autoFitTooltip": "Auto-Fit to 1 Page: Automatically recalibrates spacing and density to snap resume perfectly to 1 page.",
+    "autoFit": "Auto-Fit 1 Page",
+    "pdfTip": "Export A4/Letter PDF. In print dialog: Margins: None & Background Graphics: On",
+    "pageBoundary": "Page 1 Boundary ({{format}} Standard)",
+    "downloadPdfDirect": "Download PDF",
+    "generatingPdf": "Generating PDF...",
+    "directPdfItem": "Direct PDF Download",
+    "directPdfDesc": "1-Click instant file download",
+    "printPdfItem": "Print via Browser",
+    "printPdfDesc": "System print window (Ctrl+P)"
   },
   "navRail": {
     "templates": "Templates",
@@ -43,6 +54,7 @@
       "pageMargins": "Page Margins",
       "sectionSpacing": "Section Spacing",
       "primaryColor": "Accent Color",
+      "pageFormat": "Paper Format",
       "pillSkills": "Pill Skills Badges",
       "resetDefaults": "Reset Theme Defaults"
     },

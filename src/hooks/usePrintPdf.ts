@@ -1,19 +1,18 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { PageFormat } from '../types/theme';
+import { getPageFormatConfig } from '../theme/dimensions';
 
 /**
- * Custom hook to safely orchestrate printing a CV to PDF in the browser.
- * 
- * Capabilities:
- * 1. Dynamically sets document.title to target filename so the browser's "Save as PDF"
- *    dialog automatically suggests the right filename (e.g. CV_Daniel_Corredor_Addi.pdf).
- * 2. Temporarily switches DOM attributes to light mode so the browser's PDF compositor
- *    prints pure white even if dark mode is active in the studio.
- * 3. Restores previous title and theme state safely after printing completes.
+ * Universal PDF exporter hook providing both direct 1-click in-browser download
+ * and fallback system print capability.
  * 
  * Principle: Single Responsibility & Dependency Inversion (SOLID).
  */
 export const usePrintPdf = () => {
-  const handleDownloadPdf = useCallback((fileName?: string) => {
+  const [isExportingPdf, setIsExportingPdf] = useState<boolean>(false);
+  const [exportStatus, setExportStatus] = useState<'idle' | 'rendering' | 'saving' | 'done'>('idle');
+
+  const handlePrintPdf = useCallback((fileName?: string, pageFormat: PageFormat = 'a4') => {
     const root = document.documentElement;
     const previousTheme = root.getAttribute('data-theme');
     const previousScheme = root.style.colorScheme;
@@ -22,6 +21,14 @@ export const usePrintPdf = () => {
     // Temporarily switch DOM to light mode for crisp PDF composition
     root.setAttribute('data-theme', 'light');
     root.style.colorScheme = 'light';
+    document.body.classList.add('is-printing-pdf');
+
+    // Dynamic @page size style tag
+    const formatConfig = getPageFormatConfig(pageFormat);
+    const styleEl = document.createElement('style');
+    styleEl.id = 'dynamic-print-page-style';
+    styleEl.textContent = `@page { size: ${formatConfig.printSize}; margin: 0mm; }`;
+    document.head.appendChild(styleEl);
 
     if (fileName && fileName.trim().length > 0) {
       const sanitized = fileName.replace(/\.pdf$/i, '').trim();
@@ -30,6 +37,11 @@ export const usePrintPdf = () => {
 
     const restoreTheme = () => {
       document.title = previousTitle;
+      document.body.classList.remove('is-printing-pdf');
+      const injected = document.getElementById('dynamic-print-page-style');
+      if (injected) {
+        injected.remove();
+      }
       if (previousTheme) {
         root.setAttribute('data-theme', previousTheme);
       }
@@ -43,12 +55,47 @@ export const usePrintPdf = () => {
 
     window.addEventListener('afterprint', restoreTheme, { once: true });
 
-    // Trigger browser print dialog (A4 vector output)
+    // Trigger browser print dialog (A4 / Letter / Legal vector output)
     window.print();
 
     // Safety fallback restoration in case afterprint does not fire in some browsers
-    setTimeout(restoreTheme, 2500);
+    setTimeout(restoreTheme, 3000);
   }, []);
 
-  return { handleDownloadPdf };
+  const handleDirectDownload = useCallback(async (
+    element: HTMLElement | null,
+    fileName?: string,
+    pageFormat: PageFormat = 'a4'
+  ) => {
+    if (!element) return;
+    setIsExportingPdf(true);
+    setExportStatus('rendering');
+
+    try {
+      const { generateDirectPdf } = await import('../core/pdfGenerator');
+      await generateDirectPdf(element, {
+        fileName,
+        pageFormat,
+        qualityScale: 2,
+        onProgress: (step) => {
+          if (step === 'saving') setExportStatus('saving');
+          else if (step === 'done') setExportStatus('done');
+        }
+      });
+    } catch (error) {
+      console.warn('Direct PDF export failed, falling back to browser print:', error);
+      handlePrintPdf(fileName, pageFormat);
+    } finally {
+      setIsExportingPdf(false);
+      setExportStatus('idle');
+    }
+  }, [handlePrintPdf]);
+
+  return {
+    isExportingPdf,
+    exportStatus,
+    handleDirectDownload,
+    handlePrintPdf,
+    handleDownloadPdf: handleDirectDownload
+  };
 };

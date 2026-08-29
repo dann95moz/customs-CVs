@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import {
   useResumeStore,
   useParsedCv,
@@ -26,7 +27,7 @@ import { StepPreviewToolbar } from './preview/StepPreviewToolbar';
 import { StepPreviewNavRail } from './preview/StepPreviewNavRail';
 import { PreviewSidePanelType, StepPreviewProps } from '../../types';
 import { useTranslation } from 'react-i18next';
-import { DOCUMENT_DIMENSIONS } from '../../theme/dimensions';
+import { getPageFormatConfig } from '../../theme/dimensions';
 import { StudioSkeleton } from './StudioSkeleton';
 
 // Dynamically loaded preview sidebars and heavy editors
@@ -48,12 +49,10 @@ const GitHubStarToast = React.lazy(() =>
 
 export type { StepPreviewProps };
 
-const A4_PAGE_PX = DOCUMENT_DIMENSIONS.pageHeightPx; // Exact A4 height at 96 DPI
-
 export const StepPreview: React.FC<StepPreviewProps> = () => {
   const { t } = useTranslation(['preview', 'target', 'common']);
   const muiTheme = useTheme();
-  const { handleDownloadPdf } = usePrintPdf();
+  const { isExportingPdf, handleDirectDownload, handlePrintPdf } = usePrintPdf();
   const { isPromptOpen, triggerPrompt, dismissPrompt, openGitHubAndDismiss } = useGitHubStarPrompt();
 
   const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
@@ -71,6 +70,8 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const setFontFamily = useResumeStore((s) => s.setFontFamily);
   const spacingDensity = useResumeStore((s) => s.spacingDensity);
   const setSpacingDensity = useResumeStore((s) => s.setSpacingDensity);
+  const pageFormat = useResumeStore((s) => s.pageFormat || 'a4');
+  const setPageFormat = useResumeStore((s) => s.setPageFormat);
   const isGenerating = useResumeStore((s) => s.isGenerating);
   const handleGenerate = useResumeStore((s) => s.handleGenerate);
   const handleDownloadCvMarkdown = useResumeStore((s) => s.handleDownloadCvMarkdown);
@@ -82,6 +83,10 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const parsedCv = useParsedCv();
   const auditReport = useAuditReport();
   const gapInfo = useGapInfo();
+
+  const formatConfig = getPageFormatConfig(pageFormat);
+  const targetPagePx = formatConfig.heightPx;
+  const targetPageWidthPx = formatConfig.widthPx;
 
   const [sheetHeight, setSheetHeight] = useState<number>(0);
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
@@ -125,16 +130,27 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     updateHeight();
     const timer = setTimeout(updateHeight, 150);
     return () => clearTimeout(timer);
-  }, [cvMarkdown, theme, palette, customColor, fontFamily, spacingDensity, isEditingMarkdown]);
+  }, [cvMarkdown, theme, palette, customColor, fontFamily, spacingDensity, pageFormat, isEditingMarkdown]);
 
-  const estimatedPages = Math.max(1, Math.ceil((sheetHeight - 24) / A4_PAGE_PX));
-  const overflowPercentage = Math.max(0, Math.round(((sheetHeight - A4_PAGE_PX) / A4_PAGE_PX) * 100));
+  const isOverflowing = sheetHeight > targetPagePx + 8;
+  const estimatedPages = isOverflowing ? Math.max(2, Math.ceil(sheetHeight / targetPagePx)) : 1;
+  const overflowPercentage = isOverflowing ? Math.round(((sheetHeight - targetPagePx) / targetPagePx) * 100) : 0;
 
   const isMobile = windowWidth < 860;
   const canvasPadding = isMobile ? 24 : 48;
   const availableWidth = windowWidth - (isMobile ? 0 : (activeSidePanel ? 380 : 76)) - canvasPadding;
-  const autoScale = Math.min(1, Math.max(0.35, availableWidth / 794));
+  const autoScale = Math.min(1, Math.max(0.35, availableWidth / targetPageWidthPx));
   const currentScale = zoomMode === 'fit' && isMobile ? autoScale : 1;
+
+  const handleMagicAutoFit = () => {
+    if (spacingDensity === 'spacious') {
+      setSpacingDensity('standard');
+    } else if (spacingDensity === 'standard') {
+      setSpacingDensity('compact');
+    } else if (fontFamily === 'serif' || fontFamily === 'mono') {
+      setFontFamily('inter');
+    }
+  };
 
   const handleSaveToHistory = () => {
     handleSaveCurrentVersion();
@@ -153,9 +169,16 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const cleanCompany = sanitizeFileName(companyName || 'Target');
   const targetPdfName = `CV_${candidateName}_${cleanCompany}.pdf`;
 
-  const onTriggerPrintPdf = () => {
-    handleDownloadPdf(targetPdfName);
-    triggerPrompt(1000);
+  const onTriggerDirectDownloadPdf = () => {
+    if (paperRef.current) {
+      handleDirectDownload(paperRef.current, targetPdfName, pageFormat);
+      triggerPrompt(2000);
+    }
+  };
+
+  const onTriggerSystemPrintPdf = () => {
+    handlePrintPdf(targetPdfName, pageFormat);
+    triggerPrompt(2000);
   };
 
   return (
@@ -174,7 +197,13 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         savedSuccess={savedSuccess}
         onReTailor={handleGenerate}
         isGenerating={isGenerating}
-        onDownloadPdf={onTriggerPrintPdf}
+        onDownloadPdf={onTriggerDirectDownloadPdf}
+        onPrintPdf={onTriggerSystemPrintPdf}
+        isExportingPdf={isExportingPdf}
+        pageFormat={pageFormat}
+        onPageFormatChange={setPageFormat}
+        isOverflowing={isOverflowing}
+        onAutoFit={handleMagicAutoFit}
       />
 
       {/* Main Studio Body: Vertical Left Rail + Side Drawer + Sheet Canvas + Right Audit/Gap Drawer */}
@@ -248,8 +277,11 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   onFontFamilyChange={setFontFamily}
                   spacingDensity={spacingDensity}
                   onSpacingDensityChange={setSpacingDensity}
+                  pageFormat={pageFormat}
+                  onPageFormatChange={setPageFormat}
+                  onAutoFit={handleMagicAutoFit}
                   sheetHeight={sheetHeight}
-                  a4PagePx={A4_PAGE_PX}
+                  a4PagePx={targetPagePx}
                   estimatedPages={estimatedPages}
                   onClose={() => setActiveSidePanel(null)}
                 />
@@ -276,7 +308,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               <div
                 className="paper-sheet-wrapper"
                 style={{
-                  width: isMobile && zoomMode === 'fit' ? `${794 * currentScale}px` : 'var(--cv-page-width)',
+                  width: isMobile && zoomMode === 'fit' ? `${targetPageWidthPx * currentScale}px` : `${targetPageWidthPx}px`,
                   height: isMobile && zoomMode === 'fit' && sheetHeight ? `${sheetHeight * currentScale}px` : 'auto',
                   transition: 'width 0.2s ease, height 0.2s ease',
                   display: 'flex',
@@ -289,7 +321,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   style={{
                     transform: isMobile && zoomMode === 'fit' ? `scale(${currentScale})` : 'none',
                     transformOrigin: 'top center',
-                    width: '794px',
+                    width: `${targetPageWidthPx}px`,
                     margin: '0 auto',
                   }}
                 >
@@ -305,15 +337,15 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   </CvLiveEditProvider>
                 </div>
 
-                {/* Visual Page Break Marker at A4 limit */}
-                {sheetHeight > A4_PAGE_PX - 30 && (
+                {/* Visual Page Break Marker only on actual overflow */}
+                {isOverflowing && (
                   <div
                     className="page-break-guide"
                     style={{
-                      top: isMobile && zoomMode === 'fit' ? `${A4_PAGE_PX * currentScale}px` : `${A4_PAGE_PX}px`,
+                      top: isMobile && zoomMode === 'fit' ? `${targetPagePx * currentScale}px` : `${targetPagePx}px`,
                     }}
                   >
-                    <span>✂️ {t('preview:toolbar.page', 'Page 1 Boundary (Standard A4 Format)')}</span>
+                    <span>✂️ {t('preview:toolbar.pageBoundary', 'Page 1 Boundary ({{format}} Standard)', { format: pageFormat.toUpperCase() })}</span>
                   </div>
                 )}
               </div>
@@ -385,7 +417,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               )}
 
               <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
-                {t('preview:toolbar.pageFit', 'Estimated Length')}: <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>{estimatedPages} {estimatedPages === 1 ? 'Page (Standard A4)' : 'Pages'}</strong> • Height: {sheetHeight}px
+                {t('preview:toolbar.pageFit', 'Estimated Length')}: <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>{estimatedPages} {estimatedPages === 1 ? `Page (${pageFormat.toUpperCase()})` : 'Pages'}</strong> • Height: {sheetHeight}px / {targetPagePx}px
               </Typography>
             </Box>
           </Paper>

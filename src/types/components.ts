@@ -14,7 +14,7 @@ import {
   SkillCategory,
   CVSection,
 } from './cv';
-import { ThemeId, PaletteId, FontFamilyId, SpacingDensity } from './theme';
+import { ThemeId, PaletteId, FontFamilyId, SpacingDensity, PageFormat } from './theme';
 import { AIProviderId, AIProviderSettings } from './ai';
 import {
   WizardStep,
@@ -310,6 +310,12 @@ export interface StepPreviewToolbarProps {
   onReTailor: () => void;
   isGenerating: boolean;
   onDownloadPdf: () => void;
+  onPrintPdf?: () => void;
+  isExportingPdf?: boolean;
+  pageFormat?: PageFormat;
+  onPageFormatChange?: (format: PageFormat) => void;
+  isOverflowing?: boolean;
+  onAutoFit?: () => void;
 }
 
 export interface StepPreviewNavRailProps {
@@ -334,13 +340,16 @@ export interface TemplatesPanelProps {
 
 export interface DesignFormattingPanelProps {
   customColor: string;
-  onCustomColorChange: (hex: string) => void;
+  onCustomColorChange: (color: string) => void;
   palette: PaletteId;
-  onSelectPalette: (id: PaletteId) => void;
+  onSelectPalette: (palette: PaletteId) => void;
   fontFamily: FontFamilyId;
   onFontFamilyChange: (font: FontFamilyId) => void;
   spacingDensity: SpacingDensity;
   onSpacingDensityChange: (density: SpacingDensity) => void;
+  pageFormat?: PageFormat;
+  onPageFormatChange?: (format: PageFormat) => void;
+  onAutoFit?: () => void;
   sheetHeight: number;
   a4PagePx: number;
   estimatedPages: number;

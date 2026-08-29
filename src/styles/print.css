@@ -103,12 +103,14 @@
 
   /* The printable sheet: full-width extraction with NO drop shadow and edge-to-edge layout */
   .paper-sheet {
+    transform: none !important;
+    transform-origin: initial !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
     box-shadow: none !important;
     border: none !important;
     border-radius: 0 !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     padding: 0 !important;
     width: 100% !important;
     max-width: 100% !important;

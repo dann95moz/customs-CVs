@@ -15,7 +15,18 @@
     "copied": "¡Copiado al portapapeles!",
     "pageFit": "Ajuste de Página",
     "singlePage": "Vista 1 Página",
-    "twoPage": "Vista 2 Páginas"
+    "twoPage": "Vista 2 Páginas",
+    "pageFormatTooltip": "Formato de Papel (A4, US Letter, US Legal)",
+    "autoFitTooltip": "Ajuste Mágico a 1 Página: Recalibra automáticamente el espaciado y densidad para encajar el CV exactamente en 1 página.",
+    "autoFit": "Ajustar a 1 Página",
+    "pdfTip": "Exportar PDF en A4/Letter. En la ventana de impresión: Márgenes: Ninguno y Gráficos de Fondo: Activados",
+    "pageBoundary": "Límite de Página 1 (Estándar {{format}})",
+    "downloadPdfDirect": "Descargar PDF",
+    "generatingPdf": "Generando PDF...",
+    "directPdfItem": "Descarga Directa (PDF)",
+    "directPdfDesc": "Descarga automática en 1 clic",
+    "printPdfItem": "Imprimir con el Navegador",
+    "printPdfDesc": "Ventana de impresión del sistema (Ctrl+P)"
   },
   "navRail": {
     "templates": "Plantillas",
@@ -43,6 +54,7 @@
       "pageMargins": "Márgenes de Página",
       "sectionSpacing": "Espaciado entre Secciones",
       "primaryColor": "Color de Acento",
+      "pageFormat": "Formato de Papel",
       "pillSkills": "Insignias de Habilidades (Pills)",
       "resetDefaults": "Restablecer Valores de Plantilla"
     },

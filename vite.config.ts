@@ -76,6 +76,9 @@ export default defineConfig({
             if (id.includes('marked')) {
               return 'vendor-marked';
             }
+            if (id.includes('jspdf') || id.includes('html2canvas') || id.includes('dompurify') || id.includes('fflate')) {
+              return 'vendor-pdf';
+            }
             if (id.includes('zustand')) {
               return 'vendor-zustand';
             }
@@ -83,6 +86,6 @@ export default defineConfig({
         }
       }
     },
-    chunkSizeWarningLimit: 600
+    chunkSizeWarningLimit: 750
   }
 });

@@ -246,11 +246,13 @@
   background-color: rgba(2, 132, 199, 0.08);
   box-shadow: 0 0 0 1.5px rgba(2, 132, 199, 0.35);
   cursor: text;
+  outline: none;
 }
 
 .paper-sheet .cv-editable-field:focus {
   background-color: rgba(2, 132, 199, 0.12);
   box-shadow: 0 0 0 2px var(--cv-primary-color, #0284c7);
+  outline: none;
   z-index: 5;
 }
 
