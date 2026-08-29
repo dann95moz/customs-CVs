@@ -1,9 +1,8 @@
 {
   "title": "Settings & AI Configuration",
-  "subtitle": "Manage your AI providers, custom tailoring rules, and application preferences.",
+  "subtitle": "Manage your AI providers and application preferences.",
   "tabs": {
     "providers": "AI Providers",
-    "rules": "Prompt & ATS Rules",
     "general": "General & Language"
   },
   "providers": {

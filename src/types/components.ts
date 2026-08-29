@@ -422,8 +422,8 @@ export interface GapAnalysisViewProps {
 export interface SettingsViewProps {
   settings: AIProviderSettings;
   onSettingsChange: (settings: AIProviderSettings) => void;
-  rules: string;
-  onRulesChange: (rules: string) => void;
+  rules?: string;
+  onRulesChange?: (rules: string) => void;
   onResetDefaults: () => void;
   onSave?: (settings: AIProviderSettings) => void;
 }

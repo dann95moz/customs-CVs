@@ -11,16 +11,12 @@ import {
 } from '@mui/material';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
-import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
 import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { useTranslation } from 'react-i18next';
-import { AIProviderSettings } from '../../types/cv';
-import { DEFAULT_RULES } from '../../core/ai-service';
 import { SettingsAiTab } from './settings/SettingsAiTab';
-import { SettingsRulesTab } from './settings/SettingsRulesTab';
 import { LanguageSelector } from './LanguageSelector';
 import { SettingsViewProps } from '../../types';
 import { APP_LINKS } from '../../constants/links';
@@ -30,14 +26,12 @@ export type { SettingsViewProps };
 export const SettingsView: React.FC<SettingsViewProps> = ({
   settings,
   onSettingsChange,
-  rules,
-  onRulesChange,
   onResetDefaults,
 }) => {
   const { t } = useTranslation(['settings', 'common']);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
-  const [activeTab, setActiveTab] = useState<'ai' | 'rules' | 'general'>('ai');
+  const [activeTab, setActiveTab] = useState<'ai' | 'general'>('ai');
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', p: { xs: 1.5, sm: 2, md: 3 }, display: 'flex', flexDirection: 'column', gap: { xs: 2, md: 3 }, boxSizing: 'border-box' }}>
@@ -78,7 +72,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               {t('settings:title', 'Settings & AI Configuration')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
-              {t('settings:subtitle', 'Manage your AI providers, custom tailoring rules, and application preferences.')}
+              {t('settings:subtitle', 'Manage your AI providers and application preferences.')}
             </Typography>
           </Box>
         </Box>
@@ -130,12 +124,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             label={t('settings:tabs.providers', 'AI Providers')}
           />
           <Tab
-            value="rules"
-            icon={<ShieldRoundedIcon fontSize="small" />}
-            iconPosition="start"
-            label={t('settings:tabs.rules', 'Prompt & ATS Rules')}
-          />
-          <Tab
             value="general"
             icon={<LanguageRoundedIcon fontSize="small" />}
             iconPosition="start"
@@ -149,14 +137,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <SettingsAiTab
           settings={settings}
           onSettingsChange={onSettingsChange}
-        />
-      )}
-
-      {activeTab === 'rules' && (
-        <SettingsRulesTab
-          rules={rules}
-          onRulesChange={onRulesChange}
-          defaultRules={DEFAULT_RULES}
         />
       )}
 

@@ -1,9 +1,8 @@
 {
   "title": "Einstellungen & KI-Konfiguration",
-  "subtitle": "Verwalten Sie Ihre KI-Anbieter, individuelle Anpassungsregeln und Anwendungseinstellungen.",
+  "subtitle": "Verwalten Sie Ihre KI-Anbieter und Anwendungseinstellungen.",
   "tabs": {
     "providers": "KI-Anbieter",
-    "rules": "Prompt- & ATS-Regeln",
     "general": "Allgemein & Sprache"
   },
   "providers": {

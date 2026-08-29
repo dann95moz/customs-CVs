@@ -1,9 +1,8 @@
 {
   "title": "Impostazioni & Configurazione IA",
-  "subtitle": "Gestisci i provider di IA, le regole di personalizzazione e le preferenze dell'applicazione.",
+  "subtitle": "Gestisci i provider di IA e le preferenze dell'applicazione.",
   "tabs": {
     "providers": "Provider IA",
-    "rules": "Regole Prompt & ATS",
     "general": "Generale & Lingua"
   },
   "providers": {
