@@ -72,7 +72,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
           color="primary"
           startIcon={<AutoAwesomeRoundedIcon />}
           onClick={onNewApplication}
-          sx={{ fontWeight: 700, borderRadius: '10px', whiteSpace: 'nowrap' }}
+          sx={{ fontWeight: 700, whiteSpace: 'nowrap', px: 2.5 }}
         >
           + New Tailored Resume
         </Button>

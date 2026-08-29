@@ -125,7 +125,7 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
             size="small"
             variant="outlined"
             onClick={handleToggleAll}
-            sx={{ fontSize: '0.75rem', fontWeight: 600, py: 0.25, px: 1.5, borderRadius: '8px' }}
+            sx={{ fontSize: '0.75rem', fontWeight: 600, py: 0.25, px: 1.5 }}
           >
             {allExpanded ? 'Collapse All Sections' : 'Expand All Sections'}
           </Button>

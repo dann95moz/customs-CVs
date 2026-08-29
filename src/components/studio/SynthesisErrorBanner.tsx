@@ -44,8 +44,8 @@ export const SynthesisErrorBanner: React.FC = () => {
       <Paper
         elevation={6}
         sx={{
-          p: 2,
-          borderRadius: '16px',
+          p: 2.25,
+          borderRadius: '20px',
           bgcolor: isDark ? 'rgba(16, 22, 35, 0.94)' : 'rgba(255, 255, 255, 0.96)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
@@ -71,7 +71,7 @@ export const SynthesisErrorBanner: React.FC = () => {
               sx={{
                 width: 34,
                 height: 34,
-                borderRadius: '10px',
+                borderRadius: '50%',
                 background: isDark
                   ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(185, 28, 28, 0.35) 100%)'
                   : 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)',
@@ -106,7 +106,6 @@ export const SynthesisErrorBanner: React.FC = () => {
               sx={{
                 color: 'text.secondary',
                 p: 0.5,
-                borderRadius: '8px',
                 mt: -0.5,
                 mr: -0.5,
                 '&:hover': {
@@ -144,8 +143,7 @@ export const SynthesisErrorBanner: React.FC = () => {
               fontWeight: 600,
               fontSize: '0.78rem',
               textTransform: 'none',
-              borderRadius: '8px',
-              px: 1.25,
+              px: 1.5,
               py: 0.5,
               color: 'text.secondary',
               '&:hover': {
@@ -169,8 +167,7 @@ export const SynthesisErrorBanner: React.FC = () => {
               fontWeight: 700,
               fontSize: '0.8rem',
               textTransform: 'none',
-              borderRadius: '8px',
-              px: 1.5,
+              px: 1.75,
               py: 0.6,
               background: isDark
                 ? 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)'
@@ -178,7 +175,7 @@ export const SynthesisErrorBanner: React.FC = () => {
               color: '#ffffff',
               boxShadow: isDark
                 ? '0 2px 10px rgba(2, 132, 199, 0.4)'
-                : '0 2px 10px rgba(2, 132, 199, 0.25)',
+                : '0 2px 8px rgba(2, 132, 199, 0.25)',
               '&:hover': {
                 background: isDark
                   ? 'linear-gradient(135deg, #0369a1 0%, #1e40af 100%)'

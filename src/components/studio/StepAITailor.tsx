@@ -327,7 +327,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
                 color="success"
                 size="small"
                 onClick={onNextStep}
-                sx={{ fontWeight: 700, borderRadius: '8px', whiteSpace: 'nowrap' }}
+                sx={{ fontWeight: 700, whiteSpace: 'nowrap', px: 2 }}
               >
                 View CV &amp; Export
               </Button>

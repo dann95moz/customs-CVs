@@ -58,7 +58,7 @@ export const PageBudgetSelector: React.FC<PageBudgetSelectorProps> = ({
           sx={{
             width: '100%',
             p: 1.75,
-            borderRadius: '12px',
+            borderRadius: '16px',
             textAlign: 'left',
             display: 'flex',
             alignItems: 'flex-start',
@@ -99,7 +99,7 @@ export const PageBudgetSelector: React.FC<PageBudgetSelectorProps> = ({
           sx={{
             width: '100%',
             p: 1.75,
-            borderRadius: '12px',
+            borderRadius: '16px',
             textAlign: 'left',
             display: 'flex',
             alignItems: 'flex-start',

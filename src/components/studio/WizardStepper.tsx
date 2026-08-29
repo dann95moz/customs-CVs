@@ -114,8 +114,9 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                   flex: { xs: '0 0 auto', sm: 1 },
                   maxWidth: { sm: 270 },
                   minWidth: { xs: 140, sm: 180, md: 210 },
-                  p: { xs: 0.85, sm: 1.15 },
-                  borderRadius: '12px',
+                  p: { xs: 0.85, sm: 1 },
+                  px: { xs: 1.25, sm: 1.75 },
+                  borderRadius: '9999px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 1.25,
@@ -127,14 +128,14 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                     ? alpha(theme.palette.success.main, 0.4)
                     : isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
                   bgcolor: isActive
-                    ? alpha(theme.palette.primary.main, isDark ? 0.12 : 0.08)
+                    ? alpha(theme.palette.primary.main, isDark ? 0.14 : 0.08)
                     : isCompleted
                     ? alpha(theme.palette.success.main, isDark ? 0.08 : 0.04)
                     : 'transparent',
                   transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                   '&:hover': {
                     bgcolor: isActive
-                      ? alpha(theme.palette.primary.main, isDark ? 0.18 : 0.12)
+                      ? alpha(theme.palette.primary.main, isDark ? 0.2 : 0.12)
                       : alpha(theme.palette.text.primary, 0.04),
                     borderColor: isActive
                       ? theme.palette.primary.main
@@ -145,9 +146,9 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                 {/* Step Icon Badge */}
                 <Box
                   sx={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: '10px',
+                    width: 36,
+                    height: 36,
+                    borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

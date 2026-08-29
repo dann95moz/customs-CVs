@@ -128,11 +128,10 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
             onClick={handleStart}
             endIcon={<ArrowForwardRoundedIcon />}
             sx={{
-              px: 3.5,
-              py: 1.4,
+              px: 4,
+              py: 1.5,
               fontSize: '1rem',
               fontWeight: 700,
-              borderRadius: '12px',
             }}
           >
             Start Building Resume
@@ -144,11 +143,10 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
             onClick={handleDemo}
             startIcon={<AutoAwesomeRoundedIcon sx={{ color: '#a78bfa' }} />}
             sx={{
-              px: 3,
-              py: 1.4,
+              px: 3.5,
+              py: 1.5,
               fontSize: '0.95rem',
               fontWeight: 600,
-              borderRadius: '12px',
               bgcolor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
             }}
           >

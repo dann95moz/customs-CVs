@@ -114,7 +114,6 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
               size="small"
               sx={{
                 border: `1.5px solid ${theme.palette.divider}`,
-                borderRadius: '8px',
                 p: 0.75,
                 bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#ffffff',
                 color: 'text.primary',
@@ -137,7 +136,6 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
               color="primary"
               sx={{
                 border: `1.5px solid ${theme.palette.primary.main}`,
-                borderRadius: '8px',
                 p: 0.75,
                 bgcolor: alpha(theme.palette.primary.main, 0.12),
                 color: 'primary.main',

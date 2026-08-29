@@ -150,7 +150,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
           gap: 2,
           border: `1px solid ${muiTheme.palette.divider}`,
           bgcolor: 'background.paper',
-          borderRadius: '12px',
+          borderRadius: '16px',
         }}
       >
         <Box>
@@ -178,7 +178,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
           startIcon={testingConnection ? <CircularProgress size={14} color="inherit" /> : <BoltRoundedIcon />}
           onClick={handleRunTest}
           disabled={testingConnection}
-          sx={{ fontWeight: 700, borderRadius: '8px', fontSize: '0.8rem' }}
+          sx={{ fontWeight: 700, fontSize: '0.8rem', px: 2.25 }}
         >
           {testingConnection ? 'Testing...' : 'Test Connection'}
         </Button>
@@ -247,9 +247,10 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
               variant="outlined"
               sx={{
                 p: 1.5,
-                borderRadius: '12px',
+                borderRadius: '14px',
                 borderColor: settings.provider === 'local' ? muiTheme.palette.secondary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'local' ? alpha(muiTheme.palette.secondary.main, isDark ? 0.08 : 0.04) : 'transparent',
+                transition: 'all 0.15s ease',
               }}
             >
               <FormControlLabel
@@ -276,9 +277,10 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
               variant="outlined"
               sx={{
                 p: 1.5,
-                borderRadius: '12px',
+                borderRadius: '14px',
                 borderColor: settings.provider === 'gemini' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'gemini' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
+                transition: 'all 0.15s ease',
               }}
             >
               <FormControlLabel
@@ -305,9 +307,10 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
               variant="outlined"
               sx={{
                 p: 1.5,
-                borderRadius: '12px',
+                borderRadius: '14px',
                 borderColor: settings.provider === 'groq' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'groq' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
+                transition: 'all 0.15s ease',
               }}
             >
               <FormControlLabel
@@ -334,9 +337,10 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
               variant="outlined"
               sx={{
                 p: 1.5,
-                borderRadius: '12px',
+                borderRadius: '14px',
                 borderColor: settings.provider === 'openai' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'openai' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
+                transition: 'all 0.15s ease',
               }}
             >
               <FormControlLabel
@@ -360,9 +364,10 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
               variant="outlined"
               sx={{
                 p: 1.5,
-                borderRadius: '12px',
+                borderRadius: '14px',
                 borderColor: settings.provider === 'claude' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'claude' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
+                transition: 'all 0.15s ease',
               }}
             >
               <FormControlLabel
@@ -386,9 +391,10 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
               variant="outlined"
               sx={{
                 p: 1.5,
-                borderRadius: '12px',
+                borderRadius: '14px',
                 borderColor: settings.provider === 'openrouter' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'openrouter' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
+                transition: 'all 0.15s ease',
               }}
             >
               <FormControlLabel

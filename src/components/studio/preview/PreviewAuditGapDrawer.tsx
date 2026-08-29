@@ -229,7 +229,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
               bgcolor: isDark ? alpha(theme.palette.background.default, 0.5) : '#f8fafc',
             }}
           >
-            <ButtonGroup size="small" variant="outlined" sx={{ borderRadius: '10px' }}>
+            <ButtonGroup size="small" variant="outlined">
               <Button
                 variant={activeTab === 'audit' ? 'contained' : 'outlined'}
                 color="success"
@@ -240,7 +240,6 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   fontSize: '0.78rem',
                   textTransform: 'none',
                   px: 1.5,
-                  borderRadius: '8px 0 0 8px',
                 }}
               >
                 Audit {auditScore}/10
@@ -255,7 +254,6 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   fontSize: '0.78rem',
                   textTransform: 'none',
                   px: 1.5,
-                  borderRadius: '0 8px 8px 0',
                 }}
               >
                 Gap {matchScore}%
