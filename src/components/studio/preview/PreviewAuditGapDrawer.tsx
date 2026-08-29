@@ -26,6 +26,7 @@ import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import ArticleRoundedIcon from '@mui/icons-material/ArticleRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import { useTranslation } from 'react-i18next';
 import { marked } from 'marked';
 import { PreviewAuditGapDrawerProps } from '../../../types';
 import { useAuditActions } from '../../../hooks/useAuditActions';
@@ -50,6 +51,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
   onToggleTab,
   onClose,
 }) => {
+  const { t } = useTranslation(['audit', 'gap', 'preview', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const [fullReportModalOpen, setFullReportModalOpen] = useState(false);
@@ -93,7 +95,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           }}
         >
           {/* Audit Pill */}
-          <Tooltip title="Open Resume Quality Audit" placement="left">
+          <Tooltip title={t('audit:title', 'Resume Quality Audit')} placement="left">
             <Paper
               elevation={4}
               onClick={() => onToggleTab('audit')}
@@ -136,13 +138,13 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   mt: 0.25,
                 }}
               >
-                Audit
+                {t('preview:navRail.audit', 'Audit')}
               </Typography>
             </Paper>
           </Tooltip>
 
           {/* Gap Pill */}
-          <Tooltip title="Open Target Job Gap Strategy" placement="left">
+          <Tooltip title={t('gap:title', 'Target Job Gap Strategy')} placement="left">
             <Paper
               elevation={4}
               onClick={() => onToggleTab('gap')}
@@ -185,7 +187,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   mt: 0.25,
                 }}
               >
-                Gap
+                {t('gap:matchScore', 'Gap')}
               </Typography>
             </Paper>
           </Tooltip>
@@ -242,7 +244,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   px: 1.5,
                 }}
               >
-                Audit {auditScore}/10
+                {t('preview:navRail.audit', 'Audit')} {auditScore}/10
               </Button>
               <Button
                 variant={activeTab === 'gap' ? 'contained' : 'outlined'}
@@ -256,7 +258,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   px: 1.5,
                 }}
               >
-                Gap {matchScore}%
+                {t('gap:matchScore', 'Gap')} {matchScore}%
               </Button>
             </ButtonGroup>
 
@@ -291,10 +293,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   </Box>
                   <Box>
                     <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                      Quality Score: {auditScore >= 8.5 ? 'Executive Ready' : auditScore >= 7 ? 'Competitive' : 'Needs Polish'}
+                      {t('audit:score', 'Quality Score')}: {auditScore >= 8.5 ? 'Executive Ready' : auditScore >= 7 ? 'Competitive' : 'Needs Polish'}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      Calibrated across Google XYZ formulas &amp; ATS scan rules.
+                      {t('audit:atsCheck.description', 'Calibrated across Google XYZ formulas & ATS scan rules.')}
                     </Typography>
                   </Box>
                 </Box>
@@ -312,7 +314,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                        Professional Summary
+                        {t('profile:sections.summary', 'Professional Summary')}
                       </Typography>
                       <Chip label="Optimal" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
                     </Box>
@@ -332,7 +334,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                        Work Experience
+                        {t('profile:sections.experience', 'Work Experience')}
                       </Typography>
                       <Chip label="9/10 XYZ" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
                     </Box>
@@ -352,12 +354,12 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                        Skills &amp; ATS Density
+                        {t('profile:sections.skills', 'Technical Skills & ATS')}
                       </Typography>
-                      <Chip label="Passed" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
+                      <Chip label="95% Pass" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
-                      Clean hierarchical grouping without repetitive fluff. Parses cleanly in Workday, Greenhouse, and Lever.
+                      High density of exact keywords matching requirements without stuffing.
                     </Typography>
                   </Paper>
                 </Box>
@@ -365,10 +367,11 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 {/* Key Actionable Recommendations */}
                 {auditReport.strategicPillars && auditReport.strategicPillars.length > 0 && (
                   <Box>
-                    <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 1 }}>
-                      Strategic Growth Recommendations:
+                    <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+                      {t('audit:subtitle', 'Strategic Improvements')}
                     </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
                       {auditReport.strategicPillars.slice(0, 3).map((pillar, idx: number) => (
                         <Paper
                           key={idx}
@@ -376,20 +379,16 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                           sx={{
                             p: 1.5,
                             borderRadius: '10px',
-                            bgcolor: isDark ? alpha(theme.palette.warning.main, 0.08) : '#fffcf0',
-                            border: `1px solid ${alpha(theme.palette.warning.main, 0.25)}`,
                             display: 'flex',
                             flexDirection: 'column',
                             gap: 0.75,
+                            bgcolor: isDark ? alpha(theme.palette.background.default, 0.3) : '#ffffff',
                           }}
                         >
-                          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                              <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: theme.palette.warning.main }} />
-                              <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.8rem' }}>
-                                {pillar.pillarName}
-                              </Typography>
-                            </Box>
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.primary' }}>
+                              {pillar.pillarName}
+                            </Typography>
                             <Chip
                               label={pillar.impactLevel || 'High'}
                               size="small"
@@ -458,10 +457,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   </Box>
                   <Box>
                     <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                      Role Match: {companyName ? `${companyName}` : 'Target Job'}
+                      {t('gap:matchScore', 'Role Match')}: {companyName ? `${companyName}` : t('target:fields.company', 'Target Job')}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {targetRole || 'Synthesized against required employer qualifications'}
+                      {targetRole || t('gap:subtitle', 'Synthesized against required employer qualifications')}
                     </Typography>
                   </Box>
                 </Box>
@@ -469,7 +468,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 {/* Keyword Alignment (Matched vs Missing) */}
                 <Box>
                   <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 1 }}>
-                    Aligned Keywords &amp; Competencies:
+                    {t('gap:integratedKeywords', 'Aligned Keywords & Competencies')}:
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 1.5 }}>
                     {matchedKeywords.map((kw: string) => (
@@ -508,10 +507,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   }}
                 >
                   <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.75 }}>
-                    Strategic Positioning
+                    {t('gap:title', 'Strategic Positioning')}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.55 }}>
-                    Your experience highlights core requirements. Metrics emphasize leadership, performance, and architecture impact requested in the job description.
+                    {t('gap:subtitle', 'Your experience highlights core requirements and architecture impact requested in the job description.')}
                   </Typography>
                 </Paper>
 
@@ -533,7 +532,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                       fontSize: '0.8rem',
                     }}
                   >
-                    View Full Gap Strategy Report
+                    {t('gap:downloadReport', 'View Full Gap Strategy Report')}
                   </Button>
                 )}
               </>
@@ -559,7 +558,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           }}
         >
           <DialogTitle sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span>Target Job Gap Analysis Report</span>
+            <span>{t('gap:title', 'Target Job Gap Analysis Report')}</span>
             <IconButton size="small" onClick={() => setFullReportModalOpen(false)}>
               <CloseRoundedIcon fontSize="small" />
             </IconButton>
@@ -579,10 +578,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 navigator.clipboard.writeText(gapMarkdown);
               }}
             >
-              Copy Report Text
+              {t('common:actions.copy', 'Copy Report Text')}
             </Button>
             <Button variant="contained" onClick={() => setFullReportModalOpen(false)}>
-              Close Report
+              {t('common:actions.close', 'Close Report')}
             </Button>
           </DialogActions>
         </Dialog>

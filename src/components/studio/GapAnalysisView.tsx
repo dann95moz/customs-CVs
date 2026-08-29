@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, ButtonGroup } from '@mui/material';
 import { marked } from 'marked';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icons';
 import { GapAnalysisViewProps } from '../../types';
 
@@ -14,6 +15,7 @@ export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
   targetRole,
   onDownload
 }) => {
+  const { t } = useTranslation(['gap', 'common']);
   const [viewMode, setViewMode] = useState<'formatted' | 'raw'>('formatted');
   const [copied, setCopied] = useState(false);
 
@@ -30,7 +32,7 @@ export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
       <div className="gap-hero-banner">
         <div className="gap-score-badge">
           <span className="score-percent">{matchScore}%</span>
-          <span className="score-label">Estimated Match</span>
+          <span className="score-label">{t('gap:matchScore', 'Estimated Match')}</span>
         </div>
 
         <div className="gap-hero-text">
@@ -38,9 +40,9 @@ export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
             <Icon type="target" size={13} />
             <span>Target: <strong>{companyName || 'Target Company'}</strong> • {targetRole || 'Target Role'}</span>
           </div>
-          <h2 className="gap-title">Matching &amp; Tailoring Strategy Report</h2>
+          <h2 className="gap-title">{t('gap:title', 'Matching Strategy & Gap Report')}</h2>
           <p className="gap-desc">
-            Deep cross-reference between your candidate profile and the target job posting.
+            {t('gap:subtitle', 'Cross-references your background against employer requirements and highlights strategic mitigation.')}
           </p>
         </div>
 
@@ -49,17 +51,17 @@ export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
             type="button"
             className="studio-btn studio-btn-secondary btn-sm"
             onClick={handleCopy}
-            title="Copy Report Markdown to Clipboard"
+            title={t('common:actions.copy', 'Copy')}
           >
-            <Icon type="copy" size={13} /> {copied ? 'Copied!' : 'Copy Text'}
+            <Icon type="copy" size={13} /> {copied ? t('preview:toolbar.copied', 'Copied!') : t('common:actions.copy', 'Copy Text')}
           </button>
           <button
             type="button"
             className="studio-btn studio-btn-secondary btn-sm"
             onClick={onDownload}
-            title="Download Gap Analysis as Markdown"
+            title={t('gap:downloadReport', 'Export Gap Report (.md)')}
           >
-            <Icon type="download" size={13} /> Export Report (.md)
+            <Icon type="download" size={13} /> {t('common:actions.export', 'Export Report (.md)')}
           </button>
         </div>
       </div>
@@ -70,7 +72,7 @@ export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
           <span className="card-icon">
             <Icon type="sparkles" size={16} />
           </span>
-          <h3 className="card-title">Critical Integrated Keywords &amp; Technologies</h3>
+          <h3 className="card-title">{t('gap:integratedKeywords', 'Critical Integrated Keywords')}</h3>
         </div>
         <div className="keywords-cloud">
           {keywords.map((kw, i) => (
@@ -88,7 +90,7 @@ export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
             <span className="card-icon">
               <Icon type="file-text" size={16} />
             </span>
-            <h3 className="card-title">Strategic Alignment Narrative</h3>
+            <h3 className="card-title">{t('gap:title', 'Strategic Alignment Narrative')}</h3>
           </div>
 
           <ButtonGroup size="small" variant="outlined">
@@ -97,14 +99,14 @@ export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
               onClick={() => setViewMode('formatted')}
               sx={{ fontSize: '0.75rem', py: 0.25, px: 1 }}
             >
-              Formatted Report
+              {t('target:editor.formattedPreview', 'Formatted Report')}
             </Button>
             <Button
               variant={viewMode === 'raw' ? 'contained' : 'outlined'}
               onClick={() => setViewMode('raw')}
               sx={{ fontSize: '0.75rem', py: 0.25, px: 1 }}
             >
-              Markdown Source
+              {t('target:editor.editText', 'Markdown Source')}
             </Button>
           </ButtonGroup>
         </div>

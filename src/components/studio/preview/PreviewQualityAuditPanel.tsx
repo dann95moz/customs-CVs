@@ -9,14 +9,11 @@ import {
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
+import { useTranslation } from 'react-i18next';
 import { PreviewQualityAuditPanelProps } from '../../../types';
 
 export type { PreviewQualityAuditPanelProps };
 
-/**
- * Slide-out panel providing a quick executive ATS audit summary and link to full audit.
- * Principle: Single Responsibility (S) - quick quality checks display.
- */
 export const PreviewQualityAuditPanel: React.FC<PreviewQualityAuditPanelProps> = ({
   overallScore,
   matchScore,
@@ -24,11 +21,13 @@ export const PreviewQualityAuditPanel: React.FC<PreviewQualityAuditPanelProps> =
   onOpenFullAudit,
   onClose,
 }) => {
+  const { t } = useTranslation(['audit', 'common', 'gap']);
+
   return (
     <Box sx={{ p: 2.5 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h6" sx={{ fontWeight: 800, color: 'text.primary' }}>
-          Quality &amp; Health
+          {t('audit:title', 'Quality & Health')}
         </Typography>
         <IconButton size="small" onClick={onClose}>
           <CloseRoundedIcon />
@@ -46,31 +45,27 @@ export const PreviewQualityAuditPanel: React.FC<PreviewQualityAuditPanelProps> =
         }}
       >
         <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-          ATS &amp; Executive Score
+          {t('audit:score', 'ATS & Executive Score')}
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: 800, color: '#10b981', my: 0.5 }}>
           {overallScore} / 10.0
         </Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          {matchScore}% Match for {companyName || 'Target Role'}
+          {matchScore}% {t('gap:matchScore', 'Match')} {companyName ? `• ${companyName}` : ''}
         </Typography>
       </Paper>
 
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1 }}>
-        Verification Checks
+        {t('audit:atsCheck.title', 'Verification Checks')}
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mb: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Typography sx={{ color: '#10b981', fontSize: '1rem' }}>✓</Typography>
-          <Typography variant="caption" sx={{ fontWeight: 600 }}>Google XYZ Impact Formula</Typography>
+          <Typography variant="caption" sx={{ fontWeight: 600 }}>{t('audit:xyz.title', 'Google XYZ Impact Formula')}</Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Typography sx={{ color: '#10b981', fontSize: '1rem' }}>✓</Typography>
-          <Typography variant="caption" sx={{ fontWeight: 600 }}>100% ATS Parser Safe Typography</Typography>
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Typography sx={{ color: '#10b981', fontSize: '1rem' }}>✓</Typography>
-          <Typography variant="caption" sx={{ fontWeight: 600 }}>High Contrast Body Text</Typography>
+          <Typography variant="caption" sx={{ fontWeight: 600 }}>{t('audit:atsCheck.description', '100% ATS Parser Safe Typography')}</Typography>
         </Box>
       </Box>
 
@@ -81,7 +76,7 @@ export const PreviewQualityAuditPanel: React.FC<PreviewQualityAuditPanelProps> =
         startIcon={<AssessmentRoundedIcon />}
         onClick={onOpenFullAudit}
       >
-        Open Full Audit Dashboard
+        {t('audit:title', 'Open Full Audit Dashboard')}
       </Button>
     </Box>
   );

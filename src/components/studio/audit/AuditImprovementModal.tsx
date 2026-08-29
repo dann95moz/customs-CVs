@@ -9,25 +9,23 @@ import {
   Typography,
   Chip,
   Box,
-  Stack,
   IconButton
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import { useTranslation } from 'react-i18next';
 import { ActionModalState, AuditImprovementModalProps } from '../../../types';
 
 export type { ActionModalState, AuditImprovementModalProps };
 
-/**
- * Modal dialog for applying targeted AI/executive score improvements to the CV.
- * Principle: Single Responsibility (S) - encapsulates interactive improvement prompt dialog.
- */
 export const AuditImprovementModal: React.FC<AuditImprovementModalProps> = ({
   modalState,
   onClose,
   onInputChange,
   onApply,
 }) => {
+  const { t } = useTranslation(['audit', 'common']);
+
   return (
     <Dialog open={modalState.open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 1 }}>
@@ -50,7 +48,7 @@ export const AuditImprovementModal: React.FC<AuditImprovementModalProps> = ({
         {modalState.presets.length > 0 && (
           <Box>
             <Typography variant="caption" sx={{ fontWeight: 700, mb: 0.75, display: 'block', color: 'text.secondary' }}>
-              Quick Suggestions (Click to apply):
+              {t('audit:quickSuggestions', 'Quick Suggestions (Click to apply):')}
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
               {modalState.presets.map((preset: string, idx: number) => (
@@ -75,10 +73,10 @@ export const AuditImprovementModal: React.FC<AuditImprovementModalProps> = ({
         <TextField
           multiline
           rows={3}
-          label="Proposed Content Addition"
+          label={t('audit:proposedAddition', 'Proposed Content Addition')}
           value={modalState.inputValue}
           onChange={(e) => onInputChange(e.target.value)}
-          placeholder="Enter content to inject into this section..."
+          placeholder={t('audit:inputPlaceholder', 'Enter content to inject into this section...')}
           fullWidth
           size="small"
           autoFocus
@@ -87,7 +85,7 @@ export const AuditImprovementModal: React.FC<AuditImprovementModalProps> = ({
 
       <DialogActions sx={{ p: 2, pt: 0 }}>
         <Button onClick={onClose} color="inherit">
-          Cancel
+          {t('common:actions.cancel', 'Cancel')}
         </Button>
         <Button
           variant="contained"
@@ -96,7 +94,7 @@ export const AuditImprovementModal: React.FC<AuditImprovementModalProps> = ({
           onClick={onApply}
           disabled={!modalState.inputValue.trim()}
         >
-          Apply to Tailored CV
+          {t('audit:applyImprovement', 'Apply to Tailored CV')}
         </Button>
       </DialogActions>
     </Dialog>

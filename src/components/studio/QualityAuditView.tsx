@@ -4,6 +4,7 @@ import {
   Snackbar,
   useTheme,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icons';
 import { QualityAuditReport, QualityAuditViewProps } from '../../types';
 import { AuditImprovementModal } from './audit/AuditImprovementModal';
@@ -12,14 +13,11 @@ import { useAuditActions } from '../../hooks/useAuditActions';
 
 export type { QualityAuditViewProps };
 
-/**
- * Quality Audit view orchestrator displaying 1-10 executive scoring, growth pillars, and action modal.
- * Principle: Single Responsibility (S) - delegates card rendering and modal to subcomponents.
- */
 export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
   report,
   onRefresh
 }) => {
+  const { t } = useTranslation(['audit', 'common']);
   const theme = useTheme();
   const {
     modalState,
@@ -86,9 +84,9 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
           </div>
           <div className="score-meta-text">
             <div className="readiness-badge">
-              <Icon type="check-circle" size={14} /> Application Readiness: <strong>Ready to Submit</strong>
+              <Icon type="check-circle" size={14} /> {t('common:status.ready', 'Application Readiness')}: <strong>{t('common:status.ready', 'Ready to Submit')}</strong>
             </div>
-            <h2 className="audit-hero-title">Executive Headhunter Quality Audit</h2>
+            <h2 className="audit-hero-title">{t('audit:title', 'Resume Quality & ATS Audit')}</h2>
             <p className="audit-hero-desc">
               Candidate: <strong>{report.candidateName}</strong> • Target: <strong>{report.targetCompany}</strong>
             </p>
@@ -100,17 +98,17 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
             type="button"
             className="studio-btn studio-btn-secondary btn-sm"
             onClick={onRefresh}
-            title="Recalculate audit scores"
+            title={t('audit:refreshScore', 'Recalculate audit scores')}
           >
-            <Icon type="refresh" size={13} /> Re-Calculate
+            <Icon type="refresh" size={13} /> {t('common:actions.refresh', 'Re-Calculate')}
           </button>
           <button 
             type="button"
             className="studio-btn studio-btn-secondary btn-sm"
             onClick={handleDownloadReport}
-            title="Download full markdown audit report"
+            title={t('gap:downloadReport', 'Download full markdown audit report')}
           >
-            <Icon type="download" size={13} /> Export Report (.md)
+            <Icon type="download" size={13} /> {t('common:actions.export', 'Export Report (.md)')}
           </button>
         </div>
       </div>
@@ -119,7 +117,7 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
       <div className="audit-section-group">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
           <h3 className="section-group-title" style={{ margin: 0 }}>
-            <Icon type="gauge" size={18} /> Section Diagnostic &amp; Action Levers
+            <Icon type="gauge" size={18} /> {t('audit:subtitle', 'Section Diagnostic & Action Levers')}
           </h3>
           <Button
             size="small"
@@ -127,7 +125,7 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
             onClick={handleToggleAll}
             sx={{ fontSize: '0.75rem', fontWeight: 600, py: 0.25, px: 1.5 }}
           >
-            {allExpanded ? 'Collapse All Sections' : 'Expand All Sections'}
+            {allExpanded ? 'Collapse All' : 'Expand All'}
           </Button>
         </div>
 

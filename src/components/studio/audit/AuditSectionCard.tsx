@@ -3,14 +3,11 @@ import { Box, Typography, Button, Stack, Collapse, IconButton } from '@mui/mater
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import { useTranslation } from 'react-i18next';
 import { AuditSectionResult, AuditSectionCardProps } from '../../../types';
 
 export type { AuditSectionCardProps };
 
-/**
- * Card rendering diagnostic scores and action levers for an individual CV section.
- * Supports progressive disclosure: collapsed by default, expandable on click.
- */
 export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
   section,
   scoreColor,
@@ -19,6 +16,7 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
   isExpanded: controlledExpanded,
   onToggle: controlledToggle,
 }) => {
+  const { t } = useTranslation(['audit', 'common']);
   const [internalExpanded, setInternalExpanded] = useState(false);
   const isExpanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded;
   const toggleExpanded = controlledToggle || (() => setInternalExpanded(prev => !prev));
@@ -70,7 +68,7 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
 
           {section.identifiedGaps && section.identifiedGaps.length > 0 && (
             <div className="metric-gaps-box">
-              <span className="gaps-title">⚠️ Identified Gap:</span>
+              <span className="gaps-title">⚠️ {t('audit:gapIdentified', 'Identified Gap')}:</span>
               <ul className="gaps-list">
                 {section.identifiedGaps.map((g, i) => (
                   <li key={i}>{g}</li>
@@ -82,7 +80,7 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
           {section.actionToTen && section.actionToTen.length > 0 && (
             <div className="metric-action-box" style={{ background: 'rgba(56, 189, 248, 0.05)', borderRadius: 8, padding: 12 }}>
               <span className="action-title" style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, marginBottom: 8 }}>
-                <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: '#0284c7' }} /> Strategic Levers to Reach 10/10:
+                <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: '#0284c7' }} /> {t('audit:actionLevers', 'Strategic Levers to Reach 10/10')}:
               </span>
               <Stack spacing={1.5}>
                 {section.actionToTen.map((a, i) => (
