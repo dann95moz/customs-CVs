@@ -28,9 +28,12 @@ import { useResumeStore } from '../../store';
 import { StudioTab } from '../../types/cv';
 import { Icon } from '../Icons';
 import { APP_LINKS } from '../../constants/links';
+import { LanguageSelector } from './LanguageSelector';
+import { useTranslation } from 'react-i18next';
 
 export const StudioNavbar: React.FC = () => {
   const { mode, toggleThemeMode } = useThemeMode();
+  const { t } = useTranslation('common');
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
 
@@ -63,7 +66,7 @@ export const StudioNavbar: React.FC = () => {
         }}
       >
         {/* Brand Logo & Name */}
-        <Tooltip title="View Product Overview & Guide">
+        <Tooltip title={t('nav.viewOverview', 'View Product Overview & Guide')}>
           <Box
             onClick={() => setActiveTab('landing')}
             sx={{
@@ -140,7 +143,7 @@ export const StudioNavbar: React.FC = () => {
             value="wizard"
             icon={<AutoAwesomeRoundedIcon sx={{ fontSize: 18 }} />}
             iconPosition="start"
-            label="Resume Studio"
+            label={t('nav.resumeStudio', 'Resume Studio')}
           />
           <Tab
             value="history"
@@ -148,7 +151,7 @@ export const StudioNavbar: React.FC = () => {
             iconPosition="start"
             label={
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                <span>My Applications</span>
+                <span>{t('nav.myApplications', 'My Applications')}</span>
                 {savedVersionsCount > 0 && (
                   <Chip
                     label={savedVersionsCount}
@@ -164,14 +167,17 @@ export const StudioNavbar: React.FC = () => {
             value="settings"
             icon={<SettingsRoundedIcon sx={{ fontSize: 18 }} />}
             iconPosition="start"
-            label="Settings &amp; AI"
+            label={t('nav.settingsAndAi', 'Settings & AI')}
           />
         </Tabs>
 
-        {/* Quick Actions & Theme Switcher */}
+        {/* Quick Actions, Language Selector & Theme Switcher */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
+          {/* Prominent Language Selector */}
+          <LanguageSelector variant="navbar" />
+
           {/* GitHub Star Link */}
-          <Tooltip title="Star on GitHub ⭐">
+          <Tooltip title={t('nav.starGithub', 'Star on GitHub ⭐')}>
             <IconButton
               component="a"
               href={APP_LINKS.GITHUB_REPO}
@@ -196,7 +202,7 @@ export const StudioNavbar: React.FC = () => {
           </Tooltip>
 
           {/* Dark / Light Mode Toggle */}
-          <Tooltip title={`Switch to ${mode === 'dark' ? 'Light' : 'Dark'} mode`}>
+          <Tooltip title={t('nav.switchTheme', { mode: mode === 'dark' ? t('nav.light', 'Light') : t('nav.dark', 'Dark'), defaultValue: `Switch to ${mode === 'dark' ? 'Light' : 'Dark'} mode` })}>
             <IconButton
               onClick={toggleThemeMode}
               size="small"

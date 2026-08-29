@@ -22,9 +22,11 @@ import {
   DEMO_MASTER_DATA,
   DEMO_TARGET_JOB,
 } from '../constants/templates';
+import { useTranslation } from 'react-i18next';
 import './App.css';
 
 export const App: React.FC = () => {
+  const { t } = useTranslation(['audit', 'gap', 'common', 'target']);
   const activeTab = useResumeStore((s) => s.activeTab);
   const setActiveTab = useResumeStore((s) => s.setActiveTab);
   const wizardStep = useResumeStore((s) => s.wizardStep);
@@ -126,9 +128,9 @@ export const App: React.FC = () => {
             ) : (
               <LockedViewCard
                 iconType="gauge"
-                title="Quality Audit Requires a Tailored CV"
-                description="The calibrated 1–10 executive scoring engine evaluates real achievement density, Google XYZ formula percentages, and ATS compliance. Please create or synthesize your tailored CV first to unlock section-by-section scoring."
-                actionText="Go to Target Job & Tailor"
+                title={t('audit:locked.title', 'Quality Audit Requires a Tailored CV')}
+                description={t('audit:locked.desc', 'The calibrated 1–10 executive scoring engine evaluates real achievement density, Google XYZ formula percentages, and ATS compliance. Please create or synthesize your tailored CV first to unlock section-by-section scoring.')}
+                actionText={t('audit:locked.action', 'Go to Target Job & Tailor')}
                 actionIcon="zap"
                 onAction={() => {
                   setActiveTab('wizard');
@@ -146,9 +148,9 @@ export const App: React.FC = () => {
               <LockedViewCard
                 iconType="target"
                 badgeVariant="target"
-                title="No Target Vacancy Entered Yet"
-                description="Gap Strategy cross-references your candidate background against specific employer requirements. Please paste or upload a target job posting in the wizard first."
-                actionText="Add Target Job in Wizard"
+                title={t('gap:locked.noTargetTitle', 'No Target Vacancy Entered Yet')}
+                description={t('gap:locked.noTargetDesc', 'Gap Strategy cross-references your candidate background against specific employer requirements. Please paste or upload a target job posting in the wizard first.')}
+                actionText={t('gap:locked.noTargetAction', 'Add Target Job in Wizard')}
                 actionIcon="file-text"
                 onAction={() => {
                   setActiveTab('wizard');
@@ -159,13 +161,13 @@ export const App: React.FC = () => {
               <LockedViewCard
                 iconType="zap"
                 badgeVariant="ai"
-                title="Ready to Synthesize Gap Strategy"
+                title={t('gap:locked.readyTitle', 'Ready to Synthesize Gap Strategy')}
                 description={
                   <>
-                    You have entered target vacancy details for <strong>{companyName || 'Target Company'}</strong>. Click below to synthesize your tailored CV and generate the matching strategy report with keyword extraction.
+                    {t('gap:locked.readyDesc', 'You have entered target vacancy details for')} <strong>{companyName || 'Target Company'}</strong>. {t('gap:locked.readySub', 'Click below to synthesize your tailored CV and generate the matching strategy report with keyword extraction.')}
                   </>
                 }
-                actionText={isGenerating ? 'Synthesizing...' : '✨ Synthesize Tailored CV Now'}
+                actionText={isGenerating ? t('target:actions.tailoring', 'Synthesizing...') : t('target:actions.tailorNow', '✨ Synthesize Tailored CV Now')}
                 actionIcon="zap"
                 isDisabled={isGenerating}
                 onAction={handleGenerate}

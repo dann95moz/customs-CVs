@@ -14,6 +14,7 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import SpeedRoundedIcon from '@mui/icons-material/SpeedRounded';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../store';
 import { APP_LINKS } from '../../constants/links';
 
@@ -26,11 +27,11 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
   onStart,
   onExploreDemo,
 }) => {
+  const { t } = useTranslation(['landing', 'common']);
   const handleStartWizard = useResumeStore((s) => s.handleStartWizard);
   const handleExploreDemo = useResumeStore((s) => s.handleExploreDemo);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
-
 
   const handleStart = () => {
     if (onStart) {
@@ -54,18 +55,22 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
         {/* Badge Pill */}
         <div className="welcome-badge">
           <span className="pulse-dot" />
-          <span>Free &amp; 100% Private</span>
+          <span>{t('landing:badge', 'Free & 100% Private')}</span>
         </div>
 
         {/* Hero Title & Subtitle */}
         <div className="welcome-hero-header">
           <Typography variant="h1" className="welcome-hero-title">
-            Tailor High-Impact Resumes{' '}
-            <span className="welcome-gradient-text">for Every Opportunity</span>
+            {t('landing:hero.titlePrefix', 'Tailor High-Impact Resumes')}{' '}
+            <span className="welcome-gradient-text">
+              {t('landing:hero.titleGradient', 'for Every Opportunity')}
+            </span>
           </Typography>
           <Typography variant="body1" className="welcome-hero-subtitle">
-            Transform your master career data into tailored, ATS-compliant resumes with 
-            Google XYZ-formula bullets, real-time 1–10 quality scoring, and 1-page design precision.
+            {t(
+              'landing:hero.subtitle',
+              'Transform your master career data into tailored, ATS-compliant resumes with Google XYZ-formula bullets, real-time 1–10 quality scoring, and 1-page design precision.'
+            )}
           </Typography>
         </div>
 
@@ -74,48 +79,57 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
           {/* Step 1 */}
           <div className="welcome-step-card">
             <div className="welcome-step-header">
-              <span className="welcome-step-number">STEP 01</span>
+              <span className="welcome-step-number">{t('landing:steps.step1.number', 'STEP 01')}</span>
               <div className="welcome-step-icon">
                 <DescriptionRoundedIcon fontSize="small" />
               </div>
             </div>
             <Typography variant="h6" className="welcome-step-title">
-              Master Career Vault
+              {t('landing:steps.step1.title', 'Master Career Vault')}
             </Typography>
             <Typography variant="body2" className="welcome-step-desc">
-              Store your complete career history, technical stack, projects, and achievements in structured Markdown or guided forms.
+              {t(
+                'landing:steps.step1.desc',
+                'Store your complete career history, technical stack, projects, and achievements in structured Markdown or guided forms.'
+              )}
             </Typography>
           </div>
 
           {/* Step 2 */}
           <div className="welcome-step-card">
             <div className="welcome-step-header">
-              <span className="welcome-step-number">STEP 02</span>
+              <span className="welcome-step-number">{t('landing:steps.step2.number', 'STEP 02')}</span>
               <div className="welcome-step-icon">
                 <TrackChangesRoundedIcon fontSize="small" />
               </div>
             </div>
             <Typography variant="h6" className="welcome-step-title">
-              Target Vacancy &amp; Tailoring
+              {t('landing:steps.step2.title', 'Target Vacancy & Tailoring')}
             </Typography>
             <Typography variant="body2" className="welcome-step-desc">
-              Paste target job postings to synthesize aligned bullets with Google XYZ formula and employer keywords.
+              {t(
+                'landing:steps.step2.desc',
+                'Paste target job postings to synthesize aligned bullets with Google XYZ formula and employer keywords.'
+              )}
             </Typography>
           </div>
 
           {/* Step 3 */}
           <div className="welcome-step-card">
             <div className="welcome-step-header">
-              <span className="welcome-step-number">STEP 03</span>
+              <span className="welcome-step-number">{t('landing:steps.step3.number', 'STEP 03')}</span>
               <div className="welcome-step-icon">
                 <AssessmentRoundedIcon fontSize="small" />
               </div>
             </div>
             <Typography variant="h6" className="welcome-step-title">
-              Live CV &amp; Quality Audit
+              {t('landing:steps.step3.title', 'Live CV & Quality Audit')}
             </Typography>
             <Typography variant="body2" className="welcome-step-desc">
-              Inspect calibrated 1–10 quality scores, customize across 7 ATS themes, and export print-perfect PDFs.
+              {t(
+                'landing:steps.step3.desc',
+                'Inspect calibrated 1–10 quality scores, customize across 7 ATS themes, and export print-perfect PDFs.'
+              )}
             </Typography>
           </div>
         </div>
@@ -134,7 +148,7 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
               fontWeight: 700,
             }}
           >
-            Start Building Resume
+            {t('landing:actions.startBuilding', 'Start Building Resume')}
           </Button>
 
           <Button
@@ -150,7 +164,7 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
               bgcolor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
             }}
           >
-            Try with Sample Data
+            {t('landing:actions.trySample', 'Try with Sample Data')}
           </Button>
         </div>
 
@@ -158,27 +172,27 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
         <div className="welcome-capabilities-ribbon">
           <div className="welcome-pill">
             <LockRoundedIcon sx={{ fontSize: 14, color: '#10b981' }} />
-            <span>100% Local-First & Private</span>
+            <span>{t('landing:capabilities.privacy', '100% Local-First & Private')}</span>
           </div>
           <div className="welcome-pill">
             <CheckCircleRoundedIcon sx={{ fontSize: 14, color: '#38bdf8' }} />
-            <span>Google XYZ Formula</span>
+            <span>{t('landing:capabilities.googleXyz', 'Google XYZ Formula')}</span>
           </div>
           <div className="welcome-pill">
             <SpeedRoundedIcon sx={{ fontSize: 14, color: '#f59e0b' }} />
-            <span>Calibrated 1–10 Audit</span>
+            <span>{t('landing:capabilities.auditScore', 'Calibrated 1–10 Audit')}</span>
           </div>
           <div className="welcome-pill">
             <StyleRoundedIcon sx={{ fontSize: 14, color: '#a78bfa' }} />
-            <span>7 Precision ATS Themes</span>
+            <span>{t('landing:capabilities.themes', '7 Precision ATS Themes')}</span>
           </div>
         </div>
 
         {/* Footer Note */}
         <div className="welcome-footer-note" style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'center' }}>
-          <span>All data remains in your browser storage. You can switch back here anytime via the top logo.</span>
+          <span>{t('common:footer.privacyNote', 'All data remains in your browser storage. You can switch back here anytime via the top logo.')}</span>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-            Crafted by <strong>{APP_LINKS.AUTHOR_NAME}</strong> ·{' '}
+            {t('common:footer.craftedBy', 'Crafted by')} <strong>{APP_LINKS.AUTHOR_NAME}</strong> ·{' '}
             <a
               href={APP_LINKS.GITHUB_REPO}
               target="_blank"
@@ -193,7 +207,7 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
                 borderBottom: '1px dotted currentColor',
               }}
             >
-              Open source on GitHub <StarRoundedIcon sx={{ fontSize: 13, color: 'primary.main', verticalAlign: 'middle' }} />
+              {t('common:footer.openSource', 'Open source on GitHub')} <StarRoundedIcon sx={{ fontSize: 13, color: 'primary.main', verticalAlign: 'middle' }} />
             </a>
           </span>
         </div>
@@ -201,3 +215,4 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
     </div>
   );
 };
+

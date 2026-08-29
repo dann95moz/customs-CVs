@@ -14,36 +14,10 @@ import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import { useTranslation } from 'react-i18next';
 import { WizardStep, WizardStepperProps, StepMeta } from '../../types';
 
 export type { WizardStepperProps, StepMeta };
-
-const STEPS: StepMeta[] = [
-  {
-    id: 'profile',
-    number: 1,
-    label: 'Candidate Profile',
-    shortLabel: 'Profile',
-    subtitle: 'Career history & skills',
-    icon: <PersonRoundedIcon fontSize="small" />
-  },
-  {
-    id: 'target',
-    number: 2,
-    label: 'Target Vacancy',
-    shortLabel: 'Target Job',
-    subtitle: 'Job posting & tailoring',
-    icon: <WorkRoundedIcon fontSize="small" />
-  },
-  {
-    id: 'preview',
-    number: 3,
-    label: 'Live CV & PDF Export',
-    shortLabel: 'CV & PDF',
-    subtitle: 'Preview & download PDF',
-    icon: <PictureAsPdfRoundedIcon fontSize="small" />
-  }
-];
 
 export const WizardStepper: React.FC<WizardStepperProps> = ({
   currentStep,
@@ -54,6 +28,34 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+  const { t } = useTranslation(['profile', 'common']);
+
+  const steps: StepMeta[] = [
+    {
+      id: 'profile',
+      number: 1,
+      label: t('profile:stepper.profileLabel', 'Candidate Profile'),
+      shortLabel: t('profile:stepper.profileLabel', 'Profile'),
+      subtitle: t('profile:stepper.profileSubtitle', 'Career history & skills'),
+      icon: <PersonRoundedIcon fontSize="small" />
+    },
+    {
+      id: 'target',
+      number: 2,
+      label: t('profile:stepper.targetLabel', 'Target Vacancy'),
+      shortLabel: t('profile:stepper.targetLabel', 'Target Job'),
+      subtitle: t('profile:stepper.targetSubtitle', 'Job posting & tailoring'),
+      icon: <WorkRoundedIcon fontSize="small" />
+    },
+    {
+      id: 'preview',
+      number: 3,
+      label: t('profile:stepper.previewLabel', 'Live CV & PDF Export'),
+      shortLabel: t('profile:stepper.previewLabel', 'CV & PDF'),
+      subtitle: t('profile:stepper.previewSubtitle', 'Preview & download PDF'),
+      icon: <PictureAsPdfRoundedIcon fontSize="small" />
+    }
+  ];
 
   const isStepComplete = (stepId: WizardStep): boolean => {
     switch (stepId) {
@@ -68,7 +70,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
     }
   };
 
-  const currentStepIndex = STEPS.findIndex(s => s.id === currentStep);
+  const currentStepIndex = steps.findIndex(s => s.id === currentStep);
 
   return (
     <Paper
@@ -101,7 +103,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
           scrollbarWidth: 'none',
         }}
       >
-        {STEPS.map((step, index) => {
+        {steps.map((step, index) => {
           const isActive = step.id === currentStep;
           const isCompleted = isStepComplete(step.id) && step.id !== currentStep;
           const isPassed = index < currentStepIndex;
@@ -194,7 +196,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
 
                     {isActive && (
                       <Chip
-                        label={`Step ${step.number}`}
+                        label={t('common:status.step', { number: step.number, defaultValue: `Step ${step.number}` })}
                         size="small"
                         color="primary"
                         sx={{
@@ -207,7 +209,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                     )}
                     {isCompleted && (
                       <Chip
-                        label="Done"
+                        label={t('common:actions.done', 'Done')}
                         size="small"
                         color="success"
                         sx={{
@@ -237,7 +239,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
               </ButtonBase>
 
               {/* Separator Chevron */}
-              {index < STEPS.length - 1 && (
+              {index < steps.length - 1 && (
                 <ArrowForwardIosRoundedIcon
                   sx={{
                     fontSize: 13,
