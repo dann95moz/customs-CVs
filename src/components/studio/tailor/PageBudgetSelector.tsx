@@ -12,18 +12,16 @@ import {
 import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
 import RadioButtonUncheckedRoundedIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
 import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonCheckedRounded';
+import { useTranslation } from 'react-i18next';
 import { PageBudgetSelectorProps } from '../../../types';
 
 export type { PageBudgetSelectorProps };
 
-/**
- * Component for selecting target resume page length (1 Page vs. 2 Pages).
- * Principle: Single Responsibility (S) - focuses exclusively on page budget selection.
- */
 export const PageBudgetSelector: React.FC<PageBudgetSelectorProps> = ({
   pageBudget,
   onPageBudgetChange,
 }) => {
+  const { t } = useTranslation(['target', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -44,10 +42,10 @@ export const PageBudgetSelector: React.FC<PageBudgetSelectorProps> = ({
         <LayersRoundedIcon color="primary" />
         <Box>
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            1. Resume Length (Page Budget)
+            {t('target:pageBudget.title', '1. Resume Length (Page Budget)')}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            Select the target length calibrated to your career seniority.
+            {t('target:pageBudget.subtitle', 'Select the target length calibrated to your career seniority.')}
           </Typography>
         </Box>
       </Box>
@@ -79,17 +77,17 @@ export const PageBudgetSelector: React.FC<PageBudgetSelectorProps> = ({
           <Box sx={{ flex: 1 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 0.5 }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                1 Page (A4 Standard)
+                {t('target:pageBudget.onePage', '1 Page (A4 Standard)')}
               </Typography>
               <Chip
-                label="Recommended"
+                label={t('common:badge.recommended', 'Recommended')}
                 size="small"
                 color="primary"
                 sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
               />
             </Box>
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.45 }}>
-              Ideal for 30-second recruiter scans. Prioritizes highest-impact metrics and Google XYZ accomplishments.
+              {t('target:pageBudget.onePageDesc', 'Ideal for 30-second recruiter scans. Prioritizes highest-impact metrics and Google XYZ accomplishments.')}
             </Typography>
           </Box>
         </ButtonBase>
@@ -120,17 +118,17 @@ export const PageBudgetSelector: React.FC<PageBudgetSelectorProps> = ({
           <Box sx={{ flex: 1 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 0.5 }}>
               <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                2 Pages (Extended)
+                {t('target:pageBudget.twoPages', '2 Pages (Extended)')}
               </Typography>
               <Chip
-                label="Senior / Lead"
+                label={t('target:pageBudget.twoPagesBadge', 'Senior / Lead')}
                 size="small"
                 variant="outlined"
                 sx={{ height: 20, fontSize: '0.68rem', fontWeight: 600 }}
               />
             </Box>
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.45 }}>
-              For directors, tech leads, or specialists with 8–10+ years of deep technical track records and publications.
+              {t('target:pageBudget.twoPagesDesc', 'For directors, tech leads, or specialists with 8–10+ years of deep technical track records and publications.')}
             </Typography>
           </Box>
         </ButtonBase>

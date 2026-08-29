@@ -21,6 +21,7 @@ import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import TargetIcon from '@mui/icons-material/TrackChangesRounded';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import { useTranslation } from 'react-i18next';
 import { 
   AVAILABLE_AI_MODELS, 
   AIProviderSettings 
@@ -31,10 +32,6 @@ import { StepAITailorProps } from '../../types';
 
 export type { StepAITailorProps };
 
-/**
- * Step 3: AI Resume Tailoring Studio.
- * Principle: Single Responsibility (S) - delegates page budget and model selection to subcomponents.
- */
 export const StepAITailor: React.FC<StepAITailorProps> = ({
   candidateName,
   companyName,
@@ -50,6 +47,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
   onPrevStep,
   onNextStep
 }) => {
+  const { t } = useTranslation(['target', 'preview', 'common', 'settings']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const [advancedExpanded, setAdvancedExpanded] = useState(false);
@@ -103,17 +101,17 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
           <Box>
             <Chip
               icon={<AutoAwesomeRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label="Step 3 of 4 • AI Tailor"
+              label={t('target:stepBadge', 'Step 2 of 3 • Target Vacancy & Tailoring')}
               size="small"
               color="primary"
               variant="outlined"
               sx={{ mb: 1, fontWeight: 700 }}
             />
             <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
-              Tailor Your Resume with AI
+              {t('target:title', 'Tailor Your Resume with AI')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 1000 }}>
-              The AI aligns your real achievements and skills with <strong>{companyName || 'the target role'}</strong> without altering your master profile.
+              {t('target:subtitle', 'The AI aligns your real achievements and skills without altering your master profile.')}
             </Typography>
           </Box>
         </Paper>
@@ -135,7 +133,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             <TargetIcon color="primary" />
             <Box>
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                Candidate
+                {t('profile:sections.personalInfo.fullName', 'Candidate')}
               </Typography>
               <Typography variant="body2" sx={{ fontWeight: 700 }}>
                 {candidateName || 'Your Name'}
@@ -147,7 +145,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             <TargetIcon color="secondary" />
             <Box>
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                Target Employer
+                {t('target:fields.company', 'Target Employer')}
               </Typography>
               <Typography variant="body2" sx={{ fontWeight: 700 }}>
                 {companyName || 'Employer Pending'}
@@ -159,7 +157,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             <TargetIcon color="success" />
             <Box>
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                Target Role
+                {t('target:fields.role', 'Target Role')}
               </Typography>
               <Typography variant="body2" sx={{ fontWeight: 700 }}>
                 {targetRole || 'Role Pending'}
@@ -190,10 +188,10 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
                   <CircularProgress size={26} color="primary" />
                   <Box>
                     <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                      Synthesizing Targeted Resume with AI...
+                      {t('target:progress.title', 'Synthesizing Targeted Resume with AI...')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {generationStep || 'Cross-referencing master profile with target vacancy...'}
+                      {generationStep || t('target:progress.defaultStep', 'Cross-referencing master profile with target vacancy...')}
                     </Typography>
                   </Box>
                 </Box>
@@ -215,11 +213,11 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
 
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(5, 1fr)' }, gap: 1.5 }}>
                 {[
-                  { step: '1. Keyword Extraction', desc: 'Scanning required vacancy stack', icon: '🔍' },
-                  { step: '2. Competency Alignment', desc: 'Mapping master career dossier', icon: '🧠' },
-                  { step: '3. Google XYZ Formula', desc: 'Action + Metric + Result', icon: '📐' },
-                  { step: '4. Universal ATS Format', desc: 'Zero-bias clean layout', icon: '🛡️' },
-                  { step: '5. Gap & Quality Audit', desc: 'Calibrating match score', icon: '📊' }
+                  { step: t('target:progress.step1', '1. Keyword Extraction'), desc: 'Scanning required vacancy stack', icon: '🔍' },
+                  { step: t('target:progress.step2', '2. Competency Alignment'), desc: 'Mapping master career dossier', icon: '🧠' },
+                  { step: t('audit:xyz.title', '3. Google XYZ Formula'), desc: 'Action + Metric + Result', icon: '📐' },
+                  { step: t('audit:atsCheck.description', '4. Universal ATS Format'), desc: 'Zero-bias clean layout', icon: '🛡️' },
+                  { step: t('target:progress.step3', '5. Gap & Quality Audit'), desc: 'Calibrating match score', icon: '📊' }
                 ].map((stage, sIdx) => {
                   const isCurrent = (
                     (sIdx === 0 && (!generationStep || generationStep.includes('Reading'))) ||
@@ -266,10 +264,10 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             >
               <Box sx={{ maxWidth: 700 }}>
                 <Typography variant="h6" sx={{ fontWeight: 800, mb: 0.5 }}>
-                  Ready to tailor your resume surgically?
+                  {t('target:title', 'Ready to tailor your resume surgically?')}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  The AI engine will cross-reference your experience with <strong>{companyName || 'this vacancy'}</strong> requirements without touching your master profile in Step 1.
+                  {t('target:subtitle', 'The AI engine will cross-reference your experience with this vacancy requirements without touching your master profile.')}
                 </Typography>
               </Box>
 
@@ -290,7 +288,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
                   boxShadow: isDark ? '0 4px 14px rgba(2, 132, 199, 0.5)' : '0 4px 14px rgba(2, 132, 199, 0.3)',
                 }}
               >
-                ✨ Tailor My Resume Now
+                {t('target:actions.tailorNow', '✨ Tailor My Resume Now')}
               </Button>
             </Box>
           )}
@@ -314,10 +312,10 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
                 <CheckCircleRoundedIcon color="success" />
                 <Box>
                   <Typography variant="subtitle2" sx={{ fontWeight: 700, color: theme.palette.success.main }}>
-                    Tailored resume for {companyName || 'this vacancy'} generated successfully!
+                    {t('target:status.ready', 'Tailored resume generated successfully!')}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    Your resume has been aligned with critical keywords and metrics. Compare it side-by-side or download your PDF.
+                    {t('target:progress.note', 'Your resume has been aligned with critical keywords and metrics.')}
                   </Typography>
                 </Box>
               </Box>
@@ -329,7 +327,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
                 onClick={onNextStep}
                 sx={{ fontWeight: 700, whiteSpace: 'nowrap', px: 2 }}
               >
-                View CV &amp; Export
+                {t('preview:toolbar.exportPdf', 'View CV & Export')}
               </Button>
             </Box>
           )}
@@ -351,7 +349,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
               <TuneRoundedIcon color="action" fontSize="small" />
               <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                Advanced AI &amp; Model Settings (Optional)
+                {t('settings:tabs.providers', 'Advanced AI & Model Settings (Optional)')}
               </Typography>
               <Chip
                 label={`Active: ${currentModel.name}`}
@@ -364,7 +362,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
           </AccordionSummary>
           <AccordionDetails sx={{ pt: 1, pb: 2.5 }}>
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
-              A high-accuracy model is selected automatically by default. You can customize the specific AI engine or provider if desired.
+              {t('settings:providers.subtitle', 'A high-accuracy model is selected automatically by default. You can customize the specific AI engine or provider if desired.')}
             </Typography>
             <AiModelSelector
               selectedModelId={providerSettings.model}
@@ -395,7 +393,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             onClick={onPrevStep}
             disabled={isGenerating}
           >
-            Back to Target Job
+            {t('target:actions.backToProfile', 'Back to Target Job')}
           </Button>
 
           <Button
@@ -406,7 +404,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             disabled={isGenerating}
             sx={{ fontWeight: 700, px: 3 }}
           >
-            View Live CV &amp; PDF Export
+            {t('preview:title', 'View Live CV & PDF Export')}
           </Button>
         </Paper>
       </Box>

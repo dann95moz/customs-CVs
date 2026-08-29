@@ -32,6 +32,7 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { marked } from 'marked';
 import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
+import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../store';
 import { ContextualAiModal } from './ai/ContextualAiModal';
 import { StepTargetJobProps } from '../../types';
@@ -53,13 +54,13 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   generationStep,
   hasGeneratedCv = false
 }) => {
+  const { t } = useTranslation(['target', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const providerSettings = useResumeStore((s) => s.providerSettings);
   const setProviderSettings = useResumeStore((s) => s.setProviderSettings);
   const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
   const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
-
 
   const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
     onFileLoaded: (text) => {
@@ -146,15 +147,15 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               <CircularProgress size={28} thickness={4} color="primary" />
               <Box sx={{ flex: 1 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'text.primary' }}>
-                  Synthesizing Tailored Resume with AI...
+                  {t('target:progress.title', 'Synthesizing Tailored Resume with AI...')}
                 </Typography>
                 <Typography variant="body2" sx={{ color: theme.palette.primary.main, fontWeight: 600 }}>
-                  {generationStep || 'Cross-referencing competencies and synthesizing XYZ achievements...'}
+                  {generationStep || t('target:progress.defaultStep', 'Cross-referencing competencies and synthesizing XYZ achievements...')}
                 </Typography>
               </Box>
               <Chip
                 icon={<AutoAwesomeRoundedIcon sx={{ fontSize: '14px !important' }} />}
-                label="In Progress"
+                label={t('common:status.inProgress', 'In Progress')}
                 color="primary"
                 size="small"
                 sx={{ fontWeight: 700 }}
@@ -169,7 +170,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               }}
             />
             <Typography variant="caption" color="text.secondary">
-              ⚡ Applying factual integrity safeguards and Google XYZ formula metrics. You will be automatically redirected to your live CV as soon as generation completes.
+              {t('target:progress.note', '⚡ Applying factual integrity safeguards and Google XYZ formula metrics. You will be automatically redirected to your live CV as soon as generation completes.')}
             </Typography>
           </Paper>
         )}
@@ -192,17 +193,17 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           <Box sx={{ maxWidth: 900 }}>
             <Chip
               icon={<WorkRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label="Step 2 of 3 • Target Vacancy &amp; Tailoring"
+              label={t('target:stepBadge', 'Step 2 of 3 • Target Vacancy & Tailoring')}
               size="small"
               color="secondary"
               variant="outlined"
               sx={{ mb: 1, fontWeight: 700 }}
             />
             <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
-              Target Job Vacancy
+              {t('target:title', 'Target Job Vacancy')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Paste the job posting description. The AI will automatically calibrate the optimal length, impact metrics, and keyword alignment.
+              {t('target:subtitle', 'Paste the job posting description. The AI will automatically calibrate the optimal length, impact metrics, and keyword alignment.')}
             </Typography>
           </Box>
 
@@ -213,7 +214,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               startIcon={<RefreshRoundedIcon />}
               onClick={onLoadSample}
             >
-              Load Sample Vacancy
+              {t('target:actions.loadSample', 'Load Sample Vacancy')}
             </Button>
 
             <input
@@ -229,7 +230,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               startIcon={<CloudUploadRoundedIcon />}
               onClick={() => fileInputRef.current?.click()}
             >
-              Upload Job File
+              {t('target:actions.uploadFile', 'Upload Job File')}
             </Button>
 
             <Button
@@ -238,7 +239,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               startIcon={<FileDownloadRoundedIcon />}
               onClick={handleDownload}
             >
-              Export File
+              {t('target:actions.exportFile', 'Export File')}
             </Button>
           </Stack>
         </Paper>
@@ -256,8 +257,8 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           }}
         >
           <TextField
-            label="Target Company / Employer"
-            placeholder="e.g. Stripe, Airbnb, Google"
+            label={t('target:fields.company', 'Target Company / Employer')}
+            placeholder={t('target:fields.companyPlaceholder', 'e.g. Stripe, Airbnb, Google')}
             value={companyName}
             onChange={(e) => onCompanyChange(e.target.value)}
             size="small"
@@ -273,8 +274,8 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           />
 
           <TextField
-            label="Target Role / Job Title"
-            placeholder="e.g. Senior Frontend Engineer"
+            label={t('target:fields.role', 'Target Role / Job Title')}
+            placeholder={t('target:fields.rolePlaceholder', 'e.g. Senior Frontend Engineer')}
             value={targetRole}
             onChange={(e) => onRoleChange(e.target.value)}
             size="small"
@@ -303,10 +304,10 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             <DescriptionRoundedIcon fontSize="small" color="action" />
             <Box>
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                Vacancy Length
+                {t('target:fields.vacancyLength', 'Vacancy Length')}
               </Typography>
               <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                {wordCount} words
+                {wordCount} {t('target:fields.words', 'words')}
               </Typography>
             </Box>
           </Box>
@@ -338,7 +339,9 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <EditNoteRoundedIcon fontSize="small" color="secondary" />
               <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                {viewMode === 'edit' ? 'Job Description (Plain Text / Markdown)' : 'Formatted Vacancy Preview'}
+                {viewMode === 'edit'
+                  ? t('target:editor.editModeTitle', 'Job Description (Plain Text / Markdown)')
+                  : t('target:editor.previewModeTitle', 'Formatted Vacancy Preview')}
               </Typography>
             </Box>
 
@@ -349,7 +352,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                 onClick={() => setViewMode('edit')}
                 sx={{ fontWeight: 600, fontSize: '0.8rem' }}
               >
-                Edit Text
+                {t('target:editor.editText', 'Edit Text')}
               </Button>
               <Button
                 variant={viewMode === 'preview' ? 'contained' : 'outlined'}
@@ -357,7 +360,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                 onClick={() => setViewMode('preview')}
                 sx={{ fontWeight: 600, fontSize: '0.8rem' }}
               >
-                Formatted Preview
+                {t('target:editor.formattedPreview', 'Formatted Preview')}
               </Button>
             </ButtonGroup>
           </Box>
@@ -377,7 +380,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                 className="studio-textarea"
                 value={content}
                 onChange={(e) => onChange(e.target.value)}
-                placeholder="Paste the job description from LinkedIn, Indeed, or the careers page here...&#10;&#10;About the Role:&#10;We are looking for an experienced engineer...&#10;&#10;Key Requirements:&#10;• Experience with modern web technologies&#10;• Proven problem solving track record"
+                placeholder={t('target:editor.placeholder', 'Paste the job description here...')}
                 spellCheck={false}
                 style={{
                   width: '100%',
@@ -418,7 +421,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                 },
               }}
               dangerouslySetInnerHTML={{
-                __html: marked.parse(content || '*No job description pasted yet. Switch to Edit Text to add one.*') as string
+                __html: marked.parse(content || t('target:editor.noJobPasted', '*No job description pasted yet. Switch to Edit Text to add one.*')) as string
               }}
             />
           )}
@@ -444,14 +447,14 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             onClick={onPrevStep}
             disabled={isGenerating}
           >
-            Back to Profile (Step 1)
+            {t('target:actions.backToProfile', 'Back to Profile (Step 1)')}
           </Button>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
             {hasJob ? (
               <Chip
                 icon={<CheckCircleRoundedIcon />}
-                label={isGenerating ? (generationStep || 'Synthesizing with AI...') : 'Job details ready'}
+                label={isGenerating ? (generationStep || t('target:actions.tailoring', '✨ Tailoring Resume...')) : t('target:status.ready', 'Job details ready')}
                 color={isGenerating ? 'info' : 'success'}
                 variant="outlined"
                 size="small"
@@ -460,7 +463,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             ) : (
               <Chip
                 icon={<InfoRoundedIcon />}
-                label="Paste a job description to tailor"
+                label={t('target:status.missing', 'Paste a job description to tailor')}
                 color="warning"
                 variant="outlined"
                 size="small"
@@ -475,7 +478,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                 onClick={onNextStep}
                 sx={{ fontWeight: 600 }}
               >
-                View Existing CV
+                {t('target:actions.viewExisting', 'View Existing CV')}
               </Button>
             )}
 
@@ -494,7 +497,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                 boxShadow: isDark ? '0 4px 14px rgba(2, 132, 199, 0.4)' : '0 4px 14px rgba(2, 132, 199, 0.25)',
               }}
             >
-              {isGenerating ? '✨ Tailoring Resume...' : '✨ Tailor Resume Now'}
+              {isGenerating ? t('target:actions.tailoring', '✨ Tailoring Resume...') : t('target:actions.tailorNow', '✨ Tailor Resume Now')}
             </Button>
           </Box>
         </Paper>

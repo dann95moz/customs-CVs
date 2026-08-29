@@ -16,21 +16,19 @@ import LaptopRoundedIcon from '@mui/icons-material/LaptopRounded';
 import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
 import CloudQueueRoundedIcon from '@mui/icons-material/CloudQueueRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import { useTranslation } from 'react-i18next';
 import { AVAILABLE_AI_MODELS } from '../../../core/ai-service';
 import { AiModelSelectorProps } from '../../../types';
 
 export type { AiModelSelectorProps };
 
-/**
- * Component for selecting AI inference model from available models catalog.
- * Principle: Single Responsibility (S) - manages AI model selection UI and specs card.
- */
 export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
   selectedModelId,
   onSelectModel,
   disabled = false,
   apiKey,
 }) => {
+  const { t } = useTranslation(['target', 'settings', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const currentModel = AVAILABLE_AI_MODELS.find(m => m.id === selectedModelId) || AVAILABLE_AI_MODELS[0];
@@ -52,21 +50,21 @@ export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
         <PsychologyRoundedIcon color="secondary" />
         <Box>
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            AI Engine Selection
+            {t('settings:providers.title', 'AI Engine Selection')}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            Choose the AI model used to synthesize and tailor your resume.
+            {t('settings:providers.subtitle', 'Choose the AI model used to synthesize and tailor your resume.')}
           </Typography>
         </Box>
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, flex: 1, justifyContent: 'center' }}>
         <FormControl fullWidth size="small">
-          <InputLabel id="ai-model-select-label">Select AI Model</InputLabel>
+          <InputLabel id="ai-model-select-label">{t('settings:providers.selectProvider', 'Select AI Model')}</InputLabel>
           <Select
             labelId="ai-model-select-label"
             value={selectedModelId}
-            label="Select AI Model"
+            label={t('settings:providers.selectProvider', 'Select AI Model')}
             disabled={disabled}
             onChange={(e) => onSelectModel(e.target.value)}
             renderValue={(selectedId) => {
@@ -139,7 +137,7 @@ export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
             </Box>
             <Chip
               icon={currentModel.provider === 'local' ? <LaptopRoundedIcon sx={{ fontSize: '14px !important' }} /> : <KeyRoundedIcon sx={{ fontSize: '14px !important' }} />}
-              label={currentModel.provider === 'local' ? 'Offline Local Model' : (apiKey ? 'API Key Configured' : 'Requires API Key')}
+              label={currentModel.provider === 'local' ? 'Offline Local' : (apiKey ? 'Key Configured' : 'API Key Required')}
               size="small"
               color={currentModel.provider === 'local' ? 'secondary' : (apiKey ? 'info' : 'warning')}
               sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}

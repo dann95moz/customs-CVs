@@ -27,6 +27,7 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import LaptopRoundedIcon from '@mui/icons-material/LaptopRounded';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
+import { useTranslation } from 'react-i18next';
 import { AIProviderId, AIProviderSettings, ContextualAiModalProps } from '../../../types';
 import { testAIConnection } from '../../../core/ai-service';
 
@@ -43,6 +44,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
   settings,
   onSaveAndGenerate,
 }) => {
+  const { t } = useTranslation(['settings', 'target', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -99,25 +101,20 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
     e.preventDefault();
 
     let defaultModel = settings.model;
-    if (provider === 'gemini') {
-      defaultModel = 'gemini-3.6-flash';
-    } else if (provider === 'local') {
-      defaultModel = defaultModel || 'llama3.2';
-    } else if (provider === 'groq') {
-      defaultModel = 'llama-3.3-70b-versatile';
-    } else if (provider === 'openai') {
-      defaultModel = 'gpt-4o';
-    } else if (provider === 'claude') {
-      defaultModel = 'claude-3-7-sonnet-latest';
-    }
+    if (provider === 'gemini') defaultModel = defaultModel || 'gemini-3.6-flash';
+    if (provider === 'local') defaultModel = defaultModel || 'llama3.2';
+    if (provider === 'groq') defaultModel = defaultModel || 'llama-3.3-70b-versatile';
+    if (provider === 'openai') defaultModel = defaultModel || 'gpt-4o';
+    if (provider === 'claude') defaultModel = defaultModel || 'claude-3-7-sonnet-latest';
+    if (provider === 'openrouter') defaultModel = defaultModel || 'openrouter-free';
 
     const updatedSettings: AIProviderSettings = {
       ...settings,
       provider,
-      apiKey: apiKey.trim(),
+      apiKey: isLocal ? '' : apiKey.trim(),
       customEndpoint: isLocal ? customEndpoint : settings.customEndpoint,
-      localServerType: isLocal ? localServerType : undefined,
-      model: defaultModel,
+      localServerType: isLocal ? localServerType : settings.localServerType,
+      model: defaultModel || 'gemini-3.6-flash',
     };
 
     onSaveAndGenerate(updatedSettings);
@@ -172,12 +169,12 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
               <KeyRoundedIcon sx={{ fontSize: 24 }} />
             </Box>
             <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: '-0.02em', fontSize: '1.25rem' }}>
-              One last thing before tailoring your CV
+              {t('settings:providers.apiKey', 'AI Setup')}
             </Typography>
           </Box>
 
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.55 }}>
-            To synthesize your resume with AI, we need a free key from Google. It takes under a minute and requires no credit card.
+            {t('settings:providers.subtitle', 'Select between completely free local offline models or high-speed cloud APIs.')}
           </Typography>
 
           {/* Direct Link to Google AI Studio */}
@@ -201,7 +198,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
                 },
               }}
             >
-              Get my free key at Google AI Studio
+              Google AI Studio
             </Button>
           </Box>
 
@@ -209,12 +206,12 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
           {!isLocal ? (
             <Box sx={{ mb: 2.5 }}>
               <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.primary', display: 'block', mb: 0.75 }}>
-                Paste your key here
+                {t('settings:providers.apiKey', 'API Key')}
               </Typography>
               <TextField
                 fullWidth
                 size="medium"
-                placeholder={provider === 'gemini' ? 'AIzaSy...' : 'Paste your API key...'}
+                placeholder={provider === 'gemini' ? 'AIzaSy...' : t('settings:providers.apiKeyPlaceholder', 'Paste your API key...')}
                 type={showKey ? 'text' : 'password'}
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
@@ -272,7 +269,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
               <TextField
                 fullWidth
                 size="small"
-                label="Local Endpoint"
+                label={t('settings:providers.customEndpoint', 'Local Endpoint')}
                 value={customEndpoint}
                 onChange={(e) => setCustomEndpoint(e.target.value)}
                 slotProps={{
@@ -281,23 +278,23 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
               />
 
               <Button
-                size="small"
                 variant="outlined"
+                size="small"
                 color="secondary"
                 startIcon={isTesting ? <CircularProgress size={14} color="inherit" /> : <BoltRoundedIcon />}
                 onClick={handleTestLocalConnection}
                 disabled={isTesting}
-                sx={{ borderRadius: '8px', fontWeight: 700, alignSelf: 'flex-start' }}
+                sx={{ alignSelf: 'flex-start', textTransform: 'none', fontWeight: 700 }}
               >
-                {isTesting ? 'Testing connection...' : 'Test Local Server'}
+                {isTesting ? t('settings:providers.testing', 'Testing Connection...') : t('settings:providers.testConnection', 'Test Connection')}
               </Button>
-
-              {testResult && (
-                <Alert severity={testResult.success ? 'success' : 'warning'} sx={{ borderRadius: '8px', py: 0.5 }}>
-                  <Typography variant="caption">{testResult.message}</Typography>
-                </Alert>
-              )}
             </Box>
+          )}
+
+          {testResult && (
+            <Alert severity={testResult.success ? 'success' : 'error'} sx={{ mb: 2, borderRadius: '10px' }}>
+              {testResult.message}
+            </Alert>
           )}
 
           {/* Primary Action Button */}
@@ -321,7 +318,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
               },
             }}
           >
-            Generate My CV
+            {t('target:actions.tailorNow', '✨ Tailor Resume Now')}
           </Button>
 
           {/* Accordion / Toggle for Alternative Providers */}
@@ -338,7 +335,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
                 fontWeight: 600,
               }}
             >
-              Prefer another AI provider (Local AI, Groq, OpenAI, Claude)?
+              {t('settings:providers.selectProvider', 'Alternative AI Providers')}
             </Button>
 
             <Collapse in={showOtherProviders} sx={{ mt: 1.5, textAlign: 'left' }}>
@@ -351,7 +348,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
                 }}
               >
                 <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 1 }}>
-                  Select Preferred AI Engine:
+                  {t('settings:providers.selectProvider', 'Select Preferred AI Engine:')}
                 </Typography>
                 <RadioGroup
                   value={provider}
@@ -363,7 +360,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
                     control={<Radio size="small" />}
                     label={
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                        Google Gemini (Free &amp; Recommended)
+                        Google Gemini (Recommended)
                       </Typography>
                     }
                   />
@@ -374,7 +371,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
                         <LaptopRoundedIcon fontSize="small" color="secondary" />
                         <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                          Local AI (100% Free &amp; Offline — Ollama / LM Studio)
+                          Local AI (Offline — Ollama / LM Studio)
                         </Typography>
                       </Box>
                     }
@@ -384,7 +381,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
                     control={<Radio size="small" />}
                     label={
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                        Groq (Ultra-Fast Free Key)
+                        Groq (Fast Cloud)
                       </Typography>
                     }
                   />
@@ -411,7 +408,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
                     control={<Radio size="small" />}
                     label={
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                        OpenRouter / Custom Remote Proxy
+                        OpenRouter / Remote Proxy
                       </Typography>
                     }
                   />
