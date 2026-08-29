@@ -476,6 +476,8 @@ export interface ApplicationCardProps {
   onLoad: (id: string) => void;
   onDelete: (id: string) => void;
   onDownload: (v: GeneratedCvVersion) => void;
+  onDownloadPdf?: (v: GeneratedCvVersion) => void;
+  isDownloadingPdf?: boolean;
 }
 
 export interface GitHubStarToastProps {

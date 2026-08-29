@@ -21,11 +21,13 @@
     "archived": "Archiviato"
   },
   "card": {
-    "openInStudio": "Visualizza e Modifica nello Studio",
+    "openInStudio": "Visualizza & Modifica in Studio",
     "exportPdf": "Esporta PDF",
-    "viewGap": "Visualizza Report Gap",
+    "viewGap": "Visualizza Report Lacune",
     "delete": "Elimina Versione",
-    "lastModified": "Personalizzato"
+    "lastModified": "Personalizzato",
+    "downloadPdfTip": "Download Diretto in PDF (1 Clic)",
+    "downloadMdTip": "Scarica Markdown (.md)"
   },
   "empty": {
     "title": "Nessuna candidatura salvata al momento",

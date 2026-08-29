@@ -21,11 +21,13 @@
     "archived": "Archiviert"
   },
   "card": {
-    "openInStudio": "Im Studio anzeigen & bearbeiten",
+    "openInStudio": "Im Studio ansehen & bearbeiten",
     "exportPdf": "PDF exportieren",
     "viewGap": "Lückenbericht ansehen",
     "delete": "Version löschen",
-    "lastModified": "Erstellt am"
+    "lastModified": "Angepasst",
+    "downloadPdfTip": "Direkter PDF-Download (1-Klick)",
+    "downloadMdTip": "Markdown herunterladen (.md)"
   },
   "empty": {
     "title": "Noch keine Bewerbungen gespeichert",

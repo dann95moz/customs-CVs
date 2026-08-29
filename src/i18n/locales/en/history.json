@@ -25,7 +25,9 @@
     "exportPdf": "Export PDF",
     "viewGap": "View Gap Report",
     "delete": "Delete Version",
-    "lastModified": "Tailored"
+    "lastModified": "Tailored",
+    "downloadPdfTip": "Direct PDF Download (1-Click)",
+    "downloadMdTip": "Download Raw Markdown (.md)"
   },
   "empty": {
     "title": "No Applications Saved Yet",

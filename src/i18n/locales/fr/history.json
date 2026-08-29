@@ -21,11 +21,13 @@
     "archived": "Archivé"
   },
   "card": {
-    "openInStudio": "Voir et Modifier dans Studio",
+    "openInStudio": "Voir & Éditer dans le Studio",
     "exportPdf": "Exporter en PDF",
     "viewGap": "Voir le Rapport d'Écarts",
     "delete": "Supprimer la Version",
-    "lastModified": "Personnalisé"
+    "lastModified": "Adapté",
+    "downloadPdfTip": "Téléchargement Direct en PDF (1 Clic)",
+    "downloadMdTip": "Télécharger le Markdown (.md)"
   },
   "empty": {
     "title": "Aucune Candidature Enregistrée",

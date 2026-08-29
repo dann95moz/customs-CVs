@@ -1,7 +1,12 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { PageFormat } from '../types/theme';
+import { GeneratedCvVersion } from '../types/studio';
 import { getPageFormatConfig } from '../theme/dimensions';
+import { parseCvMarkdownToData, sanitizeFileName } from './parser';
+import { CVRenderer } from '../components/CVRenderer';
 
 export interface DirectPdfOptions {
   fileName?: string;
@@ -116,5 +121,66 @@ export async function generateDirectPdf(
     element.style.transform = originalTransform;
     element.style.transformOrigin = originalTransformOrigin;
     element.style.margin = originalMargin;
+  }
+}
+
+/**
+ * Generates and downloads a direct PDF for any historical CV version,
+ * rendering it in a temporary off-screen container.
+ */
+export async function generateVersionDirectPdf(
+  version: GeneratedCvVersion,
+  options: { pageFormat?: PageFormat; qualityScale?: number } = {}
+): Promise<void> {
+  const pageFormat = options.pageFormat || 'a4';
+  const formatConfig = getPageFormatConfig(pageFormat);
+
+  const cvData = parseCvMarkdownToData(version.cvMarkdown);
+  const candidateName = sanitizeFileName(version.candidateName || cvData.name || 'Candidate');
+  const cleanCompany = sanitizeFileName(version.companyName || 'Application');
+  const fileName = `CV_${candidateName}_${cleanCompany}.pdf`;
+
+  // Create isolated off-screen render container
+  const container = document.createElement('div');
+  container.style.position = 'fixed';
+  container.style.left = '-9999px';
+  container.style.top = '0';
+  container.style.width = `${formatConfig.widthPx}px`;
+  container.style.backgroundColor = '#ffffff';
+  container.style.zIndex = '-9999';
+  container.className = 'offscreen-cv-renderer';
+  document.body.appendChild(container);
+
+  const root = ReactDOM.createRoot(container);
+
+  try {
+    // Render the React CV Component with the version's theme and palette
+    await new Promise<void>((resolve) => {
+      root.render(
+        React.createElement(CVRenderer, {
+          data: cvData,
+          theme: version.theme || 'modern-tech',
+          palette: version.palette || 'corporate-blue',
+          spacingDensity: 'standard',
+          fontFamily: 'inter',
+        })
+      );
+      // Brief tick to ensure DOM and stylesheet computations complete
+      setTimeout(resolve, 120);
+    });
+
+    const targetElement = (container.querySelector('.paper-sheet') as HTMLElement) || container;
+
+    await generateDirectPdf(targetElement, {
+      fileName,
+      pageFormat,
+      qualityScale: options.qualityScale || 2,
+    });
+  } finally {
+    // Clean up off-screen DOM tree
+    setTimeout(() => {
+      root.unmount();
+      container.remove();
+    }, 100);
   }
 }

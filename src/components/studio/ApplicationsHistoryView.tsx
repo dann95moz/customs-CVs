@@ -26,6 +26,7 @@ export const ApplicationsHistoryView: React.FC = () => {
   const setWizardStep = useResumeStore((s) => s.setWizardStep);
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [downloadingPdfId, setDownloadingPdfId] = useState<string | null>(null);
 
   // Filtered versions by company or role
   const filteredVersions = savedVersions.filter(v => 
@@ -49,6 +50,18 @@ export const ApplicationsHistoryView: React.FC = () => {
     link.download = fileName;
     link.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadPdf = async (v: GeneratedCvVersion) => {
+    setDownloadingPdfId(v.id);
+    try {
+      const { generateVersionDirectPdf } = await import('../../core/pdfGenerator');
+      await generateVersionDirectPdf(v);
+    } catch (error) {
+      console.error('Failed to generate version PDF:', error);
+    } finally {
+      setDownloadingPdfId(null);
+    }
   };
 
   return (
@@ -150,6 +163,8 @@ export const ApplicationsHistoryView: React.FC = () => {
                 onLoad={handleLoadVersion}
                 onDelete={handleDeleteVersion}
                 onDownload={handleDownloadMarkdown}
+                onDownloadPdf={handleDownloadPdf}
+                isDownloadingPdf={downloadingPdfId === v.id}
               />
             ))}
           </Box>

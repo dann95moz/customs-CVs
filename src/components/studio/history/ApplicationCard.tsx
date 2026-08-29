@@ -21,6 +21,11 @@ import { useTranslation } from 'react-i18next';
 import { GeneratedCvVersion, ApplicationCardProps } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
 
+import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
+import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
+import ButtonGroup from '@mui/material/ButtonGroup';
+
 export type { ApplicationCardProps };
 
 export const ApplicationCard: React.FC<ApplicationCardProps> = ({
@@ -28,6 +33,8 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   onLoad,
   onDelete,
   onDownload,
+  onDownloadPdf,
+  isDownloadingPdf = false,
 }) => {
   const { t, i18n } = useTranslation(['history', 'common', 'gap', 'audit', 'preview']);
   const theme = useTheme();
@@ -173,28 +180,59 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
 
       <Divider />
 
-      <CardActions sx={{ p: 1.5, px: 2.5, display: 'flex', justifyContent: 'space-between' }}>
+      <CardActions sx={{ p: 1.5, px: 2, display: 'flex', justifyContent: 'space-between', gap: 1 }}>
         <Button
           size="small"
           variant="contained"
           color="primary"
           startIcon={<LaunchRoundedIcon />}
           onClick={() => onLoad(version.id)}
-          sx={{ fontWeight: 700, fontSize: '0.78rem' }}
+          sx={{ fontWeight: 700, fontSize: '0.76rem', flexShrink: 0 }}
         >
           {t('history:card.openInStudio', 'View & Edit in Studio')}
         </Button>
 
-        <Button
-          size="small"
-          variant="outlined"
-          color="inherit"
-          startIcon={<FileDownloadRoundedIcon />}
-          onClick={() => onDownload(version)}
-          sx={{ fontSize: '0.75rem' }}
-        >
-          .MD
-        </Button>
+        <ButtonGroup size="small" variant="outlined" color="inherit" sx={{ flexShrink: 0 }}>
+          {onDownloadPdf && (
+            <Tooltip title={t('history:card.downloadPdfTip', 'Direct PDF Download (1-Click)')}>
+              <Button
+                onClick={() => onDownloadPdf(version)}
+                disabled={isDownloadingPdf}
+                startIcon={
+                  isDownloadingPdf ? (
+                    <CircularProgress size={13} color="inherit" />
+                  ) : (
+                    <PictureAsPdfRoundedIcon sx={{ fontSize: '15px !important' }} />
+                  )
+                }
+                sx={{
+                  fontWeight: 700,
+                  fontSize: '0.73rem',
+                  px: 1,
+                  bgcolor: alpha(theme.palette.primary.main, 0.05),
+                  borderColor: theme.palette.divider,
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.primary.main, 0.12),
+                    borderColor: 'primary.main',
+                    color: 'primary.main'
+                  }
+                }}
+              >
+                PDF
+              </Button>
+            </Tooltip>
+          )}
+
+          <Tooltip title={t('history:card.downloadMdTip', 'Download Raw Markdown (.md)')}>
+            <Button
+              startIcon={<FileDownloadRoundedIcon sx={{ fontSize: '15px !important' }} />}
+              onClick={() => onDownload(version)}
+              sx={{ fontSize: '0.73rem', px: 0.9 }}
+            >
+              .MD
+            </Button>
+          </Tooltip>
+        </ButtonGroup>
       </CardActions>
     </Card>
   );
