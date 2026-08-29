@@ -5,27 +5,30 @@
   "actions": {
     "loadSample": "Carica Offerta di Esempio",
     "uploadFile": "Carica File Offerta",
-    "exportFile": "Esporta File",
+    "uploadFileInline": "Allega file (.txt, .md)",
+    "uploadFileTip": "Carica file della descrizione (.txt, .md)",
     "backToProfile": "Torna al Profilo (Passo 1)",
-    "tailorNow": "Adatta il Curriculum Ora",
+    "tailorNow": "Adatta Curriculum Ora",
     "tailoring": "Adattamento Curriculum...",
     "viewExisting": "Visualizza CV Esistente"
   },
   "fields": {
-    "company": "Azienda / Datore di Lavoro Obiettivo",
+    "company": "Azienda / Datore di Lavoro",
     "companyPlaceholder": "es. Stripe, Airbnb, Google",
     "role": "Ruolo / Posizione Obiettivo",
     "rolePlaceholder": "es. Senior Frontend Engineer",
-    "vacancyLength": "Lunghezza Descrizione",
+    "vacancyLength": "Lunghezza Offerta",
     "words": "parole"
   },
   "editor": {
     "editText": "Modifica Testo",
     "formattedPreview": "Anteprima Formattata",
-    "editModeTitle": "Descrizione Posizione (Testo / Markdown)",
-    "previewModeTitle": "Anteprima dell'Offerta",
-    "placeholder": "Incolla qui la descrizione da LinkedIn, Indeed o dalla pagina carriere...\n\nInformazioni sul ruolo:\nCerchiamo un ingegnere esperto...\n\nRequisiti chiave:\n• Esperienza con tecnologie web moderne\n• Comprovata capacità di problem solving",
-    "noJobPasted": "*Nessuna offerta ancora incollata. Passa a 'Modifica Testo' per aggiungerne una.*"
+    "editModeTitle": "Descrizione del Lavoro (Testo / Markdown)",
+    "previewModeTitle": "Anteprima Offerta Formattata",
+    "placeholder": "Incolla qui la descrizione del lavoro da LinkedIn, Indeed o dal sito aziendale...\n\nInformazioni sul ruolo:\nCerchiamo un ingegnere esperto...\n\nRequisiti principali:\n• Esperienza con le moderne tecnologie web",
+    "noJobPasted": "*Nessuna offerta incollata al momento.*",
+    "uploadHint": "Hai un file invece del testo?",
+    "uploadAction": "Caricalo qui"
   },
   "progress": {
     "title": "Sintesi del curriculum personalizzato con IA...",

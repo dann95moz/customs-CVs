@@ -5,7 +5,8 @@
   "actions": {
     "loadSample": "Load Sample Vacancy",
     "uploadFile": "Upload Job File",
-    "exportFile": "Export File",
+    "uploadFileInline": "Attach file (.txt, .md)",
+    "uploadFileTip": "Upload job description file (.txt, .md)",
     "backToProfile": "Back to Profile (Step 1)",
     "tailorNow": "Tailor Resume Now",
     "tailoring": "Tailoring Resume...",
@@ -25,7 +26,9 @@
     "editModeTitle": "Job Description (Plain Text / Markdown)",
     "previewModeTitle": "Formatted Vacancy Preview",
     "placeholder": "Paste the job description from LinkedIn, Indeed, or the careers page here...\n\nAbout the Role:\nWe are looking for an experienced engineer...\n\nKey Requirements:\n• Experience with modern web technologies\n• Proven problem solving track record",
-    "noJobPasted": "*No job description pasted yet. Switch to Edit Text to add one.*"
+    "noJobPasted": "*No job description pasted yet. Switch to Edit Text to add one.*",
+    "uploadHint": "Have a job posting file instead of text?",
+    "uploadAction": "Upload it here"
   },
   "progress": {
     "title": "Synthesizing Tailored Resume with AI...",

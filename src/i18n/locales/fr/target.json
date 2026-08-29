@@ -3,18 +3,19 @@
   "title": "Offre d'Emploi Cible",
   "subtitle": "Collez la description du poste. L'IA calibrera automatiquement la longueur optimale, les métriques d'impact et les mots-clés.",
   "actions": {
-    "loadSample": "Charger une Offre Exemple",
-    "uploadFile": "Téléverser l'Offre",
-    "exportFile": "Exporter le Fichier",
+    "loadSample": "Charger une Offre d'Exemple",
+    "uploadFile": "Importer un Fichier d'Offre",
+    "uploadFileInline": "Joindre un fichier (.txt, .md)",
+    "uploadFileTip": "Importer le fichier de l'offre (.txt, .md)",
     "backToProfile": "Retour au Profil (Étape 1)",
     "tailorNow": "Adapter le CV Maintenant",
-    "tailoring": "Adaptation du CV en cours...",
+    "tailoring": "Adaptation du CV...",
     "viewExisting": "Voir le CV Existant"
   },
   "fields": {
     "company": "Entreprise / Employeur Cible",
     "companyPlaceholder": "ex. Stripe, Airbnb, Google",
-    "role": "Poste / Titre Cible",
+    "role": "Poste / Rôle Cible",
     "rolePlaceholder": "ex. Senior Frontend Engineer",
     "vacancyLength": "Longueur de l'Offre",
     "words": "mots"
@@ -24,8 +25,10 @@
     "formattedPreview": "Aperçu Formaté",
     "editModeTitle": "Description du Poste (Texte Brut / Markdown)",
     "previewModeTitle": "Aperçu de l'Offre",
-    "placeholder": "Collez ici la description du poste depuis LinkedIn, Indeed ou le site carrières...\n\nÀ propos du poste :\nNous recherchons un ingénieur expérimenté...\n\nCompétences requises :\n• Expérience avec les technologies web modernes\n• Capacité démontrée à résoudre des problèmes complexes",
-    "noJobPasted": "*Aucune offre collée pour l'instant. Basculez sur 'Modifier le Texte' pour en ajouter une.*"
+    "placeholder": "Collez la description de l'offre d'emploi ici...\n\nÀ propos du poste :\nNous recherchons un ingénieur expérimenté...\n\nCompétences requises :\n• Expérience avec les technologies web modernes",
+    "noJobPasted": "*Aucune description collée pour le moment.*",
+    "uploadHint": "Vous avez un fichier au lieu du texte ?",
+    "uploadAction": "Importez-le ici"
   },
   "progress": {
     "title": "Synthèse du CV adapté avec l'IA...",

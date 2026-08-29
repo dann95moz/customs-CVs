@@ -5,27 +5,30 @@
   "actions": {
     "loadSample": "Beispiel-Stelle laden",
     "uploadFile": "Stellendatei hochladen",
-    "exportFile": "Datei exportieren",
+    "uploadFileInline": "Datei anhängen (.txt, .md)",
+    "uploadFileTip": "Stellenbeschreibungsdatei hochladen (.txt, .md)",
     "backToProfile": "Zurück zum Profil (Schritt 1)",
     "tailorNow": "Lebenslauf jetzt anpassen",
     "tailoring": "Lebenslauf wird angepasst...",
-    "viewExisting": "Bestehenden CV ansehen"
+    "viewExisting": "Vorhandenen Lebenslauf ansehen"
   },
   "fields": {
     "company": "Zielunternehmen / Arbeitgeber",
-    "companyPlaceholder": "z. B. Stripe, Airbnb, Google",
+    "companyPlaceholder": "z.B. Stripe, Airbnb, Google",
     "role": "Zielposition / Berufsbezeichnung",
-    "rolePlaceholder": "z. B. Senior Frontend Engineer",
-    "vacancyLength": "Textlänge der Anzeige",
+    "rolePlaceholder": "z.B. Senior Frontend Engineer",
+    "vacancyLength": "Textlänge",
     "words": "Wörter"
   },
   "editor": {
     "editText": "Text bearbeiten",
     "formattedPreview": "Formatierte Vorschau",
     "editModeTitle": "Stellenbeschreibung (Klartext / Markdown)",
-    "previewModeTitle": "Vorschau der Stellenanzeige",
-    "placeholder": "Fügen Sie hier die Stellenbeschreibung von LinkedIn, Indeed oder der Karriereseite ein...\n\nÜber die Stelle:\nWir suchen einen erfahrenen Ingenieur...\n\nAnforderungen:\n• Erfahrung mit modernen Webtechnologien\n• Nachgewiesene Problemlösungskompetenz",
-    "noJobPasted": "*Noch keine Stellenbeschreibung eingefügt. Wechseln Sie zu 'Text bearbeiten', um eine hinzuzufügen.*"
+    "previewModeTitle": "Formatierte Stellenvorschau",
+    "placeholder": "Fügen Sie hier die Stellenbeschreibung ein...\n\nÜber die Stelle:\nWir suchen einen erfahrenen Entwickler...\n\nAnforderungen:\n• Erfahrung mit modernen Webtechnologien",
+    "noJobPasted": "*Noch keine Stellenbeschreibung eingefügt.*",
+    "uploadHint": "Haben Sie eine Stellendatei statt Text?",
+    "uploadAction": "Hier hochladen"
   },
   "progress": {
     "title": "Lebenslauf wird mit KI angepasst...",
