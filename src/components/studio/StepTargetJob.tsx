@@ -24,12 +24,10 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
-import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import { marked } from 'marked';
 import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
@@ -59,7 +57,6 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   const isDark = theme.palette.mode === 'dark';
   const providerSettings = useResumeStore((s) => s.providerSettings);
   const setProviderSettings = useResumeStore((s) => s.setProviderSettings);
-  const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
   const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
 
   const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
@@ -313,7 +310,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           </Box>
         </Paper>
 
-        {/* Spacious Editor Area with Edit & Formatted Preview Modes */}
+        {/* Spacious Direct Job Description Editor Area */}
         <Paper
           sx={{
             flex: 1,
@@ -327,8 +324,8 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
         >
           <Box
             sx={{
-              py: 1,
-              px: 2,
+              py: 1.25,
+              px: { xs: 1.5, sm: 2 },
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -338,93 +335,43 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <EditNoteRoundedIcon fontSize="small" color="secondary" />
-              <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                {viewMode === 'edit'
-                  ? t('target:editor.editModeTitle', 'Job Description (Plain Text / Markdown)')
-                  : t('target:editor.previewModeTitle', 'Formatted Vacancy Preview')}
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: { xs: '0.82rem', sm: '0.875rem' } }}>
+                {t('target:editor.editModeTitle', 'Job Description (Plain Text / Markdown)')}
               </Typography>
             </Box>
-
-            <ButtonGroup size="small" variant="outlined">
-              <Button
-                variant={viewMode === 'edit' ? 'contained' : 'outlined'}
-                startIcon={<EditNoteRoundedIcon />}
-                onClick={() => setViewMode('edit')}
-                sx={{ fontWeight: 600, fontSize: '0.8rem' }}
-              >
-                {t('target:editor.editText', 'Edit Text')}
-              </Button>
-              <Button
-                variant={viewMode === 'preview' ? 'contained' : 'outlined'}
-                startIcon={<VisibilityRoundedIcon />}
-                onClick={() => setViewMode('preview')}
-                sx={{ fontWeight: 600, fontSize: '0.8rem' }}
-              >
-                {t('target:editor.formattedPreview', 'Formatted Preview')}
-              </Button>
-            </ButtonGroup>
           </Box>
 
-          {viewMode === 'edit' ? (
-            <Box
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              sx={{
-                flex: 1,
-                position: 'relative',
-                p: 0,
-                display: 'flex',
-              }}
-            >
-              <textarea
-                className="studio-textarea"
-                value={content}
-                onChange={(e) => onChange(e.target.value)}
-                placeholder={t('target:editor.placeholder', 'Paste the job description here...')}
-                spellCheck={false}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: 'none',
-                  outline: 'none',
-                  padding: '18px',
-                  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                  fontSize: '0.9rem',
-                  lineHeight: 1.65,
-                  resize: 'none',
-                  backgroundColor: 'transparent',
-                  color: isDark ? '#f8fafc' : '#0f172a',
-                }}
-              />
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                flex: 1,
-                p: 3,
-                overflowY: 'auto',
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.01)' : 'rgba(0, 0, 0, 0.01)',
-                '& h1, & h2, & h3, & h4': {
-                  color: 'text.primary',
-                  fontWeight: 700,
-                  mt: 2,
-                  mb: 1,
-                },
-                '& p, & li': {
-                  color: 'text.secondary',
-                  fontSize: '0.9rem',
-                  lineHeight: 1.65,
-                },
-                '& ul': {
-                  pl: 3,
-                  mb: 2,
-                },
-              }}
-              dangerouslySetInnerHTML={{
-                __html: marked.parse(content || t('target:editor.noJobPasted', '*No job description pasted yet. Switch to Edit Text to add one.*')) as string
+          <Box
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            sx={{
+              flex: 1,
+              position: 'relative',
+              p: 0,
+              display: 'flex',
+            }}
+          >
+            <textarea
+              className="studio-textarea"
+              value={content}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={t('target:editor.placeholder', 'Paste the job description here...')}
+              spellCheck={false}
+              style={{
+                width: '100%',
+                height: '100%',
+                border: 'none',
+                outline: 'none',
+                padding: '18px',
+                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                fontSize: '0.9rem',
+                lineHeight: 1.65,
+                resize: 'none',
+                backgroundColor: 'transparent',
+                color: isDark ? '#f8fafc' : '#0f172a',
               }}
             />
-          )}
+          </Box>
         </Paper>
 
         {/* Navigation & Direct Action Footer */}
@@ -454,7 +401,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             {hasJob ? (
               <Chip
                 icon={<CheckCircleRoundedIcon />}
-                label={isGenerating ? (generationStep || t('target:actions.tailoring', '✨ Tailoring Resume...')) : t('target:status.ready', 'Job details ready')}
+                label={isGenerating ? (generationStep || t('target:actions.tailoring', 'Tailoring Resume...')) : t('target:status.ready', 'Job details ready')}
                 color={isGenerating ? 'info' : 'success'}
                 variant="outlined"
                 size="small"
@@ -490,14 +437,13 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               onClick={handleTailorAndProceed}
               disabled={isGenerating}
               sx={{
-                fontWeight: 800,
+                fontWeight: 700,
                 px: 3.5,
                 py: 1,
-                borderRadius: '10px',
                 boxShadow: isDark ? '0 4px 14px rgba(2, 132, 199, 0.4)' : '0 4px 14px rgba(2, 132, 199, 0.25)',
               }}
             >
-              {isGenerating ? t('target:actions.tailoring', '✨ Tailoring Resume...') : t('target:actions.tailorNow', '✨ Tailor Resume Now')}
+              {isGenerating ? t('target:actions.tailoring', 'Tailoring Resume...') : t('target:actions.tailorNow', 'Tailor Resume Now')}
             </Button>
           </Box>
         </Paper>
