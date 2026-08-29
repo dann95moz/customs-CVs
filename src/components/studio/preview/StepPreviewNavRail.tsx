@@ -23,16 +23,21 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
     <Box
       className="no-print preview-side-rail"
       sx={{
-        width: 76,
-        borderRight: `1px solid ${theme.palette.divider}`,
+        width: { xs: '100%', md: 84 },
+        height: { xs: 'auto', md: '100%' },
+        borderRight: { xs: 'none', md: `1px solid ${theme.palette.divider}` },
+        borderTop: { xs: `1px solid ${theme.palette.divider}`, md: 'none' },
         bgcolor: 'background.paper',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: { xs: 'row', md: 'column' },
         alignItems: 'center',
-        py: 2,
-        gap: 1.5,
+        justifyContent: { xs: 'space-around', md: 'flex-start' },
+        py: { xs: 0.75, md: 2 },
+        px: { xs: 0.5, md: 0.5 },
+        gap: { xs: 0.5, md: 1.5 },
         flexShrink: 0,
-        zIndex: 10,
+        zIndex: 20,
+        order: { xs: 2, md: 0 },
       }}
     >
       {/* Templates Rail Button */}
@@ -43,9 +48,10 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
           flexDirection: 'column',
           alignItems: 'center',
           cursor: 'pointer',
-          width: '100%',
-          px: 0.5,
-          gap: 0.5,
+          flex: { xs: 1, md: 'none' },
+          width: { xs: 'auto', md: '100%' },
+          px: 0.25,
+          gap: 0.25,
           color: activeSidePanel === 'templates' ? 'primary.main' : 'text.secondary',
           transition: 'all 0.15s ease',
           '&:hover': { color: 'text.primary' }
@@ -53,9 +59,9 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
       >
         <Box
           sx={{
-            width: 46,
-            height: 46,
-            borderRadius: '14px',
+            width: { xs: 36, md: 44 },
+            height: { xs: 36, md: 44 },
+            borderRadius: { xs: '10px', md: '14px' },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -66,14 +72,16 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
             transition: 'all 0.15s ease',
           }}
         >
-          <StyleRoundedIcon sx={{ fontSize: 24 }} />
+          <StyleRoundedIcon sx={{ fontSize: { xs: 20, md: 22 } }} />
         </Box>
         <Typography
           variant="caption"
           sx={{
-            fontSize: '0.68rem',
+            fontSize: { xs: '0.65rem', md: '0.68rem' },
             fontWeight: activeSidePanel === 'templates' ? 700 : 500,
-            textAlign: 'center'
+            textAlign: 'center',
+            lineHeight: 1.15,
+            px: 0.25,
           }}
         >
           {t('preview:navRail.templates', 'Templates')}
@@ -88,9 +96,10 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
           flexDirection: 'column',
           alignItems: 'center',
           cursor: 'pointer',
-          width: '100%',
-          px: 0.5,
-          gap: 0.5,
+          flex: { xs: 1, md: 'none' },
+          width: { xs: 'auto', md: '100%' },
+          px: 0.25,
+          gap: 0.25,
           color: activeSidePanel === 'design' ? 'primary.main' : 'text.secondary',
           transition: 'all 0.15s ease',
           '&:hover': { color: 'text.primary' }
@@ -98,9 +107,9 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
       >
         <Box
           sx={{
-            width: 46,
-            height: 46,
-            borderRadius: '14px',
+            width: { xs: 36, md: 44 },
+            height: { xs: 36, md: 44 },
+            borderRadius: { xs: '10px', md: '14px' },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -111,15 +120,16 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
             transition: 'all 0.15s ease',
           }}
         >
-          <FormatPaintRoundedIcon sx={{ fontSize: 24 }} />
+          <FormatPaintRoundedIcon sx={{ fontSize: { xs: 20, md: 22 } }} />
         </Box>
         <Typography
           variant="caption"
           sx={{
-            fontSize: '0.68rem',
+            fontSize: { xs: '0.65rem', md: '0.68rem' },
             fontWeight: activeSidePanel === 'design' ? 700 : 500,
             textAlign: 'center',
-            lineHeight: 1.1
+            lineHeight: 1.15,
+            px: 0.25,
           }}
         >
           {t('preview:navRail.design', 'Design & Format')}
@@ -134,9 +144,10 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
           flexDirection: 'column',
           alignItems: 'center',
           cursor: 'pointer',
-          width: '100%',
-          px: 0.5,
-          gap: 0.5,
+          flex: { xs: 1, md: 'none' },
+          width: { xs: 'auto', md: '100%' },
+          px: 0.25,
+          gap: 0.25,
           color: activeSidePanel === 'audit' ? 'primary.main' : 'text.secondary',
           transition: 'all 0.15s ease',
           '&:hover': { color: 'text.primary' }
@@ -144,9 +155,9 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
       >
         <Box
           sx={{
-            width: 46,
-            height: 46,
-            borderRadius: '14px',
+            width: { xs: 36, md: 44 },
+            height: { xs: 36, md: 44 },
+            borderRadius: { xs: '10px', md: '14px' },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -157,15 +168,16 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
             transition: 'all 0.15s ease',
           }}
         >
-          <SpellcheckRoundedIcon sx={{ fontSize: 24 }} />
+          <SpellcheckRoundedIcon sx={{ fontSize: { xs: 20, md: 22 } }} />
         </Box>
         <Typography
           variant="caption"
           sx={{
-            fontSize: '0.68rem',
+            fontSize: { xs: '0.65rem', md: '0.68rem' },
             fontWeight: activeSidePanel === 'audit' ? 700 : 500,
             textAlign: 'center',
-            lineHeight: 1.1
+            lineHeight: 1.15,
+            px: 0.25,
           }}
         >
           {t('preview:navRail.audit', 'Quality & Gaps')}

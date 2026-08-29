@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Paper,
   Typography,
   Chip,
   ButtonBase,
+  IconButton,
   useTheme,
   alpha
 } from '@mui/material';
@@ -14,6 +15,7 @@ import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import { useTranslation } from 'react-i18next';
 import { WizardStep, WizardStepperProps, StepMeta } from '../../types';
 
@@ -29,6 +31,39 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const { t } = useTranslation(['profile', 'common']);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const activeStepRef = useRef<HTMLButtonElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 6);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 6);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [checkScroll]);
+
+  // Auto-scroll active step into center on mobile without causing window overflow
+  useEffect(() => {
+    if (activeStepRef.current && scrollRef.current) {
+      const container = scrollRef.current;
+      const target = activeStepRef.current;
+      const left = target.offsetLeft - (container.clientWidth / 2) + (target.clientWidth / 2);
+      container.scrollTo({
+        left: Math.max(0, left),
+        behavior: 'smooth',
+      });
+    }
+    setTimeout(checkScroll, 350);
+  }, [currentStep, checkScroll]);
 
   const steps: StepMeta[] = [
     {
@@ -72,6 +107,12 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
 
   const currentStepIndex = steps.findIndex(s => s.id === currentStep);
 
+  const scrollByAmount = (amount: number) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <Paper
       elevation={0}
@@ -79,8 +120,8 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
       sx={{
         borderBottom: `1px solid ${theme.palette.divider}`,
         bgcolor: 'background.paper',
-        py: 1,
-        px: { xs: 1.5, md: 3 },
+        py: 0.75,
+        px: { xs: 0.5, md: 3 },
         position: 'sticky',
         top: 0,
         zIndex: 20,
@@ -88,21 +129,48 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
         justifyContent: 'center',
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: { xs: 'flex-start', sm: 'center' },
-          width: '100%',
-          maxWidth: 1200,
-          mx: 'auto',
-          gap: { xs: 1, sm: 1.5, md: 2 },
-          overflowX: 'auto',
-          py: 0.5,
-          '&::-webkit-scrollbar': { display: 'none' },
-          scrollbarWidth: 'none',
-        }}
-      >
+      <Box sx={{ position: 'relative', width: '100%', maxWidth: 1200, mx: 'auto', display: 'flex', alignItems: 'center' }}>
+        {/* Left Fade & Arrow Indicator (Mobile) */}
+        {canScrollLeft && (
+          <Box
+            onClick={() => scrollByAmount(-150)}
+            sx={{
+              display: { xs: 'flex', sm: 'none' },
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 32,
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              pl: 0.5,
+              background: `linear-gradient(to right, ${theme.palette.background.paper} 65%, transparent)`,
+              zIndex: 10,
+              cursor: 'pointer',
+            }}
+          >
+            <ArrowBackIosRoundedIcon sx={{ fontSize: 13, color: 'primary.main', ml: 0.25 }} />
+          </Box>
+        )}
+
+        {/* Scrollable Stepper Row */}
+        <Box
+          ref={scrollRef}
+          onScroll={checkScroll}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: { xs: 'flex-start', sm: 'center' },
+            width: '100%',
+            gap: { xs: 0.75, sm: 1.5, md: 2 },
+            overflowX: 'auto',
+            py: 0.5,
+            px: { xs: 1.5, sm: 0 },
+            '&::-webkit-scrollbar': { display: 'none' },
+            scrollbarWidth: 'none',
+            scrollBehavior: 'smooth',
+          }}
+        >
         {steps.map((step, index) => {
           const isActive = step.id === currentStep;
           const isCompleted = isStepComplete(step.id) && step.id !== currentStep;
@@ -111,17 +179,18 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
           return (
             <React.Fragment key={step.id}>
               <ButtonBase
+                ref={isActive ? activeStepRef : undefined}
                 onClick={() => onSelectStep(step.id)}
                 sx={{
                   flex: { xs: '0 0 auto', sm: 1 },
                   maxWidth: { sm: 270 },
-                  minWidth: { xs: 140, sm: 180, md: 210 },
-                  p: { xs: 0.85, sm: 1 },
-                  px: { xs: 1.25, sm: 1.75 },
+                  minWidth: { xs: 'auto', sm: 160, md: 200 },
+                  p: { xs: 0.6, sm: 1 },
+                  px: { xs: 1, sm: 1.75 },
                   borderRadius: '9999px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 1.25,
+                  gap: { xs: 0.75, sm: 1.25 },
                   textAlign: 'left',
                   border: '1px solid',
                   borderColor: isActive
@@ -148,8 +217,8 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                 {/* Step Icon Badge */}
                 <Box
                   sx={{
-                    width: 36,
-                    height: 36,
+                    width: { xs: 28, sm: 36 },
+                    height: { xs: 28, sm: 36 },
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
@@ -167,10 +236,13 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                       ? `0 2px 8px ${alpha(theme.palette.primary.main, 0.4)}`
                       : 'none',
                     transition: 'all 0.2s ease',
+                    '& svg': {
+                      fontSize: { xs: 16, sm: 20 },
+                    },
                   }}
                 >
                   {isCompleted ? (
-                    <CheckCircleRoundedIcon sx={{ fontSize: 20 }} />
+                    <CheckCircleRoundedIcon />
                   ) : (
                     step.icon
                   )}
@@ -178,11 +250,12 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
 
                 {/* Step Texts */}
                 <Box sx={{ flex: 1, minWidth: 0 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.25 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.25 }}>
                     <Typography
                       variant="body2"
                       sx={{
                         fontWeight: isActive ? 700 : 600,
+                        fontSize: { xs: '0.75rem', sm: '0.85rem' },
                         color: isActive
                           ? theme.palette.primary.main
                           : theme.palette.text.primary,
@@ -191,7 +264,12 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                         textOverflow: 'ellipsis',
                       }}
                     >
-                      {step.label}
+                      <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                        {step.label}
+                      </Box>
+                      <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                        {step.shortLabel || step.label}
+                      </Box>
                     </Typography>
 
                     {isActive && (
@@ -200,10 +278,10 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                         size="small"
                         color="primary"
                         sx={{
-                          height: 18,
-                          fontSize: '0.68rem',
+                          height: 16,
+                          fontSize: '0.62rem',
                           fontWeight: 700,
-                          '& .MuiChip-label': { px: 0.8 },
+                          '& .MuiChip-label': { px: 0.6 },
                         }}
                       />
                     )}
@@ -213,10 +291,10 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                         size="small"
                         color="success"
                         sx={{
-                          height: 18,
-                          fontSize: '0.68rem',
+                          height: 16,
+                          fontSize: '0.62rem',
                           fontWeight: 700,
-                          '& .MuiChip-label': { px: 0.8 },
+                          '& .MuiChip-label': { px: 0.6 },
                         }}
                       />
                     )}
@@ -226,7 +304,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                     variant="caption"
                     sx={{
                       color: theme.palette.text.secondary,
-                      display: { xs: 'none', sm: 'block' },
+                      display: { xs: 'none', md: 'block' },
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -254,6 +332,30 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
             </React.Fragment>
           );
         })}
+        </Box>
+
+        {/* Right Fade & Arrow Indicator (Mobile) */}
+        {canScrollRight && (
+          <Box
+            onClick={() => scrollByAmount(150)}
+            sx={{
+              display: { xs: 'flex', sm: 'none' },
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              bottom: 0,
+              width: 32,
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              pr: 0.5,
+              background: `linear-gradient(to right, transparent, ${theme.palette.background.paper} 65%)`,
+              zIndex: 10,
+              cursor: 'pointer',
+            }}
+          >
+            <ArrowForwardIosRoundedIcon sx={{ fontSize: 13, color: 'primary.main', mr: 0.25 }} />
+          </Box>
+        )}
       </Box>
     </Paper>
   );

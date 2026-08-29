@@ -219,3 +219,21 @@
   display: flex;
   gap: 10px;
 }
+
+/* --------------------------------------------------------------------------
+   8. Fullscreen Workspace Layouts
+   -------------------------------------------------------------------------- */
+.settings-workspace-layout,
+.history-workspace-layout,
+.audit-workspace-layout,
+.gap-workspace-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+}

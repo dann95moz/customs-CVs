@@ -80,7 +80,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
 
   return (
     <>
-      {/* 1. COLLAPSED STATE: Floating Score Pills on Right Canvas Margin */}
+      {/* 1. COLLAPSED STATE: Floating Score Pills on Right Canvas Margin (Desktop / Tablet) */}
       {!isOpen && (
         <Box
           className="no-print"
@@ -88,7 +88,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
             position: 'absolute',
             right: 18,
             top: 24,
-            display: 'flex',
+            display: { xs: 'none', md: 'flex' },
             flexDirection: 'column',
             gap: 1.5,
             zIndex: 15,
@@ -100,9 +100,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
               elevation={4}
               onClick={() => onToggleTab('audit')}
               sx={{
-                width: 54,
+                width: 62,
                 height: 64,
-                borderRadius: '14px',
+                p: 0.5,
+                borderRadius: '16px',
                 bgcolor: alpha(theme.palette.success.main, isDark ? 0.2 : 0.15),
                 border: `1.5px solid ${theme.palette.success.main}`,
                 display: 'flex',
@@ -112,6 +113,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 cursor: 'pointer',
                 transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 userSelect: 'none',
+                overflow: 'hidden',
                 '&:hover': {
                   transform: 'translateX(-4px) scale(1.05)',
                   boxShadow: `0 6px 20px ${alpha(theme.palette.success.main, 0.35)}`,
@@ -132,13 +134,16 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
               <Typography
                 variant="caption"
                 sx={{
-                  fontWeight: 700,
-                  fontSize: '0.68rem',
+                  fontWeight: 800,
+                  fontSize: '0.66rem',
                   color: isDark ? '#86efac' : '#166534',
-                  mt: 0.25,
+                  mt: 0.35,
+                  lineHeight: 1,
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap',
                 }}
               >
-                {t('preview:navRail.audit', 'Audit')}
+                {t('preview:drawer.shortScore', 'Audit')}
               </Typography>
             </Paper>
           </Tooltip>
@@ -149,9 +154,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
               elevation={4}
               onClick={() => onToggleTab('gap')}
               sx={{
-                width: 54,
+                width: 62,
                 height: 64,
-                borderRadius: '14px',
+                p: 0.5,
+                borderRadius: '16px',
                 bgcolor: alpha(theme.palette.primary.main, isDark ? 0.2 : 0.15),
                 border: `1.5px solid ${theme.palette.primary.main}`,
                 display: 'flex',
@@ -161,6 +167,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 cursor: 'pointer',
                 transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 userSelect: 'none',
+                overflow: 'hidden',
                 '&:hover': {
                   transform: 'translateX(-4px) scale(1.05)',
                   boxShadow: `0 6px 20px ${alpha(theme.palette.primary.main, 0.35)}`,
@@ -181,13 +188,16 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
               <Typography
                 variant="caption"
                 sx={{
-                  fontWeight: 700,
-                  fontSize: '0.68rem',
+                  fontWeight: 800,
+                  fontSize: '0.66rem',
                   color: isDark ? '#7dd3fc' : '#0369a1',
-                  mt: 0.25,
+                  mt: 0.35,
+                  lineHeight: 1,
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap',
                 }}
               >
-                {t('gap:matchScore', 'Gap')}
+                {t('preview:drawer.shortMatch', 'Match')}
               </Typography>
             </Paper>
           </Tooltip>
@@ -200,8 +210,9 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           elevation={4}
           className="no-print"
           sx={{
-            width: { xs: 'calc(100% - 76px)', sm: 340, md: 360 },
+            width: { xs: '100%', sm: 340, md: 360 },
             position: { xs: 'absolute', lg: 'relative' },
+            left: { xs: 0, sm: 'auto' },
             right: 0,
             top: 0,
             bottom: 0,
@@ -212,7 +223,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
             height: '100%',
             overflowY: 'auto',
             flexShrink: 0,
-            zIndex: 30,
+            zIndex: 40,
             boxShadow: isDark
               ? '-8px 0 28px rgba(0, 0, 0, 0.5)'
               : '-4px 0 20px rgba(0, 0, 0, 0.08)',

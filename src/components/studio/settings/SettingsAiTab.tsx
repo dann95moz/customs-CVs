@@ -142,24 +142,26 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
   const currentModels = AVAILABLE_AI_MODELS.filter(m => m.provider === settings.provider);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2, md: 3 }, width: '100%', boxSizing: 'border-box' }}>
       {/* Overview Status Bar */}
       <Paper
         sx={{
-          p: 2,
+          p: { xs: 1.5, sm: 2 },
           display: 'flex',
           flexDirection: { xs: 'column', sm: 'row' },
           alignItems: { xs: 'flex-start', sm: 'center' },
           justifyContent: 'space-between',
-          gap: 2,
+          gap: 1.5,
           border: `1px solid ${muiTheme.palette.divider}`,
           bgcolor: 'background.paper',
           borderRadius: '16px',
+          width: '100%',
+          boxSizing: 'border-box',
         }}
       >
-        <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+        <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', mb: 0.5 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: { xs: '0.9rem', sm: '1rem' } }}>
               {t('settings:providers.title', 'Active AI Engine')}: {isLocal ? 'Local AI Server' : settings.provider.toUpperCase()}
             </Typography>
             <Chip
@@ -167,10 +169,10 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
               label={isLocal ? 'Offline & Private' : (settings.apiKey ? 'Key Configured' : 'API Key Required')}
               size="small"
               color={isLocal ? 'secondary' : (settings.apiKey ? 'success' : 'warning')}
-              sx={{ height: 22, fontSize: '0.7rem', fontWeight: 700 }}
+              sx={{ height: 'auto', minHeight: 22, py: 0.25, fontSize: '0.7rem', fontWeight: 700 }}
             />
           </Box>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word' }}>
             {t('settings:providers.model', 'Configured model')}: <strong>{settings.model}</strong>
           </Typography>
         </Box>
@@ -182,7 +184,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
           startIcon={testingConnection ? <CircularProgress size={14} color="inherit" /> : <BoltRoundedIcon />}
           onClick={handleRunTest}
           disabled={testingConnection}
-          sx={{ fontWeight: 700, fontSize: '0.8rem', px: 2.25 }}
+          sx={{ fontWeight: 700, fontSize: '0.8rem', px: 2.25, width: { xs: '100%', sm: 'auto' } }}
         >
           {testingConnection ? t('settings:providers.testing', 'Testing...') : t('settings:providers.testConnection', 'Test Connection')}
         </Button>
@@ -221,22 +223,25 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
       )}
 
       {/* 2-Column Provider & Credentials Layout */}
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: 3 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: { xs: 2, md: 3 }, width: '100%', boxSizing: 'border-box' }}>
         {/* Active AI Provider */}
         <Paper
           sx={{
-            p: 3,
+            p: { xs: 1.75, sm: 2.5 },
             border: `1px solid ${muiTheme.palette.divider}`,
             bgcolor: 'background.paper',
             borderRadius: '16px',
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
+            width: '100%',
+            boxSizing: 'border-box',
+            overflow: 'hidden',
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <BoltRoundedIcon color="primary" />
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, fontSize: { xs: '1rem', sm: '1.25rem' } }}>
               Select AI Provider
             </Typography>
           </Box>
@@ -250,25 +255,27 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
             <Paper
               variant="outlined"
               sx={{
-                p: 1.5,
+                p: { xs: 1.25, sm: 1.5 },
                 borderRadius: '14px',
                 borderColor: settings.provider === 'local' ? muiTheme.palette.secondary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'local' ? alpha(muiTheme.palette.secondary.main, isDark ? 0.08 : 0.04) : 'transparent',
                 transition: 'all 0.15s ease',
+                overflow: 'hidden',
               }}
             >
               <FormControlLabel
                 value="local"
-                control={<Radio color="secondary" size="small" />}
+                control={<Radio color="secondary" size="small" sx={{ p: 0.5, mt: 0.25 }} />}
+                sx={{ m: 0, width: '100%', display: 'flex', alignItems: 'flex-start', gap: 0.75 }}
                 label={
-                  <Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.86rem' }}>
                         Local AI (Ollama / LM Studio)
                       </Typography>
-                      <Chip label="100% Free &amp; Offline" size="small" color="secondary" sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }} />
+                      <Chip label="100% Free & Offline" size="small" color="secondary" sx={{ height: 18, fontSize: '0.66rem', fontWeight: 700 }} />
                     </Box>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word', mt: 0.25 }}>
                       Run locally on your PC without external network dependency.
                     </Typography>
                   </Box>
@@ -280,25 +287,27 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
             <Paper
               variant="outlined"
               sx={{
-                p: 1.5,
+                p: { xs: 1.25, sm: 1.5 },
                 borderRadius: '14px',
                 borderColor: settings.provider === 'gemini' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'gemini' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
                 transition: 'all 0.15s ease',
+                overflow: 'hidden',
               }}
             >
               <FormControlLabel
                 value="gemini"
-                control={<Radio size="small" />}
+                control={<Radio size="small" sx={{ p: 0.5, mt: 0.25 }} />}
+                sx={{ m: 0, width: '100%', display: 'flex', alignItems: 'flex-start', gap: 0.75 }}
                 label={
-                  <Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.86rem' }}>
                         Google Gemini
                       </Typography>
-                      <Chip label="Recommended" size="small" color="primary" sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }} />
+                      <Chip label="Recommended" size="small" color="primary" sx={{ height: 18, fontSize: '0.66rem', fontWeight: 700 }} />
                     </Box>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word', mt: 0.25 }}>
                       Fast and accurate with free key from Google AI Studio.
                     </Typography>
                   </Box>
@@ -310,26 +319,28 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
             <Paper
               variant="outlined"
               sx={{
-                p: 1.5,
+                p: { xs: 1.25, sm: 1.5 },
                 borderRadius: '14px',
                 borderColor: settings.provider === 'groq' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'groq' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
                 transition: 'all 0.15s ease',
+                overflow: 'hidden',
               }}
             >
               <FormControlLabel
                 value="groq"
-                control={<Radio size="small" />}
+                control={<Radio size="small" sx={{ p: 0.5, mt: 0.25 }} />}
+                sx={{ m: 0, width: '100%', display: 'flex', alignItems: 'flex-start', gap: 0.75 }}
                 label={
-                  <Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.86rem' }}>
                         Groq (Ultra-Fast)
                       </Typography>
-                      <Chip label="High Speed" size="small" color="warning" sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }} />
+                      <Chip label="High Speed" size="small" color="warning" sx={{ height: 18, fontSize: '0.66rem', fontWeight: 700 }} />
                     </Box>
-                    <Typography variant="caption" color="text.secondary">
-                      Llama 3.3 70B &amp; DeepSeek R1 running on ultra-fast hardware.
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word', mt: 0.25 }}>
+                      Llama 3.3 70B & DeepSeek R1 running on ultra-fast hardware.
                     </Typography>
                   </Box>
                 }
@@ -340,22 +351,24 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
             <Paper
               variant="outlined"
               sx={{
-                p: 1.5,
+                p: { xs: 1.25, sm: 1.5 },
                 borderRadius: '14px',
                 borderColor: settings.provider === 'openai' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'openai' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
                 transition: 'all 0.15s ease',
+                overflow: 'hidden',
               }}
             >
               <FormControlLabel
                 value="openai"
-                control={<Radio size="small" />}
+                control={<Radio size="small" sx={{ p: 0.5, mt: 0.25 }} />}
+                sx={{ m: 0, width: '100%', display: 'flex', alignItems: 'flex-start', gap: 0.75 }}
                 label={
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.86rem' }}>
                       OpenAI
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word', mt: 0.25 }}>
                       GPT-4o and o3-mini models.
                     </Typography>
                   </Box>
@@ -367,23 +380,25 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
             <Paper
               variant="outlined"
               sx={{
-                p: 1.5,
+                p: { xs: 1.25, sm: 1.5 },
                 borderRadius: '14px',
                 borderColor: settings.provider === 'claude' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'claude' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
                 transition: 'all 0.15s ease',
+                overflow: 'hidden',
               }}
             >
               <FormControlLabel
                 value="claude"
-                control={<Radio size="small" />}
+                control={<Radio size="small" sx={{ p: 0.5, mt: 0.25 }} />}
+                sx={{ m: 0, width: '100%', display: 'flex', alignItems: 'flex-start', gap: 0.75 }}
                 label={
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.86rem' }}>
                       Anthropic Claude
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Claude 3.7 Sonnet &amp; 3.5 Sonnet reasoning.
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word', mt: 0.25 }}>
+                      Claude 3.7 Sonnet & 3.5 Sonnet reasoning.
                     </Typography>
                   </Box>
                 }
@@ -394,22 +409,24 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
             <Paper
               variant="outlined"
               sx={{
-                p: 1.5,
+                p: { xs: 1.25, sm: 1.5 },
                 borderRadius: '14px',
                 borderColor: settings.provider === 'openrouter' ? muiTheme.palette.primary.main : muiTheme.palette.divider,
                 bgcolor: settings.provider === 'openrouter' ? alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04) : 'transparent',
                 transition: 'all 0.15s ease',
+                overflow: 'hidden',
               }}
             >
               <FormControlLabel
                 value="openrouter"
-                control={<Radio size="small" />}
+                control={<Radio size="small" sx={{ p: 0.5, mt: 0.25 }} />}
+                sx={{ m: 0, width: '100%', display: 'flex', alignItems: 'flex-start', gap: 0.75 }}
                 label={
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.86rem' }}>
                       OpenRouter / Custom Remote Proxy
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word', mt: 0.25 }}>
                       Multi-model gateway or custom base URL.
                     </Typography>
                   </Box>
@@ -422,13 +439,16 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
         {/* Credentials & Model Parameters */}
         <Paper
           sx={{
-            p: 3,
+            p: { xs: 1.75, sm: 2.5 },
             border: `1px solid ${muiTheme.palette.divider}`,
             bgcolor: 'background.paper',
             borderRadius: '16px',
             display: 'flex',
             flexDirection: 'column',
             gap: 2.5,
+            width: '100%',
+            boxSizing: 'border-box',
+            overflow: 'hidden',
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -521,7 +541,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
                 }}
               />
               {keyHelper && (
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 0.75 }}>
+                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between', mt: 0.75, gap: 0.5 }}>
                   <Typography variant="caption" color="text.secondary">
                     🔒 Key stored securely in your browser&apos;s private local storage.
                   </Typography>
@@ -532,7 +552,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
                     target="_blank"
                     rel="noopener noreferrer"
                     endIcon={<OpenInNewRoundedIcon sx={{ fontSize: '13px !important' }} />}
-                    sx={{ fontSize: '0.72rem', py: 0, textTransform: 'none' }}
+                    sx={{ fontSize: '0.72rem', py: 0, textTransform: 'none', px: 0 }}
                   >
                     {keyHelper.label}
                   </Button>
