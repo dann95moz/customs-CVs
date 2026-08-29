@@ -5,8 +5,8 @@
   "actions": {
     "loadSample": "Load Sample Profile",
     "uploadFile": "Upload File (.md)",
-    "exportBackup": "Export Backup",
-    "startBlank": "Start Blank",
+    "exportBackup": "Export Backup (.md)",
+    "exportBackupTip": "Download your master career profile as Markdown (.md)",
     "continueToTarget": "Continue to Target Vacancy (Step 2)"
   },
   "modes": {

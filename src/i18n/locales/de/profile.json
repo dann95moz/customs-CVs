@@ -3,11 +3,11 @@
   "title": "Ihr Karriereprofil",
   "subtitle": "Erfassen Sie Ihren Werdegang und Ihre Fähigkeiten einmalig. Wir passen sie automatisch an jede Bewerbung an.",
   "actions": {
-    "loadSample": "Beispielprofil laden",
+    "loadSample": "Beispiel-Profil laden",
     "uploadFile": "Datei hochladen (.md)",
-    "exportBackup": "Sicherung exportieren",
-    "startBlank": "Leer starten",
-    "continueToTarget": "Weiter zur Ziel-Stellenanzeige (Schritt 2)"
+    "exportBackup": "Sicherung exportieren (.md)",
+    "exportBackupTip": "Laden Sie Ihr Master-Profil als Markdown (.md) herunter",
+    "continueToTarget": "Weiter zur Zielstelle (Schritt 2)"
   },
   "modes": {
     "guidedAssistant": "Geführter Assistent",

@@ -5,9 +5,9 @@
   "actions": {
     "loadSample": "Carica Profilo di Esempio",
     "uploadFile": "Carica File (.md)",
-    "exportBackup": "Esporta Backup",
-    "startBlank": "Inizia da Zero",
-    "continueToTarget": "Continua all'Offerta Obiettivo (Passo 2)"
+    "exportBackup": "Esporta Backup (.md)",
+    "exportBackupTip": "Scarica il tuo profilo master come file Markdown (.md)",
+    "continueToTarget": "Continua alla Posizione Obiettivo (Passo 2)"
   },
   "modes": {
     "guidedAssistant": "Assistente Guidato",

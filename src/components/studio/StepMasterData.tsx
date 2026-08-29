@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import {
   Box,
   Paper,
@@ -7,29 +7,23 @@ import {
   Chip,
   Stack,
   Tooltip,
+  ButtonGroup,
   useTheme,
   alpha
 } from '@mui/material';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
-import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import { extractCandidateName, parseCvMarkdownToData } from '../../core/parser';
-import { useFileUploader } from '../../hooks/useFileUploader';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
-import { ButtonGroup } from '@mui/material';
+import { extractCandidateName, parseCvMarkdownToData } from '../../core/parser';
+import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
 import { StepMasterDataProps } from '../../types';
 import { StudioSkeleton } from './StudioSkeleton';
@@ -44,8 +38,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   content,
   onChange,
   onLoadSample,
-  onResetTemplate,
-  onPrevStep,
   onNextStep
 }) => {
   const { t } = useTranslation(['profile', 'common']);
@@ -67,23 +59,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
     link.click();
     URL.revokeObjectURL(url);
   };
-
-  const candidateName = extractCandidateName(content, 'Your Full Name').replace(/_/g, ' ');
-  const parsed = parseCvMarkdownToData(content);
-  const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
-  const expCount = parsed.experience?.length || 0;
-  const skillsCount = parsed.skillGroups?.reduce((acc, curr) => acc + curr.skills.length, 0) || 0;
-
-  const completedSections = [
-    Boolean(parsed.name && parsed.name.trim() && !parsed.name.includes('[CANDIDATE')),
-    Boolean(parsed.summary && parsed.summary.trim() && !parsed.summary.includes('[Write freely')),
-    Boolean(parsed.skillGroups && parsed.skillGroups.length > 0 && parsed.skillGroups.some(g => g.skills.length > 0)),
-    Boolean(parsed.experience && parsed.experience.length > 0),
-    Boolean(parsed.education && parsed.education.length > 0),
-    Boolean(parsed.languages && parsed.languages.length > 0)
-  ];
-  const completedCount = completedSections.filter(Boolean).length;
-  const progressPercent = Math.round((completedCount / 6) * 100);
 
   const hasData = content.trim().length > 50 && !content.includes('[CANDIDATE FULL NAME]');
 
@@ -107,13 +82,22 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           gap: 2.5,
         }}
       >
-        {/* Simplified Guiding Hero Banner */}
+        {/* Hidden File Input for .md / .txt uploads */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          accept=".md,.txt"
+          onChange={handleFileUpload}
+        />
+
+        {/* Guiding Hero Banner with Clear Initial Actions */}
         <Paper
           sx={{
             p: { xs: 2, md: 2.5 },
             display: 'flex',
-            flexDirection: { xs: 'column', lg: 'row' },
-            alignItems: { xs: 'flex-start', lg: 'center' },
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'flex-start', sm: 'center' },
             justifyContent: 'space-between',
             gap: 2,
             background: isDark
@@ -122,7 +106,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             border: `1px solid ${theme.palette.divider}`,
           }}
         >
-          <Box sx={{ maxWidth: 900 }}>
+          <Box sx={{ maxWidth: 780 }}>
             <Chip
               icon={<PersonRoundedIcon sx={{ fontSize: '16px !important' }} />}
               label={t('profile:stepBadge', 'Step 1 of 3 • Candidate Profile')}
@@ -137,7 +121,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
               {t('profile:subtitle', "Add your career history and skills once. We'll automatically adapt it for every job you apply to.")}
               <Tooltip
-                title={t('common:safeguard.tooltip', 'Integrity safeguard active: Guarantees tailored resumes stay 100% faithful to your real experience without hallucinating skills or fake metrics.')}
+                title={t('common:safeguard.tooltip', 'Career Authenticity Active: Ensures your tailored resume highlights your real achievements without inventing false experience or fake skills.')}
                 arrow
                 placement="top"
               >
@@ -151,57 +135,34 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                     '&:hover': { color: 'primary.main' },
                     transition: 'color 0.2s ease',
                   }}
-                  aria-label="Integrity safeguard active"
+                  aria-label="Career authenticity guarantee active"
                 >
-                  <ShieldRoundedIcon sx={{ fontSize: '1.05rem' }} />
+                  <ShieldRoundedIcon sx={{ fontSize: '1.05rem', color: theme.palette.success.main }} />
                 </Box>
               </Tooltip>
             </Typography>
           </Box>
 
-          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+          {/* Equal-weight action buttons for users with existing data or demo exploration */}
+          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, flexShrink: 0 }}>
             <Button
               variant="outlined"
               size="small"
               startIcon={<RefreshRoundedIcon />}
               onClick={onLoadSample}
+              sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}
             >
               {t('profile:actions.loadSample', 'Load Sample Profile')}
             </Button>
 
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              accept=".md,.txt"
-              onChange={handleFileUpload}
-            />
             <Button
               variant="outlined"
               size="small"
               startIcon={<CloudUploadRoundedIcon />}
               onClick={() => fileInputRef.current?.click()}
+              sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}
             >
               {t('profile:actions.uploadFile', 'Upload File (.md)')}
-            </Button>
-
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<FileDownloadRoundedIcon />}
-              onClick={handleDownload}
-            >
-              {t('profile:actions.exportBackup', 'Export Backup')}
-            </Button>
-
-            <Button
-              variant="text"
-              size="small"
-              color="inherit"
-              startIcon={<RestartAltRoundedIcon />}
-              onClick={onResetTemplate}
-            >
-              {t('profile:actions.startBlank', 'Start Blank')}
             </Button>
           </Stack>
         </Paper>
@@ -216,6 +177,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             overflow: 'hidden',
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
+            borderRadius: '12px',
           }}
         >
           <Box
@@ -275,6 +237,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 position: 'relative',
                 p: 0,
                 display: 'flex',
+                minHeight: 350,
               }}
             >
               <textarea
@@ -335,6 +298,27 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 size="small"
                 sx={{ fontWeight: 600 }}
               />
+            )}
+
+            {/* Contextual Backup Export only when there is actual profile data */}
+            {hasData && (
+              <Tooltip title={t('profile:actions.exportBackupTip', 'Download your master profile as Markdown (.md)')}>
+                <Button
+                  size="small"
+                  variant="text"
+                  color="inherit"
+                  startIcon={<FileDownloadRoundedIcon sx={{ fontSize: 16 }} />}
+                  onClick={handleDownload}
+                  sx={{
+                    fontSize: '0.75rem',
+                    color: 'text.secondary',
+                    textTransform: 'none',
+                    '&:hover': { color: 'primary.main', bgcolor: alpha(theme.palette.primary.main, 0.06) }
+                  }}
+                >
+                  {t('profile:actions.exportBackup', 'Export Backup (.md)')}
+                </Button>
+              </Tooltip>
             )}
           </Box>
 

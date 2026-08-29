@@ -3,10 +3,10 @@
   "title": "Votre Profil Professionnel",
   "subtitle": "Renseignez votre parcours et vos compétences une seule fois. Nous les adapterons automatiquement à chaque offre.",
   "actions": {
-    "loadSample": "Charger un Profil Exemple",
-    "uploadFile": "Téléverser un Fichier (.md)",
-    "exportBackup": "Exporter la Sauvegarde",
-    "startBlank": "Partir de Zéro",
+    "loadSample": "Charger un Profil d'Exemple",
+    "uploadFile": "Importer un Fichier (.md)",
+    "exportBackup": "Exporter une Sauvegarde (.md)",
+    "exportBackupTip": "Télécharger votre profil maître au format Markdown (.md)",
     "continueToTarget": "Continuer vers l'Offre Cible (Étape 2)"
   },
   "modes": {

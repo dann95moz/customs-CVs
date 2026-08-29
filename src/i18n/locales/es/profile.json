@@ -5,9 +5,9 @@
   "actions": {
     "loadSample": "Cargar Perfil de Ejemplo",
     "uploadFile": "Subir Archivo (.md)",
-    "exportBackup": "Exportar Respaldo",
-    "startBlank": "Comenzar en Blanco",
-    "continueToTarget": "Continuar a Oferta Objetivo (Paso 2)"
+    "exportBackup": "Exportar Respaldo (.md)",
+    "exportBackupTip": "Descargar tu perfil maestro como archivo Markdown (.md)",
+    "continueToTarget": "Continuar a Vacante Objetivo (Paso 2)"
   },
   "modes": {
     "guidedAssistant": "Asistente Guiado",
