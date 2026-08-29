@@ -284,6 +284,16 @@ export interface LanguagesSectionProps {
   onChange?: (items: string[]) => void;
 }
 
+export interface ProjectsSectionProps {
+  isExpanded: boolean;
+  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
+  projects: ExperienceItem[];
+  onFieldChange: (index: number, field: keyof ExperienceItem, value: string | string[]) => void;
+  onAddProject: () => void;
+  onRemoveProject: (index: number) => void;
+  onChange?: (items: ExperienceItem[]) => void;
+}
+
 // ---------------------------------------------------------------------------
 // 3. Preview Studio Panels & Toolbar
 // ---------------------------------------------------------------------------

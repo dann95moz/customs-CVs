@@ -328,7 +328,17 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
         type = 'skills';
       } else if (upper.includes('EXPERIENCIA') || upper.includes('EXPERIENCE') || upper.includes('HISTORIAL') || upper.includes('CAREER HISTORY') || upper.includes('WORK HISTORY')) {
         type = 'experience';
-      } else if (upper.includes('PROYECTOS') || upper.includes('PROJECTS')) {
+      } else if (
+        upper.includes('PROYECTOS') ||
+        upper.includes('PROJECTS') ||
+        upper.includes('EXTRAS') ||
+        upper.includes('PUBLICACIONES') ||
+        upper.includes('PUBLICATIONS') ||
+        upper.includes('VOLUNTEERING') ||
+        upper.includes('VOLUNTARIADO') ||
+        upper.includes('INITIATIVES') ||
+        upper.includes('SIDE VENTURES')
+      ) {
         type = 'projects';
       } else if (upper.includes('EDUCACI') || upper.includes('EDUCATION') || upper.includes('CERTIFICA') || upper.includes('ACADEMIC')) {
         type = 'education';

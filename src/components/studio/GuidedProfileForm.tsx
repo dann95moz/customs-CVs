@@ -8,6 +8,7 @@ import { SkillsSection } from './profile/SkillsSection';
 import { ExperienceSection } from './profile/ExperienceSection';
 import { EducationSection } from './profile/EducationSection';
 import { LanguagesSection } from './profile/LanguagesSection';
+import { ProjectsSection } from './profile/ProjectsSection';
 import { GuidedProfileFormProps } from '../../types';
 
 export type { GuidedProfileFormProps };
@@ -226,6 +227,36 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     }));
   };
 
+  // Projects & Extras helpers
+  const handleAddProject = () => {
+    const newProject: ExperienceItem = {
+      company: '',
+      role: 'Personal Project',
+      location: '',
+      date: '',
+      bullets: []
+    };
+    updateData(prev => ({
+      ...prev,
+      projects: [...(prev.projects || []), newProject]
+    }));
+  };
+
+  const handleProjectFieldChange = (index: number, field: keyof ExperienceItem, value: string | string[]) => {
+    updateData(prev => {
+      const list = [...(prev.projects || [])];
+      list[index] = { ...list[index], [field]: value };
+      return { ...prev, projects: list };
+    });
+  };
+
+  const handleRemoveProject = (index: number) => {
+    updateData(prev => ({
+      ...prev,
+      projects: (prev.projects || []).filter((_, i) => i !== index)
+    }));
+  };
+
   const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpandedSection(isExpanded ? panel : false);
   };
@@ -298,6 +329,16 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
         onUpdateLanguage={handleUpdateLanguage}
         onAddLanguage={handleAddLanguage}
         onRemoveLanguage={handleRemoveLanguage}
+      />
+
+      {/* 7. Projects & Extras */}
+      <ProjectsSection
+        isExpanded={expandedSection === 'projects'}
+        onToggle={handleAccordionChange('projects')}
+        projects={formData.projects || []}
+        onFieldChange={handleProjectFieldChange}
+        onAddProject={handleAddProject}
+        onRemoveProject={handleRemoveProject}
       />
     </Box>
   );

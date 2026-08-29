@@ -57,15 +57,18 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     parts.push(expItemsFormatted.join('\n\n---\n\n'));
   }
 
-  // Projects
+  // Projects & Extras
   if (data.projects && data.projects.length > 0) {
     parts.push('\n---\n');
-    parts.push('## 🚀 FEATURED PROJECTS\n');
+    parts.push('## 🚀 PROJECTS & EXTRAS\n');
     const projItemsFormatted = data.projects.map(proj => {
       const headerLine = `### **${proj.company || 'Project'}**${proj.location ? ` | ${proj.location}` : ''}`;
-      const subHeaderLine = `*${proj.role || 'Role'}*${proj.date ? ` | **${proj.date}**` : ''}`;
-      const bullets = (proj.bullets || []).map(b => (b.startsWith('- ') ? b : `- ${b}`)).join('\n');
-      return `${headerLine}\n${subHeaderLine}\n${bullets}`;
+      const subHeaderLine = `*${proj.role || 'Project'}*${proj.date ? ` | **${proj.date}**` : ''}`;
+      const bullets = (proj.bullets || [])
+        .filter(b => Boolean(b && b.trim()))
+        .map(b => (b.startsWith('- ') ? b : `- ${b}`))
+        .join('\n');
+      return `${headerLine}\n${subHeaderLine}${bullets ? `\n${bullets}` : ''}`;
     });
     parts.push(projItemsFormatted.join('\n\n---\n\n'));
   }

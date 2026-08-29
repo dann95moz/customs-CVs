@@ -38,6 +38,11 @@ This document defines the strict styling, formatting, content, and ATS optimizat
      - **[Degree / Major]** – [Institution], [Year]
      - **[Certification Name 1]** – [Issuer], [Year]
      - **[Certification Name 2]** – [Issuer], [Year]
+
+8. PROJECTS & EXTRAS (SELECTIVE RELEVANCY):
+   - If MASTER-DATA.MD includes personal projects, open-source work, publications, talks, or volunteering in "PROJECTS & EXTRAS":
+   - Selectively include 1–2 most relevant entries under "## FEATURED PROJECTS" if they strengthen alignment with the target vacancy.
+   - If not relevant or empty, omit the section to keep the CV concise and high-density.
 `;
 
 export interface PromptBundle {
@@ -127,6 +132,14 @@ PART 2: TAILORED CV
 - [Google XYZ bullet with **bold action/technologies** and **bold quantified metrics** from master data]
 - [Second achievement highlighting **bold architecture/tooling** with **bold percentage gain** from master data]
 - [Third achievement highlighting **bold scaling/leadership** with **bold quantifiable impact** from master data]
+
+---
+
+## FEATURED PROJECTS (OPTIONAL — INCLUDE 1-2 ONLY IF HIGHLY RELEVANT TO VACANCY AND PRESENT IN MASTER DATA)
+
+### **[Project Name]** | [Link / URL if available]
+*[Category]* | [Date / Year]
+- [Project impact/highlight with **bold technologies** and **measurable outcomes** from master data]
 
 ---
 
