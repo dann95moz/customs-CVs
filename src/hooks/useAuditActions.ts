@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ActionModalState } from '../types/audit';
-import { useResumeWorkspace } from '../context/ResumeWorkspaceContext';
+import { useResumeStore } from '../store';
 
 export interface UseAuditActionsReturn {
   modalState: ActionModalState;
@@ -19,7 +19,11 @@ export interface UseAuditActionsReturn {
  * Principle: Single Responsibility & DRY (SOLID).
  */
 export function useAuditActions(): UseAuditActionsReturn {
-  const { cvMarkdown, setCvMarkdown, masterData, setMasterData } = useResumeWorkspace();
+  const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
+  const setCvMarkdown = useResumeStore((s) => s.setCvMarkdown);
+  const masterData = useResumeStore((s) => s.masterData);
+  const setMasterData = useResumeStore((s) => s.setMasterData);
+
 
   const [modalState, setModalState] = useState<ActionModalState>({
     open: false,

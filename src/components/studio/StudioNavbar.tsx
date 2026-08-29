@@ -22,7 +22,7 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import { useThemeMode } from '../../theme/ThemeContext';
-import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
+import { useResumeStore } from '../../store';
 import { StudioTab } from '../../types/cv';
 
 export const StudioNavbar: React.FC = () => {
@@ -30,18 +30,10 @@ export const StudioNavbar: React.FC = () => {
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
 
-  const {
-    activeTab,
-    setActiveTab,
-    wizardStep,
-    setWizardStep,
-    hasGeneratedCv,
-    auditReport,
-    hasTargetJob,
-    hasGapReport,
-    gapInfo,
-    savedVersions,
-  } = useResumeWorkspace();
+  const activeTab = useResumeStore((s) => s.activeTab);
+  const setActiveTab = useResumeStore((s) => s.setActiveTab);
+  const savedVersionsCount = useResumeStore((s) => s.savedVersions.length);
+
 
   return (
     <AppBar
@@ -153,9 +145,9 @@ export const StudioNavbar: React.FC = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
                 <span>My Applications</span>
-                {savedVersions.length > 0 && (
+                {savedVersionsCount > 0 && (
                   <Chip
-                    label={savedVersions.length}
+                    label={savedVersionsCount}
                     size="small"
                     color="primary"
                     sx={{ height: 18, fontSize: '0.68rem', fontWeight: 700 }}

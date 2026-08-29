@@ -13,7 +13,7 @@ import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import SpeedRoundedIcon from '@mui/icons-material/SpeedRounded';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
-import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
+import { useResumeStore } from '../../store';
 
 export interface WelcomeLandingViewProps {
   onStart?: () => void;
@@ -24,9 +24,11 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
   onStart,
   onExploreDemo,
 }) => {
-  const { handleStartWizard, handleExploreDemo } = useResumeWorkspace();
+  const handleStartWizard = useResumeStore((s) => s.handleStartWizard);
+  const handleExploreDemo = useResumeStore((s) => s.handleExploreDemo);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
+
 
   const handleStart = () => {
     if (onStart) {

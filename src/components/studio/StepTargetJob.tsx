@@ -32,7 +32,7 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { marked } from 'marked';
 import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
-import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
+import { useResumeStore } from '../../store';
 import { ContextualAiModal } from './ai/ContextualAiModal';
 import { StepTargetJobProps } from '../../types';
 
@@ -55,9 +55,11 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const { providerSettings, setProviderSettings } = useResumeWorkspace();
+  const providerSettings = useResumeStore((s) => s.providerSettings);
+  const setProviderSettings = useResumeStore((s) => s.setProviderSettings);
   const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
   const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
+
 
   const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
     onFileLoaded: (text) => {

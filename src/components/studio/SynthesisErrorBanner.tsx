@@ -1,11 +1,14 @@
 import React from 'react';
 import { Box, Alert, AlertTitle, Button, Stack, useTheme } from '@mui/material';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
+import { useResumeStore } from '../../store';
 
 export const SynthesisErrorBanner: React.FC = () => {
   const theme = useTheme();
-  const { generationError, setGenerationError, setActiveTab } = useResumeWorkspace();
+  const generationError = useResumeStore((s) => s.generationError);
+  const setGenerationError = useResumeStore((s) => s.setGenerationError);
+  const setActiveTab = useResumeStore((s) => s.setActiveTab);
+
 
   if (!generationError) return null;
 

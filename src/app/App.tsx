@@ -1,5 +1,10 @@
 import React from 'react';
-import { useResumeWorkspace } from '../context/ResumeWorkspaceContext';
+import {
+  useResumeStore,
+  useAuditReport,
+  useGapInfo,
+  useDerivedFlags,
+} from '../store';
 import { StudioNavbar } from '../components/studio/StudioNavbar';
 import { WizardStepper } from '../components/studio/WizardStepper';
 import { StepMasterData } from '../components/studio/StepMasterData';
@@ -12,7 +17,6 @@ import { ApplicationsHistoryView } from '../components/studio/ApplicationsHistor
 import { LockedViewCard } from '../components/studio/LockedViewCard';
 import { SynthesisErrorBanner } from '../components/studio/SynthesisErrorBanner';
 import { WelcomeLandingView } from '../components/landing/WelcomeLandingView';
-import { extractCandidateName } from '../core/parser';
 import {
   BLANK_MASTER_DATA,
   DEMO_MASTER_DATA,
@@ -21,37 +25,35 @@ import {
 import './App.css';
 
 export const App: React.FC = () => {
-  const {
-    activeTab,
-    setActiveTab,
-    wizardStep,
-    setWizardStep,
-    masterData,
-    setMasterData,
-    targetJob,
-    setTargetJob,
-    companyName,
-    setCompanyName,
-    targetRole,
-    setTargetRole,
-    pageBudget,
-    setPageBudget,
-    providerSettings,
-    setProviderSettings,
-    rules,
-    setRules,
-    gapMarkdown,
-    auditReport,
-    gapInfo,
-    hasTargetJob,
-    hasGeneratedCv,
-    hasGapReport,
-    isGenerating,
-    generationStep,
-    handleGenerate,
-    handleResetWorkspace,
-    setCvMarkdown,
-  } = useResumeWorkspace();
+  const activeTab = useResumeStore((s) => s.activeTab);
+  const setActiveTab = useResumeStore((s) => s.setActiveTab);
+  const wizardStep = useResumeStore((s) => s.wizardStep);
+  const setWizardStep = useResumeStore((s) => s.setWizardStep);
+  const masterData = useResumeStore((s) => s.masterData);
+  const setMasterData = useResumeStore((s) => s.setMasterData);
+  const targetJob = useResumeStore((s) => s.targetJob);
+  const setTargetJob = useResumeStore((s) => s.setTargetJob);
+  const companyName = useResumeStore((s) => s.companyName);
+  const setCompanyName = useResumeStore((s) => s.setCompanyName);
+  const targetRole = useResumeStore((s) => s.targetRole);
+  const setTargetRole = useResumeStore((s) => s.setTargetRole);
+  const providerSettings = useResumeStore((s) => s.providerSettings);
+  const setProviderSettings = useResumeStore((s) => s.setProviderSettings);
+  const rules = useResumeStore((s) => s.rules);
+  const setRules = useResumeStore((s) => s.setRules);
+  const gapMarkdown = useResumeStore((s) => s.gapMarkdown);
+  const setCvMarkdown = useResumeStore((s) => s.setCvMarkdown);
+  const isGenerating = useResumeStore((s) => s.isGenerating);
+  const generationStep = useResumeStore((s) => s.generationStep);
+  const handleGenerate = useResumeStore((s) => s.handleGenerate);
+  const handleResetWorkspace = useResumeStore((s) => s.handleResetWorkspace);
+
+  // Derived state via optimized memoized hooks
+  const { hasTargetJob, hasGeneratedCv, hasGapReport } = useDerivedFlags();
+  const auditReport = useAuditReport();
+  const gapInfo = useGapInfo();
+
+
 
   return (
     <div className="studio-app">

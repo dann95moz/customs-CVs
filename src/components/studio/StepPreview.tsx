@@ -7,7 +7,13 @@ import {
   useTheme,
 } from '@mui/material';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
+import {
+  useResumeStore,
+  useParsedCv,
+  useParsedMasterCv,
+  useAuditReport,
+  useGapInfo,
+} from '../../store';
 import { CVRenderer } from '../CVRenderer';
 import { SplitMarkdownEditor } from './SplitMarkdownEditor';
 import { extractCandidateName, sanitizeFileName } from '../../core/parser';
@@ -35,33 +41,35 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const muiTheme = useTheme();
   const { handleDownloadPdf } = usePrintPdf();
 
-  const {
-    cvMarkdown,
-    setCvMarkdown,
-    masterData,
-    companyName,
-    targetRole,
-    theme,
-    setTheme,
-    palette,
-    setPalette,
-    customColor,
-    setCustomColor,
-    fontFamily,
-    setFontFamily,
-    spacingDensity,
-    setSpacingDensity,
-    isGenerating,
-    handleGenerate,
-    handleDownloadCvMarkdown,
-    parsedCv,
-    parsedMasterCv,
-    gapMarkdown,
-    auditReport,
-    gapInfo,
-    handleSaveCurrentVersion,
-    setWizardStep,
-  } = useResumeWorkspace();
+  const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
+  const setCvMarkdown = useResumeStore((s) => s.setCvMarkdown);
+  const masterData = useResumeStore((s) => s.masterData);
+  const companyName = useResumeStore((s) => s.companyName);
+  const targetRole = useResumeStore((s) => s.targetRole);
+  const theme = useResumeStore((s) => s.theme);
+  const setTheme = useResumeStore((s) => s.setTheme);
+  const palette = useResumeStore((s) => s.palette);
+  const setPalette = useResumeStore((s) => s.setPalette);
+  const customColor = useResumeStore((s) => s.customColor);
+  const setCustomColor = useResumeStore((s) => s.setCustomColor);
+  const fontFamily = useResumeStore((s) => s.fontFamily);
+  const setFontFamily = useResumeStore((s) => s.setFontFamily);
+  const spacingDensity = useResumeStore((s) => s.spacingDensity);
+  const setSpacingDensity = useResumeStore((s) => s.setSpacingDensity);
+  const isGenerating = useResumeStore((s) => s.isGenerating);
+  const handleGenerate = useResumeStore((s) => s.handleGenerate);
+  const handleDownloadCvMarkdown = useResumeStore((s) => s.handleDownloadCvMarkdown);
+  const gapMarkdown = useResumeStore((s) => s.gapMarkdown);
+  const handleSaveCurrentVersion = useResumeStore((s) => s.handleSaveCurrentVersion);
+  const setWizardStep = useResumeStore((s) => s.setWizardStep);
+
+  // Derived parsed and audit data via memoized hooks
+  const parsedCv = useParsedCv();
+  const parsedMasterCv = useParsedMasterCv();
+  const auditReport = useAuditReport();
+  const gapInfo = useGapInfo();
+
+
 
   const [viewMode, setViewMode] = useState<PreviewViewMode>('tailored');
   const [sheetHeight, setSheetHeight] = useState<number>(0);

@@ -9,7 +9,7 @@ import {
   alpha
 } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import { useResumeWorkspace } from '../../context/ResumeWorkspaceContext';
+import { useResumeStore } from '../../store';
 import { GeneratedCvVersion } from '../../types/cv';
 import { ApplicationsStatsHeader } from './history/ApplicationsStatsHeader';
 import { ApplicationCard } from './history/ApplicationCard';
@@ -21,13 +21,12 @@ import { ApplicationCard } from './history/ApplicationCard';
 export const ApplicationsHistoryView: React.FC = () => {
   const theme = useTheme();
 
-  const {
-    savedVersions,
-    handleLoadVersion,
-    handleDeleteVersion,
-    setActiveTab,
-    setWizardStep
-  } = useResumeWorkspace();
+  const savedVersions = useResumeStore((s) => s.savedVersions);
+  const handleLoadVersion = useResumeStore((s) => s.handleLoadVersion);
+  const handleDeleteVersion = useResumeStore((s) => s.handleDeleteVersion);
+  const setActiveTab = useResumeStore((s) => s.setActiveTab);
+  const setWizardStep = useResumeStore((s) => s.setWizardStep);
+
 
   const [searchQuery, setSearchQuery] = useState('');
 
