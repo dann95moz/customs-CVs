@@ -7,19 +7,17 @@ import {
   useTheme,
 } from '@mui/material';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+import { useTranslation } from 'react-i18next';
 import { SettingsRulesTabProps } from '../../../types';
 
 export type { SettingsRulesTabProps };
 
-/**
- * Tab panel for editing AI synthesis guidelines & rules.
- * Principle: Single Responsibility (S) - manages rules markdown editing.
- */
 export const SettingsRulesTab: React.FC<SettingsRulesTabProps> = ({
   rules,
   onRulesChange,
   defaultRules,
 }) => {
+  const { t } = useTranslation(['settings', 'common']);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
 
@@ -37,10 +35,10 @@ export const SettingsRulesTab: React.FC<SettingsRulesTabProps> = ({
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1.5 }}>
         <Box>
           <Typography variant="h6" sx={{ fontWeight: 800 }}>
-            AI Synthesis Guidelines &amp; SSOT Rules (rules.md)
+            {t('settings:rules.title', 'AI Synthesis Guidelines & SSOT Rules (rules.md)')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            These core instructions govern how the AI aligns bullets, formats XYZ metrics, and preserves zero hallucination.
+            {t('settings:rules.subtitle', 'Customize the system prompt and formatting instructions sent to the AI synthesizer.')}
           </Typography>
         </Box>
 
@@ -50,7 +48,7 @@ export const SettingsRulesTab: React.FC<SettingsRulesTabProps> = ({
           startIcon={<RefreshRoundedIcon />}
           onClick={() => onRulesChange(defaultRules)}
         >
-          Reset to Defaults
+          {t('settings:rules.resetRules', 'Restore Default Rules')}
         </Button>
       </Box>
 

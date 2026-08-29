@@ -31,6 +31,7 @@ import LaptopRoundedIcon from '@mui/icons-material/LaptopRounded';
 import CloudQueueRoundedIcon from '@mui/icons-material/CloudQueueRounded';
 import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import { useTranslation } from 'react-i18next';
 import { AIProviderId, AIProviderSettings, SettingsAiTabProps } from '../../../types';
 import { AVAILABLE_AI_MODELS, testAIConnection } from '../../../core/ai-service';
 
@@ -43,6 +44,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
   settings,
   onSettingsChange,
 }) => {
+  const { t } = useTranslation(['settings', 'common']);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
   const [showKey, setShowKey] = useState(false);
@@ -110,32 +112,34 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
       setTestResult(result);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      setTestResult({ success: false, message: `Unexpected error during test: ${msg}` });
+      setTestResult({
+        success: false,
+        message: `Failed: ${msg}`,
+      });
     } finally {
       setTestingConnection(false);
     }
   };
 
-  const currentModels = AVAILABLE_AI_MODELS.filter(m => m.provider === settings.provider);
-
-  const getKeyHelperLink = () => {
-    switch (settings.provider) {
+  const getKeyHelper = (provider: AIProviderId) => {
+    switch (provider) {
       case 'gemini':
-        return { label: 'Get free key at Google AI Studio', url: 'https://aistudio.google.com/app/apikey' };
+        return { label: 'Get Free Key at Google AI Studio', url: 'https://aistudio.google.com/app/apikey' };
       case 'groq':
-        return { label: 'Get free key at Groq Console', url: 'https://console.groq.com/keys' };
+        return { label: 'Get Free Key at Groq Console', url: 'https://console.groq.com/keys' };
       case 'openai':
-        return { label: 'OpenAI API Keys dashboard', url: 'https://platform.openai.com/api-keys' };
+        return { label: 'Get OpenAI Key', url: 'https://platform.openai.com/api-keys' };
       case 'claude':
-        return { label: 'Anthropic Console dashboard', url: 'https://console.anthropic.com/settings/keys' };
+        return { label: 'Get Anthropic Console Key', url: 'https://console.anthropic.com/settings/keys' };
       case 'openrouter':
-        return { label: 'OpenRouter Keys dashboard', url: 'https://openrouter.ai/keys' };
+        return { label: 'Get OpenRouter Key', url: 'https://openrouter.ai/keys' };
       default:
         return null;
     }
   };
 
-  const keyHelper = getKeyHelperLink();
+  const keyHelper = getKeyHelper(settings.provider);
+  const currentModels = AVAILABLE_AI_MODELS.filter(m => m.provider === settings.provider);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -156,7 +160,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
         <Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-              Active AI Engine: {isLocal ? 'Local AI Server' : settings.provider.toUpperCase()}
+              {t('settings:providers.title', 'Active AI Engine')}: {isLocal ? 'Local AI Server' : settings.provider.toUpperCase()}
             </Typography>
             <Chip
               icon={isLocal ? <LaptopRoundedIcon /> : <CloudQueueRoundedIcon />}
@@ -167,7 +171,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
             />
           </Box>
           <Typography variant="caption" color="text.secondary">
-            Configured model: <strong>{settings.model}</strong>
+            {t('settings:providers.model', 'Configured model')}: <strong>{settings.model}</strong>
           </Typography>
         </Box>
 
@@ -180,7 +184,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
           disabled={testingConnection}
           sx={{ fontWeight: 700, fontSize: '0.8rem', px: 2.25 }}
         >
-          {testingConnection ? 'Testing...' : 'Test Connection'}
+          {testingConnection ? t('settings:providers.testing', 'Testing...') : t('settings:providers.testConnection', 'Test Connection')}
         </Button>
       </Paper>
 

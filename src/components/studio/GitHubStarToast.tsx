@@ -13,24 +13,17 @@ import {
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import { useTranslation } from 'react-i18next';
 import { GitHubStarToastProps } from '../../types';
 
 export type { GitHubStarToastProps };
 
-/**
- * Native, non-intrusive floating GitHub star toast.
- * Positioned in the bottom-right corner so it never obscures generated CV content.
- * Styled natively with CV Studio's blue/cyan/slate design system.
- * 
- * Principles:
- * - Single Responsibility: Focuses purely on presenting the GitHub star call-to-action.
- * - Accessibility: Clear action targets, keyboard navigability, and dismiss button.
- */
 export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
   open,
   onClose,
   onStarClick,
 }) => {
+  const { t } = useTranslation(['common']);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
 
@@ -105,7 +98,7 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
             </Typography>
           </Box>
 
-          <Tooltip title="Dismiss">
+          <Tooltip title={t('common:actions.close', 'Dismiss')}>
             <IconButton
               size="small"
               onClick={onClose}
@@ -158,7 +151,7 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
               },
             }}
           >
-            Maybe later
+            {t('common:actions.cancel', 'Maybe later')}
           </Button>
 
           <Button

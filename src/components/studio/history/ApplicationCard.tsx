@@ -17,28 +17,26 @@ import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
 import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { useTranslation } from 'react-i18next';
 import { GeneratedCvVersion, ApplicationCardProps } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
 
 export type { ApplicationCardProps };
 
-/**
- * Card rendering an individual saved CV version with metrics and action buttons.
- * Principle: Single Responsibility (S) - encapsulates individual application card display.
- */
 export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   version,
   onLoad,
   onDelete,
   onDownload,
 }) => {
+  const { t, i18n } = useTranslation(['history', 'common', 'gap', 'audit', 'preview']);
   const theme = useTheme();
   const palConfig = getPaletteConfig(version.palette);
 
   const formatDate = (isoString: string) => {
     try {
       const date = new Date(isoString);
-      return date.toLocaleDateString('en-US', {
+      return date.toLocaleDateString(i18n.language || 'en-US', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
@@ -102,7 +100,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             </Box>
             <Box>
               <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.2 }}>
-                {version.companyName || 'Target Company'}
+                {version.companyName || t('target:fields.company', 'Target Company')}
               </Typography>
               <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                 <CalendarTodayRoundedIcon sx={{ fontSize: 11 }} /> {formatDate(version.createdAt)}
@@ -114,7 +112,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             size="small"
             color="error"
             onClick={() => onDelete(version.id)}
-            title="Delete this tailored version"
+            title={t('history:card.delete', 'Delete Version')}
             sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}
           >
             <DeleteOutlineRoundedIcon fontSize="small" />
@@ -123,26 +121,26 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
 
         {/* Target Role */}
         <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'text.primary', mb: 1.5 }}>
-          {version.targetRole || 'Specialist Role'}
+          {version.targetRole || t('target:fields.role', 'Specialist Role')}
         </Typography>
 
         {/* Badges: Match Score, Quality, Theme */}
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
           <Chip
-            label={`${version.matchScore || 92}% Match`}
+            label={`${version.matchScore || 92}% ${t('gap:matchScore', 'Match')}`}
             size="small"
             color="success"
             sx={{ fontWeight: 700, fontSize: '0.72rem' }}
           />
           <Chip
-            label={`Score: ${version.qualityScore || 9.0}/10`}
+            label={`${t('audit:score', 'Score')}: ${version.qualityScore || 9.0}/10`}
             size="small"
             color="primary"
             variant="outlined"
             sx={{ fontWeight: 700, fontSize: '0.72rem' }}
           />
           <Chip
-            label={`${version.pageBudget || 1} Page`}
+            label={`${version.pageBudget || 1} ${t('preview:toolbar.page', 'Page')}`}
             size="small"
             variant="outlined"
             sx={{ fontSize: '0.72rem' }}
@@ -184,7 +182,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
           onClick={() => onLoad(version.id)}
           sx={{ fontWeight: 700, fontSize: '0.78rem' }}
         >
-          View &amp; Edit in Studio
+          {t('history:card.openInStudio', 'View & Edit in Studio')}
         </Button>
 
         <Button

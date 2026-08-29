@@ -15,14 +15,11 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
 import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { useTranslation } from 'react-i18next';
 import { ApplicationsStatsHeaderProps } from '../../../types';
 
 export type { ApplicationsStatsHeaderProps };
 
-/**
- * Header and stats bar for Applications History view.
- * Principle: Single Responsibility (S) - displays application metrics and search controls.
- */
 export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = ({
   totalApplications,
   avgMatchScore,
@@ -31,6 +28,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
   onSearchChange,
   onNewApplication,
 }) => {
+  const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -53,17 +51,17 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
         <Box>
           <Chip
             icon={<BusinessRoundedIcon sx={{ fontSize: '16px !important' }} />}
-            label="Application History"
+            label={t('history:badge', 'Application History')}
             size="small"
             color="primary"
             variant="outlined"
             sx={{ mb: 1, fontWeight: 700 }}
           />
           <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
-            Tailored Applications Dashboard
+            {t('history:title', 'Tailored Applications Dashboard')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Manage your tailored resumes across companies and roles.
+            {t('history:subtitle', 'Manage your tailored resumes across companies and roles.')}
           </Typography>
         </Box>
 
@@ -74,7 +72,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
           onClick={onNewApplication}
           sx={{ fontWeight: 700, whiteSpace: 'nowrap', px: 2.5 }}
         >
-          + New Tailored Resume
+          {t('history:newApplication', '+ New Tailored Resume')}
         </Button>
       </Paper>
 
@@ -113,7 +111,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
           </Box>
           <Box>
             <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
-              Total Tailored CVs
+              {t('history:stats.total', 'Total Tailored CVs')}
             </Typography>
             <Typography variant="h5" sx={{ fontWeight: 800 }}>
               {totalApplications}
@@ -148,7 +146,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
           </Box>
           <Box>
             <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
-              Avg. Match Score
+              {t('history:stats.avgMatch', 'Avg. Match Score')}
             </Typography>
             <Typography variant="h5" sx={{ fontWeight: 800, color: 'success.main' }}>
               {avgMatchScore}%
@@ -183,7 +181,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
           </Box>
           <Box>
             <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
-              Target Companies
+              {t('history:stats.companies', 'Target Companies')}
             </Typography>
             <Typography variant="h5" sx={{ fontWeight: 800 }}>
               {uniqueCompanies}
@@ -196,7 +194,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
       {totalApplications > 0 && (
         <TextField
           size="small"
-          placeholder="Filter by company name or target role..."
+          placeholder={t('history:searchPlaceholder', 'Filter by company name or target role...')}
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           slotProps={{

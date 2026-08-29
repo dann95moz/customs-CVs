@@ -12,23 +12,21 @@ import {
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
+import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
-import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
+import { useTranslation } from 'react-i18next';
 import { AIProviderSettings } from '../../types/cv';
 import { DEFAULT_RULES } from '../../core/ai-service';
 import { SettingsAiTab } from './settings/SettingsAiTab';
 import { SettingsRulesTab } from './settings/SettingsRulesTab';
+import { LanguageSelector } from './LanguageSelector';
 import { SettingsViewProps } from '../../types';
 import { APP_LINKS } from '../../constants/links';
 
 export type { SettingsViewProps };
 
-/**
- * Settings view orchestrator managing AI credentials, synthesis rules, and danger zone resets.
- * Principle: Single Responsibility (S) - delegates tab content to modular tab components.
- */
 export const SettingsView: React.FC<SettingsViewProps> = ({
   settings,
   onSettingsChange,
@@ -36,9 +34,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onRulesChange,
   onResetDefaults,
 }) => {
+  const { t } = useTranslation(['settings', 'common']);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
-  const [activeTab, setActiveTab] = useState<'ai' | 'rules'>('ai');
+  const [activeTab, setActiveTab] = useState<'ai' | 'rules' | 'general'>('ai');
 
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto', p: { xs: 2, md: 3 }, display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -72,10 +71,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </Box>
           <Box>
             <Typography variant="h5" sx={{ fontWeight: 800 }}>
-              Settings &amp; Configuration
+              {t('settings:title', 'Settings & AI Configuration')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Manage your AI engine, custom API credentials, and tailoring rules.
+              {t('settings:subtitle', 'Manage your AI providers, custom tailoring rules, and application preferences.')}
             </Typography>
           </Box>
         </Box>
@@ -115,13 +114,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             value="ai"
             icon={<PsychologyRoundedIcon fontSize="small" />}
             iconPosition="start"
-            label="AI &amp; API Keys"
+            label={t('settings:tabs.providers', 'AI Providers')}
           />
           <Tab
             value="rules"
             icon={<ShieldRoundedIcon fontSize="small" />}
             iconPosition="start"
-            label="Synthesis Rules"
+            label={t('settings:tabs.rules', 'Prompt & ATS Rules')}
+          />
+          <Tab
+            value="general"
+            icon={<LanguageRoundedIcon fontSize="small" />}
+            iconPosition="start"
+            label={t('settings:tabs.general', 'General & Language')}
           />
         </Tabs>
       </Paper>
@@ -140,6 +145,53 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           onRulesChange={onRulesChange}
           defaultRules={DEFAULT_RULES}
         />
+      )}
+
+      {activeTab === 'general' && (
+        <Paper
+          sx={{
+            p: 3,
+            border: `1px solid ${muiTheme.palette.divider}`,
+            bgcolor: 'background.paper',
+            borderRadius: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2.5,
+          }}
+        >
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 800, mb: 0.5 }}>
+              {t('settings:general.title', 'Application Preferences')}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {t('settings:general.languageHelp', 'Select the language used for navigation, instructions, and menus across CV Studio.')}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              p: 2,
+              borderRadius: '12px',
+              border: `1px solid ${muiTheme.palette.divider}`,
+              bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.01)',
+              flexWrap: 'wrap',
+              gap: 2,
+            }}
+          >
+            <Box>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                {t('settings:general.language', 'App Display Language')}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {t('common:language.chooseLanguage', 'Select language')}
+              </Typography>
+            </Box>
+            <LanguageSelector variant="full" />
+          </Box>
+        </Paper>
       )}
 
       {/* Open Source & Community Credit */}
@@ -182,10 +234,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </Box>
           <Box>
             <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'text.primary' }}>
-              Open Source &amp; Community
+              {t('common:footer.openSource', 'Open Source & Community')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Crafted by <strong>{APP_LINKS.AUTHOR_NAME}</strong> · Free, private, and open source. If CV Studio has helped your career, leave a star on GitHub!
+              {t('common:footer.craftedBy', 'Crafted by')} <strong>{APP_LINKS.AUTHOR_NAME}</strong> · {t('common:footer.privacyNote', 'All data remains in your browser storage.')}
             </Typography>
           </Box>
         </Box>
@@ -222,7 +274,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             },
           }}
         >
-          Star on GitHub
+          {t('common:nav.starGithub', 'Star on GitHub')}
         </Button>
       </Paper>
 
@@ -241,10 +293,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       >
         <Box>
           <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'error.main' }}>
-            Reset Workspace &amp; Clear Local Storage
+            {t('settings:general.resetWorkspace', 'Reset Workspace & Clear Local Storage')}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            Permanently resets all draft texts, API keys, and configurations back to clean blank defaults.
+            {t('settings:general.resetConfirm', 'Permanently resets all draft texts, API keys, and configurations back to clean blank defaults.')}
           </Typography>
         </Box>
 
@@ -255,7 +307,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           startIcon={<DeleteSweepRoundedIcon />}
           onClick={onResetDefaults}
         >
-          Reset Workspace
+          {t('common:actions.reset', 'Reset Workspace')}
         </Button>
       </Paper>
     </Box>

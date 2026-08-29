@@ -13,14 +13,11 @@ import {
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
+import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../store';
 
-/**
- * Discreet floating AI synthesis notice & settings toast.
- * Positioned in the bottom-left corner so it never blocks CV preview or toolbar actions.
- * Adheres to CV Studio's native glassmorphic dark/light design system.
- */
 export const SynthesisErrorBanner: React.FC = () => {
+  const { t } = useTranslation(['common', 'settings']);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
   const generationError = useResumeStore((s) => s.generationError);
@@ -95,11 +92,11 @@ export const SynthesisErrorBanner: React.FC = () => {
                 lineHeight: 1.2,
               }}
             >
-              AI Generation Notice
+              {t('common:status.error', 'AI Generation Notice')}
             </Typography>
           </Box>
 
-          <Tooltip title="Dismiss">
+          <Tooltip title={t('common:actions.close', 'Dismiss')}>
             <IconButton
               size="small"
               onClick={() => setGenerationError(null)}
@@ -152,7 +149,7 @@ export const SynthesisErrorBanner: React.FC = () => {
               },
             }}
           >
-            Dismiss
+            {t('common:actions.cancel', 'Dismiss')}
           </Button>
 
           <Button
@@ -186,7 +183,7 @@ export const SynthesisErrorBanner: React.FC = () => {
               },
             }}
           >
-            Open AI Settings
+            {t('common:nav.settings', 'Open AI Settings')}
           </Button>
         </Box>
       </Paper>

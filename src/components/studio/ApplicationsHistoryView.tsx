@@ -9,16 +9,14 @@ import {
   alpha
 } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../store';
 import { GeneratedCvVersion } from '../../types/cv';
 import { ApplicationsStatsHeader } from './history/ApplicationsStatsHeader';
 import { ApplicationCard } from './history/ApplicationCard';
 
-/**
- * View displaying the dashboard of past AI tailored resumes and version history.
- * Principle: Single Responsibility (S) - delegates card rendering and stats to subcomponents.
- */
 export const ApplicationsHistoryView: React.FC = () => {
+  const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
 
   const savedVersions = useResumeStore((s) => s.savedVersions);
@@ -26,7 +24,6 @@ export const ApplicationsHistoryView: React.FC = () => {
   const handleDeleteVersion = useResumeStore((s) => s.handleDeleteVersion);
   const setActiveTab = useResumeStore((s) => s.setActiveTab);
   const setWizardStep = useResumeStore((s) => s.setWizardStep);
-
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -115,12 +112,12 @@ export const ApplicationsHistoryView: React.FC = () => {
                 <AutoAwesomeRoundedIcon fontSize="large" />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                {searchQuery ? 'No tailored resumes match your search' : 'No Tailored Applications Created Yet'}
+                {searchQuery ? 'No tailored resumes match your search' : t('history:empty.title', 'No Applications Saved Yet')}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 460 }}>
                 {searchQuery
                   ? 'Try searching for a different company or job title.'
-                  : 'Start tailoring your Master Profile against a target vacancy in Step 2 to generate tailored CV versions with full history tracking.'}
+                  : t('history:empty.desc', 'Whenever you synthesize a tailored resume for a specific company, it will be automatically saved here for tracking.')}
               </Typography>
               {!searchQuery && (
                 <Button
@@ -133,7 +130,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                   }}
                   sx={{ mt: 1, fontWeight: 700 }}
                 >
-                  Create First Tailored CV
+                  {t('history:empty.action', 'Start New Application')}
                 </Button>
               )}
             </CardContent>
