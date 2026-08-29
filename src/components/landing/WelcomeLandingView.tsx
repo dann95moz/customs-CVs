@@ -50,7 +50,7 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
         {/* Badge Pill */}
         <div className="welcome-badge">
           <span className="pulse-dot" />
-          <span>Personal ATS Resume Engineering Engine</span>
+          <span>Free &amp; 100% Private</span>
         </div>
 
         {/* Hero Title & Subtitle */}

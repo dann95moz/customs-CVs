@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogActions,
   Tooltip,
+  Snackbar,
   useTheme,
   alpha,
 } from '@mui/material';
@@ -21,11 +22,14 @@ import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import ArticleRoundedIcon from '@mui/icons-material/ArticleRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { marked } from 'marked';
 import { PreviewAuditGapDrawerProps } from '../../../types';
+import { useAuditActions } from '../../../hooks/useAuditActions';
+import { AuditImprovementModal } from '../audit/AuditImprovementModal';
 
 export type { PreviewAuditGapDrawerProps };
 
@@ -49,6 +53,17 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const [fullReportModalOpen, setFullReportModalOpen] = useState(false);
+
+  const {
+    modalState,
+    snackbarMessage,
+    handleOpenAction,
+    handleApplyAction,
+    handleCloseModal,
+    handleCloseSnackbar,
+    handleInputChange,
+    getActionButtonLabel,
+  } = useAuditActions();
 
   const auditScore = auditReport.overallScore || 9;
   const matchScore = gapInfo.matchScore || 92;
@@ -355,25 +370,65 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                     <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 1 }}>
                       Strategic Growth Recommendations:
                     </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                       {auditReport.strategicPillars.slice(0, 3).map((pillar, idx: number) => (
-                        <Box
+                        <Paper
                           key={idx}
+                          variant="outlined"
                           sx={{
+                            p: 1.5,
+                            borderRadius: '10px',
+                            bgcolor: isDark ? alpha(theme.palette.warning.main, 0.08) : '#fffcf0',
+                            border: `1px solid ${alpha(theme.palette.warning.main, 0.25)}`,
                             display: 'flex',
-                            alignItems: 'flex-start',
-                            gap: 1,
-                            p: 1,
-                            borderRadius: '8px',
-                            bgcolor: alpha(theme.palette.warning.main, isDark ? 0.08 : 0.05),
-                            border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                            flexDirection: 'column',
+                            gap: 0.75,
                           }}
                         >
-                          <AutoAwesomeRoundedIcon sx={{ fontSize: 15, color: theme.palette.warning.main, mt: 0.2 }} />
-                          <Typography variant="caption" sx={{ lineHeight: 1.45, color: 'text.primary' }}>
-                            <strong>{pillar.pillarName}:</strong> {pillar.diagnostic}
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                              <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: theme.palette.warning.main }} />
+                              <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.8rem' }}>
+                                {pillar.pillarName}
+                              </Typography>
+                            </Box>
+                            <Chip
+                              label={pillar.impactLevel || 'High'}
+                              size="small"
+                              sx={{
+                                height: 18,
+                                fontSize: '0.62rem',
+                                fontWeight: 700,
+                                bgcolor: alpha(theme.palette.warning.main, 0.15),
+                                color: isDark ? '#fbbf24' : '#b45309',
+                              }}
+                            />
+                          </Box>
+
+                          <Typography variant="caption" sx={{ lineHeight: 1.45, color: 'text.secondary' }}>
+                            {pillar.diagnostic}
                           </Typography>
-                        </Box>
+
+                          <Button
+                            variant="contained"
+                            size="small"
+                            color="primary"
+                            startIcon={<BoltRoundedIcon sx={{ fontSize: '13px !important' }} />}
+                            onClick={() => handleOpenAction(pillar.recommendationForMasterData || pillar.diagnostic, pillar.pillarName)}
+                            sx={{
+                              alignSelf: 'flex-start',
+                              fontSize: '0.72rem',
+                              fontWeight: 700,
+                              py: 0.35,
+                              px: 1.25,
+                              textTransform: 'none',
+                              borderRadius: '6px',
+                              mt: 0.25,
+                            }}
+                          >
+                            {getActionButtonLabel(pillar.recommendationForMasterData || pillar.pillarName)}
+                          </Button>
+                        </Paper>
                       ))}
                     </Box>
                   </Box>
@@ -534,6 +589,22 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           </DialogActions>
         </Dialog>
       )}
+
+      {/* 4. Action Lever Dialog */}
+      <AuditImprovementModal
+        modalState={modalState}
+        onClose={handleCloseModal}
+        onInputChange={handleInputChange}
+        onApply={handleApplyAction}
+      />
+
+      {/* 5. Toast Feedback */}
+      <Snackbar
+        open={Boolean(snackbarMessage)}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+      />
     </>
   );
 };

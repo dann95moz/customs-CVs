@@ -33,10 +33,7 @@ export const useCvVersionHistory = ({
   const saveVersion = (version: GeneratedCvVersion) => {
     setSavedVersions(prev => [
       version,
-      ...prev.filter(v => !(
-        v.companyName.toLowerCase() === version.companyName.toLowerCase() &&
-        v.targetRole.toLowerCase() === version.targetRole.toLowerCase()
-      ))
+      ...prev.filter(v => v.id !== version.id)
     ]);
   };
 

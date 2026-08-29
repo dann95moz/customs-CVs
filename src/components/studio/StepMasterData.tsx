@@ -6,6 +6,7 @@ import {
   Button,
   Chip,
   Stack,
+  Tooltip,
   useTheme,
   alpha
 } from '@mui/material';
@@ -21,6 +22,7 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { extractCandidateName, parseCvMarkdownToData } from '../../core/parser';
@@ -128,13 +130,26 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
               Add your career history and skills once. We&apos;ll automatically adapt it for every job you apply to.
-              <Chip
-                icon={<InfoRoundedIcon sx={{ fontSize: '14px !important' }} />}
-                label="Factual integrity safeguard active"
-                size="small"
-                variant="outlined"
-                sx={{ height: 20, fontSize: '0.7rem', color: 'text.secondary' }}
-              />
+              <Tooltip
+                title="Integrity safeguard active: Guarantees tailored resumes stay 100% faithful to your real experience without hallucinating skills or fake metrics."
+                arrow
+                placement="top"
+              >
+                <Box
+                  component="span"
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    cursor: 'help',
+                    color: 'text.secondary',
+                    '&:hover': { color: 'primary.main' },
+                    transition: 'color 0.2s ease',
+                  }}
+                  aria-label="Integrity safeguard active"
+                >
+                  <ShieldRoundedIcon sx={{ fontSize: '1.05rem' }} />
+                </Box>
+              </Tooltip>
             </Typography>
           </Box>
 

@@ -126,7 +126,10 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           setIsEditingMarkdown(false);
         }}
         activeTemplateName={activeTemplateMeta.name}
-        onOpenTemplates={() => setActiveSidePanel('templates')}
+        onOpenTemplates={() => {
+          setActiveSidePanel('templates');
+          setIsAuditGapOpen(false);
+        }}
         isEditingMarkdown={isEditingMarkdown}
         onToggleMarkdown={() => setIsEditingMarkdown(prev => !prev)}
         onSaveAndExitMarkdown={handleSaveAndExitMarkdown}
@@ -144,10 +147,18 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           activeSidePanel={activeSidePanel}
           onToggleSidePanel={(panel: PreviewSidePanelType) => {
             if (panel === 'audit') {
-              setIsAuditGapOpen(prev => !prev);
+              const willBeOpen = !isAuditGapOpen;
+              setIsAuditGapOpen(willBeOpen);
               setAuditGapTab('audit');
+              if (willBeOpen) {
+                setActiveSidePanel(null);
+              }
             } else {
-              setActiveSidePanel(prev => prev === panel ? null : panel);
+              const willBeOpen = activeSidePanel !== panel;
+              setActiveSidePanel(willBeOpen ? panel : null);
+              if (willBeOpen) {
+                setIsAuditGapOpen(false);
+              }
             }
           }}
           isEditingMarkdown={isEditingMarkdown}
@@ -303,6 +314,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             onToggleTab={(tab) => {
               setIsAuditGapOpen(true);
               setAuditGapTab(tab);
+              setActiveSidePanel(null);
             }}
             onClose={() => setIsAuditGapOpen(false)}
           />
