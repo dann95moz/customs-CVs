@@ -29,11 +29,17 @@
   },
   "progress": {
     "title": "Sintetizando Currículum Adaptado con IA...",
-    "step1": "Analizando requisitos del puesto y extrayendo palabras clave...",
-    "step2": "Cruzando con perfil maestro (cero alucinaciones)...",
-    "step3": "Sintetizando Markdown optimizado para ATS y reporte de brechas...",
-    "defaultStep": "Cruzando competencias y sintetizando logros con fórmula XYZ...",
-    "note": "⚡ Aplicando salvaguardas de fidelidad fáctica y métricas Google XYZ. Serás redirigido automáticamente a tu CV en vivo cuando termine la generación."
+    "modalTitle": "Creando tu Currículum de Alto Impacto",
+    "synthesizing": "Adaptación con IA en Curso",
+    "stage1": "Analizando requisitos del empleador y extrayendo palabras clave ATS",
+    "stage2": "Sintetizando logros medibles con la fórmula Google XYZ",
+    "stage3": "Calibrando maquetación y presupuesto de 1 página",
+    "stage4": "Garantizando 100% de autenticidad y fidelidad a tu trayectoria real",
+    "step1": "Analizando Requisitos del Puesto y Extrayendo Palabras Clave...",
+    "step2": "Alineando Experiencia con la Oferta (100% Auténtico)...",
+    "step3": "Sintetizando Markdown Optimizado para ATS y Reporte de Brechas...",
+    "defaultStep": "Destacando tus competencias reales y logros con fórmula XYZ...",
+    "note": "⚡ Potenciando tus logros reales con la fórmula de impacto Google XYZ. Serás redirigido automáticamente a tu CV en vivo cuando termine."
   },
   "status": {
     "ready": "Detalles de la oferta listos",

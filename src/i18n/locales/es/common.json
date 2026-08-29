@@ -64,7 +64,8 @@
     "generic": "Cargando vista..."
   },
   "safeguard": {
-    "tooltip": "Salvaguarda de integridad activa: Garantiza que los currículums adaptados se mantengan 100% fieles a tu experiencia real sin alucinar habilidades ni métricas falsas."
+    "tooltip": "Garantía de Autenticidad activa: Asegura que tu CV destaque tus logros reales sin inventar experiencia falsa ni habilidades inexistentes.",
+    "guarantee": "Garantía de Autenticidad: 100% fiel a tu trayectoria real"
   },
   "footer": {
     "privacyNote": "Todos los datos permanecen en el almacenamiento de tu navegador. Puedes volver aquí en cualquier momento desde el logotipo superior.",

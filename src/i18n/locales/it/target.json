@@ -28,12 +28,18 @@
     "noJobPasted": "*Nessuna offerta ancora incollata. Passa a 'Modifica Testo' per aggiungerne una.*"
   },
   "progress": {
-    "title": "Sintesi del Curriculum Adattato con IA...",
-    "step1": "Analisi dei requisiti ed estrazione delle parole chiave...",
-    "step2": "Confronto con il profilo master (zero allucinazioni)...",
-    "step3": "Generazione del Markdown ottimizzato ATS e report di corrispondenza...",
-    "defaultStep": "Confronto delle competenze e sintesi dei risultati con formula XYZ...",
-    "note": "⚡ Applicazione delle misure di integrità e della formula Google XYZ. Verrai reindirizzato automaticamente al tuo CV al termine."
+    "title": "Sintesi del curriculum personalizzato con IA...",
+    "modalTitle": "Creazione del tuo curriculum ad alto impatto",
+    "synthesizing": "Adattamento IA in corso",
+    "stage1": "Analisi dei requisiti ed estrazione parole chiave ATS",
+    "stage2": "Formulazione dei risultati con la formula Google XYZ",
+    "stage3": "Calibrazione layout su 1 pagina",
+    "stage4": "Verifica dell'autenticità: 100% fedele alla tua reale esperienza",
+    "step1": "Analisi dei requisiti di lavoro ed estrazione parole chiave...",
+    "step2": "Allineamento dell'esperienza con l'offerta (100% Autentico)...",
+    "step3": "Sintesi del Markdown ottimizzato ATS e report di corrispondenza...",
+    "defaultStep": "Valorizzazione delle tue vere competenze e risultati con formula XYZ...",
+    "note": "⚡ Valorizzazione dei tuoi veri risultati con la formula di impatto Google XYZ. Verrai reindirizzato automaticamente al termine."
   },
   "status": {
     "ready": "Dati offerta pronti",

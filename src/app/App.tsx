@@ -10,6 +10,7 @@ import { WizardStepper } from '../components/studio/WizardStepper';
 import { LockedViewCard } from '../components/studio/LockedViewCard';
 import { SynthesisErrorBanner } from '../components/studio/SynthesisErrorBanner';
 import { StudioSkeleton } from '../components/studio/StudioSkeleton';
+import { AiGeneratingOverlay } from '../components/studio/ai/AiGeneratingOverlay';
 import {
   BLANK_MASTER_DATA,
   DEMO_MASTER_DATA,
@@ -255,6 +256,9 @@ export const App: React.FC = () => {
 
       {/* Synthesis Error Floating Banner */}
       <SynthesisErrorBanner />
+
+      {/* Full-Screen Blocking AI Synthesis Screen */}
+      <AiGeneratingOverlay />
     </div>
   );
 };

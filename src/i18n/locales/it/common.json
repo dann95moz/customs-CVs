@@ -64,7 +64,8 @@
     "generic": "Caricamento vista..."
   },
   "safeguard": {
-    "tooltip": "Protezione di integrità attiva: Garantisce che i curriculum personalizzati restino fedeli al 100% alla tua vera esperienza senza allucinazioni o metriche inventate."
+    "tooltip": "Garanzia di Autenticità attiva: Assicura che il tuo CV metta in risalto i tuoi veri successi senza inventare false esperienze o competenze inesistenti.",
+    "guarantee": "Garanzia di Autenticità: 100% fedele alla tua vera esperienza"
   },
   "footer": {
     "privacyNote": "Tutti i dati rimangono nella memoria del tuo browser. Puoi tornare qui in qualsiasi momento tramite il logo in alto.",

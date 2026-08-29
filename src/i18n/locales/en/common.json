@@ -64,7 +64,8 @@
     "generic": "Loading view..."
   },
   "safeguard": {
-    "tooltip": "Integrity safeguard active: Guarantees tailored resumes stay 100% faithful to your real experience without hallucinating skills or fake metrics."
+    "tooltip": "Career Authenticity Active: Ensures your tailored resume highlights your real achievements without inventing false experience or fake skills.",
+    "guarantee": "100% Authentic: Always faithful to your real career history"
   },
   "footer": {
     "privacyNote": "All data remains in your browser storage. You can switch back here anytime via the top logo.",

@@ -28,12 +28,18 @@
     "noJobPasted": "*Noch keine Stellenbeschreibung eingefügt. Wechseln Sie zu 'Text bearbeiten', um eine hinzuzufügen.*"
   },
   "progress": {
-    "title": "Angepasster Lebenslauf wird mit KI synthetisiert...",
-    "step1": "Stellenanforderungen analysieren und Keywords extrahieren...",
-    "step2": "Mit Master-Profil abgleichen (Null Halluzination)...",
-    "step3": "ATS-optimiertes Markdown und Gap-Report generieren...",
-    "defaultStep": "Kompetenzen abgleichen und XYZ-Erfolge formulieren...",
-    "note": "⚡ Fällt unter Integritätsschutz und Google XYZ-Formel. Sie werden nach Fertigstellung automatisch zu Ihrem Live-CV weitergeleitet."
+    "title": "Lebenslauf wird mit KI angepasst...",
+    "modalTitle": "Erstellung Ihres wirkungsvollen Lebenslaufs",
+    "synthesizing": "KI-Anpassung läuft",
+    "stage1": "Anforderungen analysieren und ATS-Schlüsselwörter extrahieren",
+    "stage2": "Erfolge mit der Google XYZ-Formel quantifizieren",
+    "stage3": "Layout & 1-Seiten-Budget kalibrieren",
+    "stage4": "Authentizitätsprüfung: 100 % treu zu Ihrem echten Werdegang",
+    "step1": "Stellenanforderungen analysieren und Schlüsselwörter extrahieren...",
+    "step2": "Erfahrung an Anforderungsprofil anpassen (100 % authentisch)...",
+    "step3": "ATS-optimiertes Markdown und Lückenanalyse generieren...",
+    "defaultStep": "Echte Kompetenzen und XYZ-Erfolge hervorheben...",
+    "note": "⚡ Hebt Ihre echten Erfolge mit der Google XYZ-Formel hervor. Sie werden nach Abschluss automatisch weitergeleitet."
   },
   "status": {
     "ready": "Stellendaten bereit",

@@ -28,12 +28,18 @@
     "noJobPasted": "*Aucune offre collée pour l'instant. Basculez sur 'Modifier le Texte' pour en ajouter une.*"
   },
   "progress": {
-    "title": "Synthèse du CV Adapté par l'IA...",
-    "step1": "Analyse des prérequis et extraction des mots-clés...",
-    "step2": "Croisement avec le profil maître (zéro hallucination)...",
-    "step3": "Génération du Markdown optimisé ATS et du rapport de correspondance...",
-    "defaultStep": "Croisement des compétences et synthèse des réalisations selon la formule XYZ...",
-    "note": "⚡ Application des garde-fous d'intégrité et des métriques Google XYZ. Vous serez redirigé automatiquement vers votre CV dès que la génération sera terminée."
+    "title": "Synthèse du CV adapté avec l'IA...",
+    "modalTitle": "Création de votre CV à fort impact",
+    "synthesizing": "Adaptation IA en cours",
+    "stage1": "Analyse des exigences et extraction des mots-clés ATS",
+    "stage2": "Formulation des réalisations avec la formule Google XYZ",
+    "stage3": "Calibrage de la mise en page sur 1 page",
+    "stage4": "Vérification de l'authenticité : 100 % fidèle à votre parcours réel",
+    "step1": "Analyse des exigences du poste et extraction des mots-clés...",
+    "step2": "Alignement de l'expérience avec l'offre (100 % authentique)...",
+    "step3": "Synthèse du Markdown optimisé ATS et du rapport d'écarts...",
+    "defaultStep": "Mise en valeur de vos compétences réelles et réalisations formule XYZ...",
+    "note": "⚡ Valorisation de vos réalisations réelles avec la formule d'impact Google XYZ. Vous serez redirigé automatiquement dès la fin."
   },
   "status": {
     "ready": "Détails de l'offre prêts",
