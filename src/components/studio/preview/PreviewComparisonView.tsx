@@ -1,15 +1,12 @@
 import React from 'react';
 import { Box, Typography, Chip, useTheme, alpha } from '@mui/material';
 import CompareArrowsRoundedIcon from '@mui/icons-material/CompareArrowsRounded';
+import { useTranslation } from 'react-i18next';
 import { CVRenderer } from '../../CVRenderer';
 import { CVData, ThemeId, PaletteId, FontFamilyId, SpacingDensity, PreviewComparisonViewProps } from '../../../types';
 
 export type { PreviewComparisonViewProps };
 
-/**
- * Side-by-side comparison layout showing Generic Master Dossier vs. AI-Tailored CV.
- * Principle: Single Responsibility (S) - encapsulates dual-sheet comparison presentation.
- */
 export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
   parsedMasterCv,
   parsedCv,
@@ -22,6 +19,7 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
   matchScore,
   keywordsCount,
 }) => {
+  const { t } = useTranslation(['preview', 'gap', 'common']);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
 
@@ -45,19 +43,19 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <CompareArrowsRoundedIcon color="primary" />
           <Typography variant="body2" sx={{ fontWeight: 700 }}>
-            Impact Delta: Base Master Profile vs. AI-Tailored Resume for {companyName || 'Target Company'}
+            {t('preview:navRail.compare', 'Impact Comparison')}: {companyName || 'Target Company'}
           </Typography>
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Chip
-            label={`Match Score: 58% Base ➔ ${matchScore}% Tailored (+${matchScore - 58}%)`}
+            label={`${t('gap:matchScore', 'Match')}: 58% ➔ ${matchScore}% (+${matchScore - 58}%)`}
             color="success"
             size="small"
             sx={{ fontWeight: 800 }}
           />
           <Chip
-            label={`${keywordsCount} Keywords Integrated`}
+            label={`${keywordsCount} ${t('gap:integratedKeywords', 'Keywords Integrated')}`}
             color="primary"
             variant="outlined"
             size="small"
@@ -89,7 +87,7 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
           {/* Left Sheet: Base / Generic CV */}
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Chip
-              label="1. Base Master Dossier (Generic Baseline)"
+              label={`1. ${t('preview:panels.comparison.masterProfile', 'Base Profile (Generic)')}`}
               size="small"
               variant="outlined"
               sx={{ mb: 1, fontWeight: 700 }}
@@ -109,7 +107,7 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
           {/* Right Sheet: Tailored CV */}
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Chip
-              label={`2. Surgical Tailored Resume (${matchScore}% Match)`}
+              label={`2. ${t('preview:panels.comparison.tailoredCv', 'Tailored CV')} (${matchScore}% ${t('gap:matchScore', 'Match')})`}
               size="small"
               color="primary"
               sx={{ mb: 1, fontWeight: 800 }}

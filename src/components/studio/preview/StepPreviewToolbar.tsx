@@ -19,14 +19,11 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
+import { useTranslation } from 'react-i18next';
 import { PreviewViewMode, StepPreviewToolbarProps } from '../../../types';
 
 export type { PreviewViewMode, StepPreviewToolbarProps };
 
-/**
- * Top control bar for Step 4 Preview workspace.
- * Principle: Single Responsibility (S) - focuses exclusively on user actions and view modes.
- */
 export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
   viewMode,
   onViewModeChange,
@@ -41,6 +38,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
   isGenerating,
   onDownloadPdf,
 }) => {
+  const { t } = useTranslation(['preview', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -70,8 +68,8 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
             startIcon={<AutoAwesomeRoundedIcon />}
             sx={{ fontWeight: 700, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 1, sm: 1.5 } }}
           >
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Tailored CV (AI)</Box>
-            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Tailored</Box>
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('preview:panels.comparison.tailoredCv', 'Tailored CV')}</Box>
+            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>{t('preview:panels.comparison.tailoredCv', 'Tailored')}</Box>
           </Button>
           <Button
             variant={viewMode === 'generic' ? 'contained' : 'outlined'}
@@ -79,7 +77,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
             startIcon={<TrackChangesRoundedIcon />}
             sx={{ fontWeight: 600, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 1, sm: 1.5 } }}
           >
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Base Profile</Box>
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('preview:panels.comparison.masterProfile', 'Base Profile')}</Box>
             <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Base</Box>
           </Button>
           <Button
@@ -89,8 +87,8 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
             color="secondary"
             sx={{ fontWeight: 700, fontSize: { xs: '0.72rem', sm: '0.78rem' }, px: { xs: 1, sm: 1.5 } }}
           >
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Comparison</Box>
-            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Compare</Box>
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('preview:navRail.compare', 'Comparison')}</Box>
+            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>{t('preview:navRail.compare', 'Compare')}</Box>
           </Button>
         </ButtonGroup>
 
@@ -108,7 +106,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
       {/* Right: Quick Tools + Action Buttons */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
         {!isEditingMarkdown ? (
-          <Tooltip title="Edit Markdown">
+          <Tooltip title={t('common:actions.edit', 'Edit Markdown')}>
             <IconButton
               onClick={onToggleMarkdown}
               size="small"
@@ -129,7 +127,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Save & Return to Sheet">
+          <Tooltip title={t('common:actions.save', 'Save & Return to Sheet')}>
             <IconButton
               onClick={onSaveAndExitMarkdown}
               size="small"
@@ -161,7 +159,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           onClick={onSaveVersion}
           sx={{ fontSize: { xs: '0.72rem', sm: '0.78rem' }, fontWeight: 600, display: { xs: 'none', sm: 'inline-flex' } }}
         >
-          {savedSuccess ? 'Saved!' : 'Save Version'}
+          {savedSuccess ? t('common:actions.done', 'Saved!') : t('common:actions.save', 'Save Version')}
         </Button>
 
         <Button
@@ -173,7 +171,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           disabled={isGenerating}
           sx={{ fontSize: { xs: '0.72rem', sm: '0.78rem' }, fontWeight: 700, display: { xs: 'none', md: 'inline-flex' } }}
         >
-          {isGenerating ? 'Synthesizing...' : 'Re-Tailor'}
+          {isGenerating ? t('target:actions.tailoring', 'Synthesizing...') : t('target:actions.tailorNow', 'Re-Tailor')}
         </Button>
 
         <Button
@@ -184,7 +182,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           onClick={onDownloadPdf}
           sx={{ fontWeight: 800, fontSize: { xs: '0.75rem', sm: '0.78rem' }, px: { xs: 1.5, sm: 2 } }}
         >
-          PDF Export
+          {t('preview:toolbar.exportPdf', 'PDF Export')}
         </Button>
       </Box>
     </Paper>

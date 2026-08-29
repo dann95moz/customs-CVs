@@ -29,17 +29,15 @@ import { DesignFormattingPanel } from './preview/DesignFormattingPanel';
 import { PreviewQualityAuditPanel } from './preview/PreviewQualityAuditPanel';
 import { PreviewAuditGapDrawer } from './preview/PreviewAuditGapDrawer';
 import { PreviewComparisonView } from './preview/PreviewComparisonView';
+import { useTranslation } from 'react-i18next';
 import { DOCUMENT_DIMENSIONS } from '../../theme/dimensions';
 
 export type { StepPreviewProps };
 
 const A4_PAGE_PX = DOCUMENT_DIMENSIONS.pageHeightPx; // Exact A4 height at 96 DPI
 
-/**
- * Step 3: Master CV Preview & PDF Export Studio.
- * Composes dedicated components adhering to Single Responsibility and DRY.
- */
 export const StepPreview: React.FC<StepPreviewProps> = () => {
+  const { t } = useTranslation(['preview', 'target', 'common']);
   const muiTheme = useTheme();
   const { handleDownloadPdf } = usePrintPdf();
   const { isPromptOpen, triggerPrompt, dismissPrompt, openGitHubAndDismiss } = useGitHubStarPrompt();
@@ -274,7 +272,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                 {/* Visual Page Break Marker at A4 limit */}
                 {sheetHeight > A4_PAGE_PX - 30 && (
                   <div className="page-break-guide" style={{ top: `${A4_PAGE_PX}px` }}>
-                    <span>✂️ Page 1 Boundary (Standard A4 Format)</span>
+                    <span>✂️ {t('preview:toolbar.page', 'Page 1 Boundary (Standard A4 Format)')}</span>
                   </div>
                 )}
               </div>
@@ -302,12 +300,12 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               onClick={() => setWizardStep('target')}
               size="small"
             >
-              Back to Target Vacancy (Step 2)
+              {t('target:actions.backToProfile', 'Back to Target Vacancy (Step 2)')}
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
-                Estimated Length: <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>{estimatedPages} {estimatedPages === 1 ? 'Page (Standard A4)' : 'Pages'}</strong> • Height: {sheetHeight}px
+                {t('preview:toolbar.pageFit', 'Estimated Length')}: <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>{estimatedPages} {estimatedPages === 1 ? 'Page (Standard A4)' : 'Pages'}</strong> • Height: {sheetHeight}px
               </Typography>
             </Box>
           </Paper>

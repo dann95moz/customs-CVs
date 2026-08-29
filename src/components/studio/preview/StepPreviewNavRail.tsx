@@ -4,20 +4,18 @@ import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import FormatPaintRoundedIcon from '@mui/icons-material/FormatPaintRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import SpellcheckRoundedIcon from '@mui/icons-material/SpellcheckRounded';
+import { useTranslation } from 'react-i18next';
 import { PreviewSidePanelType, StepPreviewNavRailProps } from '../../../types';
 
 export type { PreviewSidePanelType, StepPreviewNavRailProps };
 
-/**
- * Vertical tool navigation rail for Step 4 Preview workspace.
- * Principle: Single Responsibility (S) - provides navigation between preview side panels.
- */
 export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
   activeSidePanel,
   onToggleSidePanel,
   isEditingMarkdown,
   onToggleMarkdown,
 }) => {
+  const { t } = useTranslation(['preview', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -78,7 +76,7 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
             textAlign: 'center'
           }}
         >
-          Templates
+          {t('preview:navRail.templates', 'Templates')}
         </Typography>
       </Box>
 
@@ -124,13 +122,11 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
             lineHeight: 1.1
           }}
         >
-          Design &amp;<br />formatting
+          {t('preview:navRail.design', 'Design & Format')}
         </Typography>
       </Box>
 
-
-
-      {/* Spell Check / Audit Rail Button */}
+      {/* Audit Rail Button */}
       <Box
         onClick={() => onToggleSidePanel('audit')}
         sx={{
@@ -172,7 +168,7 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
             lineHeight: 1.1
           }}
         >
-          Spell check<br />&amp; Audit
+          {t('preview:navRail.audit', 'Quality & Gaps')}
         </Typography>
       </Box>
     </Box>

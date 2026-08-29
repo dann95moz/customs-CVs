@@ -15,15 +15,12 @@ import {
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
+import { useTranslation } from 'react-i18next';
 import { PaletteId, FontFamilyId, SpacingDensity, DesignFormattingPanelProps } from '../../../types';
 import { getAllPalettes } from '../../../constants/palettes';
 
 export type { DesignFormattingPanelProps };
 
-/**
- * Slide-out panel for brand colors, typography, density, and page budget calculation.
- * Principle: Single Responsibility (S) - controls document styling options and length calibration.
- */
 export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
   customColor,
   onCustomColorChange,
@@ -38,6 +35,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
   estimatedPages,
   onClose,
 }) => {
+  const { t } = useTranslation(['preview', 'common']);
   const muiTheme = useTheme();
   const palettes = getAllPalettes();
 
@@ -45,7 +43,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
     <Box sx={{ p: 2.5 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h6" sx={{ fontWeight: 800, color: 'text.primary' }}>
-          Design &amp; formatting
+          {t('preview:panels.design.title', 'Design & Formatting')}
         </Typography>
         <IconButton size="small" onClick={onClose}>
           <CloseRoundedIcon />
@@ -54,10 +52,10 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       {/* Section 1: Brand Color Picker */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>
-        Brand Color &amp; Custom HEX
+        {t('preview:panels.design.primaryColor', 'Accent Color')}
       </Typography>
       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5, lineHeight: 1.4 }}>
-        Dynamically styles headers, sidebars, monogram badges, lines and pills.
+        {t('preview:panels.design.subtitle', 'Customize typography, spacing, and styling tokens')}
       </Typography>
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
@@ -113,7 +111,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       {/* Curated Accent Palettes */}
       <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 1, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-        Or Choose a Curated Palette
+        {t('preview:panels.templates.palette', 'Color Palette')}
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.8, maxHeight: 180, overflowY: 'auto', pr: 0.5, mb: 2.5 }}>
         {palettes.map((p) => {
@@ -166,10 +164,10 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       {/* Section 2: Typography Selection */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>
-        Document Typography
+        {t('preview:panels.design.fontFamily', 'Font Family')}
       </Typography>
       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.2, lineHeight: 1.4 }}>
-        ATS-safe font families calibrated for executive clarity.
+        ATS-safe typography calibrated for executive clarity.
       </Typography>
 
       <ToggleButtonGroup
@@ -198,10 +196,10 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       {/* Section 3: Spacing & Content Density */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>
-        Content Spacing &amp; Density
+        {t('preview:panels.design.sectionSpacing', 'Section Spacing')}
       </Typography>
       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.2, lineHeight: 1.4 }}>
-        Adjust padding and line height to guarantee a strict 1-page fit.
+        Adjust padding and line height to guarantee optimal fit.
       </Typography>
 
       <ToggleButtonGroup
@@ -227,7 +225,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       {/* Section 4: Page Budget & Scale Meter */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1 }}>
-        Page Budget &amp; Scale
+        {t('preview:toolbar.pageFit', 'Page Budget & Scale')}
       </Typography>
       <Paper variant="outlined" sx={{ p: 1.5, borderRadius: '8px' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>

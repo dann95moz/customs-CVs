@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import FormatPaintRoundedIcon from '@mui/icons-material/FormatPaintRounded';
+import { useTranslation } from 'react-i18next';
 import { ThemeId, PaletteId, TemplatesPanelProps } from '../../../types';
 import { getAllPalettes } from '../../../constants/palettes';
 import { getAllTemplates } from '../../../templates';
@@ -16,10 +17,6 @@ import { TemplateThumbnailMiniature } from '../TemplateThumbnailMiniature';
 
 export type { TemplatesPanelProps };
 
-/**
- * Slide-out panel for browsing and picking CV templates and accent palettes.
- * Principle: Single Responsibility (S) - dedicated template selection panel.
- */
 export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
   theme,
   onSelectTheme,
@@ -29,6 +26,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
   onCustomColorChange,
   onClose,
 }) => {
+  const { t } = useTranslation(['preview', 'common']);
   const muiTheme = useTheme();
   const palettes = getAllPalettes();
   const allTemplates = getAllTemplates();
@@ -38,7 +36,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
       {/* Header: Title + Close Button */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h5" sx={{ fontWeight: 800, color: 'text.primary', letterSpacing: -0.5 }}>
-          Templates
+          {t('preview:panels.templates.title', 'Templates')}
         </Typography>
         <IconButton
           size="small"
@@ -64,7 +62,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
           }}
         >
           {/* Custom Color Swatch */}
-          <Tooltip title={`Custom Brand Color (${customColor}) — Click to customize`}>
+          <Tooltip title={`${t('preview:panels.design.primaryColor', 'Accent Color')} (${customColor})`}>
             <Box
               component="label"
               sx={{
@@ -134,10 +132,10 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
       {/* Subtitle: All templates */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'text.primary' }}>
-          All templates
+          {t('preview:panels.templates.all', 'All templates')}
         </Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-          {allTemplates.length} designs
+          {allTemplates.length} {t('preview:navRail.templates', 'designs')}
         </Typography>
       </Box>
 
