@@ -2,56 +2,87 @@
 trigger: always_on
 ---
 
-1. Principios de diseño
-SOLID
-S — Single Responsibility: cada componente, hook o función hace una sola cosa. Si un componente maneja fetching, lógica de negocio y presentación a la vez, sepáralo en hook + componente contenedor + componente de UI.
-O — Open/Closed: prefiere composición y props/slots sobre modificar código existente. Extiende comportamiento vía props, render props o composición de componentes, no añadiendo flags booleanos que ramifiquen la lógica interna indefinidamente.
-L — Liskov Substitution: si se definen variantes de un componente (ej. Button, IconButton), deben ser intercambiables sin romper el contrato de props ni el comportamiento esperado por quien los consume.
-I — Interface Segregation: no fuerces a un componente a recibir props que no usa. Divide interfaces grandes en tipos más pequeños y específicos.
-D — Dependency Inversion: los componentes de UI no deben depender directamente de implementaciones concretas (fetch, SDKs, storage). Inyecta dependencias vía props, contexto o hooks abstraídos (ej. useAuthService() en vez de llamar a un SDK directamente dentro del componente).
-DRY (Don't Repeat Yourself)
-Antes de escribir código nuevo, busca si ya existe una utilidad, hook o componente que resuelva el problema.
-Extrae lógica repetida (validaciones, formateo, llamadas a API) a hooks (useX) o funciones puras en utils/ o lib/.
-No dupliques tipos: reutiliza o compone tipos con Pick, Omit, Partial, etc., en vez de redefinir estructuras similares.
-Excepción válida: duplicar 2-3 líneas simples es preferible a crear una abstracción prematura que acople módulos que deberían evolucionar por separado (evita el "DRY prematuro").
-KISS y YAGNI
-Prefiere la solución más simple que resuelva el problema actual.
-No añadas configuración, props opcionales o capas de abstracción para casos de uso hipotéticos que no se han pedido.
-TypeScript estricto: nunca uses any. Si el tipo es genuinamente desconocido, usa unknown y haz narrowing explícito.
-Componentes funcionales con hooks; nada de class components salvo que el proyecto ya los use extensivamente.
-Props tipadas con interface (no type) salvo para uniones, intersecciones o tipos utilitarios.
-Nombrado:
-Componentes: PascalCase.
-Hooks: useCamelCase.
-Funciones/variables: camelCase.
-Constantes globales: UPPER_SNAKE_CASE.
-Un componente por archivo, nombre de archivo = nombre del componente.
-Evita prop drilling: si una prop atraviesa más de 2-3 niveles, usa Context o un state manager (Zustand, Redux, Jotai — el que ya use el proyecto).
-Manejo de estado: estado local con useState/useReducer; estado derivado nunca se guarda en estado, se calcula en el render o con useMemo.
-Efectos secundarios (useEffect) solo para sincronización con sistemas externos, nunca para calcular estado derivado o encadenar setStates.
-eparación clara por capas:
-components/ — UI pura, sin lógica de negocio ni fetching.
-hooks/ — lógica reutilizable y stateful.
-services/ o api/ — llamadas a APIs externas, aisladas del resto.
-utils/ o lib/ — funciones puras sin efectos secundarios.
-types/ — tipos e interfaces compartidos.
-Los componentes de presentación no importan directamente de services/; reciben datos vía props o hooks.
-Evita archivos "god object" (utils.ts con 500 líneas de todo). Divide por dominio.
-Cada función pública/exportada debe ser fácil de testear de forma aislada (inputs claros, sin dependencias ocultas de globals o singletons).
-Nombres descriptivos > comentarios. Solo comenta el "por qué", nunca el "qué" (el código ya dice qué hace).
-Maneja errores explícitamente: no dejes promesas sin .catch/try-catch, ni ignores errores de tipado con // @ts-ignore sin justificación.
-Accesibilidad (a11y): usa elementos semánticos, atributos aria-* cuando corresponda, y asegúrate de que todo sea navegable por teclado.
-Rendimiento: memoiza (useMemo, useCallback, React.memo) solo cuando hay una razón medible, no por defecto en todo.
-Antes de generar código, identifica si ya existe una abstracción similar en el proyecto (componente, hook, util) y reutilízala.
-Al proponer una solución, explica brevemente qué principio(s) de arriba aplica y por qué (una línea, no un ensayo).
-Si una petición del usuario entra en conflicto con estos principios (ej. "mete todo en un solo componente gigante"), adviértelo brevemente y ofrece la alternativa recomendada, pero respeta la decisión final del usuario si insiste.
-Nunca sacrifiques legibilidad por "cleverness". Código simple y explícito
+# Coding Rules & Architectural Standards
 
-código denso e ingenioso.
+## 1. Core Design Principles
 
-Si generas o modificas múltiples archivos, mantenlos consistentes entre sí (mismos imports, convenciones de nombrado, estilo).
-Los archivos de estilo deben tener centralizados los colores y dimensiones (tamaños, bordes, espaciados) de forma que sean escalables y reutilizables, ya sea en tokens de diseño o en los temas de MUI.
-En caso de tener cambios arquitectonicos es necesario revisar el readme y actualizarlo con la documentación pertinente.
+### SOLID
+- **S — Single Responsibility**: Each component, hook, or function must have one single responsibility. If a component handles data fetching, business logic, and presentation simultaneously, decompose it into a custom hook + container + presentational UI component.
+- **O — Open/Closed**: Favor composition and props/slots over modifying existing stable code. Extend behavior via props, render props, or component composition rather than adding endless boolean flags that branch internal logic.
+- **L — Liskov Substitution**: Component variants (e.g., `Button`, `IconButton`, `Chip`) must be interchangeable without breaking prop contracts or consuming component expectations.
+- **I — Interface Segregation**: Do not force components to receive props they do not use. Split broad interfaces into focused, granular types.
+- **D — Dependency Inversion**: UI components must not depend directly on concrete infrastructure implementations (raw `fetch`, external SDKs, `localStorage`). Inject dependencies via props, Context, or abstracted hooks (e.g., `useAuthService()` instead of calling an SDK directly within a view).
 
+### DRY (Don't Repeat Yourself)
+- Before authoring new code, check if an existing utility, hook, or component already solves the problem.
+- Extract repeated logic (validation, formatting, API calls, parsing) into custom hooks (`useX`) or pure functions in `utils/` or `lib/`.
+- Reuse and compose types with TypeScript utility types (`Pick`, `Omit`, `Partial`, `Record`) instead of duplicating structural definitions.
+- *Valid exception*: Duplicating 2–3 trivial lines is preferable to creating a premature abstraction that tightly couples distinct domains.
 
-Todo el texto hardcoded debe estar en inglés
+### KISS & YAGNI
+- Prefer the simplest solution that cleanly solves the current requirement.
+- Do not introduce speculative configurations, unused optional props, or unnecessary abstraction layers for hypothetical future use cases.
+- Simple, explicit, and readable code is always superior to clever, dense abstractions.
+
+---
+
+## 2. TypeScript & React Standards
+
+- **Strict TypeScript**: Never use `any`. If a type is genuinely unknown, use `unknown` and perform explicit type narrowing/guards.
+- **Functional Components**: Use functional components with React Hooks. Do not use class components.
+- **Prop Typing**: Type props using `interface` (prefer `interface` over `type` except for unions, intersections, or utility transformations).
+- **Naming Conventions**:
+  - **Components / Types / Interfaces**: `PascalCase` (e.g., `StepPreviewToolbar.tsx`, `CVRenderer.tsx`, `StepPreviewProps`).
+  - **Hooks**: `useCamelCase` (e.g., `useCvLiveEdit.ts`, `usePrintPdf.ts`).
+  - **Functions / Variables / Methods**: `camelCase` (e.g., `sanitizeFileName`, `handleDownloadPdf`).
+  - **Global Constants / Enums**: `UPPER_SNAKE_CASE` (e.g., `APP_LINKS`, `DOCUMENT_DIMENSIONS`).
+  - **File Names**: Match the primary export (one component per file, filename = component name).
+- **State Management**:
+  - Keep state as local as possible (`useState`, `useReducer`).
+  - **Never store derived state in `useState`**. Calculate derived data during render or with `useMemo`.
+  - Avoid prop drilling deeper than 2–3 levels; use React Context or the project's state manager (Zustand).
+  - Use `useEffect` strictly for synchronizing with external systems or DOM subscriptions—never for calculating derived state or chaining multiple `setState` calls.
+
+---
+
+## 3. Layered Project Architecture
+
+Maintain clean layer separation across the codebase:
+- `components/` — Pure UI presentation and layout, devoid of direct API/SDK integration.
+- `hooks/` — Reusable stateful logic, browser APIs, and domain hooks.
+- `core/` / `services/` — AI engines, markdown parsers, print engines, external APIs.
+- `store/` — Zustand global application stores and domain selectors.
+- `utils/` / `lib/` — Pure utility functions without side effects.
+- `types/` — Shared interfaces, domain models, and prop contracts.
+- `theme/` / `styles/` — Design tokens, MUI theme configurations, dimensions, and global CSS.
+
+*Rule*: Presentational components must receive data and handlers via props or custom hooks, never by importing infrastructure services directly. Avoid "god object" files (e.g., a single 500-line `utils.ts`); split by domain.
+
+---
+
+## 4. Styling, Theming & Responsiveness
+
+- **Centralized Design System**: Centralize colors, dimensions, borders, and spacing tokens in `src/styles/tokens.css`, `src/theme/dimensions.ts`, or MUI theme overrides (`src/theme/theme.ts`).
+- **Responsive Mobile-First**:
+  - All views and toolbars must support mobile (`xs`), tablet (`sm`), and desktop (`md`/`lg`) viewports cleanly.
+  - Group and space toolbars to prevent unintended multi-line wrapping on mobile screens.
+- **Document A4 Standards**:
+  - Maintain strict print and PDF dimensions (A4 height standard: 1123px at 96 DPI, width: 794px).
+  - Use responsive scaling (`scale(autoScale)`) for mobile canvas viewing.
+
+---
+
+## 5. Internationalization & Text Guidelines
+
+- **English Baseline**: All source code, identifiers, comments, logs, and hardcoded fallback strings must be in **English**.
+- **User-Facing Strings**: All UI text presented to the user must be localized using `react-i18next` with keys stored across all supported locales (`en`, `es`, `de`, `fr`, `it`).
+- When introducing or altering a localization key, maintain parity across all 5 locale files in `src/i18n/locales/`.
+
+---
+
+## 6. Error Handling, Quality & Accessibility (a11y)
+
+- **Explicit Error Handling**: Always handle promises with `try/catch` or `.catch()`. Do not ignore typing errors with `// @ts-ignore` without documented justification.
+- **Accessibility**: Use semantic HTML elements (`<header>`, `<main>`, `<nav>`, `<section>`), proper ARIA attributes, descriptive button tooltips, and keyboard navigation support.
+- **Performance**: Memoize (`useMemo`, `useCallback`, `React.memo`) only when there is a measurable rendering or computation cost.
+- **Documentation**: Update [README.md](file:///c:/Users/LeGo/Documents/customs%20CVs/README.md) whenever architectural changes, new CLI commands, or core workflows are modified.
