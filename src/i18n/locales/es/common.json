@@ -52,6 +52,17 @@
     "error": "Aviso de Generación de IA",
     "step": "Paso {{number}}"
   },
+  "loading": {
+    "workspace": "Preparando tu estudio de CV...",
+    "profile": "Cargando perfil y datos profesionales...",
+    "target": "Cargando espacio de vacante objetivo...",
+    "preview": "Renderizando vista previa de alta fidelidad...",
+    "audit": "Calibrando métricas de auditoría ATS...",
+    "gap": "Analizando estrategia y correspondencia...",
+    "history": "Recuperando historial de versiones...",
+    "settings": "Cargando preferencias del estudio...",
+    "generic": "Cargando vista..."
+  },
   "safeguard": {
     "tooltip": "Salvaguarda de integridad activa: Garantiza que los currículums adaptados se mantengan 100% fieles a tu experiencia real sin alucinar habilidades ni métricas falsas."
   },

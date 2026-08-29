@@ -52,6 +52,17 @@
     "error": "KI-Generierungshinweis",
     "step": "Schritt {{number}}"
   },
+  "loading": {
+    "workspace": "Bereite Lebenslauf-Studio vor...",
+    "profile": "Lade Profil- und Karrieredaten...",
+    "target": "Lade Zielstellen-Arbeitsbereich...",
+    "preview": "Erstelle hochauflösende Vorschau...",
+    "audit": "Kalibriere ATS-Audit-Metriken...",
+    "gap": "Analysiere Eignung und Gap-Strategie...",
+    "history": "Lade Bewerbungsversionen...",
+    "settings": "Lade Studio-Einstellungen...",
+    "generic": "Lade Ansicht..."
+  },
   "safeguard": {
     "tooltip": "Integritätsschutz aktiv: Garantiert, dass angepasste Lebensläufe zu 100% Ihrer tatsächlichen Erfahrung entsprechen, ohne Erfindung von Fähigkeiten oder falschen Metriken."
   },

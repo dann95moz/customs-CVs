@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import {
   useResumeStore,
   useAuditReport,
@@ -7,16 +7,9 @@ import {
 } from '../store';
 import { StudioNavbar } from '../components/studio/StudioNavbar';
 import { WizardStepper } from '../components/studio/WizardStepper';
-import { StepMasterData } from '../components/studio/StepMasterData';
-import { StepTargetJob } from '../components/studio/StepTargetJob';
-import { StepPreview } from '../components/studio/StepPreview';
-import { QualityAuditView } from '../components/studio/QualityAuditView';
-import { GapAnalysisView } from '../components/studio/GapAnalysisView';
-import { SettingsView } from '../components/studio/SettingsView';
-import { ApplicationsHistoryView } from '../components/studio/ApplicationsHistoryView';
 import { LockedViewCard } from '../components/studio/LockedViewCard';
 import { SynthesisErrorBanner } from '../components/studio/SynthesisErrorBanner';
-import { WelcomeLandingView } from '../components/landing/WelcomeLandingView';
+import { StudioSkeleton } from '../components/studio/StudioSkeleton';
 import {
   BLANK_MASTER_DATA,
   DEMO_MASTER_DATA,
@@ -24,6 +17,32 @@ import {
 } from '../constants/templates';
 import { useTranslation } from 'react-i18next';
 import './App.css';
+
+// Dynamically loaded tab views and wizard steps
+const WelcomeLandingView = lazy(() =>
+  import('../components/landing/WelcomeLandingView').then((m) => ({ default: m.WelcomeLandingView }))
+);
+const StepMasterData = lazy(() =>
+  import('../components/studio/StepMasterData').then((m) => ({ default: m.StepMasterData }))
+);
+const StepTargetJob = lazy(() =>
+  import('../components/studio/StepTargetJob').then((m) => ({ default: m.StepTargetJob }))
+);
+const StepPreview = lazy(() =>
+  import('../components/studio/StepPreview').then((m) => ({ default: m.StepPreview }))
+);
+const QualityAuditView = lazy(() =>
+  import('../components/studio/QualityAuditView').then((m) => ({ default: m.QualityAuditView }))
+);
+const GapAnalysisView = lazy(() =>
+  import('../components/studio/GapAnalysisView').then((m) => ({ default: m.GapAnalysisView }))
+);
+const ApplicationsHistoryView = lazy(() =>
+  import('../components/studio/ApplicationsHistoryView').then((m) => ({ default: m.ApplicationsHistoryView }))
+);
+const SettingsView = lazy(() =>
+  import('../components/studio/SettingsView').then((m) => ({ default: m.SettingsView }))
+);
 
 export const App: React.FC = () => {
   const { t } = useTranslation(['audit', 'gap', 'common', 'target']);
@@ -76,44 +95,56 @@ export const App: React.FC = () => {
       {/* Main Workspace Body */}
       <div className="studio-body">
         {/* VIEW: WELCOME & ONBOARDING LANDING */}
-        {activeTab === 'landing' && <WelcomeLandingView />}
+        {activeTab === 'landing' && (
+          <Suspense fallback={<StudioSkeleton variant="landing" />}>
+            <WelcomeLandingView />
+          </Suspense>
+        )}
 
         {/* WIZARD FLOW: 3 STREAMLINED STEPS */}
         {activeTab === 'wizard' && (
           <>
             {wizardStep === 'profile' && (
-              <StepMasterData
-                content={masterData}
-                onChange={setMasterData}
-                onLoadSample={() => setMasterData(DEMO_MASTER_DATA)}
-                onResetTemplate={() => setMasterData(BLANK_MASTER_DATA)}
-                onNextStep={() => setWizardStep('target')}
-              />
+              <Suspense fallback={<StudioSkeleton variant="masterData" />}>
+                <StepMasterData
+                  content={masterData}
+                  onChange={setMasterData}
+                  onLoadSample={() => setMasterData(DEMO_MASTER_DATA)}
+                  onResetTemplate={() => setMasterData(BLANK_MASTER_DATA)}
+                  onNextStep={() => setWizardStep('target')}
+                />
+              </Suspense>
             )}
 
             {wizardStep === 'target' && (
-              <StepTargetJob
-                content={targetJob}
-                onChange={setTargetJob}
-                companyName={companyName}
-                onCompanyChange={setCompanyName}
-                targetRole={targetRole}
-                onRoleChange={setTargetRole}
-                onLoadSample={() => {
-                  setTargetJob(DEMO_TARGET_JOB);
-                  setCompanyName('Stripe');
-                  setTargetRole('Senior Frontend Engineer');
-                }}
-                onPrevStep={() => setWizardStep('profile')}
-                onNextStep={() => setWizardStep('preview')}
-                onGenerate={handleGenerate}
-                isGenerating={isGenerating}
-                generationStep={generationStep}
-                hasGeneratedCv={hasGeneratedCv}
-              />
+              <Suspense fallback={<StudioSkeleton variant="targetJob" />}>
+                <StepTargetJob
+                  content={targetJob}
+                  onChange={setTargetJob}
+                  companyName={companyName}
+                  onCompanyChange={setCompanyName}
+                  targetRole={targetRole}
+                  onRoleChange={setTargetRole}
+                  onLoadSample={() => {
+                    setTargetJob(DEMO_TARGET_JOB);
+                    setCompanyName('Stripe');
+                    setTargetRole('Senior Frontend Engineer');
+                  }}
+                  onPrevStep={() => setWizardStep('profile')}
+                  onNextStep={() => setWizardStep('preview')}
+                  onGenerate={handleGenerate}
+                  isGenerating={isGenerating}
+                  generationStep={generationStep}
+                  hasGeneratedCv={hasGeneratedCv}
+                />
+              </Suspense>
             )}
 
-            {(wizardStep === 'preview' || wizardStep === 'tailor') && <StepPreview />}
+            {(wizardStep === 'preview' || wizardStep === 'tailor') && (
+              <Suspense fallback={<StudioSkeleton variant="preview" />}>
+                <StepPreview />
+              </Suspense>
+            )}
           </>
         )}
 
@@ -121,10 +152,12 @@ export const App: React.FC = () => {
         {activeTab === 'audit' && (
           <div className="audit-workspace-layout">
             {hasGeneratedCv ? (
-              <QualityAuditView
-                report={auditReport}
-                onRefresh={() => setCvMarkdown((prev: string) => `${prev}`)}
-              />
+              <Suspense fallback={<StudioSkeleton variant="audit" />}>
+                <QualityAuditView
+                  report={auditReport}
+                  onRefresh={() => setCvMarkdown((prev: string) => `${prev}`)}
+                />
+              </Suspense>
             ) : (
               <LockedViewCard
                 iconType="gauge"
@@ -173,44 +206,50 @@ export const App: React.FC = () => {
                 onAction={handleGenerate}
               />
             ) : (
-              <GapAnalysisView
-                gapMarkdown={gapMarkdown}
-                matchScore={gapInfo.matchScore}
-                keywords={gapInfo.keywords}
-                companyName={companyName}
-                targetRole={targetRole}
-                onDownload={() => {
-                  const blob = new Blob([gapMarkdown], { type: 'text/markdown;charset=utf-8;' });
-                  const url = URL.createObjectURL(blob);
-                  const link = document.createElement('a');
-                  link.href = url;
-                  link.download = `Gap_Analysis_${companyName || 'Target'}.md`;
-                  link.click();
-                  URL.revokeObjectURL(url);
-                }}
-              />
+              <Suspense fallback={<StudioSkeleton variant="gap" />}>
+                <GapAnalysisView
+                  gapMarkdown={gapMarkdown}
+                  matchScore={gapInfo.matchScore}
+                  keywords={gapInfo.keywords}
+                  companyName={companyName}
+                  targetRole={targetRole}
+                  onDownload={() => {
+                    const blob = new Blob([gapMarkdown], { type: 'text/markdown;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `Gap_Analysis_${companyName || 'Target'}.md`;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                  }}
+                />
+              </Suspense>
             )}
           </div>
         )}
 
         {/* VIEW: APPLICATIONS & CV VERSIONS HISTORY */}
         {activeTab === 'history' && (
-          <div className="history-workspace-layout" style={{ height: '100%' }}>
-            <ApplicationsHistoryView />
-          </div>
+          <Suspense fallback={<StudioSkeleton variant="history" />}>
+            <div className="history-workspace-layout" style={{ height: '100%' }}>
+              <ApplicationsHistoryView />
+            </div>
+          </Suspense>
         )}
 
         {/* VIEW: SETTINGS & RULES */}
         {activeTab === 'settings' && (
-          <div className="settings-workspace-layout">
-            <SettingsView
-              settings={providerSettings}
-              onSettingsChange={setProviderSettings}
-              rules={rules}
-              onRulesChange={setRules}
-              onResetDefaults={handleResetWorkspace}
-            />
-          </div>
+          <Suspense fallback={<StudioSkeleton variant="settings" />}>
+            <div className="settings-workspace-layout">
+              <SettingsView
+                settings={providerSettings}
+                onSettingsChange={setProviderSettings}
+                rules={rules}
+                onRulesChange={setRules}
+                onResetDefaults={handleResetWorkspace}
+              />
+            </div>
+          </Suspense>
         )}
       </div>
 

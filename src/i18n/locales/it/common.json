@@ -52,6 +52,17 @@
     "error": "Avviso Generazione IA",
     "step": "Passo {{number}}"
   },
+  "loading": {
+    "workspace": "Preparazione dello studio CV...",
+    "profile": "Caricamento profilo ed esperienze...",
+    "target": "Caricamento della posizione target...",
+    "preview": "Rendering anteprima ad alta fedeltà...",
+    "audit": "Calibrazione delle metriche audit ATS...",
+    "gap": "Analisi della corrispondenza e strategia...",
+    "history": "Recupero delle versioni candidature...",
+    "settings": "Caricamento preferenze dello studio...",
+    "generic": "Caricamento vista..."
+  },
   "safeguard": {
     "tooltip": "Protezione di integrità attiva: Garantisce che i curriculum personalizzati restino fedeli al 100% alla tua vera esperienza senza allucinazioni o metriche inventate."
   },

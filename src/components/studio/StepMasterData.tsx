@@ -27,12 +27,16 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { extractCandidateName, parseCvMarkdownToData } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
-import { GuidedProfileForm } from './GuidedProfileForm';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { ButtonGroup } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { StepMasterDataProps } from '../../types';
+import { StudioSkeleton } from './StudioSkeleton';
+
+const GuidedProfileForm = React.lazy(() =>
+  import('./GuidedProfileForm').then((m) => ({ default: m.GuidedProfileForm }))
+);
 
 export type { StepMasterDataProps };
 
@@ -258,7 +262,9 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
 
           {editMode === 'guided' ? (
             <Box sx={{ flex: 1, overflowY: 'auto', maxHeight: 'calc(100vh - 350px)' }}>
-              <GuidedProfileForm markdownContent={content} onChange={onChange} />
+              <React.Suspense fallback={<StudioSkeleton variant="guidedForm" />}>
+                <GuidedProfileForm markdownContent={content} onChange={onChange} />
+              </React.Suspense>
             </Box>
           ) : (
             <Box

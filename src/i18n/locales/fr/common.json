@@ -52,6 +52,17 @@
     "error": "Avis de Génération IA",
     "step": "Étape {{number}}"
   },
+  "loading": {
+    "workspace": "Préparation de votre studio de CV...",
+    "profile": "Chargement du profil et de l'expérience...",
+    "target": "Chargement de l'offre ciblée...",
+    "preview": "Génération de l'aperçu haute fidélité...",
+    "audit": "Calibrage des métriques d'audit ATS...",
+    "gap": "Analyse de stratégie et de correspondance...",
+    "history": "Récupération de l'historique des versions...",
+    "settings": "Chargement des préférences du studio...",
+    "generic": "Chargement de la vue..."
+  },
   "safeguard": {
     "tooltip": "Garde-fou d'intégrité actif : Garantit que les CV adaptés restent 100% fidèles à votre expérience réelle, sans halluciner de compétences ni de métriques fictives."
   },

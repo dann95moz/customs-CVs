@@ -52,6 +52,17 @@
     "error": "AI Generation Notice",
     "step": "Step {{number}}"
   },
+  "loading": {
+    "workspace": "Preparing your resume studio...",
+    "profile": "Preparing profile & career data...",
+    "target": "Loading job matching workspace...",
+    "preview": "Rendering high-fidelity preview...",
+    "audit": "Calibrating ATS audit metrics...",
+    "gap": "Analyzing skill match & gap strategy...",
+    "history": "Retrieving application versions...",
+    "settings": "Loading studio preferences...",
+    "generic": "Loading view..."
+  },
   "safeguard": {
     "tooltip": "Integrity safeguard active: Guarantees tailored resumes stay 100% faithful to your real experience without hallucinating skills or fake metrics."
   },

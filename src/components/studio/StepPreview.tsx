@@ -18,20 +18,33 @@ import {
 } from '../../store';
 import { CVRenderer } from '../CVRenderer';
 import { CvLiveEditProvider } from './preview/CvLiveEditContext';
-import { SplitMarkdownEditor } from './SplitMarkdownEditor';
 import { extractCandidateName, sanitizeFileName } from '../../core/parser';
 import { getTemplateMetadata } from '../../templates';
 import { usePrintPdf } from '../../hooks/usePrintPdf';
 import { useGitHubStarPrompt } from '../../hooks/useGitHubStarPrompt';
-import { GitHubStarToast } from './GitHubStarToast';
 import { StepPreviewToolbar } from './preview/StepPreviewToolbar';
 import { StepPreviewNavRail } from './preview/StepPreviewNavRail';
 import { PreviewSidePanelType, StepPreviewProps } from '../../types';
-import { TemplatesPanel } from './preview/TemplatesPanel';
-import { DesignFormattingPanel } from './preview/DesignFormattingPanel';
-import { PreviewAuditGapDrawer } from './preview/PreviewAuditGapDrawer';
 import { useTranslation } from 'react-i18next';
 import { DOCUMENT_DIMENSIONS } from '../../theme/dimensions';
+import { StudioSkeleton } from './StudioSkeleton';
+
+// Dynamically loaded preview sidebars and heavy editors
+const SplitMarkdownEditor = React.lazy(() =>
+  import('./SplitMarkdownEditor').then((m) => ({ default: m.SplitMarkdownEditor }))
+);
+const TemplatesPanel = React.lazy(() =>
+  import('./preview/TemplatesPanel').then((m) => ({ default: m.TemplatesPanel }))
+);
+const DesignFormattingPanel = React.lazy(() =>
+  import('./preview/DesignFormattingPanel').then((m) => ({ default: m.DesignFormattingPanel }))
+);
+const PreviewAuditGapDrawer = React.lazy(() =>
+  import('./preview/PreviewAuditGapDrawer').then((m) => ({ default: m.PreviewAuditGapDrawer }))
+);
+const GitHubStarToast = React.lazy(() =>
+  import('./GitHubStarToast').then((m) => ({ default: m.GitHubStarToast }))
+);
 
 export type { StepPreviewProps };
 
@@ -212,34 +225,36 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               boxShadow: { xs: '0 8px 32px rgba(0,0,0,0.5)', md: 'none' },
             }}
           >
-            {activeSidePanel === 'templates' && (
-              <TemplatesPanel
-                theme={theme}
-                onSelectTheme={setTheme}
-                palette={palette}
-                onSelectPalette={setPalette}
-                customColor={customColor}
-                onCustomColorChange={setCustomColor}
-                onClose={() => setActiveSidePanel(null)}
-              />
-            )}
+            <React.Suspense fallback={<StudioSkeleton variant="drawer" />}>
+              {activeSidePanel === 'templates' && (
+                <TemplatesPanel
+                  theme={theme}
+                  onSelectTheme={setTheme}
+                  palette={palette}
+                  onSelectPalette={setPalette}
+                  customColor={customColor}
+                  onCustomColorChange={setCustomColor}
+                  onClose={() => setActiveSidePanel(null)}
+                />
+              )}
 
-            {activeSidePanel === 'design' && (
-              <DesignFormattingPanel
-                customColor={customColor}
-                onCustomColorChange={setCustomColor}
-                palette={palette}
-                onSelectPalette={setPalette}
-                fontFamily={fontFamily}
-                onFontFamilyChange={setFontFamily}
-                spacingDensity={spacingDensity}
-                onSpacingDensityChange={setSpacingDensity}
-                sheetHeight={sheetHeight}
-                a4PagePx={A4_PAGE_PX}
-                estimatedPages={estimatedPages}
-                onClose={() => setActiveSidePanel(null)}
-              />
-            )}
+              {activeSidePanel === 'design' && (
+                <DesignFormattingPanel
+                  customColor={customColor}
+                  onCustomColorChange={setCustomColor}
+                  palette={palette}
+                  onSelectPalette={setPalette}
+                  fontFamily={fontFamily}
+                  onFontFamilyChange={setFontFamily}
+                  spacingDensity={spacingDensity}
+                  onSpacingDensityChange={setSpacingDensity}
+                  sheetHeight={sheetHeight}
+                  a4PagePx={A4_PAGE_PX}
+                  estimatedPages={estimatedPages}
+                  onClose={() => setActiveSidePanel(null)}
+                />
+              )}
+            </React.Suspense>
           </Box>
         )}
 
@@ -247,12 +262,14 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         <div className="preview-canvas-wrapper" style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', order: 1 }}>
           {isEditingMarkdown ? (
             <div className="split-pane-editor-full">
-              <SplitMarkdownEditor
-                content={cvMarkdown}
-                onChange={setCvMarkdown}
-                onDownload={handleDownloadCvMarkdown}
-                fileName={`CV_${candidateName}.md`}
-              />
+              <React.Suspense fallback={<StudioSkeleton variant="masterData" />}>
+                <SplitMarkdownEditor
+                  content={cvMarkdown}
+                  onChange={setCvMarkdown}
+                  onDownload={handleDownloadCvMarkdown}
+                  fileName={`CV_${candidateName}.md`}
+                />
+              </React.Suspense>
             </div>
           ) : (
             <main className="preview-pane-canvas" style={{ position: 'relative' }}>
@@ -376,30 +393,34 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
 
         {/* 4. Unified Right-Side Audit & Gap Drawer (Floating Pills when collapsed, Side Panel when expanded) */}
         {!isEditingMarkdown && (
-          <PreviewAuditGapDrawer
-            auditReport={auditReport}
-            gapInfo={gapInfo}
-            gapMarkdown={gapMarkdown}
-            companyName={companyName}
-            targetRole={targetRole}
-            isOpen={isAuditGapOpen}
-            activeTab={auditGapTab}
-            onToggleTab={(tab) => {
-              setIsAuditGapOpen(true);
-              setAuditGapTab(tab);
-              setActiveSidePanel(null);
-            }}
-            onClose={() => setIsAuditGapOpen(false)}
-          />
+          <React.Suspense fallback={null}>
+            <PreviewAuditGapDrawer
+              auditReport={auditReport}
+              gapInfo={gapInfo}
+              gapMarkdown={gapMarkdown}
+              companyName={companyName}
+              targetRole={targetRole}
+              isOpen={isAuditGapOpen}
+              activeTab={auditGapTab}
+              onToggleTab={(tab) => {
+                setIsAuditGapOpen(true);
+                setAuditGapTab(tab);
+                setActiveSidePanel(null);
+              }}
+              onClose={() => setIsAuditGapOpen(false)}
+            />
+          </React.Suspense>
         )}
       </Box>
 
       {/* One-Time Post-Export GitHub Star Satisfaction Toast */}
-      <GitHubStarToast
-        open={isPromptOpen}
-        onClose={dismissPrompt}
-        onStarClick={openGitHubAndDismiss}
-      />
+      <React.Suspense fallback={null}>
+        <GitHubStarToast
+          open={isPromptOpen}
+          onClose={dismissPrompt}
+          onStarClick={openGitHubAndDismiss}
+        />
+      </React.Suspense>
     </div>
   );
 };

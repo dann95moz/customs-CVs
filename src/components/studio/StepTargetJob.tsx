@@ -32,8 +32,11 @@ import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../store';
-import { ContextualAiModal } from './ai/ContextualAiModal';
 import { StepTargetJobProps } from '../../types';
+
+const ContextualAiModal = React.lazy(() =>
+  import('./ai/ContextualAiModal').then((m) => ({ default: m.ContextualAiModal }))
+);
 
 export type { StepTargetJobProps };
 
@@ -450,12 +453,14 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
       </Box>
 
       {/* Contextual AI Setup Modal (opens on click if key is missing) */}
-      <ContextualAiModal
-        open={aiModalOpen}
-        onClose={() => setAiModalOpen(false)}
-        settings={providerSettings}
-        onSaveAndGenerate={handleSaveModalAndGenerate}
-      />
+      <React.Suspense fallback={null}>
+        <ContextualAiModal
+          open={aiModalOpen}
+          onClose={() => setAiModalOpen(false)}
+          settings={providerSettings}
+          onSaveAndGenerate={handleSaveModalAndGenerate}
+        />
+      </React.Suspense>
     </Box>
   );
 };
