@@ -9,6 +9,8 @@ import {
   LanguagesSlot, 
   GenericSlot 
 } from '../components/slots';
+import { EditableText } from '../components/studio/preview/EditableText';
+import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
 
 /**
  * Editorial Pastel Card Template (Photo 4 Reference):
@@ -18,6 +20,7 @@ import {
  * - Right column below summary (66%): Websites/Portfolios, Work History, Languages.
  */
 export const DesignerUiuxTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) => {
+  const liveEdit = useCvLiveEdit();
   const contacts = slots.header.contacts || [];
 
   const basicContacts = contacts.filter(c => ['email', 'phone', 'location'].includes(c.type));
@@ -30,9 +33,21 @@ export const DesignerUiuxTemplate: React.FC<CVTemplateProps> = ({ slots, theme }
         <div className="pastel-top-grid">
           {/* Top-Left Pastel Tinted Card */}
           <div className="pastel-header-card">
-            <h1 className="pastel-card-name">{slots.header.name}</h1>
-            {slots.header.title && (
-              <div className="pastel-card-title">{slots.header.title}</div>
+            <EditableText
+              tagName="h1"
+              className="pastel-card-name"
+              value={slots.header.name}
+              onSave={(newName) => liveEdit?.updateName(newName)}
+              placeholder="Full Name"
+            />
+            {(slots.header.title || liveEdit?.isLiveEditing) && (
+              <EditableText
+                tagName="div"
+                className="pastel-card-title"
+                value={slots.header.title || ''}
+                onSave={(newTitle) => liveEdit?.updateTitle(newTitle)}
+                placeholder="Professional Title"
+              />
             )}
             <div className="pastel-card-divider" />
             <ul className="pastel-card-contacts">

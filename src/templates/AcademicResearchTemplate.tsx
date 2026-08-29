@@ -11,6 +11,8 @@ import {
   LanguagesSlot, 
   GenericSlot 
 } from '../components/slots';
+import { EditableText } from '../components/studio/preview/EditableText';
+import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
 
 /**
  * Executive Dual-Tone Template (Photo 5 Reference):
@@ -18,6 +20,7 @@ import {
  * - Right main area: Top accent header banner with spaced uppercase name, Professional Summary, Skills grid, and Work History.
  */
 export const AcademicResearchTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) => {
+  const liveEdit = useCvLiveEdit();
   const initials = extractCandidateInitials(slots.header.name);
   const contacts = slots.header.contacts || [];
 
@@ -92,9 +95,21 @@ export const AcademicResearchTemplate: React.FC<CVTemplateProps> = ({ slots, the
         <main className="dualtone-main-col">
           {/* Top Header Banner with Soft Accent Tint */}
           <header className="dualtone-top-header cv-header">
-            <h1 className="dualtone-name">{slots.header.name}</h1>
-            {slots.header.title && (
-              <div className="dualtone-title">{slots.header.title}</div>
+            <EditableText
+              tagName="h1"
+              className="dualtone-name"
+              value={slots.header.name}
+              onSave={(newName) => liveEdit?.updateName(newName)}
+              placeholder="Full Name"
+            />
+            {(slots.header.title || liveEdit?.isLiveEditing) && (
+              <EditableText
+                tagName="div"
+                className="dualtone-title"
+                value={slots.header.title || ''}
+                onSave={(newTitle) => liveEdit?.updateTitle(newTitle)}
+                placeholder="Professional Title"
+              />
             )}
           </header>
 

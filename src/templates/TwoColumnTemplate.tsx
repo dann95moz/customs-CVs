@@ -9,6 +9,8 @@ import {
   EducationSlot, 
   GenericSlot 
 } from '../components/slots';
+import { EditableText } from '../components/studio/preview/EditableText';
+import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
 
 /**
  * Modern Contrast Sidebar Template (Photo 3 Reference):
@@ -16,6 +18,7 @@ import {
  * - Right full-height solid colored sidebar (34%): White geometric diamond/monogram card, contact info with circular icon badges, Websites & Profiles, and Skills in white text.
  */
 export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) => {
+  const liveEdit = useCvLiveEdit();
   const initials = extractCandidateInitials(slots.header.name);
   const contacts = slots.header.contacts || [];
 
@@ -29,9 +32,21 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
         <main className="contrast-main-col">
           {/* Header Name & Title */}
           <header className="contrast-header cv-header">
-            <h1 className="contrast-name">{slots.header.name}</h1>
-            {slots.header.title && (
-              <div className="contrast-title">{slots.header.title}</div>
+            <EditableText
+              tagName="h1"
+              className="contrast-name"
+              value={slots.header.name}
+              onSave={(newName) => liveEdit?.updateName(newName)}
+              placeholder="Full Name"
+            />
+            {(slots.header.title || liveEdit?.isLiveEditing) && (
+              <EditableText
+                tagName="div"
+                className="contrast-title"
+                value={slots.header.title || ''}
+                onSave={(newTitle) => liveEdit?.updateTitle(newTitle)}
+                placeholder="Professional Title"
+              />
             )}
           </header>
 

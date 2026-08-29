@@ -23,6 +23,19 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
 
+  const [windowWidth, setWindowWidth] = React.useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 1200
+  );
+
+  React.useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 860;
+  const scale = isMobile ? Math.min(0.88, Math.max(0.35, (windowWidth - 32) / 794)) : 0.88;
+
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Comparison Delta Banner */}
@@ -30,36 +43,37 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
         className="no-print"
         sx={{
           py: 1,
-          px: 2.5,
+          px: { xs: 1.5, sm: 2.5 },
           bgcolor: isDark ? alpha(muiTheme.palette.primary.main, 0.08) : '#eff6ff',
           borderBottom: `1px solid ${alpha(muiTheme.palette.primary.main, 0.2)}`,
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { xs: 'flex-start', sm: 'center' },
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: 2,
+          gap: 1.25,
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <CompareArrowsRoundedIcon color="primary" />
-          <Typography variant="body2" sx={{ fontWeight: 700 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+          <CompareArrowsRoundedIcon color="primary" sx={{ fontSize: 20 }} />
+          <Typography variant="body2" sx={{ fontWeight: 700, fontSize: { xs: '0.82rem', sm: '0.875rem' } }}>
             {t('preview:navRail.compare', 'Impact Comparison')}: {companyName || 'Target Company'}
           </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
           <Chip
             label={`${t('gap:matchScore', 'Match')}: 58% ➔ ${matchScore}% (+${matchScore - 58}%)`}
             color="success"
             size="small"
-            sx={{ fontWeight: 800 }}
+            sx={{ fontWeight: 800, fontSize: '0.72rem' }}
           />
           <Chip
             label={`${keywordsCount} ${t('gap:integratedKeywords', 'Keywords Integrated')}`}
             color="primary"
             variant="outlined"
             size="small"
-            sx={{ fontWeight: 700 }}
+            sx={{ fontWeight: 700, fontSize: '0.72rem' }}
           />
         </Box>
       </Box>
@@ -69,7 +83,7 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
         sx={{
           flex: 1,
           overflowY: 'auto',
-          p: 3,
+          p: { xs: 1.5, sm: 3 },
           display: 'flex',
           justifyContent: 'center',
         }}
@@ -92,15 +106,34 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
               variant="outlined"
               sx={{ mb: 1, fontWeight: 700 }}
             />
-            <div className="paper-sheet" style={{ transform: 'scale(0.88)', transformOrigin: 'top center' }}>
-              <CVRenderer
-                data={parsedMasterCv}
-                theme={theme}
-                palette="minimal-slate"
-                customColor={palette === 'custom' ? customColor : undefined}
-                fontFamily={fontFamily}
-                spacingDensity={spacingDensity}
-              />
+            <div
+              className="paper-sheet-wrapper"
+              style={{
+                width: `${794 * scale}px`,
+                overflow: 'hidden',
+                display: 'flex',
+                justifyContent: 'center',
+                margin: '0 auto',
+              }}
+            >
+              <div
+                className="paper-sheet"
+                style={{
+                  transform: `scale(${scale})`,
+                  transformOrigin: 'top center',
+                  width: '794px',
+                  margin: '0 auto',
+                }}
+              >
+                <CVRenderer
+                  data={parsedMasterCv}
+                  theme={theme}
+                  palette="minimal-slate"
+                  customColor={palette === 'custom' ? customColor : undefined}
+                  fontFamily={fontFamily}
+                  spacingDensity={spacingDensity}
+                />
+              </div>
             </div>
           </Box>
 
@@ -112,15 +145,34 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
               color="primary"
               sx={{ mb: 1, fontWeight: 800 }}
             />
-            <div className="paper-sheet" style={{ transform: 'scale(0.88)', transformOrigin: 'top center' }}>
-              <CVRenderer
-                data={parsedCv}
-                theme={theme}
-                palette={palette}
-                customColor={palette === 'custom' ? customColor : undefined}
-                fontFamily={fontFamily}
-                spacingDensity={spacingDensity}
-              />
+            <div
+              className="paper-sheet-wrapper"
+              style={{
+                width: `${794 * scale}px`,
+                overflow: 'hidden',
+                display: 'flex',
+                justifyContent: 'center',
+                margin: '0 auto',
+              }}
+            >
+              <div
+                className="paper-sheet"
+                style={{
+                  transform: `scale(${scale})`,
+                  transformOrigin: 'top center',
+                  width: '794px',
+                  margin: '0 auto',
+                }}
+              >
+                <CVRenderer
+                  data={parsedCv}
+                  theme={theme}
+                  palette={palette}
+                  customColor={palette === 'custom' ? customColor : undefined}
+                  fontFamily={fontFamily}
+                  spacingDensity={spacingDensity}
+                />
+              </div>
             </div>
           </Box>
         </Box>

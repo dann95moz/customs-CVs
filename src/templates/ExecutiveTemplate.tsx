@@ -10,6 +10,8 @@ import {
   LanguagesSlot, 
   GenericSlot 
 } from '../components/slots';
+import { EditableText } from '../components/studio/preview/EditableText';
+import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
 
 /**
  * Corporate Top Banner Template (Photo 2 Reference):
@@ -17,6 +19,7 @@ import {
  * - Two-column body: Left main narrative (Summary & Work History) + Right sidebar (Contacts, Links, Skills, Education).
  */
 export const ExecutiveTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) => {
+  const liveEdit = useCvLiveEdit();
   const initials = extractCandidateInitials(slots.header.name);
   const contacts = slots.header.contacts || [];
 
@@ -32,9 +35,21 @@ export const ExecutiveTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
           <div className="banner-monogram-box">
             <span className="banner-monogram">{initials}</span>
           </div>
-          <h1 className="banner-name">{slots.header.name}</h1>
-          {slots.header.title && (
-            <div className="banner-title">{slots.header.title}</div>
+          <EditableText
+            tagName="h1"
+            className="banner-name"
+            value={slots.header.name}
+            onSave={(newName) => liveEdit?.updateName(newName)}
+            placeholder="Full Name"
+          />
+          {(slots.header.title || liveEdit?.isLiveEditing) && (
+            <EditableText
+              tagName="div"
+              className="banner-title"
+              value={slots.header.title || ''}
+              onSave={(newTitle) => liveEdit?.updateTitle(newTitle)}
+              placeholder="Professional Title"
+            />
           )}
         </header>
 

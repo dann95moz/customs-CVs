@@ -1,6 +1,8 @@
 import React from 'react';
-import { ListSlotData, EducationSlotProps } from '../../templates/types';
+import { EducationSlotProps } from '../../templates/types';
 import { marked } from 'marked';
+import { EditableText } from '../studio/preview/EditableText';
+import { useCvLiveEdit } from '../studio/preview/CvLiveEditContext';
 
 export type { EducationSlotProps };
 
@@ -9,6 +11,7 @@ export const EducationSlot: React.FC<EducationSlotProps> = ({
   className = '',
   maxItems 
 }) => {
+  const liveEdit = useCvLiveEdit();
   const displayItems = maxItems ? data.items.slice(0, maxItems) : data.items;
 
   return (
@@ -16,9 +19,13 @@ export const EducationSlot: React.FC<EducationSlotProps> = ({
       <h2 className="cv-section-title">{data.title}</h2>
       <ul className={`${data.type}-list section-block`}>
         {displayItems.map((item, idx) => (
-          <li 
-            key={idx} 
-            dangerouslySetInnerHTML={{ __html: marked.parseInline(item) as string }} 
+          <EditableText
+            key={idx}
+            tagName="li"
+            value={item}
+            onSave={(newVal) => liveEdit?.updateEducationItem(idx, newVal)}
+            htmlContent={marked.parseInline(item) as string}
+            placeholder="Degree, Institution, Dates..."
           />
         ))}
       </ul>

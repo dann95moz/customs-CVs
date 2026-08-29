@@ -3,10 +3,13 @@ import {
   Paper,
   Box,
   Button,
+  ButtonGroup,
+  Chip,
   Typography,
   useTheme,
 } from '@mui/material';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import {
   useResumeStore,
   useParsedCv,
@@ -15,6 +18,7 @@ import {
   useGapInfo,
 } from '../../store';
 import { CVRenderer } from '../CVRenderer';
+import { CvLiveEditProvider } from './preview/CvLiveEditContext';
 import { SplitMarkdownEditor } from './SplitMarkdownEditor';
 import { extractCandidateName, sanitizeFileName } from '../../core/parser';
 import { getTemplateMetadata } from '../../templates';
@@ -75,10 +79,26 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const [viewMode, setViewMode] = useState<PreviewViewMode>('tailored');
   const [sheetHeight, setSheetHeight] = useState<number>(0);
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
+  const [zoomMode, setZoomMode] = useState<'fit' | '100%'>('fit');
+  const [windowWidth, setWindowWidth] = useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 1200
+  );
   const paperRef = useRef<HTMLDivElement>(null);
 
-  // Left Side Drawer state ('templates' open by default)
-  const [activeSidePanel, setActiveSidePanel] = useState<PreviewSidePanelType | null>('templates');
+  // Track viewport resize for responsive scaling
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Left Side Drawer state ('templates' open by default on desktop, closed by default on mobile)
+  const [activeSidePanel, setActiveSidePanel] = useState<PreviewSidePanelType | null>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 860) {
+      return null;
+    }
+    return 'templates';
+  });
 
   // Right Side Unified Audit & Gap Drawer state
   const [isAuditGapOpen, setIsAuditGapOpen] = useState<boolean>(false);
@@ -103,6 +123,12 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
 
   const estimatedPages = Math.max(1, Math.ceil((sheetHeight - 24) / A4_PAGE_PX));
   const overflowPercentage = Math.max(0, Math.round(((sheetHeight - A4_PAGE_PX) / A4_PAGE_PX) * 100));
+
+  const isMobile = windowWidth < 860;
+  const canvasPadding = isMobile ? 24 : 48;
+  const availableWidth = windowWidth - (isMobile ? 0 : (activeSidePanel ? 380 : 76)) - canvasPadding;
+  const autoScale = Math.min(1, Math.max(0.35, availableWidth / 794));
+  const currentScale = zoomMode === 'fit' && isMobile ? autoScale : 1;
 
   const handleSaveToHistory = () => {
     handleSaveCurrentVersion();
@@ -151,8 +177,8 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
       />
 
       {/* Main Studio Body: Vertical Left Rail + Side Drawer + Sheet Canvas + Right Audit/Gap Drawer */}
-      <Box sx={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
-        {/* 1. Left Vertical Tool Rail */}
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, overflow: 'hidden', position: 'relative' }}>
+        {/* 1. Left Tool Rail (Horizontal on mobile, vertical on desktop) */}
         <StepPreviewNavRail
           activeSidePanel={activeSidePanel}
           onToggleSidePanel={(panel: PreviewSidePanelType) => {
@@ -181,11 +207,12 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             className="no-print preview-side-panel"
             sx={{
               position: { xs: 'absolute', md: 'relative' },
-              left: { xs: 76, md: 'auto' },
+              left: { xs: 0, md: 'auto' },
+              right: { xs: 0, md: 'auto' },
               top: 0,
               bottom: 0,
-              width: { xs: 'calc(100% - 76px)', sm: 330 },
-              maxWidth: 360,
+              width: { xs: '100%', sm: 330 },
+              maxWidth: { xs: '100%', sm: 360 },
               borderRight: `1px solid ${muiTheme.palette.divider}`,
               bgcolor: 'background.paper',
               display: 'flex',
@@ -193,8 +220,8 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               height: '100%',
               overflowY: 'auto',
               flexShrink: 0,
-              zIndex: 35,
-              boxShadow: { xs: '4px 0 24px rgba(0,0,0,0.3)', md: 'none' },
+              zIndex: 45,
+              boxShadow: { xs: '0 8px 32px rgba(0,0,0,0.5)', md: 'none' },
             }}
           >
             {activeSidePanel === 'templates' && (
@@ -229,7 +256,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         )}
 
         {/* 3. Main Center Canvas: Raw Markdown or Pristine Document Sheet */}
-        <div className="preview-canvas-wrapper" style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+        <div className="preview-canvas-wrapper" style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', order: 1 }}>
           {isEditingMarkdown ? (
             <div className="split-pane-editor-full">
               <SplitMarkdownEditor
@@ -254,24 +281,46 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             />
           ) : (
             <main className="preview-pane-canvas" style={{ position: 'relative' }}>
-              <div className="paper-sheet-wrapper">
+              <div
+                className="paper-sheet-wrapper"
+                style={{
+                  width: isMobile && zoomMode === 'fit' ? `${794 * currentScale}px` : 'var(--cv-page-width)',
+                  height: isMobile && zoomMode === 'fit' && sheetHeight ? `${sheetHeight * currentScale}px` : 'auto',
+                  transition: 'width 0.2s ease, height 0.2s ease',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
                 <div
                   ref={paperRef}
                   className={`paper-sheet ${overflowPercentage > 0 && overflowPercentage <= 25 ? 'compact-fit' : ''}`}
+                  style={{
+                    transform: isMobile && zoomMode === 'fit' ? `scale(${currentScale})` : 'none',
+                    transformOrigin: 'top center',
+                    width: '794px',
+                    margin: '0 auto',
+                  }}
                 >
-                  <CVRenderer
-                    data={viewMode === 'generic' ? parsedMasterCv : parsedCv}
-                    theme={theme}
-                    palette={palette}
-                    customColor={palette === 'custom' ? customColor : undefined}
-                    fontFamily={fontFamily}
-                    spacingDensity={spacingDensity}
-                  />
+                  <CvLiveEditProvider parsedCv={parsedCv} isEditable={viewMode === 'tailored'}>
+                    <CVRenderer
+                      data={viewMode === 'generic' ? parsedMasterCv : parsedCv}
+                      theme={theme}
+                      palette={palette}
+                      customColor={palette === 'custom' ? customColor : undefined}
+                      fontFamily={fontFamily}
+                      spacingDensity={spacingDensity}
+                    />
+                  </CvLiveEditProvider>
                 </div>
 
                 {/* Visual Page Break Marker at A4 limit */}
                 {sheetHeight > A4_PAGE_PX - 30 && (
-                  <div className="page-break-guide" style={{ top: `${A4_PAGE_PX}px` }}>
+                  <div
+                    className="page-break-guide"
+                    style={{
+                      top: isMobile && zoomMode === 'fit' ? `${A4_PAGE_PX * currentScale}px` : `${A4_PAGE_PX}px`,
+                    }}
+                  >
                     <span>✂️ {t('preview:toolbar.page', 'Page 1 Boundary (Standard A4 Format)')}</span>
                   </div>
                 )}
@@ -284,11 +333,13 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             elevation={0}
             className="no-print preview-nav-footer"
             sx={{
-              p: 1.5,
-              px: 3,
+              p: 1.25,
+              px: { xs: 1.5, sm: 3 },
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: 1,
               borderTop: `1px solid ${muiTheme.palette.divider}`,
               bgcolor: 'background.paper',
               zIndex: 10,
@@ -299,11 +350,48 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               startIcon={<ArrowBackRoundedIcon />}
               onClick={() => setWizardStep('target')}
               size="small"
+              sx={{ fontSize: { xs: '0.74rem', sm: '0.8rem' } }}
             >
               {t('target:actions.backToProfile', 'Back to Target Vacancy (Step 2)')}
             </Button>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              {viewMode === 'tailored' && !isEditingMarkdown && (
+                <Chip
+                  icon={<EditRoundedIcon sx={{ fontSize: '13px !important' }} />}
+                  label="Live Hot Edit • Click text to edit & re-audit"
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                  sx={{
+                    fontSize: '0.72rem',
+                    fontWeight: 600,
+                    height: 24,
+                    display: { xs: 'none', md: 'inline-flex' },
+                  }}
+                />
+              )}
+
+              {/* Zoom Mode Toggle on Mobile */}
+              {isMobile && (
+                <ButtonGroup size="small" variant="outlined">
+                  <Button
+                    variant={zoomMode === 'fit' ? 'contained' : 'outlined'}
+                    onClick={() => setZoomMode('fit')}
+                    sx={{ fontSize: '0.7rem', px: 1, py: 0.2 }}
+                  >
+                    Fit
+                  </Button>
+                  <Button
+                    variant={zoomMode === '100%' ? 'contained' : 'outlined'}
+                    onClick={() => setZoomMode('100%')}
+                    sx={{ fontSize: '0.7rem', px: 1, py: 0.2 }}
+                  >
+                    100%
+                  </Button>
+                </ButtonGroup>
+              )}
+
               <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
                 {t('preview:toolbar.pageFit', 'Estimated Length')}: <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>{estimatedPages} {estimatedPages === 1 ? 'Page (Standard A4)' : 'Pages'}</strong> • Height: {sheetHeight}px
               </Typography>

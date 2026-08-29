@@ -4,6 +4,11 @@
     "zoomOut": "Alejar",
     "resetZoom": "Ajustar a Página",
     "exportPdf": "Exportar PDF (Imprimir)",
+    "exportPdfShort": "Exportar PDF",
+    "tailoredShort": "Adaptado",
+    "formatBold": "Negrita (Ctrl+B)",
+    "formatItalic": "Cursiva (Ctrl+I)",
+    "formatHighlight": "Resaltar Palabra Clave (++palabra++)",
     "exporting": "Abriendo Diálogo de Impresión...",
     "downloadMarkdown": "Descargar Markdown",
     "copyMarkdown": "Copiar Markdown",
@@ -51,6 +56,8 @@
   "drawer": {
     "title": "Inteligencia de Auditoría y Brechas",
     "scoreLabel": "Puntuación Calibrada",
-    "matchLabel": "Alineación de Puesto"
+    "matchLabel": "Alineación de Puesto",
+    "shortScore": "Auditoría",
+    "shortMatch": "Match"
   }
 }

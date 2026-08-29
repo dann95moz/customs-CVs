@@ -3,7 +3,12 @@
     "zoomIn": "Zoom In",
     "zoomOut": "Zoom Out",
     "resetZoom": "Fit Page",
-    "exportPdf": "Export PDF (Print Dialog)",
+    "exportPdf": "PDF Export",
+    "exportPdfShort": "PDF",
+    "tailoredShort": "Tailored",
+    "formatBold": "Bold (Ctrl+B)",
+    "formatItalic": "Italic (Ctrl+I)",
+    "formatHighlight": "Highlight Keyword (++keyword++)",
     "exporting": "Opening Print Dialog...",
     "downloadMarkdown": "Download Markdown",
     "copyMarkdown": "Copy Markdown",
@@ -49,8 +54,10 @@
     }
   },
   "drawer": {
-    "title": "Audit & Gap Intelligence",
+    "title": "Audit & Gap Strategy Intelligence",
     "scoreLabel": "Calibrated Score",
-    "matchLabel": "Job Match"
+    "matchLabel": "Job Match",
+    "shortScore": "Audit",
+    "shortMatch": "Match"
   }
 }
