@@ -14,6 +14,7 @@ import {
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useTranslation } from 'react-i18next';
 import { ColumnEditDialogProps } from '../../../types';
+import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
 
 const PRESET_COLORS = [
   '#3b82f6', // Blue
@@ -41,14 +42,14 @@ export const ColumnEditDialog: React.FC<ColumnEditDialogProps> = ({
   useEffect(() => {
     if (open) {
       if (column) {
-        setTitle(column.title);
+        setTitle(getLocalizedColumnTitle(column, t));
         setColor(column.color || '#3b82f6');
       } else {
         setTitle('');
         setColor('#3b82f6');
       }
     }
-  }, [open, column]);
+  }, [open, column, t]);
 
   const handleSave = () => {
     if (!title.trim()) return;

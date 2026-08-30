@@ -29,6 +29,7 @@ import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
 import { useTranslation } from 'react-i18next';
 import { TrackApplicationDialogProps, GeneratedCvVersion } from '../../../types';
+import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
 
 export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
   open,
@@ -340,7 +341,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
                       bgcolor: col.color || theme.palette.primary.main,
                     }}
                   />
-                  {col.title}
+                  {getLocalizedColumnTitle(col, t)}
                 </Box>
               </MenuItem>
             ))}

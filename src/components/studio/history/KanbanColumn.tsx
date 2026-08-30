@@ -22,6 +22,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useTranslation } from 'react-i18next';
 import { KanbanColumnProps } from '../../../types';
+import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
 import { KanbanCard } from './KanbanCard';
 
 export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
@@ -115,7 +116,7 @@ export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
               color: 'text.primary',
             }}
           >
-            {column.title}
+            {getLocalizedColumnTitle(column, t)}
           </Typography>
           <Chip
             label={applications.length}
