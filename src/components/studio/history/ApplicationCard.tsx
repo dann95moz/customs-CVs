@@ -17,6 +17,7 @@ import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
 import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { useTranslation } from 'react-i18next';
 import { GeneratedCvVersion, ApplicationCardProps } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
@@ -34,6 +35,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   onDelete,
   onDownload,
   onDownloadPdf,
+  onTrack,
   isDownloadingPdf = false,
 }) => {
   const { t, i18n } = useTranslation(['history', 'common', 'gap', 'audit', 'preview']);
@@ -115,15 +117,32 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             </Box>
           </Box>
 
-          <IconButton
-            size="small"
-            color="error"
-            onClick={() => onDelete(version.id)}
-            title={t('history:card.delete', 'Delete Version')}
-            sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}
-          >
-            <DeleteOutlineRoundedIcon fontSize="small" />
-          </IconButton>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            {onTrack && (
+              <Tooltip title={t('history:card.trackVersion', 'Track Application')}>
+                <IconButton
+                  size="small"
+                  color="primary"
+                  onClick={() => onTrack(version)}
+                  sx={{
+                    bgcolor: alpha(theme.palette.primary.main, 0.08),
+                    '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.16) },
+                  }}
+                >
+                  <AddRoundedIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+            <IconButton
+              size="small"
+              color="error"
+              onClick={() => onDelete(version.id)}
+              title={t('history:card.delete', 'Delete Version')}
+              sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}
+            >
+              <DeleteOutlineRoundedIcon fontSize="small" />
+            </IconButton>
+          </Box>
         </Box>
 
         {/* Target Role */}

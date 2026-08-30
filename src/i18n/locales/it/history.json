@@ -23,11 +23,19 @@
   "status": {
     "draft": "Bozza",
     "applied": "Candidato",
+    "interview": "Colloquio",
     "interviewing": "In Colloquio",
     "tech_test": "Prova Tecnica",
     "offer": "Offerta Ricevuta",
     "rejected": "Rifiutato",
     "archived": "Archiviato"
+  },
+  "stages": {
+    "applied": "Candidato",
+    "interview": "Colloquio",
+    "tech_test": "Prova Tecnica",
+    "offer": "Offerta Ricevuta",
+    "rejected": "Rifiutato"
   },
   "board": {
     "addColumn": "+ Aggiungi Fase"
@@ -53,7 +61,8 @@
     "notes": "Note",
     "lastModified": "Adattato",
     "downloadPdfTip": "Download Diretto PDF (1-Click)",
-    "downloadMdTip": "Scarica Markdown (.md)"
+    "downloadMdTip": "Scarica Markdown (.md)",
+    "trackVersion": "Segna come Candidato"
   },
   "trackModal": {
     "title": "Monitora Candidatura",
@@ -83,7 +92,9 @@
     "action": "Inizia Nuova Candidatura"
   },
   "emptyBoardWithVersions": {
-    "title": "Hai {{count}} CV pronti per il monitoraggio",
+    "title": "Hai {{count}} CV pronto per il monitoraggio",
+    "title_one": "Hai 1 CV pronto per il monitoraggio",
+    "title_other": "Hai {{count}} CV pronti per il monitoraggio",
     "desc": "Seleziona quale versione hai effettivamente inviato per aggiungerla alla bacheca attiva."
   }
 }

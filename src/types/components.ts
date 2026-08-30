@@ -486,6 +486,7 @@ export interface ApplicationCardProps {
   onDelete: (id: string) => void;
   onDownload: (v: GeneratedCvVersion) => void;
   onDownloadPdf?: (v: GeneratedCvVersion) => void;
+  onTrack?: (v: GeneratedCvVersion) => void;
   isDownloadingPdf?: boolean;
 }
 

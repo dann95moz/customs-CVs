@@ -52,6 +52,7 @@ export const ApplicationsHistoryView: React.FC = () => {
   // Dialog states
   const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
   const [trackPrefillColumnId, setTrackPrefillColumnId] = useState<string | undefined>();
+  const [trackPrefillVersion, setTrackPrefillVersion] = useState<GeneratedCvVersion | undefined>();
   const [isColumnEditOpen, setIsColumnEditOpen] = useState(false);
   const [editingColumn, setEditingColumn] = useState<KanbanColumn | null>(null);
 
@@ -103,8 +104,9 @@ export const ApplicationsHistoryView: React.FC = () => {
     }
   };
 
-  const handleOpenTrackModal = (columnId?: string) => {
+  const handleOpenTrackModal = (columnId?: string, version?: GeneratedCvVersion) => {
     setTrackPrefillColumnId(columnId);
+    setTrackPrefillVersion(version);
     setIsTrackModalOpen(true);
   };
 
@@ -137,7 +139,7 @@ export const ApplicationsHistoryView: React.FC = () => {
       <Box
         sx={{
           width: '100%',
-          maxWidth: activeView === 'board' ? '100%' : 1200,
+          maxWidth: activeView === 'board' && totalActive > 0 ? '100%' : 1000,
           display: 'flex',
           flexDirection: 'column',
           gap: 2.5,
@@ -169,19 +171,22 @@ export const ApplicationsHistoryView: React.FC = () => {
               <Card
                 variant="outlined"
                 sx={{
-                  p: 5,
+                  p: { xs: 3, sm: 5 },
+                  maxWidth: 720,
+                  mx: 'auto',
+                  width: '100%',
                   textAlign: 'center',
                   borderRadius: '16px',
                   borderStyle: 'dashed',
                   bgcolor: 'background.paper',
                 }}
               >
-                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5 }}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, p: '0 !important' }}>
                   <Box
                     sx={{
                       width: 56,
                       height: 56,
-                      borderRadius: '50%',
+                      borderRadius: '14px',
                       bgcolor: alpha(theme.palette.primary.main, 0.1),
                       color: theme.palette.primary.main,
                       display: 'flex',
@@ -208,7 +213,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                       setActiveTab('wizard');
                       setWizardStep('target');
                     }}
-                    sx={{ mt: 1, fontWeight: 700 }}
+                    sx={{ mt: 1, fontWeight: 700, px: 2.5 }}
                   >
                     {t('history:empty.action', 'Start New Application')}
                   </Button>
@@ -218,19 +223,23 @@ export const ApplicationsHistoryView: React.FC = () => {
               <Card
                 variant="outlined"
                 sx={{
-                  p: 4,
+                  p: { xs: 3, sm: 4.5 },
+                  maxWidth: 720,
+                  mx: 'auto',
+                  width: '100%',
                   textAlign: 'center',
                   borderRadius: '16px',
                   bgcolor: 'background.paper',
-                  border: `1.5px dashed ${alpha(theme.palette.primary.main, 0.4)}`,
+                  border: `1.5px dashed ${alpha(theme.palette.primary.main, 0.35)}`,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
                 }}
               >
-                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5 }}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, p: '0 !important' }}>
                   <Box
                     sx={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: '12px',
+                      width: 52,
+                      height: 52,
+                      borderRadius: '14px',
                       bgcolor: alpha(theme.palette.primary.main, 0.12),
                       color: theme.palette.primary.main,
                       display: 'flex',
@@ -241,11 +250,15 @@ export const ApplicationsHistoryView: React.FC = () => {
                     <AddRoundedIcon fontSize="medium" />
                   </Box>
                   <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                    {t('history:emptyBoardWithVersions.title', 'You have {{count}} tailored CVs ready to track', {
+                    {t('history:emptyBoardWithVersions.title', {
                       count: savedVersions.length,
+                      defaultValue:
+                        savedVersions.length === 1
+                          ? 'You have 1 tailored CV ready to track'
+                          : `You have ${savedVersions.length} tailored CVs ready to track`,
                     })}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 460 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 480, lineHeight: 1.5 }}>
                     {t(
                       'history:emptyBoardWithVersions.desc',
                       'Select which CV version was actually submitted to an employer to add it to your active Kanban board.'
@@ -256,7 +269,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                     color="primary"
                     startIcon={<AddRoundedIcon />}
                     onClick={() => handleOpenTrackModal()}
-                    sx={{ mt: 0.5, fontWeight: 700 }}
+                    sx={{ mt: 0.75, fontWeight: 700, px: 3, py: 1, borderRadius: '10px' }}
                   >
                     {t('history:actions.trackApp', '+ Track Application')}
                   </Button>
@@ -316,6 +329,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                 onDelete={handleDeleteVersion}
                 onDownload={handleDownloadMarkdown}
                 onDownloadPdf={handleDownloadPdf}
+                onTrack={(version) => handleOpenTrackModal(undefined, version)}
                 isDownloadingPdf={downloadingPdfId === v.id}
               />
             ))}
@@ -326,8 +340,14 @@ export const ApplicationsHistoryView: React.FC = () => {
       {/* Opt-in Track Application Dialog */}
       <TrackApplicationDialog
         open={isTrackModalOpen}
-        onClose={() => setIsTrackModalOpen(false)}
+        onClose={() => {
+          setIsTrackModalOpen(false);
+          setTrackPrefillVersion(undefined);
+        }}
         onConfirm={handleAddApplication}
+        prefillCompany={trackPrefillVersion?.companyName}
+        prefillRole={trackPrefillVersion?.targetRole}
+        prefillVersionId={trackPrefillVersion?.id}
         defaultColumnId={trackPrefillColumnId}
         savedVersions={savedVersions}
         existingApplications={applications}

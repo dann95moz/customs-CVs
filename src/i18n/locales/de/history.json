@@ -23,11 +23,19 @@
   "status": {
     "draft": "Entwurf",
     "applied": "Beworben",
+    "interview": "Vorstellungsgespräch",
     "interviewing": "Im Gespräch",
     "tech_test": "Fachgespräch / Test",
     "offer": "Angebot erhalten",
     "rejected": "Abgelehnt",
     "archived": "Archiviert"
+  },
+  "stages": {
+    "applied": "Beworben",
+    "interview": "Vorstellungsgespräch",
+    "tech_test": "Fachgespräch / Test",
+    "offer": "Angebot erhalten",
+    "rejected": "Abgelehnt"
   },
   "board": {
     "addColumn": "+ Phase hinzufügen"
@@ -53,7 +61,8 @@
     "notes": "Notizen",
     "lastModified": "Angepasst",
     "downloadPdfTip": "Direkter PDF-Download (1-Klick)",
-    "downloadMdTip": "Markdown (.md) herunterladen"
+    "downloadMdTip": "Markdown (.md) herunterladen",
+    "trackVersion": "Als beworben markieren"
   },
   "trackModal": {
     "title": "Bewerbung verfolgen",
@@ -83,7 +92,9 @@
     "action": "Neue Bewerbung starten"
   },
   "emptyBoardWithVersions": {
-    "title": "Sie haben {{count}} angepasste CVs bereit zur Verfolgung",
+    "title": "Sie haben {{count}} angepassten CV bereit zur Verfolgung",
+    "title_one": "Sie haben 1 angepassten CV bereit zur Verfolgung",
+    "title_other": "Sie haben {{count}} angepasste CVs bereit zur Verfolgung",
     "desc": "Wählen Sie aus, welche Version Sie tatsächlich eingereicht haben, um sie dem Board hinzuzufügen."
   }
 }

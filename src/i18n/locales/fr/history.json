@@ -23,11 +23,19 @@
   "status": {
     "draft": "Brouillon",
     "applied": "Postulé",
+    "interview": "Entretien",
     "interviewing": "En Entretien",
     "tech_test": "Test Technique",
     "offer": "Offre Reçue",
     "rejected": "Refusé",
     "archived": "Archivé"
+  },
+  "stages": {
+    "applied": "Postulé",
+    "interview": "Entretien",
+    "tech_test": "Test Technique",
+    "offer": "Offre Reçue",
+    "rejected": "Refusé"
   },
   "board": {
     "addColumn": "+ Ajouter une étape"
@@ -53,7 +61,8 @@
     "notes": "Notes",
     "lastModified": "Adapté",
     "downloadPdfTip": "Téléchargement direct PDF (1-Clic)",
-    "downloadMdTip": "Télécharger Markdown (.md)"
+    "downloadMdTip": "Télécharger Markdown (.md)",
+    "trackVersion": "Marquer como Postulé"
   },
   "trackModal": {
     "title": "Suivre la Candidature",
@@ -83,7 +92,9 @@
     "action": "Démarrer une nouvelle candidature"
   },
   "emptyBoardWithVersions": {
-    "title": "Vous avez {{count}} CVs prêts à être suivis",
+    "title": "Vous avez {{count}} CV prêt à être suivi",
+    "title_one": "Vous avez 1 CV prêt à être suivi",
+    "title_other": "Vous avez {{count}} CVs prêts à être suivis",
     "desc": "Sélectionnez quelle version a été réellement envoyée pour l'ajouter à votre tableau actif."
   }
 }

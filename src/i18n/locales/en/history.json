@@ -23,11 +23,19 @@
   "status": {
     "draft": "Saved Draft",
     "applied": "Applied",
+    "interview": "Interview",
     "interviewing": "Interviewing",
     "tech_test": "Technical Assessment",
     "offer": "Offer Received",
     "rejected": "Rejected",
     "archived": "Archived"
+  },
+  "stages": {
+    "applied": "Applied",
+    "interview": "Interview",
+    "tech_test": "Technical Assessment",
+    "offer": "Offer Received",
+    "rejected": "Rejected"
   },
   "board": {
     "addColumn": "+ Add Stage"
@@ -53,7 +61,8 @@
     "notes": "Notes",
     "lastModified": "Tailored",
     "downloadPdfTip": "Direct PDF Download (1-Click)",
-    "downloadMdTip": "Download Raw Markdown (.md)"
+    "downloadMdTip": "Download Raw Markdown (.md)",
+    "trackVersion": "Track Application"
   },
   "trackModal": {
     "title": "Track Job Application",
@@ -83,7 +92,9 @@
     "action": "Start New Application"
   },
   "emptyBoardWithVersions": {
-    "title": "You have {{count}} tailored CVs ready to track",
+    "title": "You have {{count}} tailored CV ready to track",
+    "title_one": "You have 1 tailored CV ready to track",
+    "title_other": "You have {{count}} tailored CVs ready to track",
     "desc": "Select which CV version was actually submitted to an employer to add it to your active Kanban board."
   }
 }

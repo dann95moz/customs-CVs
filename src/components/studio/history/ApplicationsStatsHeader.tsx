@@ -76,38 +76,41 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flexWrap: 'wrap' }}>
-          {/* Track Application (Opt-in) */}
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddRoundedIcon />}
-            onClick={onTrackNewApplication}
-            sx={{ fontWeight: 700, whiteSpace: 'nowrap', px: 2 }}
-          >
-            {t('history:actions.trackApp', '+ Track Application')}
-          </Button>
+          {/* Track Application (Only show in header if there is at least 1 active application) */}
+          {totalActiveApplications > 0 && (
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddRoundedIcon />}
+              onClick={onTrackNewApplication}
+              sx={{ fontWeight: 700, whiteSpace: 'nowrap', px: 2 }}
+            >
+              {t('history:actions.trackApp', '+ Track Application')}
+            </Button>
+          )}
 
           {/* New Tailored Resume in Wizard */}
           <Button
-            variant="outlined"
-            color="inherit"
+            variant={totalActiveApplications > 0 ? 'outlined' : 'contained'}
+            color={totalActiveApplications > 0 ? 'inherit' : 'primary'}
             startIcon={<AutoAwesomeRoundedIcon />}
             onClick={onStartNewResume}
-            sx={{ fontWeight: 600, whiteSpace: 'nowrap', px: 2, display: { xs: 'none', sm: 'inline-flex' } }}
+            sx={{ fontWeight: 700, whiteSpace: 'nowrap', px: 2 }}
           >
             {t('history:newApplication', 'Tailor New CV')}
           </Button>
         </Box>
       </Paper>
 
-      {/* Metrics Summary Strip */}
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr 1fr', sm: 'repeat(4, 1fr)' },
-          gap: 1.5,
-        }}
-      >
+      {/* Metrics Summary Strip (Only visible when there is at least 1 active application) */}
+      {totalActiveApplications > 0 && (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr 1fr', sm: 'repeat(4, 1fr)' },
+            gap: 1.5,
+          }}
+        >
         {/* Active Applications */}
         <Paper
           sx={{
@@ -256,6 +259,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
           </Box>
         </Paper>
       </Box>
+      )}
 
       {/* Control Strip: View Tabs (Board / Archived / All Versions) + Search Input */}
       <Box
@@ -297,23 +301,25 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
           </Button>
         </ButtonGroup>
 
-        {/* Filter Search Input */}
-        <TextField
-          size="small"
-          placeholder={t('history:searchPlaceholder', 'Filter by company name or target role...')}
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchRoundedIcon fontSize="small" sx={{ color: 'text.secondary' }} />
-                </InputAdornment>
-              ),
-            },
-          }}
-          sx={{ maxWidth: { sm: 320 } }}
-        />
+        {/* Filter Search Input (Only show when there are items to filter in the active database) */}
+        {(totalActiveApplications > 0 || totalArchived > 0 || savedVersionsCount > 0 || searchQuery.length > 0) && (
+          <TextField
+            size="small"
+            placeholder={t('history:searchPlaceholder', 'Filter by company name or target role...')}
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchRoundedIcon fontSize="small" sx={{ color: 'text.secondary' }} />
+                  </InputAdornment>
+                ),
+              },
+            }}
+            sx={{ maxWidth: { sm: 320 }, width: { xs: '100%', sm: 'auto' } }}
+          />
+        )}
       </Box>
     </Box>
   );
