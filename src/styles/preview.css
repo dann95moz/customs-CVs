@@ -341,11 +341,50 @@
   margin: 0 2px;
 }
 
+/* AI Granular Bullet & Summary Regeneration Floating Hover Actions */
+.cv-editable-wrapper {
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+.cv-bullet-item {
+  margin-bottom: 3px;
+  list-style-position: outside;
+}
+
+.cv-editable-wrapper .cv-ai-hover-actions {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(2px);
+  transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1), transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cv-editable-wrapper:hover .cv-ai-hover-actions,
+.cv-editable-wrapper:focus-within .cv-ai-hover-actions,
+.cv-editable-wrapper .cv-ai-hover-actions.has-undo {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
 @media print {
-  .cv-editable-field {
+  .cv-editable-field,
+  .cv-editable-wrapper {
     background-color: transparent !important;
     box-shadow: none !important;
     outline: none !important;
     cursor: default !important;
+  }
+
+  .cv-ai-hover-actions,
+  .cv-ai-sparkle-btn,
+  .cv-undo-button,
+  .cv-selection-bubble {
+    display: none !important;
+    visibility: hidden !important;
   }
 }
