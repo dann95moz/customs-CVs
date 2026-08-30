@@ -58,6 +58,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   const providerSettings = useResumeStore((s) => s.providerSettings);
   const setProviderSettings = useResumeStore((s) => s.setProviderSettings);
   const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
+  const lastClickRef = useRef<number>(0);
 
   const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
     onFileLoaded: (text) => {
@@ -70,6 +71,14 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   });
 
   const handleTailorAndProceed = () => {
+    if (isGenerating) return;
+
+    const now = Date.now();
+    if (now - lastClickRef.current < 1000) {
+      return; // Debounce rapid double clicks
+    }
+    lastClickRef.current = now;
+
     const isConfigured = Boolean(
       (providerSettings.provider === 'local') ||
       (providerSettings.apiKey && providerSettings.apiKey.trim().length > 5)
@@ -88,7 +97,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   const handleSaveModalAndGenerate = (updatedSettings: typeof providerSettings) => {
     setProviderSettings(updatedSettings);
     setAiModalOpen(false);
-    if (onGenerate) {
+    if (onGenerate && !isGenerating) {
       onGenerate();
     }
   };

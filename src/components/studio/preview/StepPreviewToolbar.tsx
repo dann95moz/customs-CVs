@@ -42,6 +42,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
   onOpenTemplates,
   onSaveVersion,
   savedSuccess = false,
+  isSavingVersion = false,
   onReTailor,
   isGenerating,
   onDownloadPdf,
@@ -250,24 +251,36 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           )
         )}
 
-        {/* 2. Save Version (Clean text / ghost button) */}
+        {/* 2. Save Version (Clean text / ghost button with loading spinner) */}
         {onSaveVersion && (
           <Button
             size="small"
             variant="text"
             onClick={onSaveVersion}
+            disabled={isSavingVersion}
+            startIcon={
+              isSavingVersion ? (
+                <CircularProgress size={13} color="inherit" />
+              ) : savedSuccess ? (
+                <CheckCircleOutlineRoundedIcon sx={{ fontSize: 15 }} />
+              ) : undefined
+            }
             sx={{
               fontSize: '0.82rem',
-              fontWeight: 500,
+              fontWeight: 600,
               textTransform: 'none',
               color: savedSuccess ? 'success.main' : 'text.secondary',
               px: 1,
               display: { xs: 'none', sm: 'inline-flex' },
               transition: 'all 0.15s ease',
-              '&:hover': { color: 'text.primary', bgcolor: 'transparent' },
+              '&:hover': { color: 'primary.main', bgcolor: alpha(theme.palette.primary.main, 0.06) },
             }}
           >
-            {savedSuccess ? t('common:actions.done', 'Guardado!') : t('common:actions.save', 'Guardar')}
+            {isSavingVersion
+              ? t('common:actions.saving', 'Saving...')
+              : savedSuccess
+              ? t('common:actions.saved', 'Saved!')
+              : t('common:actions.save', 'Save')}
           </Button>
         )}
 

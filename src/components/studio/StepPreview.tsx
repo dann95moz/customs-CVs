@@ -107,10 +107,25 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     )
   );
 
+  const [isSavingVersion, setIsSavingVersion] = useState<boolean>(false);
+  const lastSaveClickRef = useRef<number>(0);
+
   const handleSaveToHistory = () => {
-    handleSaveCurrentVersion();
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 2500);
+    if (isSavingVersion) return;
+    const now = Date.now();
+    if (now - lastSaveClickRef.current < 1000) {
+      return; // Debounce rapid double-clicks
+    }
+    lastSaveClickRef.current = now;
+
+    setIsSavingVersion(true);
+    try {
+      handleSaveCurrentVersion();
+      setSavedSuccess(true);
+      setTimeout(() => setSavedSuccess(false), 2500);
+    } finally {
+      setTimeout(() => setIsSavingVersion(false), 500);
+    }
   };
 
   const handleTrackApplication = () => {
@@ -230,6 +245,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         }}
         onSaveVersion={handleSaveToHistory}
         savedSuccess={savedSuccess}
+        isSavingVersion={isSavingVersion}
         onReTailor={handleGenerate}
         isGenerating={isGenerating}
         onDownloadPdf={onTriggerDirectDownloadPdf}

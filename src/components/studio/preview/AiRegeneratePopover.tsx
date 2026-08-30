@@ -76,6 +76,7 @@ export const AiRegeneratePopover: React.FC<AiRegeneratePopoverProps> = ({
   };
 
   const handleExecute = async () => {
+    if (isGenerating) return;
     setErrorMessage(null);
     setIsGenerating(true);
 
