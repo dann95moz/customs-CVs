@@ -132,23 +132,53 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
             minHeight: 48,
           },
           contained: {
-            background: tokens.primary.main,
-            color: tokens.primary.contrastText,
-            boxShadow: 'none',
+            background: tokens.gradient.primary,
+            color: '#ffffff',
+            boxShadow: tokens.shadow.pill,
             '&:hover': {
-              background: tokens.primary.dark,
-              boxShadow: `0 4px 14px ${tokens.accent.glow}`,
+              background: tokens.gradient.primaryHover,
+              boxShadow: `0 4px 16px ${tokens.accent.glow}`,
               transform: 'translateY(-1px)',
             },
             '&:active': {
               transform: 'translateY(0)',
             },
             '&.MuiButton-containedSecondary': {
-              background: tokens.secondary.main,
+              background: tokens.gradient.secondary,
               color: tokens.secondary.contrastText,
               '&:hover': {
                 background: tokens.secondary.dark,
                 boxShadow: `0 4px 14px ${alpha(tokens.secondary.main, 0.3)}`,
+                transform: 'translateY(-1px)',
+              },
+            },
+            '&.MuiButton-containedError': {
+              background: tokens.gradient.error,
+              color: '#ffffff',
+              boxShadow: `0 2px 10px ${alpha(tokens.error.main, 0.35)}`,
+              '&:hover': {
+                background: tokens.gradient.errorHover,
+                boxShadow: `0 4px 14px ${alpha(tokens.error.main, 0.5)}`,
+                transform: 'translateY(-1px)',
+              },
+            },
+            '&.MuiButton-containedWarning': {
+              background: tokens.gradient.warning,
+              color: '#ffffff',
+              boxShadow: `0 2px 10px ${alpha(tokens.warning.main, 0.35)}`,
+              '&:hover': {
+                background: tokens.gradient.warningHover,
+                boxShadow: `0 4px 14px ${alpha(tokens.warning.main, 0.5)}`,
+                transform: 'translateY(-1px)',
+              },
+            },
+            '&.MuiButton-containedSuccess': {
+              background: tokens.gradient.success,
+              color: '#ffffff',
+              boxShadow: `0 2px 10px ${alpha(tokens.success.main, 0.35)}`,
+              '&:hover': {
+                background: tokens.gradient.successHover,
+                boxShadow: `0 4px 14px ${alpha(tokens.success.main, 0.5)}`,
                 transform: 'translateY(-1px)',
               },
             },
@@ -164,6 +194,30 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
               borderColor: tokens.primary.main,
               backgroundColor: tokens.primary.container,
               transform: 'translateY(-1px)',
+            },
+            '&.MuiButton-outlinedError': {
+              borderColor: alpha(tokens.error.main, 0.4),
+              color: tokens.error.main,
+              '&:hover': {
+                borderColor: tokens.error.main,
+                backgroundColor: tokens.error.container,
+              },
+            },
+            '&.MuiButton-outlinedWarning': {
+              borderColor: alpha(tokens.warning.main, 0.4),
+              color: tokens.warning.main,
+              '&:hover': {
+                borderColor: tokens.warning.main,
+                backgroundColor: tokens.warning.container,
+              },
+            },
+            '&.MuiButton-outlinedSuccess': {
+              borderColor: alpha(tokens.success.main, 0.4),
+              color: tokens.success.main,
+              '&:hover': {
+                borderColor: tokens.success.main,
+                backgroundColor: tokens.success.container,
+              },
             },
             '&.Mui-disabled': {
               borderColor: isDark ? 'rgba(255, 255, 255, 0.08) !important' : 'rgba(0, 0, 0, 0.08) !important',
@@ -360,9 +414,14 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
       MuiDialog: {
         styleOverrides: {
           paper: {
-            borderRadius: parseInt(RADIUS_TOKENS.xl, 10),
-            border: `1px solid ${tokens.border.default}`,
-            boxShadow: tokens.shadow.box,
+            borderRadius: parseInt(RADIUS_TOKENS['2xl'], 10),
+            backgroundColor: tokens.glass.background,
+            backdropFilter: tokens.glass.backdropBlur,
+            WebkitBackdropFilter: tokens.glass.backdropBlur,
+            border: `1px solid ${tokens.glass.border}`,
+            boxShadow: tokens.glass.shadow,
+            backgroundImage: 'none',
+            overflow: 'hidden',
           },
         },
       },

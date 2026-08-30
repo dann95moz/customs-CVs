@@ -55,6 +55,24 @@ export interface ThemeColorTokens {
     box: string;
     pill: string;
   };
+  glass: {
+    background: string;
+    border: string;
+    backdropBlur: string;
+    shadow: string;
+  };
+  gradient: {
+    primary: string;
+    primaryHover: string;
+    secondary: string;
+    badge: string;
+    error: string;
+    errorHover: string;
+    warning: string;
+    warningHover: string;
+    success: string;
+    successHover: string;
+  };
 }
 
 export const DARK_THEME_TOKENS: ThemeColorTokens = {
@@ -131,6 +149,24 @@ export const DARK_THEME_TOKENS: ThemeColorTokens = {
   shadow: {
     box: '0 4px 20px -2px rgba(0, 0, 0, 0.4)',
     pill: '0 2px 10px rgba(56, 189, 248, 0.25)',
+  },
+  glass: {
+    background: 'rgba(16, 22, 35, 0.96)',
+    border: 'rgba(56, 189, 248, 0.22)',
+    backdropBlur: 'blur(20px)',
+    shadow: '0 24px 48px -8px rgba(0, 0, 0, 0.7), 0 0 32px rgba(56, 189, 248, 0.12)',
+  },
+  gradient: {
+    primary: 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)',
+    primaryHover: 'linear-gradient(135deg, #0369a1 0%, #1e40af 100%)',
+    secondary: 'linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)',
+    badge: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+    error: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+    errorHover: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+    warning: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+    warningHover: 'linear-gradient(135deg, #d97706 0%, #b45309 100%)',
+    success: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+    successHover: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
   },
 };
 
@@ -209,6 +245,24 @@ export const LIGHT_THEME_TOKENS: ThemeColorTokens = {
     box: '0 4px 20px -2px rgba(0, 0, 0, 0.06)',
     pill: '0 2px 10px rgba(2, 132, 199, 0.18)',
   },
+  glass: {
+    background: 'rgba(255, 255, 255, 0.98)',
+    border: 'rgba(2, 132, 199, 0.18)',
+    backdropBlur: 'blur(20px)',
+    shadow: '0 20px 40px -8px rgba(15, 23, 42, 0.15), 0 0 24px rgba(2, 132, 199, 0.08)',
+  },
+  gradient: {
+    primary: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+    primaryHover: 'linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%)',
+    secondary: 'linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)',
+    badge: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+    error: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+    errorHover: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+    warning: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+    warningHover: 'linear-gradient(135deg, #d97706 0%, #b45309 100%)',
+    success: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+    successHover: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+  },
 };
 
 /**
@@ -248,6 +302,19 @@ export function getCssVariablesFromTokens(tokens: ThemeColorTokens): Record<stri
     '--code-bg': tokens.background.code,
     '--box-shadow': tokens.shadow.box,
     '--pill-shadow': tokens.shadow.pill,
+    '--glass-bg': tokens.glass.background,
+    '--glass-border': tokens.glass.border,
+    '--glass-shadow': tokens.glass.shadow,
+    '--gradient-primary': tokens.gradient.primary,
+    '--gradient-primary-hover': tokens.gradient.primaryHover,
+    '--gradient-secondary': tokens.gradient.secondary,
+    '--gradient-badge': tokens.gradient.badge,
+    '--gradient-error': tokens.gradient.error,
+    '--gradient-error-hover': tokens.gradient.errorHover,
+    '--gradient-warning': tokens.gradient.warning,
+    '--gradient-warning-hover': tokens.gradient.warningHover,
+    '--gradient-success': tokens.gradient.success,
+    '--gradient-success-hover': tokens.gradient.successHover,
   };
 }
 
