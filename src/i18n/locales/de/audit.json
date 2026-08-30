@@ -39,9 +39,17 @@
     "action": "Zur Stellenanzeige & Anpassen"
   },
   "modal": {
-    "title": "Verbesserungsvorschlag",
+    "title": "Vorgeschlagene Verbesserung",
     "original": "Aktueller Text",
     "suggested": "Empfohlene Optimierung",
     "apply": "Vorschlag anwenden"
+  },
+  "drawerCards": {
+    "summaryOptimal": "Optimal",
+    "summaryDesc": "Prägnanter 3-Zeilen-Hook, der Kandidatenumfang, technische Seniorität und Relevanz für die Zielposition ausbalanciert.",
+    "experienceXyz": "9/10 XYZ",
+    "experienceDesc": "Starke Anwendung der Google-XYZ-Formel: [X] erreicht, gemessen an [Y], durch [Z] mit quantifizierter Wirkung.",
+    "skillsPass": "95% Bestanden",
+    "skillsDesc": "Hohe Dichte an exakten Schlüsselwörtern passend zu den Anforderungen ohne künstliches Keyword-Stuffing."
   }
 }

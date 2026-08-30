@@ -408,7 +408,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               {!isEditingMarkdown && (
                 <Chip
                   icon={<EditRoundedIcon sx={{ fontSize: '13px !important' }} />}
-                  label="Live Hot Edit • Click text to edit & re-audit"
+                  label={t('preview:toolbar.liveHotEdit', 'Live Hot Edit • Click text to edit & re-audit')}
                   size="small"
                   variant="outlined"
                   color="primary"

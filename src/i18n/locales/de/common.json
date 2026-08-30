@@ -72,10 +72,11 @@
     "ariaLabel": "Authentizitätsversprechen"
   },
   "footer": {
-    "privacyNote": "Alle Daten verbleiben in Ihrem Browser-Speicher. Über das obere Logo können Sie jederzeit hierher zurückkehren.",
+    "toastTitle": "Gefällt Ihnen Ihr Lebenslauf?",
+    "privacyNote": "Alle Daten bleiben im Speicher Ihres Browsers. Sie können jederzeit über das obige Logo hierher zurückkehren.",
     "communityNote": "Wenn CV Studio Ihnen geholfen hat, ein Vorstellungsgespräch zu bekommen, hilft ein Stern auf GitHub anderen, es zu finden.",
     "craftedBy": "Erstellt von",
     "openSource": "Open Source auf GitHub",
-    "giveStar": "Stern vergeben"
+    "giveStar": "Einen Stern vergeben"
   }
 }

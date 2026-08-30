@@ -27,9 +27,19 @@
     "directPdfItem": "Direkter PDF-Download",
     "directPdfDesc": "1-Klick direkter Dateidownload",
     "printPdfItem": "Über Browser drucken",
-    "printPdfDesc": "System-Druckfenster (Strg+P)",
-    "trackApp": "Als beworben markieren",
-    "tracked": "Im Board"
+    "printPdfDesc": "Druckmenü des Browsers (Strg+P)",
+    "trackApp": "Bewerbung verfolgen",
+    "tracked": "Im Board erfasst",
+    "liveHotEdit": "Live-Bearbeitung • Text anklicken zum Bearbeiten & Neuprüfen"
+  },
+  "editor": {
+    "sourceTitle": "CV-Markdown-Quelle",
+    "stats": "{{words}} Wörter • {{lines}} Zeilen",
+    "copyTip": "Gesamtes Markdown in die Zwischenablage kopieren",
+    "copied": "Kopiert!",
+    "copy": "Kopieren",
+    "exportMd": ".md exportieren",
+    "placeholder": "CV-Markdown-Inhalt..."
   },
   "navRail": {
     "templates": "Vorlagen",

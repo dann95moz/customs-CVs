@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icons';
 import { SplitMarkdownEditorProps } from '../../types';
 
@@ -10,6 +11,7 @@ export const SplitMarkdownEditor: React.FC<SplitMarkdownEditorProps> = ({
   onDownload,
   fileName = 'tailored-cv.md'
 }) => {
+  const { t } = useTranslation(['preview', 'common']);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -26,8 +28,10 @@ export const SplitMarkdownEditor: React.FC<SplitMarkdownEditorProps> = ({
       <div className="split-editor-header">
         <div className="split-title-group">
           <Icon type="edit" size={14} />
-          <span className="split-title">CV Markdown Source</span>
-          <span className="split-stats">{wordCount} words • {lineCount} lines</span>
+          <span className="split-title">{t('preview:editor.sourceTitle', 'CV Markdown Source')}</span>
+          <span className="split-stats">
+            {t('preview:editor.stats', '{{words}} words • {{lines}} lines', { words: wordCount, lines: lineCount })}
+          </span>
         </div>
 
         <div className="split-actions">
@@ -35,18 +39,18 @@ export const SplitMarkdownEditor: React.FC<SplitMarkdownEditorProps> = ({
             type="button"
             className="studio-btn studio-btn-secondary btn-xs"
             onClick={handleCopy}
-            title="Copy entire markdown to clipboard"
+            title={t('preview:editor.copyTip', 'Copy entire markdown to clipboard')}
           >
             <Icon type={copied ? 'check' : 'copy'} size={12} />
-            {copied ? 'Copied!' : 'Copy'}
+            {copied ? t('preview:editor.copied', 'Copied!') : t('preview:editor.copy', 'Copy')}
           </button>
           <button
             type="button"
             className="studio-btn studio-btn-secondary btn-xs"
             onClick={onDownload}
-            title={`Download as ${fileName}`}
+            title={`${t('common:actions.download', 'Download')} ${fileName}`}
           >
-            <Icon type="download" size={12} /> Export .md
+            <Icon type="download" size={12} /> {t('preview:editor.exportMd', 'Export .md')}
           </button>
         </div>
       </div>
@@ -56,7 +60,7 @@ export const SplitMarkdownEditor: React.FC<SplitMarkdownEditorProps> = ({
           className="studio-textarea split-textarea"
           value={content}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="CV Markdown content..."
+          placeholder={t('preview:editor.placeholder', 'CV Markdown content...')}
           spellCheck={false}
         />
       </div>

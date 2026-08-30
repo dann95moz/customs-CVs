@@ -72,10 +72,11 @@
     "ariaLabel": "Promessa di Autenticità"
   },
   "footer": {
+    "toastTitle": "Ti piace il tuo CV?",
     "privacyNote": "Tutti i dati rimangono nella memoria del tuo browser. Puoi tornare qui in qualsiasi momento tramite il logo in alto.",
-    "communityNote": "Se CV Studio ti ha aiutato a ottenere un colloquio, una stella su GitHub aiuta più persone a trovarlo.",
+    "communityNote": "Se CV Studio ti ha aiutato a ottenere un colloquio, una stella su GitHub aiuta altri a trovarlo.",
     "craftedBy": "Creato da",
-    "openSource": "Open source su GitHub",
+    "openSource": "Open Source su GitHub",
     "giveStar": "Lascia una stella"
   }
 }

@@ -52,9 +52,9 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             {t('profile:sections.personalInfo.title', '1. Personal Info & Contact')}
           </Typography>
           {Boolean(name && name.trim()) ? (
-            <Chip label="Added" size="small" color="success" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+            <Chip label={t('common:badge.added', 'Added')} size="small" color="success" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
           ) : (
-            <Chip label="Essential" size="small" color="primary" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+            <Chip label={t('common:badge.essential', 'Essential')} size="small" color="primary" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
           )}
         </Box>
       </AccordionSummary>

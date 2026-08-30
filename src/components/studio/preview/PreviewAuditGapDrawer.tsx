@@ -347,10 +347,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                       <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
                         {t('audit:sections.summary', 'Professional Summary')}
                       </Typography>
-                      <Chip label="Optimal" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
+                      <Chip label={t('audit:drawerCards.summaryOptimal', 'Optimal')} size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
-                      Concise 3-line hook balancing candidate scope, technical seniority, and target role relevance.
+                      {t('audit:drawerCards.summaryDesc', 'Concise 3-line hook balancing candidate scope, technical seniority, and target role relevance.')}
                     </Typography>
                   </Paper>
 
@@ -373,10 +373,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                       <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
                         {t('audit:sections.experience', 'Work Experience')}
                       </Typography>
-                      <Chip label="9/10 XYZ" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
+                      <Chip label={t('audit:drawerCards.experienceXyz', '9/10 XYZ')} size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
-                      Strong Google XYZ formula use: <em>Accomplished [X], as measured by [Y], by doing [Z]</em> with quantified business impact.
+                      {t('audit:drawerCards.experienceDesc', 'Strong Google XYZ formula use: Accomplished [X], as measured by [Y], by doing [Z] with quantified business impact.')}
                     </Typography>
                   </Paper>
 
@@ -399,10 +399,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                       <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
                         {t('audit:sections.skills', 'Technical Skills & ATS')}
                       </Typography>
-                      <Chip label="95% Pass" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
+                      <Chip label={t('audit:drawerCards.skillsPass', '95% Pass')} size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
-                      High density of exact keywords matching requirements without stuffing.
+                      {t('audit:drawerCards.skillsDesc', 'High density of exact keywords matching requirements without stuffing.')}
                     </Typography>
                   </Paper>
                 </Box>

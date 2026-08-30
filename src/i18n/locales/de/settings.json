@@ -9,6 +9,8 @@
     "apiKeyPlaceholder": "API-Schlüssel eingeben...",
     "model": "Modell",
     "customEndpoint": "Benutzerdefinierte Endpunkt-URL",
+    "freeOffline": "100% Kostenlos & Offline",
+    "highSpeed": "Hochgeschwindigkeit",
     "testConnection": "Verbindung testen",
     "testing": "Verbindung wird getestet...",
     "success": "Verbindung erfolgreich!",

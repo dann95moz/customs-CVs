@@ -43,5 +43,13 @@
     "original": "Testo Attuale",
     "suggested": "Ottimizzazione Consigliata",
     "apply": "Applica Suggerimento"
+  },
+  "drawerCards": {
+    "summaryOptimal": "Ottimale",
+    "summaryDesc": "Sintesi incisiva di 3 righe che bilancia portata professionale, seniority tecnica e pertinenza per il ruolo desiderato.",
+    "experienceXyz": "9/10 XYZ",
+    "experienceDesc": "Forte adozione della formula Google XYZ: Raggiunto [X], misurato da [Y], eseguendo [Z] con impatto quantificato.",
+    "skillsPass": "95% Superato",
+    "skillsDesc": "Alta densità di parole chiave esatte conformi ai requisiti senza forzature artificiali."
   }
 }

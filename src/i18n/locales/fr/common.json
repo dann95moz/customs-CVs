@@ -72,6 +72,7 @@
     "ariaLabel": "Promesse d'Authenticité"
   },
   "footer": {
+    "toastTitle": "Vous appréciez votre CV ?",
     "privacyNote": "Toutes les données restent dans le stockage de votre navigateur. Vous pouvez revenir ici à tout moment via le logo supérieur.",
     "communityNote": "Si CV Studio vous a aidé à décrocher un entretien, une étoile sur GitHub aide d'autres personnes à le trouver.",
     "craftedBy": "Créé par",

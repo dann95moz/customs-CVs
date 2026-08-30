@@ -9,6 +9,8 @@
     "apiKeyPlaceholder": "Ingresa tu clave API...",
     "model": "Modelo",
     "customEndpoint": "URL de Endpoint Personalizado",
+    "freeOffline": "100% Gratis y Offline",
+    "highSpeed": "Alta Velocidad",
     "testConnection": "Probar Conexión",
     "testing": "Probando Conexión...",
     "success": "¡Conexión exitosa!",

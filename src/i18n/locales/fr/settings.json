@@ -9,6 +9,8 @@
     "apiKeyPlaceholder": "Saisissez votre clé API...",
     "model": "Modèle",
     "customEndpoint": "URL du Point d'Accès Personnalisé",
+    "freeOffline": "100% Gratuit & Hors ligne",
+    "highSpeed": "Haute Vitesse",
     "testConnection": "Tester la Connexion",
     "testing": "Test de Connexion en cours...",
     "success": "Connexion réussie !",

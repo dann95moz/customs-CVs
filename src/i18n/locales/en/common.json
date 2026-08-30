@@ -72,10 +72,11 @@
     "ariaLabel": "Career Authenticity Promise"
   },
   "footer": {
-    "privacyNote": "All data remains in your browser storage. You can switch back here anytime via the top logo.",
+    "toastTitle": "Enjoying your CV?",
+    "privacyNote": "All data stays in your browser storage. Return here anytime from the top logo.",
     "communityNote": "If CV Studio helped you land an interview, a star on GitHub helps more people find it.",
     "craftedBy": "Crafted by",
-    "openSource": "Open source on GitHub",
+    "openSource": "Open Source on GitHub",
     "giveStar": "Give a star"
   }
 }

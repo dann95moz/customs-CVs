@@ -27,9 +27,19 @@
     "directPdfItem": "Descarga Directa (PDF)",
     "directPdfDesc": "Descarga automática en 1 clic",
     "printPdfItem": "Imprimir con el Navegador",
-    "printPdfDesc": "Ventana de impresión del sistema (Ctrl+P)",
+    "printPdfDesc": "Ventana nativa del navegador (Ctrl+P)",
     "trackApp": "Marcar como Postulado",
-    "tracked": "En el Tablero"
+    "tracked": "En Tablero",
+    "liveHotEdit": "Edición en Vivo • Haz clic en el texto para editar y reauditar"
+  },
+  "editor": {
+    "sourceTitle": "Fuente Markdown del CV",
+    "stats": "{{words}} palabras • {{lines}} líneas",
+    "copyTip": "Copiar todo el markdown al portapapeles",
+    "copied": "¡Copiado!",
+    "copy": "Copiar",
+    "exportMd": "Exportar .md",
+    "placeholder": "Contenido Markdown del CV..."
   },
   "navRail": {
     "templates": "Plantillas",

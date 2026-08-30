@@ -9,6 +9,8 @@
     "apiKeyPlaceholder": "Enter your API key...",
     "model": "Model",
     "customEndpoint": "Custom Endpoint URL",
+    "freeOffline": "100% Free & Offline",
+    "highSpeed": "High Speed",
     "testConnection": "Test Connection",
     "testing": "Testing Connection...",
     "success": "Connection successful!",

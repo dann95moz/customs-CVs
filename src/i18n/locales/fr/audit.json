@@ -43,5 +43,13 @@
     "original": "Texte Actuel",
     "suggested": "Optimisation Recommandée",
     "apply": "Appliquer la Suggestion"
+  },
+  "drawerCards": {
+    "summaryOptimal": "Optimal",
+    "summaryDesc": "Accroche concise de 3 lignes équilibrant l'envergure professionnelle, la séniorité technique et la pertinence pour le poste visé.",
+    "experienceXyz": "9/10 XYZ",
+    "experienceDesc": "Forte utilisation de la formule Google XYZ : Accomplissement de [X], mesuré par [Y], en réalisant [Z] avec un impact mesuré.",
+    "skillsPass": "95% Réussi",
+    "skillsDesc": "Forte densité de mots-clés précis alignés sur les exigences sans remplissage artificiel."
   }
 }

@@ -94,7 +94,7 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
                 lineHeight: 1.2,
               }}
             >
-              Enjoying your CV?
+              {t('common:footer.toastTitle', 'Enjoying your CV?')}
             </Typography>
           </Box>
 

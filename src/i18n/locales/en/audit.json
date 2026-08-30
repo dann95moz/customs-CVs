@@ -43,5 +43,13 @@
     "original": "Current Text",
     "suggested": "Recommended Optimization",
     "apply": "Apply Suggestion"
+  },
+  "drawerCards": {
+    "summaryOptimal": "Optimal",
+    "summaryDesc": "Concise 3-line hook balancing candidate scope, technical seniority, and target role relevance.",
+    "experienceXyz": "9/10 XYZ",
+    "experienceDesc": "Strong Google XYZ formula use: Accomplished [X], as measured by [Y], by doing [Z] with quantified business impact.",
+    "skillsPass": "95% Pass",
+    "skillsDesc": "High density of exact keywords matching requirements without stuffing."
   }
 }

@@ -43,7 +43,7 @@ export const SummarySection: React.FC<SummarySectionProps> = ({
             {t('profile:sections.summary.title', '2. Professional Summary')}
           </Typography>
           {Boolean(summary && summary.trim()) && (
-            <Chip label="Added" size="small" color="success" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
+            <Chip label={t('common:badge.added', 'Added')} size="small" color="success" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
           )}
         </Box>
       </AccordionSummary>

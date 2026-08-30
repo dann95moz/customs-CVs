@@ -273,7 +273,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
                       <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.86rem' }}>
                         Local AI (Ollama / LM Studio)
                       </Typography>
-                      <Chip label="100% Free & Offline" size="small" color="secondary" sx={{ height: 18, fontSize: '0.66rem', fontWeight: 700 }} />
+                      <Chip label={t('settings:providers.freeOffline', '100% Free & Offline')} size="small" color="secondary" sx={{ height: 18, fontSize: '0.66rem', fontWeight: 700 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word', mt: 0.25 }}>
                       Run locally on your PC without external network dependency.
@@ -305,7 +305,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
                       <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.86rem' }}>
                         Google Gemini
                       </Typography>
-                      <Chip label="Recommended" size="small" color="primary" sx={{ height: 18, fontSize: '0.66rem', fontWeight: 700 }} />
+                      <Chip label={t('common:badge.recommended', 'Recommended')} size="small" color="primary" sx={{ height: 18, fontSize: '0.66rem', fontWeight: 700 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word', mt: 0.25 }}>
                       Fast and accurate with free key from Google AI Studio.
@@ -337,7 +337,7 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
                       <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.86rem' }}>
                         Groq (Ultra-Fast)
                       </Typography>
-                      <Chip label="High Speed" size="small" color="warning" sx={{ height: 18, fontSize: '0.66rem', fontWeight: 700 }} />
+                      <Chip label={t('settings:providers.highSpeed', 'High Speed')} size="small" color="warning" sx={{ height: 18, fontSize: '0.66rem', fontWeight: 700 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-word', mt: 0.25 }}>
                       Llama 3.3 70B & DeepSeek R1 running on ultra-fast hardware.
@@ -562,11 +562,11 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
           )}
 
           <FormControl fullWidth size="small">
-            <InputLabel id="active-model-select-label">Active Model</InputLabel>
+            <InputLabel id="active-model-select-label">{t('settings:providers.model', 'Active Model')}</InputLabel>
             <Select
               labelId="active-model-select-label"
               value={settings.model}
-              label="Active Model"
+              label={t('settings:providers.model', 'Active Model')}
               onChange={(e) => onSettingsChange({ ...settings, model: e.target.value })}
             >
               {currentModels.map(m => (

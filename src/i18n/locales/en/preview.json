@@ -29,7 +29,17 @@
     "printPdfItem": "Print via Browser",
     "printPdfDesc": "System print window (Ctrl+P)",
     "trackApp": "Track Application",
-    "tracked": "Tracked in Board"
+    "tracked": "Tracked in Board",
+    "liveHotEdit": "Live Hot Edit • Click text to edit & re-audit"
+  },
+  "editor": {
+    "sourceTitle": "CV Markdown Source",
+    "stats": "{{words}} words • {{lines}} lines",
+    "copyTip": "Copy entire markdown to clipboard",
+    "copied": "Copied!",
+    "copy": "Copy",
+    "exportMd": "Export .md",
+    "placeholder": "CV Markdown content..."
   },
   "navRail": {
     "templates": "Templates",

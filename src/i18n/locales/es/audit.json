@@ -43,5 +43,13 @@
     "original": "Texto Actual",
     "suggested": "Optimización Recomendada",
     "apply": "Aplicar Sugerencia"
+  },
+  "drawerCards": {
+    "summaryOptimal": "Óptimo",
+    "summaryDesc": "Gancho conciso de 3 líneas que equilibra el alcance profesional, la antigüedad técnica y la relevancia del puesto objetivo.",
+    "experienceXyz": "9/10 XYZ",
+    "experienceDesc": "Excelente aplicación de la fórmula Google XYZ: Logrado [X], medido por [Y], haciendo [Z] con impacto de negocio cuantificado.",
+    "skillsPass": "95% Aprobado",
+    "skillsDesc": "Alta densidad de palabras clave exactas según los requisitos sin sobrecarga artificial."
   }
 }
