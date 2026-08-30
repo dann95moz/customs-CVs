@@ -67,6 +67,10 @@
     "downloadMdTip": "Télécharger Markdown (.md)",
     "trackVersion": "Marquer como Postulé"
   },
+  "deleteDialog": {
+    "title": "Supprimer la version du CV ?",
+    "message": "Êtes-vous sûr de vouloir supprimer cette version de CV pour {{company}} ? Cette action est irréversible."
+  },
   "trackModal": {
     "title": "Suivre la Candidature",
     "subtitle": "Associez une version de CV spécifique à votre tableau Kanban",

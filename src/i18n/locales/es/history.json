@@ -65,7 +65,11 @@
     "lastModified": "Adaptado",
     "downloadPdfTip": "Descarga Directa en PDF (1 Clic)",
     "downloadMdTip": "Descargar Markdown (.md)",
-    "trackVersion": "Marcar como Postulado"
+    "trackVersion": "Vincular a Candidatura"
+  },
+  "deleteDialog": {
+    "title": "¿Eliminar Versión de CV?",
+    "message": "¿Estás seguro de que deseas eliminar esta versión de CV para {{company}}? Esta acción es permanente y no se puede deshacer."
   },
   "trackModal": {
     "title": "Seguimiento de Postulación",

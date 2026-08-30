@@ -130,21 +130,21 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
       }}
     >
       <Box sx={{ position: 'relative', width: '100%', maxWidth: 1200, mx: 'auto', display: 'flex', alignItems: 'center' }}>
-        {/* Left Fade & Arrow Indicator (Mobile) */}
+        {/* Left Fade & Arrow Indicator */}
         {canScrollLeft && (
           <Box
-            onClick={() => scrollByAmount(-150)}
+            onClick={() => scrollByAmount(-180)}
             sx={{
-              display: { xs: 'flex', sm: 'none' },
+              display: 'flex',
               position: 'absolute',
               left: 0,
               top: 0,
               bottom: 0,
-              width: 32,
+              width: { xs: 32, sm: 44 },
               alignItems: 'center',
               justifyContent: 'flex-start',
               pl: 0.5,
-              background: `linear-gradient(to right, ${theme.palette.background.paper} 65%, transparent)`,
+              background: `linear-gradient(to right, ${theme.palette.background.paper} 60%, transparent)`,
               zIndex: 10,
               cursor: 'pointer',
             }}
@@ -334,21 +334,21 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
         })}
         </Box>
 
-        {/* Right Fade & Arrow Indicator (Mobile) */}
+        {/* Right Fade & Arrow Indicator */}
         {canScrollRight && (
           <Box
-            onClick={() => scrollByAmount(150)}
+            onClick={() => scrollByAmount(180)}
             sx={{
-              display: { xs: 'flex', sm: 'none' },
+              display: 'flex',
               position: 'absolute',
               right: 0,
               top: 0,
               bottom: 0,
-              width: 32,
+              width: { xs: 32, sm: 44 },
               alignItems: 'center',
               justifyContent: 'flex-end',
               pr: 0.5,
-              background: `linear-gradient(to right, transparent, ${theme.palette.background.paper} 65%)`,
+              background: `linear-gradient(to left, ${theme.palette.background.paper} 60%, transparent)`,
               zIndex: 10,
               cursor: 'pointer',
             }}

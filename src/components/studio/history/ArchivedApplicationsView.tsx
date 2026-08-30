@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -10,6 +10,11 @@ import {
   Tooltip,
   Paper,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
   useTheme,
   alpha,
 } from '@mui/material';
@@ -36,6 +41,7 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
 }) => {
   const { t, i18n } = useTranslation(['history', 'common', 'gap']);
   const theme = useTheme();
+  const [deletingApp, setDeletingApp] = useState<ApplicationItem | null>(null);
 
   const filteredArchived = archivedApplications.filter((app) => {
     if (!searchQuery) return true;
@@ -226,7 +232,7 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
                 <IconButton
                   size="small"
                   color="error"
-                  onClick={() => onDeletePermanently(app.id)}
+                  onClick={() => setDeletingApp(app)}
                   sx={{ p: 0.75 }}
                 >
                   <DeleteOutlineRoundedIcon sx={{ fontSize: 17 }} />
@@ -236,6 +242,63 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
           </Card>
         );
       })}
+
+      {/* Permanent Delete Confirmation Dialog */}
+      <Dialog
+        open={Boolean(deletingApp)}
+        onClose={() => setDeletingApp(null)}
+        maxWidth="xs"
+        fullWidth
+        slotProps={{
+          paper: {
+            sx: {
+              borderRadius: '16px',
+              p: 1,
+              bgcolor: 'background.paper',
+            },
+          },
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: 800, pb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+          <DeleteOutlineRoundedIcon color="error" />
+          {t('history:deleteDialog.title', 'Delete Application?')}
+        </DialogTitle>
+        <DialogContent sx={{ pb: 1 }}>
+          <DialogContentText sx={{ fontSize: '0.88rem', color: 'text.secondary' }}>
+            {t(
+              'history:deleteDialog.message',
+              'Are you sure you want to delete this application for {{company}}? This action is permanent and cannot be undone.',
+              { company: deletingApp?.companyName || '' }
+            )}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ px: 2, pb: 1.5, gap: 1 }}>
+          <Button
+            onClick={() => setDeletingApp(null)}
+            color="inherit"
+            variant="outlined"
+            size="small"
+            sx={{ fontWeight: 700, borderRadius: '8px' }}
+          >
+            {t('common:actions.cancel', 'Cancel')}
+          </Button>
+          <Button
+            onClick={() => {
+              if (deletingApp) {
+                onDeletePermanently(deletingApp.id);
+                setDeletingApp(null);
+              }
+            }}
+            color="error"
+            variant="contained"
+            size="small"
+            startIcon={<DeleteOutlineRoundedIcon />}
+            sx={{ fontWeight: 700, borderRadius: '8px' }}
+          >
+            {t('common:actions.delete', 'Delete Permanently')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

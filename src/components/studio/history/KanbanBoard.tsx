@@ -21,6 +21,7 @@ import {
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useTranslation } from 'react-i18next';
 import { KanbanBoardProps, ApplicationItem } from '../../../types';
+import { HorizontalScrollContainer } from '../common/HorizontalScrollContainer';
 import { KanbanColumnComponent } from './KanbanColumn';
 import { KanbanCard } from './KanbanCard';
 
@@ -135,27 +136,16 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <Box
-        sx={{
-          display: 'flex',
+      <HorizontalScrollContainer
+        fadeWidth={56}
+        scrollStep={320}
+        contentSx={{
           gap: { xs: 1.5, sm: 2, md: 2.5 },
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          overscrollBehaviorX: 'contain',
-          WebkitOverflowScrolling: 'touch',
-          width: '100%',
-          maxWidth: '100%',
-          boxSizing: 'border-box',
           pb: 2,
           pt: 0.5,
-          px: 0.25,
+          px: 0.5,
           minHeight: '62vh',
           alignItems: 'stretch',
-          '&::-webkit-scrollbar': { height: 8 },
-          '&::-webkit-scrollbar-thumb': {
-            bgcolor: alpha(theme.palette.text.primary, 0.15),
-            borderRadius: 4,
-          },
         }}
       >
         {columns.map((column) => {
@@ -209,7 +199,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
             {t('history:board.addColumn', '+ Add Stage')}
           </Button>
         </Box>
-      </Box>
+      </HorizontalScrollContainer>
 
       {/* Drag Overlay with active card preview */}
       <DragOverlay dropAnimation={{ duration: 200, easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)' }}>

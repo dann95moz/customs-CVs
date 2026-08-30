@@ -16,6 +16,11 @@ import {
   CircularProgress,
   Select,
   FormControl,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
   useTheme,
   alpha,
 } from '@mui/material';
@@ -54,6 +59,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   const isDark = theme.palette.mode === 'dark';
 
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const {
     attributes,
@@ -393,7 +399,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         <MenuItem
           onClick={(e) => {
             handleCloseMenu(e);
-            onDelete(application.id);
+            setIsDeleteDialogOpen(true);
           }}
           sx={{ fontSize: '0.8rem', color: 'error.main' }}
         >
@@ -403,6 +409,61 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
           <ListItemText primary={t('history:card.delete', 'Delete Card')} />
         </MenuItem>
       </Menu>
+
+      {/* Delete Card Confirmation Dialog */}
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        maxWidth="xs"
+        fullWidth
+        slotProps={{
+          paper: {
+            sx: {
+              borderRadius: '16px',
+              p: 1,
+              bgcolor: 'background.paper',
+            },
+          },
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: 800, pb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+          <DeleteOutlineRoundedIcon color="error" />
+          {t('history:deleteDialog.title', 'Delete Application?')}
+        </DialogTitle>
+        <DialogContent sx={{ pb: 1 }}>
+          <DialogContentText sx={{ fontSize: '0.88rem', color: 'text.secondary' }}>
+            {t(
+              'history:deleteDialog.message',
+              'Are you sure you want to delete this application for {{company}}? This action is permanent and cannot be undone.',
+              { company: application.companyName }
+            )}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ px: 2, pb: 1.5, gap: 1 }}>
+          <Button
+            onClick={() => setIsDeleteDialogOpen(false)}
+            color="inherit"
+            variant="outlined"
+            size="small"
+            sx={{ fontWeight: 700, borderRadius: '8px' }}
+          >
+            {t('common:actions.cancel', 'Cancel')}
+          </Button>
+          <Button
+            onClick={() => {
+              setIsDeleteDialogOpen(false);
+              onDelete(application.id);
+            }}
+            color="error"
+            variant="contained"
+            size="small"
+            startIcon={<DeleteOutlineRoundedIcon />}
+            sx={{ fontWeight: 700, borderRadius: '8px' }}
+          >
+            {t('common:actions.delete', 'Delete Permanently')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

@@ -65,7 +65,11 @@
     "lastModified": "Angepasst",
     "downloadPdfTip": "Direkter PDF-Download (1-Klick)",
     "downloadMdTip": "Markdown (.md) herunterladen",
-    "trackVersion": "Als beworben markieren"
+    "trackVersion": "Bewerbung verfolgen"
+  },
+  "deleteDialog": {
+    "title": "CV-Version löschen?",
+    "message": "Möchten Sie diese angepasste CV-Version für {{company}} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
   },
   "trackModal": {
     "title": "Bewerbung verfolgen",
