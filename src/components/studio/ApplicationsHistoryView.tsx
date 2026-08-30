@@ -271,9 +271,9 @@ export const ApplicationsHistoryView: React.FC = () => {
                     color="primary"
                     startIcon={<AddRoundedIcon />}
                     onClick={() => handleOpenTrackModal()}
-                    sx={{ mt: 0.75, fontWeight: 700, px: 3, py: 1, borderRadius: '10px' }}
+                    sx={{ mt: 0.75, fontWeight: 700, px: 3, py: 1 }}
                   >
-                    {t('history:actions.trackApp', '+ Track Application')}
+                    {t('history:actions.trackApp', 'Track Application')}
                   </Button>
                 </CardContent>
               </Card>
