@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import FormatBoldRoundedIcon from '@mui/icons-material/FormatBoldRounded';
 import FormatItalicRoundedIcon from '@mui/icons-material/FormatItalicRounded';
 import HighlightRoundedIcon from '@mui/icons-material/HighlightRounded';
@@ -25,6 +26,7 @@ export const CvSelectionBubble: React.FC<CvSelectionBubbleProps> = ({
   isBoldActive = false,
   isItalicActive = false,
 }) => {
+  const { t } = useTranslation(['preview']);
   if (!position) return null;
 
   return ReactDOM.createPortal(
@@ -50,8 +52,8 @@ export const CvSelectionBubble: React.FC<CvSelectionBubbleProps> = ({
           e.preventDefault();
           onToggleBold();
         }}
-        title="Toggle Bold (Ctrl+B)"
-        aria-label="Toggle Bold"
+        title={t('preview:toolbar.formatBold', 'Bold (Ctrl+B)')}
+        aria-label={t('preview:toolbar.formatBold', 'Bold (Ctrl+B)')}
       >
         <FormatBoldRoundedIcon sx={{ fontSize: 17 }} />
       </button>
@@ -67,8 +69,8 @@ export const CvSelectionBubble: React.FC<CvSelectionBubbleProps> = ({
           e.preventDefault();
           onToggleItalic();
         }}
-        title="Toggle Italic (Ctrl+I)"
-        aria-label="Toggle Italic"
+        title={t('preview:toolbar.formatItalic', 'Italic (Ctrl+I)')}
+        aria-label={t('preview:toolbar.formatItalic', 'Italic (Ctrl+I)')}
       >
         <FormatItalicRoundedIcon sx={{ fontSize: 17 }} />
       </button>
@@ -86,8 +88,8 @@ export const CvSelectionBubble: React.FC<CvSelectionBubbleProps> = ({
           e.preventDefault();
           onToggleHighlight();
         }}
-        title="Toggle Keyword Highlight (++)"
-        aria-label="Toggle Keyword Highlight"
+        title={t('preview:toolbar.formatHighlight', 'Highlight Keyword (++keyword++)')}
+        aria-label={t('preview:toolbar.formatHighlight', 'Highlight Keyword (++keyword++)')}
       >
         <HighlightRoundedIcon sx={{ fontSize: 16 }} />
       </button>

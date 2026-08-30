@@ -61,5 +61,8 @@
     "twoPages": "2 Pages (Étendu)",
     "twoPagesBadge": "Senior / Lead",
     "twoPagesDesc": "Pour directeurs, leads techniques ou spécialistes avec 8 à 10+ ans d'expérience approfondie."
+  },
+  "ai": {
+    "liveSynthesis": "Synthèse IA en Direct"
   }
 }

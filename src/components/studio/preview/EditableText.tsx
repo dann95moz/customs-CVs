@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCvLiveEdit } from './CvLiveEditContext';
 import { markdownToHtml, htmlToMarkdown } from '../../../utils/textFormatting';
 import { CvSelectionBubble } from './CvSelectionBubble';
@@ -31,6 +32,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
   htmlContent,
   children,
 }) => {
+  const { t } = useTranslation(['preview']);
   const liveEdit = useCvLiveEdit();
   const isEditingEnabled = Boolean(liveEdit?.isLiveEditing);
   const elementRef = useRef<HTMLElement>(null);
@@ -370,7 +372,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
         onMouseUp={handleMouseUp}
-        title="Click to edit • Select text to format bold/italic (Ctrl+B)"
+        title={t('preview:toolbar.clickToEdit', 'Click to edit • Select text to format bold/italic (Ctrl+B)')}
       />
 
       <CvSelectionBubble

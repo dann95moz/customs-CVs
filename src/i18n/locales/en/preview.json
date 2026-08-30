@@ -30,7 +30,8 @@
     "printPdfDesc": "System print window (Ctrl+P)",
     "trackApp": "Track Application",
     "tracked": "Tracked in Board",
-    "liveHotEdit": "Live Hot Edit • Click text to edit & re-audit"
+    "liveHotEdit": "Live Hot Edit • Click text to edit & re-audit",
+    "clickToEdit": "Click to edit • Select text to format bold/italic (Ctrl+B)"
   },
   "editor": {
     "sourceTitle": "CV Markdown Source",
@@ -69,6 +70,7 @@
       "primaryColor": "Accent Color",
       "pageFormat": "Paper Format",
       "pillSkills": "Pill Skills Badges",
+      "customActive": "Custom Active",
       "resetDefaults": "Reset Theme Defaults"
     },
     "comparison": {

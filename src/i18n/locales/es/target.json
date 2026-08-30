@@ -61,5 +61,8 @@
     "twoPages": "2 Páginas (Extendido)",
     "twoPagesBadge": "Senior / Líder",
     "twoPagesDesc": "Para directores, líderes técnicos o especialistas con 8-10+ años de sólida trayectoria y publicaciones."
+  },
+  "ai": {
+    "liveSynthesis": "Síntesis de IA en Vivo"
   }
 }

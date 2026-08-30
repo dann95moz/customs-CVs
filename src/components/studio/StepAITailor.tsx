@@ -196,7 +196,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
                   </Box>
                 </Box>
                 <Chip
-                  label="Live AI Synthesis"
+                  label={t('target:ai.liveSynthesis', 'Live AI Synthesis')}
                   color="primary"
                   size="small"
                   variant="outlined"

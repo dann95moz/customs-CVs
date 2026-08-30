@@ -61,5 +61,8 @@
     "twoPages": "2 Seiten (Erweitert)",
     "twoPagesBadge": "Senior / Lead",
     "twoPagesDesc": "Für Führungskräfte, Tech Leads oder Spezialisten mit mehr als 8–10 Jahren fundierter Erfahrung."
+  },
+  "ai": {
+    "liveSynthesis": "Live-KI-Synthese"
   }
 }

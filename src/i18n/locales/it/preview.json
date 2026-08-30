@@ -30,7 +30,8 @@
     "printPdfDesc": "Finestra di stampa di sistema (Ctrl+P)",
     "trackApp": "Traccia Candidatura",
     "tracked": "Nella Bacheca",
-    "liveHotEdit": "Modifica dal Vivo • Fai clic sul testo per modificare e ricalibrare"
+    "liveHotEdit": "Modifica dal Vivo • Fai clic sul testo per modificare e ricalibrare",
+    "clickToEdit": "Fai clic per modificare • Seleziona il testo per grassetto/corsivo (Ctrl+B)"
   },
   "editor": {
     "sourceTitle": "Sorgente Markdown del CV",
@@ -69,6 +70,7 @@
       "primaryColor": "Colore di Accento",
       "pageFormat": "Formato Carta",
       "pillSkills": "Badge Competenze (Pills)",
+      "customActive": "Personalizzato Attivo",
       "resetDefaults": "Ripristina Impostazioni Predefinite"
     },
     "comparison": {

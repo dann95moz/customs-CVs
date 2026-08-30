@@ -61,5 +61,8 @@
     "twoPages": "2 Pagine (Esteso)",
     "twoPagesBadge": "Senior / Lead",
     "twoPagesDesc": "Per dirigenti, tech lead o specialisti con oltre 8-10 anni di comprovata esperienza tecnica."
+  },
+  "ai": {
+    "liveSynthesis": "Sintesi IA dal Vivo"
   }
 }

@@ -108,7 +108,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           }}
         />
         {palette === 'custom' && (
-          <Chip label="Custom Active" color="primary" size="small" sx={{ fontWeight: 700, fontSize: '0.7rem' }} />
+          <Chip label={t('preview:panels.design.customActive', 'Custom Active')} color="primary" size="small" sx={{ fontWeight: 700, fontSize: '0.7rem' }} />
         )}
       </Box>
 
@@ -262,7 +262,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
         </Typography>
         {onAutoFit && (
           <Chip
-            label="⚡ Auto-Fit"
+            label={t('preview:toolbar.autoFit', '⚡ Auto-Fit 1 Page')}
             size="small"
             color={estimatedPages > 1 ? 'warning' : 'primary'}
             onClick={onAutoFit}

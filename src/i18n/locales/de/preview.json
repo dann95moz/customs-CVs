@@ -30,7 +30,8 @@
     "printPdfDesc": "Druckmenü des Browsers (Strg+P)",
     "trackApp": "Bewerbung verfolgen",
     "tracked": "Im Board erfasst",
-    "liveHotEdit": "Live-Bearbeitung • Text anklicken zum Bearbeiten & Neuprüfen"
+    "liveHotEdit": "Live-Bearbeitung • Text anklicken zum Bearbeiten & Neuprüfen",
+    "clickToEdit": "Klicken zum Bearbeiten • Text auswählen für Fett/Kursiv (Strg+B)"
   },
   "editor": {
     "sourceTitle": "CV-Markdown-Quelle",
@@ -68,8 +69,9 @@
       "sectionSpacing": "Abschnittsabstand",
       "primaryColor": "Akzentfarbe",
       "pageFormat": "Papierformat",
-      "pillSkills": "Fähigkeiten-Badges (Pills)",
-      "resetDefaults": "Auf Standard zurücksetzen"
+      "pillSkills": "Pill-Fähigkeiten-Badges",
+      "customActive": "Benutzerdefiniert Aktiv",
+      "resetDefaults": "Theme-Standardwerte zurücksetzen"
     },
     "comparison": {
       "title": "Master-Profil vs. Angepasster CV",

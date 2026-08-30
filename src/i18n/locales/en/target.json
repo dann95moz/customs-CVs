@@ -61,5 +61,8 @@
     "twoPages": "2 Pages (Extended)",
     "twoPagesBadge": "Senior / Lead",
     "twoPagesDesc": "For directors, tech leads, or specialists with 8–10+ years of deep technical track records and publications."
+  },
+  "ai": {
+    "liveSynthesis": "Live AI Synthesis"
   }
 }
