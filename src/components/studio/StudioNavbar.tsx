@@ -39,7 +39,9 @@ export const StudioNavbar: React.FC = () => {
 
   const activeTab = useResumeStore((s) => s.activeTab);
   const setActiveTab = useResumeStore((s) => s.setActiveTab);
+  const activeApplicationsCount = useResumeStore((s) => (s.applications || []).filter((a) => !a.isArchived).length);
   const savedVersionsCount = useResumeStore((s) => s.savedVersions.length);
+  const displayBadgeCount = activeApplicationsCount > 0 ? activeApplicationsCount : savedVersionsCount;
 
 
   return (
@@ -168,9 +170,9 @@ export const StudioNavbar: React.FC = () => {
                 <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
                   {t('nav.applicationsShort', 'Apps')}
                 </Box>
-                {savedVersionsCount > 0 && (
+                {displayBadgeCount > 0 && (
                   <Chip
-                    label={savedVersionsCount}
+                    label={displayBadgeCount}
                     size="small"
                     color="primary"
                     sx={{

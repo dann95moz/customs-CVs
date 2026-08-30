@@ -6,40 +6,79 @@ import {
   Card,
   CardContent,
   useTheme,
-  alpha
+  alpha,
 } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
 import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../store';
-import { GeneratedCvVersion } from '../../types/cv';
+import { GeneratedCvVersion, KanbanColumn } from '../../types/cv';
 import { ApplicationsStatsHeader } from './history/ApplicationsStatsHeader';
+import { KanbanBoard } from './history/KanbanBoard';
+import { ArchivedApplicationsView } from './history/ArchivedApplicationsView';
 import { ApplicationCard } from './history/ApplicationCard';
+import { TrackApplicationDialog } from './history/TrackApplicationDialog';
+import { ColumnEditDialog } from './history/ColumnEditDialog';
 
 export const ApplicationsHistoryView: React.FC = () => {
   const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
 
   const savedVersions = useResumeStore((s) => s.savedVersions);
+  const applications = useResumeStore((s) => s.applications || []);
+  const kanbanColumns = useResumeStore((s) => s.kanbanColumns || []);
+
   const handleLoadVersion = useResumeStore((s) => s.handleLoadVersion);
   const handleDeleteVersion = useResumeStore((s) => s.handleDeleteVersion);
+  const handleAddApplication = useResumeStore((s) => s.handleAddApplication);
+  const handleDeleteApplication = useResumeStore((s) => s.handleDeleteApplication);
+  const handleMoveApplication = useResumeStore((s) => s.handleMoveApplication);
+  const handleArchiveApplication = useResumeStore((s) => s.handleArchiveApplication);
+  const handleUnarchiveApplication = useResumeStore((s) => s.handleUnarchiveApplication);
+  const handleArchiveColumn = useResumeStore((s) => s.handleArchiveColumn);
+  const handleSetAttachedVersion = useResumeStore((s) => s.handleSetAttachedVersion);
+  const handleAddColumn = useResumeStore((s) => s.handleAddColumn);
+  const handleUpdateColumn = useResumeStore((s) => s.handleUpdateColumn);
+  const handleDeleteColumn = useResumeStore((s) => s.handleDeleteColumn);
+
   const setActiveTab = useResumeStore((s) => s.setActiveTab);
   const setWizardStep = useResumeStore((s) => s.setWizardStep);
 
+  const [activeView, setActiveView] = useState<'board' | 'archived' | 'versions'>('board');
   const [searchQuery, setSearchQuery] = useState('');
   const [downloadingPdfId, setDownloadingPdfId] = useState<string | null>(null);
 
-  // Filtered versions by company or role
-  const filteredVersions = savedVersions.filter(v => 
-    v.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    v.targetRole.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Dialog states
+  const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
+  const [trackPrefillColumnId, setTrackPrefillColumnId] = useState<string | undefined>();
+  const [isColumnEditOpen, setIsColumnEditOpen] = useState(false);
+  const [editingColumn, setEditingColumn] = useState<KanbanColumn | null>(null);
 
-  // Statistics
-  const totalApplications = savedVersions.length;
-  const avgMatchScore = totalApplications > 0
-    ? Math.round(savedVersions.reduce((acc, curr) => acc + (curr.matchScore || 0), 0) / totalApplications)
-    : 0;
-  const uniqueCompanies = new Set(savedVersions.map(v => v.companyName.toLowerCase())).size;
+  // Filtered lists and stats
+  const activeApplications = applications.filter((app) => !app.isArchived);
+  const archivedApplications = applications.filter((app) => app.isArchived);
+
+  const totalActive = activeApplications.length;
+  const totalArchived = archivedApplications.length;
+  const totalInterviews = activeApplications.filter(
+    (a) => a.columnId === 'interview' || a.columnId === 'tech_test'
+  ).length;
+  const totalOffers = activeApplications.filter((a) => a.columnId === 'offer').length;
+
+  const avgMatchScore =
+    totalActive > 0
+      ? Math.round(
+          activeApplications.reduce((acc, curr) => acc + (curr.matchScore || 0), 0) / totalActive
+        )
+      : 0;
+
+  // Filtered saved versions for the "versions" tab
+  const filteredVersions = savedVersions.filter(
+    (v) =>
+      v.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      v.targetRole.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleDownloadMarkdown = (v: GeneratedCvVersion) => {
     const fileName = `CV_${v.candidateName.replace(/\s+/g, '_')}_${v.companyName.replace(/\s+/g, '_')}.md`;
@@ -64,6 +103,26 @@ export const ApplicationsHistoryView: React.FC = () => {
     }
   };
 
+  const handleOpenTrackModal = (columnId?: string) => {
+    setTrackPrefillColumnId(columnId);
+    setIsTrackModalOpen(true);
+  };
+
+  const handleOpenEditColumn = (col?: KanbanColumn) => {
+    setEditingColumn(col || null);
+    setIsColumnEditOpen(true);
+  };
+
+  const handleSaveColumn = (title: string, color: string) => {
+    if (editingColumn) {
+      handleUpdateColumn(editingColumn.id, { title, color });
+    } else {
+      handleAddColumn(title, color);
+    }
+    setIsColumnEditOpen(false);
+    setEditingColumn(null);
+  };
+
   return (
     <Box
       sx={{
@@ -78,77 +137,170 @@ export const ApplicationsHistoryView: React.FC = () => {
       <Box
         sx={{
           width: '100%',
-          maxWidth: 1200,
+          maxWidth: activeView === 'board' ? '100%' : 1200,
           display: 'flex',
           flexDirection: 'column',
           gap: 2.5,
         }}
       >
-        {/* Top Banner and Summary Counters */}
+        {/* Top Summary Banner & Controls */}
         <ApplicationsStatsHeader
-          totalApplications={totalApplications}
+          totalActiveApplications={totalActive}
+          totalInterviews={totalInterviews}
+          totalOffers={totalOffers}
+          totalArchived={totalArchived}
           avgMatchScore={avgMatchScore}
-          uniqueCompanies={uniqueCompanies}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
-          onNewApplication={() => {
+          onTrackNewApplication={() => handleOpenTrackModal()}
+          onStartNewResume={() => {
             setActiveTab('wizard');
             setWizardStep('target');
           }}
+          activeView={activeView}
+          onViewChange={setActiveView}
+          savedVersionsCount={savedVersions.length}
         />
 
-        {/* List Grid or Empty State */}
-        {filteredVersions.length === 0 ? (
-          <Card
-            variant="outlined"
-            sx={{
-              p: 5,
-              textAlign: 'center',
-              borderRadius: '16px',
-              borderStyle: 'dashed',
-              bgcolor: 'background.paper',
-            }}
-          >
-            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5 }}>
-              <Box
+        {/* 1. KANBAN BOARD VIEW */}
+        {activeView === 'board' && (
+          <>
+            {totalActive === 0 && savedVersions.length === 0 ? (
+              <Card
+                variant="outlined"
                 sx={{
-                  width: 56,
-                  height: 56,
-                  borderRadius: '50%',
-                  bgcolor: alpha(theme.palette.primary.main, 0.1),
-                  color: theme.palette.primary.main,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  p: 5,
+                  textAlign: 'center',
+                  borderRadius: '16px',
+                  borderStyle: 'dashed',
+                  bgcolor: 'background.paper',
                 }}
               >
-                <AutoAwesomeRoundedIcon fontSize="large" />
-              </Box>
-              <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                {searchQuery ? 'No tailored resumes match your search' : t('history:empty.title', 'No Applications Saved Yet')}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 460 }}>
-                {searchQuery
-                  ? 'Try searching for a different company or job title.'
-                  : t('history:empty.desc', 'Whenever you synthesize a tailored resume for a specific company, it will be automatically saved here for tracking.')}
-              </Typography>
-              {!searchQuery && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<AutoAwesomeRoundedIcon />}
-                  onClick={() => {
-                    setActiveTab('wizard');
-                    setWizardStep('target');
-                  }}
-                  sx={{ mt: 1, fontWeight: 700 }}
-                >
-                  {t('history:empty.action', 'Start New Application')}
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        ) : (
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5 }}>
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: '50%',
+                      bgcolor: alpha(theme.palette.primary.main, 0.1),
+                      color: theme.palette.primary.main,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <ViewKanbanRoundedIcon fontSize="large" />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: 800 }}>
+                    {t('history:empty.title', 'No Applications Tracked Yet')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 460 }}>
+                    {t(
+                      'history:empty.desc',
+                      'Synthesize or save a tailored resume in Resume Studio, then click "Track Application" to organize your recruitment pipeline on the Kanban board.'
+                    )}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AutoAwesomeRoundedIcon />}
+                    onClick={() => {
+                      setActiveTab('wizard');
+                      setWizardStep('target');
+                    }}
+                    sx={{ mt: 1, fontWeight: 700 }}
+                  >
+                    {t('history:empty.action', 'Start New Application')}
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : totalActive === 0 && savedVersions.length > 0 ? (
+              <Card
+                variant="outlined"
+                sx={{
+                  p: 4,
+                  textAlign: 'center',
+                  borderRadius: '16px',
+                  bgcolor: 'background.paper',
+                  border: `1.5px dashed ${alpha(theme.palette.primary.main, 0.4)}`,
+                }}
+              >
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5 }}>
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: '12px',
+                      bgcolor: alpha(theme.palette.primary.main, 0.12),
+                      color: theme.palette.primary.main,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <AddRoundedIcon fontSize="medium" />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: 800 }}>
+                    {t('history:emptyBoardWithVersions.title', 'You have {{count}} tailored CVs ready to track', {
+                      count: savedVersions.length,
+                    })}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 460 }}>
+                    {t(
+                      'history:emptyBoardWithVersions.desc',
+                      'Select which CV version was actually submitted to an employer to add it to your active Kanban board.'
+                    )}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddRoundedIcon />}
+                    onClick={() => handleOpenTrackModal()}
+                    sx={{ mt: 0.5, fontWeight: 700 }}
+                  >
+                    {t('history:actions.trackApp', '+ Track Application')}
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <KanbanBoard
+                columns={kanbanColumns}
+                applications={applications}
+                savedVersions={savedVersions}
+                searchQuery={searchQuery}
+                onMoveApplication={handleMoveApplication}
+                onLoadVersionInStudio={handleLoadVersion}
+                onSetAttachedVersion={handleSetAttachedVersion}
+                onArchiveApplication={handleArchiveApplication}
+                onDeleteApplication={handleDeleteApplication}
+                onDownloadPdf={handleDownloadPdf}
+                isDownloadingPdfId={downloadingPdfId}
+                onAddColumn={() => handleOpenEditColumn()}
+                onEditColumn={handleOpenEditColumn}
+                onDeleteColumn={handleDeleteColumn}
+                onArchiveColumn={handleArchiveColumn}
+                onQuickAddApplication={handleOpenTrackModal}
+              />
+            )}
+          </>
+        )}
+
+        {/* 2. ARCHIVED APPLICATIONS VIEW */}
+        {activeView === 'archived' && (
+          <ArchivedApplicationsView
+            archivedApplications={archivedApplications}
+            savedVersions={savedVersions}
+            searchQuery={searchQuery}
+            onRestore={handleUnarchiveApplication}
+            onDeletePermanently={handleDeleteApplication}
+            onLoadInStudio={handleLoadVersion}
+            onDownloadPdf={handleDownloadPdf}
+            isDownloadingPdfId={downloadingPdfId}
+          />
+        )}
+
+        {/* 3. ALL SAVED RESUME VERSIONS (Historical Database) */}
+        {activeView === 'versions' && (
           <Box
             sx={{
               display: 'grid',
@@ -170,6 +322,28 @@ export const ApplicationsHistoryView: React.FC = () => {
           </Box>
         )}
       </Box>
+
+      {/* Opt-in Track Application Dialog */}
+      <TrackApplicationDialog
+        open={isTrackModalOpen}
+        onClose={() => setIsTrackModalOpen(false)}
+        onConfirm={handleAddApplication}
+        defaultColumnId={trackPrefillColumnId}
+        savedVersions={savedVersions}
+        existingApplications={applications}
+        columns={kanbanColumns}
+      />
+
+      {/* Column Add / Edit Dialog */}
+      <ColumnEditDialog
+        open={isColumnEditOpen}
+        column={editingColumn}
+        onClose={() => {
+          setIsColumnEditOpen(false);
+          setEditingColumn(null);
+        }}
+        onSave={handleSaveColumn}
+      />
     </Box>
   );
 };
