@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 import {
   useResumeStore,
   useParsedCv,
@@ -143,6 +145,13 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
 
   const activeTemplateMeta = getTemplateMetadata(theme);
 
+  // Canvas container reference and mobile auto-scale factor
+  const canvasContainerRef = useRef<HTMLDivElement>(null);
+  const [canvasScale, setCanvasScale] = useState<number>(1);
+  const [canScrollDown, setCanScrollDown] = useState<boolean>(false);
+  const [canScrollRight, setCanScrollRight] = useState<boolean>(false);
+  const [mobileZoomMode, setMobileZoomMode] = useState<'fit' | '100%'>('fit');
+
   // Measure rendered paper sheet height whenever styling or content changes
   useEffect(() => {
     const updateHeight = () => {
@@ -154,6 +163,56 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     const timer = setTimeout(updateHeight, 150);
     return () => clearTimeout(timer);
   }, [cvMarkdown, theme, palette, customColor, fontFamily, spacingDensity, pageFormat]);
+
+  // Auto-calculate scale factor for mobile/tablet canvas preview
+  useEffect(() => {
+    const calculateScale = () => {
+      if (!canvasContainerRef.current) return;
+      const containerWidth = canvasContainerRef.current.clientWidth;
+      if (containerWidth > 0 && containerWidth < 860) {
+        if (mobileZoomMode === '100%') {
+          setCanvasScale(1);
+        } else {
+          // Fit mode: calculate scale to comfortably fit screen width
+          const padding = containerWidth < 500 ? 16 : 32;
+          const scale = Math.min(1, Math.max(0.35, (containerWidth - padding) / targetPageWidthPx));
+          setCanvasScale(scale);
+        }
+      } else {
+        setCanvasScale(1);
+      }
+    };
+
+    calculateScale();
+    window.addEventListener('resize', calculateScale);
+    const observer = new ResizeObserver(calculateScale);
+    if (canvasContainerRef.current) {
+      observer.observe(canvasContainerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', calculateScale);
+      observer.disconnect();
+    };
+  }, [targetPageWidthPx, mobileViewMode, mobileZoomMode]);
+
+  // Track canvas scroll to show/hide scroll affordance indicators
+  const handleCanvasScroll = () => {
+    if (!canvasContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight, scrollLeft, scrollWidth, clientWidth } = canvasContainerRef.current;
+    const hasScrollableVertical = scrollHeight > clientHeight + 25;
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 35;
+    setCanScrollDown(hasScrollableVertical && !isAtBottom);
+
+    const hasScrollableHorizontal = scrollWidth > clientWidth + 15;
+    const isAtRight = scrollLeft + clientWidth >= scrollWidth - 20;
+    setCanScrollRight(hasScrollableHorizontal && !isAtRight);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(handleCanvasScroll, 200);
+    return () => clearTimeout(timer);
+  }, [sheetHeight, canvasScale, mobileViewMode, mobileZoomMode]);
 
   const isOverflowing = sheetHeight > targetPagePx + 8;
   const estimatedPages = isOverflowing ? Math.max(2, Math.ceil(sheetHeight / targetPagePx)) : 1;
@@ -289,19 +348,23 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         )}
 
         {/* 3. Main Center Canvas: Document Sheet & Mobile Touch Editor */}
-        <div className="preview-canvas-wrapper" style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', order: 1 }}>
+        <div
+          className={`preview-canvas-wrapper ${canScrollDown ? 'has-scroll-below' : ''}`}
+          style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', order: 1 }}
+        >
           {/* Mobile View Mode Segmented Control (Visible only on mobile xs/sm) */}
           <Box
             className="no-print"
             sx={{
               display: { xs: 'flex', md: 'none' },
               alignItems: 'center',
-              justifyContent: 'center',
-              py: 1,
-              px: 2,
+              justifyContent: 'space-between',
+              py: 0.75,
+              px: 1.5,
               bgcolor: 'background.paper',
               borderBottom: `1px solid ${muiTheme.palette.divider}`,
               zIndex: 10,
+              gap: 1,
             }}
           >
             <ButtonGroup
@@ -310,7 +373,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               sx={{
                 borderRadius: '999px',
                 bgcolor: alpha(muiTheme.palette.primary.main, 0.06),
-                p: 0.35,
+                p: 0.3,
                 border: 'none',
                 gap: 0.5,
               }}
@@ -320,11 +383,11 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                 variant={mobileViewMode === 'edit' ? 'contained' : 'text'}
                 sx={{
                   borderRadius: '999px !important',
-                  px: 3,
-                  py: 0.6,
-                  minHeight: 36,
+                  px: 2.25,
+                  py: 0.5,
+                  minHeight: 32,
                   fontWeight: 700,
-                  fontSize: '0.82rem',
+                  fontSize: '0.78rem',
                   textTransform: 'none',
                   boxShadow: 'none',
                   bgcolor: mobileViewMode === 'edit' ? 'primary.main' : 'transparent',
@@ -338,11 +401,11 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                 variant={mobileViewMode === 'preview' ? 'contained' : 'text'}
                 sx={{
                   borderRadius: '999px !important',
-                  px: 3,
-                  py: 0.6,
-                  minHeight: 36,
+                  px: 2.25,
+                  py: 0.5,
+                  minHeight: 32,
                   fontWeight: 700,
-                  fontSize: '0.82rem',
+                  fontSize: '0.78rem',
                   textTransform: 'none',
                   boxShadow: 'none',
                   bgcolor: mobileViewMode === 'preview' ? 'primary.main' : 'transparent',
@@ -352,6 +415,18 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                 {t('preview:aiRegen.mobileModePreview', 'Vista Previa')}
               </Button>
             </ButtonGroup>
+
+            {/* Mobile Zoom Fit Mode Toggle */}
+            {mobileViewMode === 'preview' && (
+              <Chip
+                size="small"
+                label={mobileZoomMode === 'fit' ? t('preview:toolbar.zoomFit', 'Ajustar ancho') : t('preview:toolbar.zoom100', '100% Real')}
+                color={mobileZoomMode === 'fit' ? 'primary' : 'default'}
+                variant={mobileZoomMode === 'fit' ? 'filled' : 'outlined'}
+                onClick={() => setMobileZoomMode((m) => (m === 'fit' ? '100%' : 'fit'))}
+                sx={{ fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}
+              />
+            )}
           </Box>
 
           {/* Mobile 'Edit' Mode: Vertical List of Cards with Large Touch Buttons */}
@@ -373,55 +448,181 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           {/* Desktop OR Mobile 'Preview' Mode: Standard Pristine Canvas */}
           <Box
             component="main"
+            ref={canvasContainerRef}
             className="preview-pane-canvas"
+            onScroll={handleCanvasScroll}
             sx={{
               position: 'relative',
               display: mobileViewMode === 'edit' ? { xs: 'none', md: 'flex' } : 'flex',
               flexDirection: 'column',
+              alignItems: canvasScale < 1 && mobileZoomMode === 'fit' ? 'center' : 'flex-start',
+              justifyContent: 'flex-start',
               flex: 1,
-              overflow: 'auto',
+              overflowX: 'auto',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              p: { xs: 1.5, sm: 2, md: 3.5 },
             }}
           >
+            {/* Scaled Wrapper Container with strict visual pixel footprint */}
             <div
-              className="paper-sheet-wrapper"
+              className="paper-scale-container"
               style={{
-                width: `${targetPageWidthPx}px`,
-                display: 'flex',
-                justifyContent: 'center',
+                width: canvasScale < 1 && mobileZoomMode === 'fit' ? `${targetPageWidthPx * canvasScale}px` : `${targetPageWidthPx}px`,
+                height: canvasScale < 1 && mobileZoomMode === 'fit' ? `${sheetHeight * canvasScale}px` : `${sheetHeight}px`,
+                position: 'relative',
+                margin: canvasScale < 1 && mobileZoomMode === 'fit' ? '0 auto' : '0 auto',
+                flexShrink: 0,
               }}
             >
               <div
-                ref={paperRef}
-                className={`paper-sheet ${overflowPercentage > 0 && overflowPercentage <= 25 ? 'compact-fit' : ''}`}
+                className="paper-sheet-wrapper"
                 style={{
                   width: `${targetPageWidthPx}px`,
-                  margin: '0 auto',
+                  transform: canvasScale < 1 && mobileZoomMode === 'fit' ? `scale(${canvasScale})` : undefined,
+                  transformOrigin: 'top left',
+                  position: canvasScale < 1 && mobileZoomMode === 'fit' ? 'absolute' : 'relative',
+                  top: 0,
+                  left: 0,
                 }}
               >
-                <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
-                  <CVRenderer
-                    data={parsedCv}
-                    theme={theme}
-                    palette={palette}
-                    customColor={palette === 'custom' ? customColor : undefined}
-                    fontFamily={fontFamily}
-                    spacingDensity={spacingDensity}
-                  />
-                </CvLiveEditProvider>
-              </div>
-
-              {/* Visual Page Break Marker only on actual overflow */}
-              {isOverflowing && (
                 <div
-                  className="page-break-guide"
+                  ref={paperRef}
+                  className={`paper-sheet ${overflowPercentage > 0 && overflowPercentage <= 25 ? 'compact-fit' : ''}`}
                   style={{
-                    top: `${targetPagePx}px`,
+                    width: `${targetPageWidthPx}px`,
+                    margin: '0 auto',
                   }}
                 >
-                  <span>✂️ {t('preview:toolbar.pageBoundary', 'Page 1 Boundary ({{format}} Standard)', { format: pageFormat.toUpperCase() })}</span>
+                  <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
+                    <CVRenderer
+                      data={parsedCv}
+                      theme={theme}
+                      palette={palette}
+                      customColor={palette === 'custom' ? customColor : undefined}
+                      fontFamily={fontFamily}
+                      spacingDensity={spacingDensity}
+                    />
+                  </CvLiveEditProvider>
                 </div>
-              )}
+
+                {/* Visual Page Break Marker only on actual overflow */}
+                {isOverflowing && (
+                  <div
+                    className="page-break-guide"
+                    style={{
+                      top: `${targetPagePx}px`,
+                    }}
+                  >
+                    <span>✂️ {t('preview:toolbar.pageBoundary', 'Page 1 Boundary ({{format}} Standard)', { format: pageFormat.toUpperCase() })}</span>
+                  </div>
+                )}
+              </div>
             </div>
+
+            {/* Floating Affordance Indicators (Scroll Down & Slide Right) */}
+            <Box
+              className="no-print"
+              sx={{
+                position: 'sticky',
+                bottom: 14,
+                alignSelf: 'center',
+                zIndex: 25,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                pointerEvents: 'none',
+              }}
+            >
+              {canScrollDown && (
+                <Box
+                  onClick={() => {
+                    if (canvasContainerRef.current) {
+                      canvasContainerRef.current.scrollBy({ top: 320, behavior: 'smooth' });
+                    }
+                  }}
+                  sx={{
+                    pointerEvents: 'auto',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.75,
+                    px: 2,
+                    py: 0.6,
+                    borderRadius: '9999px',
+                    bgcolor: muiTheme.palette.mode === 'dark' ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.95)',
+                    backdropFilter: 'blur(12px)',
+                    border: `1px solid ${muiTheme.palette.divider}`,
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.28)',
+                    cursor: 'pointer',
+                    animation: 'bounceFloat 2s infinite ease-in-out',
+                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                    '&:hover': {
+                      transform: 'translateY(-2px) scale(1.04)',
+                      borderColor: 'primary.main',
+                      boxShadow: '0 12px 28px rgba(0, 0, 0, 0.38)',
+                    },
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: '0.74rem',
+                      color: 'text.primary',
+                      letterSpacing: 0.2,
+                      userSelect: 'none',
+                    }}
+                  >
+                    {t('preview:toolbar.scrollDown', 'Desliza para ver más')}
+                  </Typography>
+                  <KeyboardArrowDownRoundedIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+                </Box>
+              )}
+
+              {canScrollRight && (
+                <Box
+                  onClick={() => {
+                    if (canvasContainerRef.current) {
+                      canvasContainerRef.current.scrollBy({ left: 240, behavior: 'smooth' });
+                    }
+                  }}
+                  sx={{
+                    pointerEvents: 'auto',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.75,
+                    px: 1.75,
+                    py: 0.6,
+                    borderRadius: '9999px',
+                    bgcolor: muiTheme.palette.mode === 'dark' ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.95)',
+                    backdropFilter: 'blur(12px)',
+                    border: `1px solid ${muiTheme.palette.divider}`,
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.28)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                    '&:hover': {
+                      transform: 'translateY(-2px) scale(1.04)',
+                      borderColor: 'primary.main',
+                      boxShadow: '0 12px 28px rgba(0, 0, 0, 0.38)',
+                    },
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: '0.74rem',
+                      color: 'text.primary',
+                      letterSpacing: 0.2,
+                      userSelect: 'none',
+                    }}
+                  >
+                    {t('preview:toolbar.scrollRight', 'Desliza a la derecha')}
+                  </Typography>
+                  <KeyboardArrowRightRoundedIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+                </Box>
+              )}
+            </Box>
           </Box>
 
           {/* Bottom Navigation Bar */}

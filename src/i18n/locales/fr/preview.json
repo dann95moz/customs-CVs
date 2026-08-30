@@ -34,7 +34,11 @@
     "regenerateCv": "Régénérer le CV",
     "regeneratingCv": "Régénération...",
     "liveHotEdit": "Édition en Direct • Cliquez sur le texte pour modifier et réévaluer",
-    "clickToEdit": "Cliquez pour modifier • Sélectionnez du texte pour gras/italique (Ctrl+B)"
+    "clickToEdit": "Cliquez pour modifier • Sélectionnez du texte pour gras/italique (Ctrl+B)",
+    "scrollDown": "Faites défiler vers le bas",
+    "scrollRight": "Faites glisser vers la droite",
+    "zoomFit": "Ajuster largeur",
+    "zoom100": "100% Zoom"
   },
   "editor": {
     "sourceTitle": "Source Markdown du CV",

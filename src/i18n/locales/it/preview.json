@@ -34,7 +34,11 @@
     "regenerateCv": "Rigenera CV",
     "regeneratingCv": "Rigenerazione...",
     "liveHotEdit": "Modifica dal Vivo • Fai clic sul testo per modificare e ricalibrare",
-    "clickToEdit": "Fai clic per modificare • Seleziona el testo per grassetto/corsivo (Ctrl+B)"
+    "clickToEdit": "Fai clic per modificare • Seleziona el testo per grassetto/corsivo (Ctrl+B)",
+    "scrollDown": "Scorri verso il basso",
+    "scrollRight": "Scorri a destra",
+    "zoomFit": "Adatta larghezza",
+    "zoom100": "100% Zoom"
   },
   "editor": {
     "sourceTitle": "Sorgente Markdown del CV",

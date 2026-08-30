@@ -98,21 +98,36 @@
   overflow: hidden;
 }
 
+/* Scroll down bounce float animation */
+@keyframes bounceFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
 /* Document Canvas: Exact A4 Sheet Simulation at 96 DPI */
 .preview-pane-canvas {
   flex: 1;
   overflow-y: auto;
   padding: 32px 20px;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   background: transparent;
+  -webkit-overflow-scrolling: touch;
 }
 
 .paper-sheet-wrapper {
   position: relative;
   width: var(--cv-page-width);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .paper-sheet {
@@ -192,9 +207,9 @@
   }
 
   .preview-pane-canvas {
-    padding: 12px 6px;
-    justify-content: center;
-    align-items: flex-start;
+    padding: 14px 6px 52px;
+    align-items: center;
+    justify-content: flex-start;
     overflow-x: auto;
     overflow-y: auto;
     width: 100%;
@@ -202,12 +217,19 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  .paper-scale-container {
+    margin: 0 auto;
+    max-width: 100%;
+    overflow: visible;
+  }
+
   .paper-sheet-wrapper {
     margin: 0 auto;
     max-width: 100%;
     overflow: visible;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .preview-top-toolbar {

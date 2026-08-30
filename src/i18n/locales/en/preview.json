@@ -33,8 +33,12 @@
     "trackedSuccess": "Saved to My Applications",
     "regenerateCv": "Regenerate CV",
     "regeneratingCv": "Regenerating...",
-    "liveHotEdit": "Live Hot Edit • Click text to edit & re-audit",
-    "clickToEdit": "Click to edit • Select text to format bold/italic (Ctrl+B)"
+    "liveHotEdit": "Live Hot Editing • Click any text to edit and re-audit in real time",
+    "clickToEdit": "Click to edit • Select text to format bold/italic (Ctrl+B)",
+    "scrollDown": "Scroll down for more",
+    "scrollRight": "Slide right to view more",
+    "zoomFit": "Fit width",
+    "zoom100": "100% Zoom"
   },
   "editor": {
     "sourceTitle": "CV Markdown Source",

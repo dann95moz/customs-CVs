@@ -34,7 +34,11 @@
     "regenerateCv": "CV neu generieren",
     "regeneratingCv": "Wird neu generiert...",
     "liveHotEdit": "Live-Bearbeitung • Text anklicken zum Bearbeiten & Neuprüfen",
-    "clickToEdit": "Klicken zum Bearbeiten • Text auswählen für Fett/Kursiv (Strg+B)"
+    "clickToEdit": "Klicken zum Bearbeiten • Text auswählen für Fett/Kursiv (Strg+B)",
+    "scrollDown": "Nach unten scrollen",
+    "scrollRight": "Nach rechts schieben",
+    "zoomFit": "Breite anpassen",
+    "zoom100": "100% Zoom"
   },
   "editor": {
     "sourceTitle": "CV-Markdown-Quelle",

@@ -67,9 +67,22 @@ export async function generateDirectPdf(
       logging: false,
       windowWidth: formatConfig.widthPx,
       onclone: (clonedDoc) => {
-        // Ensure cloned printable sheet has clean styling
+        // Ensure cloned printable sheet and containers have clean unscaled styling
+        const clonedScaleContainer = clonedDoc.querySelector('.paper-scale-container') as HTMLElement;
+        if (clonedScaleContainer) {
+          clonedScaleContainer.style.width = `${formatConfig.widthPx}px`;
+          clonedScaleContainer.style.height = 'auto';
+          clonedScaleContainer.style.transform = 'none';
+        }
+        const clonedWrapper = clonedDoc.querySelector('.paper-sheet-wrapper') as HTMLElement;
+        if (clonedWrapper) {
+          clonedWrapper.style.width = `${formatConfig.widthPx}px`;
+          clonedWrapper.style.transform = 'none';
+          clonedWrapper.style.position = 'relative';
+        }
         const clonedSheet = clonedDoc.querySelector('.paper-sheet') as HTMLElement;
         if (clonedSheet) {
+          clonedSheet.style.width = `${formatConfig.widthPx}px`;
           clonedSheet.style.transform = 'none';
           clonedSheet.style.margin = '0 auto';
           clonedSheet.style.boxShadow = 'none';

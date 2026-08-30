@@ -34,7 +34,11 @@
     "regenerateCv": "Regenerar CV",
     "regeneratingCv": "Regenerando...",
     "liveHotEdit": "Edición en Vivo • Haz clic en el texto para editar y reauditar",
-    "clickToEdit": "Haz clic para editar • Selecciona texto para formato en negrita/cursiva (Ctrl+B)"
+    "clickToEdit": "Haz clic para editar • Selecciona texto para formato en negrita/cursiva (Ctrl+B)",
+    "scrollDown": "Desliza para ver más",
+    "scrollRight": "Desliza a la derecha",
+    "zoomFit": "Ajustar ancho",
+    "zoom100": "100% Real"
   },
   "editor": {
     "sourceTitle": "Fuente Markdown del CV",
