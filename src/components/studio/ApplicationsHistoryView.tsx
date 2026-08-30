@@ -129,11 +129,16 @@ export const ApplicationsHistoryView: React.FC = () => {
     <Box
       sx={{
         flex: 1,
+        width: '100%',
+        maxWidth: '100%',
         height: '100%',
         overflowY: 'auto',
+        overflowX: 'hidden',
+        boxSizing: 'border-box',
         p: { xs: 1.5, sm: 2, md: 3 },
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
       <Box
@@ -143,6 +148,8 @@ export const ApplicationsHistoryView: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: 2.5,
+          boxSizing: 'border-box',
+          minWidth: 0,
         }}
       >
         {/* Top Summary Banner & Controls */}

@@ -138,11 +138,17 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       <Box
         sx={{
           display: 'flex',
-          gap: 2.5,
+          gap: { xs: 1.5, sm: 2, md: 2.5 },
           overflowX: 'auto',
+          overflowY: 'hidden',
+          overscrollBehaviorX: 'contain',
+          WebkitOverflowScrolling: 'touch',
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
           pb: 2,
           pt: 0.5,
-          px: 0.5,
+          px: 0.25,
           minHeight: '62vh',
           alignItems: 'stretch',
           '&::-webkit-scrollbar': { height: 8 },
@@ -177,7 +183,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         })}
 
         {/* Add Column Button */}
-        <Box sx={{ width: '220px', minWidth: '220px', flexShrink: 0 }}>
+        <Box sx={{ width: { xs: '180px', sm: '220px' }, minWidth: { xs: '180px', sm: '220px' }, flexShrink: 0 }}>
           <Button
             variant="outlined"
             onClick={onAddColumn}

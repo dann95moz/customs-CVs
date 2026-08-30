@@ -9,8 +9,11 @@
   },
   "views": {
     "board": "Active Board",
+    "boardShort": "Board",
     "archived": "Archived",
-    "allVersions": "CV Versions History"
+    "archivedShort": "Archived",
+    "allVersions": "CV Versions History",
+    "versionsShort": "Versions"
   },
   "stats": {
     "total": "Total Tailored CVs",

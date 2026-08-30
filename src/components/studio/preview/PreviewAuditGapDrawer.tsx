@@ -211,6 +211,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           className="no-print"
           sx={{
             width: { xs: '100%', sm: 340, md: 360 },
+            maxWidth: '100vw',
             position: { xs: 'absolute', lg: 'relative' },
             left: { xs: 0, sm: 'auto' },
             right: 0,
@@ -222,8 +223,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
             flexDirection: 'column',
             height: '100%',
             overflowY: 'auto',
+            overflowX: 'hidden',
             flexShrink: 0,
             zIndex: 40,
+            boxSizing: 'border-box',
             boxShadow: isDark
               ? '-8px 0 28px rgba(0, 0, 0, 0.5)'
               : '-4px 0 20px rgba(0, 0, 0, 0.08)',
@@ -232,30 +235,37 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           {/* Header with Segmented Tabs and Close [X] */}
           <Box
             sx={{
-              p: 1.5,
-              px: 2,
+              p: 1.25,
+              px: { xs: 1.5, sm: 2 },
               borderBottom: `1px solid ${theme.palette.divider}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: 1,
               bgcolor: isDark ? alpha(theme.palette.background.default, 0.5) : '#f8fafc',
+              boxSizing: 'border-box',
+              width: '100%',
+              minWidth: 0,
             }}
           >
-            <ButtonGroup size="small" variant="outlined">
+            <ButtonGroup size="small" variant="outlined" sx={{ flex: 1, minWidth: 0, display: 'flex' }}>
               <Button
                 variant={activeTab === 'audit' ? 'contained' : 'outlined'}
                 color="success"
                 onClick={() => onToggleTab('audit')}
                 startIcon={<AssessmentRoundedIcon sx={{ fontSize: '15px !important' }} />}
                 sx={{
+                  flex: 1,
                   fontWeight: 800,
-                  fontSize: '0.78rem',
+                  fontSize: { xs: '0.72rem', sm: '0.78rem' },
                   textTransform: 'none',
-                  px: 1.5,
+                  px: { xs: 0.75, sm: 1.25 },
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
-                {t('preview:navRail.audit', 'Audit')} {auditScore}/10
+                {t('preview:drawer.shortScore', 'Audit')} {auditScore}/10
               </Button>
               <Button
                 variant={activeTab === 'gap' ? 'contained' : 'outlined'}
@@ -263,23 +273,27 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 onClick={() => onToggleTab('gap')}
                 startIcon={<TrackChangesRoundedIcon sx={{ fontSize: '15px !important' }} />}
                 sx={{
+                  flex: 1,
                   fontWeight: 800,
-                  fontSize: '0.78rem',
+                  fontSize: { xs: '0.72rem', sm: '0.78rem' },
                   textTransform: 'none',
-                  px: 1.5,
+                  px: { xs: 0.75, sm: 1.25 },
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
-                {t('gap:matchScore', 'Gap')} {matchScore}%
+                {t('preview:drawer.shortMatch', 'Match')} {matchScore}%
               </Button>
             </ButtonGroup>
 
-            <IconButton size="small" onClick={onClose} aria-label="Collapse panel">
+            <IconButton size="small" onClick={onClose} aria-label="Collapse panel" sx={{ flexShrink: 0, p: 0.5 }}>
               <CloseRoundedIcon fontSize="small" />
             </IconButton>
           </Box>
 
           {/* Panel Content Body */}
-          <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2.5, flex: 1, overflowY: 'auto' }}>
+          <Box sx={{ p: { xs: 1.5, sm: 2 }, display: 'flex', flexDirection: 'column', gap: 2.5, flex: 1, overflowY: 'auto', overflowX: 'hidden', boxSizing: 'border-box' }}>
             {/* TAB 1: AUDIT BREAKDOWN */}
             {activeTab === 'audit' && (
               <>
@@ -302,32 +316,38 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                       {auditScore}
                     </Typography>
                   </Box>
-                  <Box>
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
                     <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
                       {t('audit:score', 'Quality Score')}: {auditScore >= 8.5 ? 'Executive Ready' : auditScore >= 7 ? 'Competitive' : 'Needs Polish'}
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.4 }}>
                       {t('audit:atsCheck.description', 'Calibrated across Google XYZ formulas & ATS scan rules.')}
                     </Typography>
                   </Box>
                 </Box>
 
                 {/* Section-by-Section Real Content */}
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.75 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                   {/* Summary */}
                   <Paper
                     variant="outlined"
                     sx={{
                       p: 1.5,
-                      borderRadius: '10px',
+                      borderRadius: '12px',
                       bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 0.75,
+                      boxSizing: 'border-box',
+                      transition: 'border-color 0.2s ease',
+                      '&:hover': { borderColor: 'success.main' },
                     }}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 0.75 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
                         {t('audit:sections.summary', 'Professional Summary')}
                       </Typography>
-                      <Chip label="Optimal" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
+                      <Chip label="Optimal" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
                       Concise 3-line hook balancing candidate scope, technical seniority, and target role relevance.
@@ -339,15 +359,21 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                     variant="outlined"
                     sx={{
                       p: 1.5,
-                      borderRadius: '10px',
+                      borderRadius: '12px',
                       bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 0.75,
+                      boxSizing: 'border-box',
+                      transition: 'border-color 0.2s ease',
+                      '&:hover': { borderColor: 'success.main' },
                     }}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 0.75 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
                         {t('audit:sections.experience', 'Work Experience')}
                       </Typography>
-                      <Chip label="9/10 XYZ" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
+                      <Chip label="9/10 XYZ" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
                       Strong Google XYZ formula use: <em>Accomplished [X], as measured by [Y], by doing [Z]</em> with quantified business impact.
@@ -359,15 +385,21 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                     variant="outlined"
                     sx={{
                       p: 1.5,
-                      borderRadius: '10px',
+                      borderRadius: '12px',
                       bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 0.75,
+                      boxSizing: 'border-box',
+                      transition: 'border-color 0.2s ease',
+                      '&:hover': { borderColor: 'success.main' },
                     }}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 0.75 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
                         {t('audit:sections.skills', 'Technical Skills & ATS')}
                       </Typography>
-                      <Chip label="95% Pass" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
+                      <Chip label="95% Pass" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
                       High density of exact keywords matching requirements without stuffing.
@@ -389,15 +421,21 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                           variant="outlined"
                           sx={{
                             p: 1.5,
-                            borderRadius: '10px',
+                            borderRadius: '12px',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 0.75,
+                            gap: 1,
                             bgcolor: isDark ? alpha(theme.palette.background.default, 0.3) : '#ffffff',
+                            boxSizing: 'border-box',
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                              borderColor: 'primary.main',
+                              boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
+                            },
                           }}
                         >
-                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.primary' }}>
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
+                            <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.primary', flex: 1, lineHeight: 1.35 }}>
                               {pillar.pillarName}
                             </Typography>
                             <Chip
@@ -409,6 +447,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                                 fontWeight: 700,
                                 bgcolor: alpha(theme.palette.warning.main, 0.15),
                                 color: isDark ? '#fbbf24' : '#b45309',
+                                flexShrink: 0,
                               }}
                             />
                           </Box>
@@ -427,11 +466,12 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                               alignSelf: 'flex-start',
                               fontSize: '0.72rem',
                               fontWeight: 700,
-                              py: 0.35,
+                              py: 0.4,
                               px: 1.25,
                               textTransform: 'none',
                               borderRadius: '6px',
                               mt: 0.25,
+                              width: { xs: '100%', sm: 'auto' },
                             }}
                           >
                             {getActionButtonLabel(pillar.recommendationForMasterData || pillar.pillarName)}

@@ -9,8 +9,11 @@
   },
   "views": {
     "board": "Bacheca Attiva",
+    "boardShort": "Bacheca",
     "archived": "Archiviate",
-    "allVersions": "Cronologia Versioni CV"
+    "archivedShort": "Archiviate",
+    "allVersions": "Cronologia Versioni CV",
+    "versionsShort": "Versioni"
   },
   "stats": {
     "total": "Totale CV Adattati",

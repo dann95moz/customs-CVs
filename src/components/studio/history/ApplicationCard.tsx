@@ -199,14 +199,14 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
 
       <Divider />
 
-      <CardActions sx={{ p: 1.5, px: 2, display: 'flex', justifyContent: 'space-between', gap: 1 }}>
+      <CardActions sx={{ p: 1.5, px: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
         <Button
           size="small"
           variant="contained"
           color="primary"
           startIcon={<LaunchRoundedIcon />}
           onClick={() => onLoad(version.id)}
-          sx={{ fontWeight: 700, fontSize: '0.76rem', flexShrink: 0 }}
+          sx={{ fontWeight: 700, fontSize: '0.76rem', flex: { xs: '1 1 auto', sm: '0 0 auto' } }}
         >
           {t('history:card.openInStudio', 'View & Edit in Studio')}
         </Button>

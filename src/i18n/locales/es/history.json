@@ -9,8 +9,11 @@
   },
   "views": {
     "board": "Tablero Activo",
+    "boardShort": "Tablero",
     "archived": "Archivadas",
-    "allVersions": "Historial de Versiones CV"
+    "archivedShort": "Archivadas",
+    "allVersions": "Historial de Versiones CV",
+    "versionsShort": "Versiones"
   },
   "stats": {
     "total": "Total CVs Personalizados",

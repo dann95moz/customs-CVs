@@ -70,12 +70,13 @@ export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
       ref={setNodeRef}
       variant="outlined"
       sx={{
-        width: { xs: '280px', sm: '320px' },
-        minWidth: { xs: '280px', sm: '320px' },
+        width: { xs: '260px', sm: '290px', md: '320px' },
+        minWidth: { xs: '260px', sm: '290px', md: '320px' },
         maxHeight: '100%',
         display: 'flex',
         flexDirection: 'column',
         borderRadius: '16px',
+        boxSizing: 'border-box',
         bgcolor: isOver
           ? alpha(columnColor, isDark ? 0.12 : 0.05)
           : isDark
