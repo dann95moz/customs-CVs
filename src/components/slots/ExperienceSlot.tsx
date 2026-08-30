@@ -70,6 +70,15 @@ export const ExperienceSlot: React.FC<ExperienceSlotProps> = ({
                     multiline
                     htmlContent={marked.parseInline(bullet) as string}
                     placeholder="Describe high-impact achievement with metrics..."
+                    aiConfig={{
+                      type: 'bullet',
+                      fieldKey: `${sectionType}-${idx}-${bIdx}`,
+                      sectionType,
+                      itemIndex: idx,
+                      bulletIndex: bIdx,
+                      company: item.company,
+                      role: item.role,
+                    }}
                   />
                 ))}
               </ul>

@@ -19,6 +19,10 @@ export const SummarySlot: React.FC<SummarySlotProps> = ({ data, className = '' }
         onSave={(newSummary) => liveEdit?.updateSummary(newSummary)}
         multiline
         htmlContent={marked.parse(data.rawContent) as string}
+        aiConfig={{
+          type: 'summary',
+          fieldKey: 'summary-main',
+        }}
       />
     </section>
   );

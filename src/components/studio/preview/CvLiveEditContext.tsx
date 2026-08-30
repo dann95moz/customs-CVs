@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useCallback, useMemo } from 'react';
+import React, { createContext, useContext, useCallback, useMemo, useState } from 'react';
 import { CVData, ExperienceItem } from '../../../types/cv';
 import { useResumeStore } from '../../../store';
 import { serializeCvDataToMarkdown } from '../../../core/parser';
+import { regenerateCvBullet, regenerateCvSummary } from '../../../core/ai/bullet-regenerator';
 
 export interface ActiveFieldFormatter {
   executeFormat: (command: 'bold' | 'italic' | 'highlight') => void;
@@ -13,6 +14,24 @@ export interface CvLiveEditContextValue {
   activeFormatter: ActiveFieldFormatter | null;
   setActiveFormatter: (formatter: ActiveFieldFormatter | null) => void;
   formatSelection: (command: 'bold' | 'italic' | 'highlight') => void;
+  undoMap: Record<string, string>;
+  undoItem: (fieldKey: string, onRevert: (previousValue: string) => void) => void;
+  clearUndo: (fieldKey: string) => void;
+  regenerateExperienceBullet: (params: {
+    fieldKey: string;
+    sectionType: 'experience' | 'projects';
+    itemIndex: number;
+    bulletIndex: number;
+    company: string;
+    role?: string;
+    currentBullet: string;
+    userGuidance?: string;
+  }) => Promise<string>;
+  regenerateSummaryBlock: (params: {
+    fieldKey: string;
+    currentSummary: string;
+    userGuidance?: string;
+  }) => Promise<string>;
   updateName: (name: string) => void;
   updateTitle: (title: string) => void;
   updateSummary: (summary: string) => void;
@@ -53,8 +72,13 @@ export const CvLiveEditProvider: React.FC<CvLiveEditProviderProps> = ({
   parsedCv,
   isEditable = true,
 }) => {
-  const [isLiveEditing, setLiveEditing] = React.useState<boolean>(isEditable);
-  const [activeFormatter, setActiveFormatter] = React.useState<ActiveFieldFormatter | null>(null);
+  const [isLiveEditing, setLiveEditing] = useState<boolean>(isEditable);
+  const [activeFormatter, setActiveFormatter] = useState<ActiveFieldFormatter | null>(null);
+  const [undoMap, setUndoMap] = useState<Record<string, string>>({});
+
+  const masterData = useResumeStore((s) => s.masterData);
+  const targetJob = useResumeStore((s) => s.targetJob);
+  const providerSettings = useResumeStore((s) => s.providerSettings);
   const setCvMarkdown = useResumeStore((s) => s.setCvMarkdown);
 
   const formatSelection = useCallback((command: 'bold' | 'italic' | 'highlight') => {
@@ -194,12 +218,87 @@ export const CvLiveEditProvider: React.FC<CvLiveEditProviderProps> = ({
     });
   }, [applyCvUpdate]);
 
+  const undoItem = useCallback((fieldKey: string, onRevert: (previousValue: string) => void) => {
+    const previousValue = undoMap[fieldKey];
+    if (previousValue !== undefined) {
+      onRevert(previousValue);
+      setUndoMap((prev) => {
+        const next = { ...prev };
+        delete next[fieldKey];
+        return next;
+      });
+    }
+  }, [undoMap]);
+
+  const clearUndo = useCallback((fieldKey: string) => {
+    setUndoMap((prev) => {
+      if (!(fieldKey in prev)) return prev;
+      const next = { ...prev };
+      delete next[fieldKey];
+      return next;
+    });
+  }, []);
+
+  const regenerateExperienceBullet = useCallback(async (params: {
+    fieldKey: string;
+    sectionType: 'experience' | 'projects';
+    itemIndex: number;
+    bulletIndex: number;
+    company: string;
+    role?: string;
+    currentBullet: string;
+    userGuidance?: string;
+  }) => {
+    const { fieldKey, sectionType, itemIndex, bulletIndex, company, role, currentBullet, userGuidance } = params;
+    const newBullet = await regenerateCvBullet({
+      currentBullet,
+      company,
+      role,
+      masterData,
+      targetJob,
+      userGuidance,
+      providerSettings,
+    });
+
+    if (newBullet && newBullet.trim()) {
+      setUndoMap((prev) => ({ ...prev, [fieldKey]: currentBullet }));
+      updateExperienceBullet(sectionType, itemIndex, bulletIndex, newBullet);
+    }
+    return newBullet;
+  }, [masterData, targetJob, providerSettings, updateExperienceBullet]);
+
+  const regenerateSummaryBlock = useCallback(async (params: {
+    fieldKey: string;
+    currentSummary: string;
+    userGuidance?: string;
+  }) => {
+    const { fieldKey, currentSummary, userGuidance } = params;
+    const newSummary = await regenerateCvSummary({
+      currentSummary,
+      masterData,
+      targetJob,
+      userGuidance,
+      providerSettings,
+    });
+
+    if (newSummary && newSummary.trim()) {
+      setUndoMap((prev) => ({ ...prev, [fieldKey]: currentSummary }));
+      updateSummary(newSummary);
+    }
+    return newSummary;
+  }, [masterData, targetJob, providerSettings, updateSummary]);
+
   const value = useMemo<CvLiveEditContextValue>(() => ({
     isLiveEditing,
     setLiveEditing,
     activeFormatter,
     setActiveFormatter,
     formatSelection,
+    undoMap,
+    undoItem,
+    clearUndo,
+    regenerateExperienceBullet,
+    regenerateSummaryBlock,
     updateName,
     updateTitle,
     updateSummary,
@@ -216,6 +315,11 @@ export const CvLiveEditProvider: React.FC<CvLiveEditProviderProps> = ({
     activeFormatter,
     setActiveFormatter,
     formatSelection,
+    undoMap,
+    undoItem,
+    clearUndo,
+    regenerateExperienceBullet,
+    regenerateSummaryBlock,
     updateName,
     updateTitle,
     updateSummary,
