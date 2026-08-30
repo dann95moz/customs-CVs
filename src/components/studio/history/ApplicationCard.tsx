@@ -31,6 +31,9 @@ import { extractSummaryExcerpt } from '../../../core/parser';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
 
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
+import Checkbox from '@mui/material/Checkbox';
+import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
+import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import Tooltip from '@mui/material/Tooltip';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -45,9 +48,15 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   onDownloadPdf,
   onTrack,
   isDownloadingPdf = false,
+  selectionMode = false,
+  isSelected = false,
+  onToggleSelect,
+  isLinkedToActiveApp = false,
+  activeAppName,
 }) => {
   const { t, i18n } = useTranslation(['history', 'common', 'gap', 'audit', 'preview', 'target']);
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const palConfig = getPaletteConfig(version.palette);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -66,23 +75,39 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
     <>
       <Card
         variant="outlined"
+        onClick={selectionMode ? () => onToggleSelect?.(version.id) : undefined}
         sx={{
           borderRadius: '16px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
           transition: 'all 0.2s ease',
+          cursor: selectionMode ? 'pointer' : 'default',
+          borderColor: isSelected
+            ? 'primary.main'
+            : isLinkedToActiveApp
+            ? alpha(theme.palette.info.main, 0.4)
+            : undefined,
+          bgcolor: isSelected
+            ? alpha(theme.palette.primary.main, isDark ? 0.14 : 0.04)
+            : 'background.paper',
+          boxShadow: isSelected
+            ? `0 0 0 2px ${alpha(theme.palette.primary.main, 0.25)}`
+            : undefined,
+          position: 'relative',
           '&:hover': {
-            borderColor: 'primary.main',
-            boxShadow: `0 4px 20px ${alpha(theme.palette.primary.main, 0.12)}`,
-            transform: 'translateY(-2px)'
-          }
+            borderColor: isSelected ? 'primary.main' : 'primary.light',
+            boxShadow: isSelected
+              ? `0 4px 20px ${alpha(theme.palette.primary.main, 0.2)}`
+              : `0 4px 20px ${alpha(theme.palette.primary.main, 0.12)}`,
+            transform: 'translateY(-2px)',
+          },
         }}
       >
         <CardContent sx={{ p: 2.5 }}>
-          {/* Header: Company & Date */}
+          {/* Header: Company, Date & Selection / Action controls */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, minWidth: 0, flex: 1 }}>
               <Box
                 sx={{
                   width: 36,
@@ -93,12 +118,13 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  flexShrink: 0,
                 }}
               >
                 <BusinessRoundedIcon fontSize="small" />
               </Box>
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.2 }}>
+              <Box sx={{ minWidth: 0, flex: 1 }}>
+                <Typography variant="h6" noWrap sx={{ fontWeight: 800, lineHeight: 1.2 }}>
                   {version.companyName || t('target:fields.company', 'Target Company')}
                 </Typography>
                 <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -107,32 +133,55 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
               </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-              {onTrack && (
-                <Tooltip title={t('history:card.trackVersion', 'Track Application')}>
-                  <IconButton
-                    size="small"
-                    color="primary"
-                    onClick={() => onTrack(version)}
-                    sx={{
-                      bgcolor: alpha(theme.palette.primary.main, 0.08),
-                      '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.16) },
-                    }}
-                  >
-                    <AddRoundedIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              )}
-              <Tooltip title={t('history:card.delete', 'Delete Version')}>
-                <IconButton
+            {/* Selection Checkbox (In Selection Mode) OR Standard Action Levers (In Normal Mode) */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0, ml: 1 }}>
+              {selectionMode ? (
+                <Checkbox
+                  checked={isSelected}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    onToggleSelect?.(version.id);
+                  }}
+                  color="primary"
                   size="small"
-                  color="error"
-                  onClick={() => setIsDeleteDialogOpen(true)}
-                  sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}
-                >
-                  <DeleteOutlineRoundedIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
+                  aria-label={`Select CV version for ${version.companyName}`}
+                  sx={{ p: 0.5 }}
+                />
+              ) : (
+                <>
+                  {onTrack && (
+                    <Tooltip title={t('history:card.trackVersion', 'Track Application')}>
+                      <IconButton
+                        size="small"
+                        color="primary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onTrack(version);
+                        }}
+                        sx={{
+                          bgcolor: alpha(theme.palette.primary.main, 0.08),
+                          '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.16) },
+                        }}
+                      >
+                        <AddRoundedIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                  <Tooltip title={t('history:card.delete', 'Delete Version')}>
+                    <IconButton
+                      size="small"
+                      color="error"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsDeleteDialogOpen(true);
+                      }}
+                      sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}
+                    >
+                      <DeleteOutlineRoundedIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              )}
             </Box>
           </Box>
 
@@ -141,8 +190,20 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             {version.targetRole || t('target:fields.role', 'Specialist Role')}
           </Typography>
 
-          {/* Badges: Match Score, Quality, Theme */}
+          {/* Badges: Kanban Link, Match Score, Quality, Theme */}
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
+            {isLinkedToActiveApp && (
+              <Tooltip title={t('history:card.linkedTooltip', 'Linked to an active application card in your Kanban pipeline')}>
+                <Chip
+                  icon={<ViewKanbanRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                  label={t('history:card.linkedToApp', 'Kanban Active')}
+                  size="small"
+                  color="info"
+                  variant="outlined"
+                  sx={{ fontWeight: 700, fontSize: '0.72rem' }}
+                />
+              </Tooltip>
+            )}
             <Chip
               label={`${version.matchScore || 92}% ${t('gap:matchScore', 'Match')}`}
               size="small"
@@ -198,7 +259,10 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             variant="contained"
             color="primary"
             startIcon={<LaunchRoundedIcon />}
-            onClick={() => onLoad(version.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onLoad(version.id);
+            }}
             sx={{ fontWeight: 700, fontSize: '0.76rem', flex: { xs: '1 1 auto', sm: '0 0 auto' } }}
           >
             {t('history:card.openInStudio', 'View & Edit in Studio')}
@@ -208,7 +272,10 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             {onDownloadPdf && (
               <Tooltip title={t('history:card.downloadPdfTip', 'Direct PDF Download (1-Click)')}>
                 <Button
-                  onClick={() => onDownloadPdf(version)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDownloadPdf(version);
+                  }}
                   disabled={isDownloadingPdf}
                   startIcon={
                     isDownloadingPdf ? (
@@ -238,7 +305,10 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             <Tooltip title={t('history:card.downloadMdTip', 'Download Raw Markdown (.md)')}>
               <Button
                 startIcon={<FileDownloadRoundedIcon sx={{ fontSize: '15px !important' }} />}
-                onClick={() => onDownload(version)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDownload(version);
+                }}
                 sx={{ fontSize: '0.73rem', px: 0.9 }}
               >
                 .MD
@@ -269,6 +339,18 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
           {t('history:deleteDialog.title', 'Delete CV Version?')}
         </DialogTitle>
         <DialogContent sx={{ pb: 1 }}>
+          {isLinkedToActiveApp && (
+            <Alert
+              severity="warning"
+              variant="outlined"
+              sx={{ mb: 1.5, py: 0.5, fontSize: '0.8rem', borderRadius: '8px' }}
+            >
+              {t(
+                'history:deleteDialog.linkedWarning',
+                'This CV version is currently attached to an active application on your Kanban board.'
+              )}
+            </Alert>
+          )}
           <DialogContentText sx={{ fontSize: '0.88rem', color: 'text.secondary' }}>
             {t(
               'history:deleteDialog.message',
