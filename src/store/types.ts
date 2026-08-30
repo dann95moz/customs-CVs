@@ -8,6 +8,8 @@ import {
   WizardStep,
   AIProviderSettings,
   GeneratedCvVersion,
+  KanbanColumn,
+  ApplicationItem,
 } from '../types/cv';
 
 export interface UiSlice {
@@ -71,9 +73,33 @@ export interface AiSlice {
 
 export interface HistorySlice {
   savedVersions: GeneratedCvVersion[];
-  handleSaveCurrentVersion: (customTitle?: string) => void;
+  applications: ApplicationItem[];
+  kanbanColumns: KanbanColumn[];
+  handleSaveCurrentVersion: (customTitle?: string) => string;
   handleLoadVersion: (id: string) => void;
   handleDeleteVersion: (id: string) => void;
+  handleAddApplication: (appData: {
+    companyName: string;
+    targetRole: string;
+    appliedVersionId: string;
+    columnId?: string;
+    notes?: string;
+    salary?: string;
+    location?: string;
+  }) => string;
+  handleUpdateApplication: (id: string, updates: Partial<ApplicationItem>) => void;
+  handleDeleteApplication: (id: string) => void;
+  handleMoveApplication: (id: string, targetColumnId: string, newIndex?: number) => void;
+  handleArchiveApplication: (id: string) => void;
+  handleUnarchiveApplication: (id: string) => void;
+  handleArchiveColumn: (columnId: string) => void;
+  handleSetAttachedVersion: (applicationId: string, versionId: string) => void;
+  handleAddColumn: (title: string, color?: string) => void;
+  handleUpdateColumn: (columnId: string, updates: Partial<KanbanColumn>) => void;
+  handleDeleteColumn: (columnId: string, fallbackColumnId?: string) => void;
+  handleReorderColumns: (columnIds: string[]) => void;
+  handleResetKanbanColumns: () => void;
 }
 
 export type ResumeStore = UiSlice & CvDataSlice & DesignSlice & AiSlice & HistorySlice;
+

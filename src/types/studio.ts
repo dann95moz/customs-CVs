@@ -52,8 +52,43 @@ export interface GeneratedCvVersion {
   targetJobSnippet?: string;
 }
 
+export interface KanbanColumn {
+  id: string;
+  title: string;
+  color: string;
+  isTerminal?: boolean;
+}
+
+export interface ApplicationItem {
+  id: string;
+  companyName: string;
+  targetRole: string;
+  columnId: string;
+  appliedVersionId: string;
+  createdAt: string; // ISO string
+  updatedAt: string; // ISO string
+  appliedDate?: string;
+  matchScore: number;
+  qualityScore?: number;
+  salary?: string;
+  location?: string;
+  jobUrl?: string;
+  notes?: string;
+  isArchived: boolean;
+  archivedAt?: string;
+}
+
+export const DEFAULT_KANBAN_COLUMNS: KanbanColumn[] = [
+  { id: 'applied', title: 'Applied', color: '#3b82f6' },
+  { id: 'interview', title: 'Interview', color: '#8b5cf6' },
+  { id: 'tech_test', title: 'Technical Assessment', color: '#f59e0b' },
+  { id: 'offer', title: 'Offer Received', color: '#10b981', isTerminal: true },
+  { id: 'rejected', title: 'Rejected', color: '#ef4444', isTerminal: true },
+];
+
 export interface MarkdownFileItem {
   name: string;
   path: string;
   content: string;
 }
+

@@ -118,6 +118,8 @@ export const useResumeStore = create<ResumeStore>()(
         spacingDensity: state.spacingDensity,
         providerSettings: state.providerSettings,
         savedVersions: state.savedVersions,
+        applications: state.applications,
+        kanbanColumns: state.kanbanColumns,
       }),
     }
   )

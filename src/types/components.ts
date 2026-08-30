@@ -21,6 +21,8 @@ import {
   PreviewViewMode,
   PreviewSidePanelType,
   GeneratedCvVersion,
+  KanbanColumn,
+  ApplicationItem,
 } from './studio';
 import {
   AuditSectionResult,
@@ -316,6 +318,8 @@ export interface StepPreviewToolbarProps {
   onPageFormatChange?: (format: PageFormat) => void;
   isOverflowing?: boolean;
   onAutoFit?: () => void;
+  onTrackApplication?: () => void;
+  isTracked?: boolean;
 }
 
 export interface StepPreviewNavRailProps {
@@ -461,15 +465,20 @@ export interface SettingsRulesTabProps {
 }
 
 export interface ApplicationsStatsHeaderProps {
-  totalApplications: number;
+  totalActiveApplications: number;
+  totalInterviews: number;
+  totalOffers: number;
+  totalArchived: number;
   avgMatchScore: number;
-  uniqueCompanies: number;
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  onNewApplication: () => void;
-  historyCount?: number;
-  onClearAll?: () => void;
+  onTrackNewApplication: () => void;
+  onStartNewResume: () => void;
+  activeView: 'board' | 'archived' | 'versions';
+  onViewChange: (view: 'board' | 'archived' | 'versions') => void;
+  savedVersionsCount: number;
 }
+
 
 export interface ApplicationCardProps {
   version: GeneratedCvVersion;
@@ -480,8 +489,97 @@ export interface ApplicationCardProps {
   isDownloadingPdf?: boolean;
 }
 
+export interface KanbanBoardProps {
+  columns: KanbanColumn[];
+  applications: ApplicationItem[];
+  savedVersions: GeneratedCvVersion[];
+  searchQuery: string;
+  onMoveApplication: (appId: string, targetColumnId: string, newIndex?: number) => void;
+  onLoadVersionInStudio: (versionId: string) => void;
+  onSetAttachedVersion: (appId: string, versionId: string) => void;
+  onArchiveApplication: (appId: string) => void;
+  onDeleteApplication: (appId: string) => void;
+  onDownloadPdf: (version: GeneratedCvVersion) => void;
+  isDownloadingPdfId: string | null;
+  onAddColumn: () => void;
+  onEditColumn: (column: KanbanColumn) => void;
+  onDeleteColumn: (columnId: string) => void;
+  onArchiveColumn: (columnId: string) => void;
+  onQuickAddApplication: (columnId: string) => void;
+}
+
+export interface KanbanColumnProps {
+  column: KanbanColumn;
+  applications: ApplicationItem[];
+  savedVersions: GeneratedCvVersion[];
+  onMoveApplication: (appId: string, targetColumnId: string, newIndex?: number) => void;
+  onLoadVersionInStudio: (versionId: string) => void;
+  onSetAttachedVersion: (appId: string, versionId: string) => void;
+  onArchiveApplication: (appId: string) => void;
+  onDeleteApplication: (appId: string) => void;
+  onDownloadPdf: (version: GeneratedCvVersion) => void;
+  isDownloadingPdfId: string | null;
+  onEditColumn: (column: KanbanColumn) => void;
+  onDeleteColumn: (columnId: string) => void;
+  onArchiveColumn: (columnId: string) => void;
+  onQuickAdd: (columnId: string) => void;
+}
+
+export interface KanbanCardProps {
+  application: ApplicationItem;
+  attachedVersion?: GeneratedCvVersion;
+  allMatchingVersions: GeneratedCvVersion[];
+  onLoadInStudio: (versionId: string) => void;
+  onSetAttachedVersion: (appId: string, versionId: string) => void;
+  onArchive: (appId: string) => void;
+  onDelete: (appId: string) => void;
+  onDownloadPdf: (version: GeneratedCvVersion) => void;
+  isDownloadingPdf?: boolean;
+  isDraggingOverlay?: boolean;
+}
+
+export interface TrackApplicationDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: (data: {
+    companyName: string;
+    targetRole: string;
+    appliedVersionId: string;
+    columnId: string;
+    notes?: string;
+    salary?: string;
+    location?: string;
+  }) => void;
+  prefillCompany?: string;
+  prefillRole?: string;
+  prefillVersionId?: string;
+  defaultColumnId?: string;
+  savedVersions: GeneratedCvVersion[];
+  existingApplications: ApplicationItem[];
+  columns: KanbanColumn[];
+}
+
+export interface ArchivedApplicationsViewProps {
+  archivedApplications: ApplicationItem[];
+  savedVersions: GeneratedCvVersion[];
+  searchQuery: string;
+  onRestore: (appId: string) => void;
+  onDeletePermanently: (appId: string) => void;
+  onLoadInStudio: (versionId: string) => void;
+  onDownloadPdf: (version: GeneratedCvVersion) => void;
+  isDownloadingPdfId: string | null;
+}
+
+export interface ColumnEditDialogProps {
+  open: boolean;
+  column?: KanbanColumn | null;
+  onClose: () => void;
+  onSave: (title: string, color: string) => void;
+}
+
 export interface GitHubStarToastProps {
   open: boolean;
   onClose: () => void;
   onStarClick: () => void;
 }
+
