@@ -29,6 +29,7 @@ import { PreviewSidePanelType, StepPreviewProps } from '../../types';
 import { useTranslation } from 'react-i18next';
 import { getPageFormatConfig } from '../../theme/dimensions';
 import { StudioSkeleton } from './StudioSkeleton';
+import { TrackApplicationDialog } from './history/TrackApplicationDialog';
 
 // Dynamically loaded preview sidebars and heavy editors
 const SplitMarkdownEditor = React.lazy(() =>
@@ -78,6 +79,10 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const gapMarkdown = useResumeStore((s) => s.gapMarkdown);
   const handleSaveCurrentVersion = useResumeStore((s) => s.handleSaveCurrentVersion);
   const setWizardStep = useResumeStore((s) => s.setWizardStep);
+  const savedVersions = useResumeStore((s) => s.savedVersions);
+  const applications = useResumeStore((s) => s.applications || []);
+  const kanbanColumns = useResumeStore((s) => s.kanbanColumns || []);
+  const handleAddApplication = useResumeStore((s) => s.handleAddApplication);
 
   // Derived parsed and audit data via memoized hooks
   const parsedCv = useParsedCv();
@@ -90,11 +95,29 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
 
   const [sheetHeight, setSheetHeight] = useState<number>(0);
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
+  const [isTrackModalOpen, setIsTrackModalOpen] = useState<boolean>(false);
   const [zoomMode, setZoomMode] = useState<'fit' | '100%'>('fit');
   const [windowWidth, setWindowWidth] = useState<number>(
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
   const paperRef = useRef<HTMLDivElement>(null);
+
+  // Track if current company is already active in Kanban applications
+  const isTracked = Boolean(
+    companyName &&
+    applications.some(
+      (a) =>
+        !a.isArchived &&
+        a.companyName.toLowerCase().trim() === companyName.toLowerCase().trim() &&
+        a.targetRole.toLowerCase().trim() === (targetRole || 'Specialist').toLowerCase().trim()
+    )
+  );
+
+  const handleTrackApplication = () => {
+    // Save current version if not yet saved so it's guaranteed to be available in the version list
+    handleSaveCurrentVersion();
+    setIsTrackModalOpen(true);
+  };
 
   // Track viewport resize for responsive scaling
   useEffect(() => {
@@ -204,6 +227,8 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         onPageFormatChange={setPageFormat}
         isOverflowing={isOverflowing}
         onAutoFit={handleMagicAutoFit}
+        onTrackApplication={handleTrackApplication}
+        isTracked={isTracked}
       />
 
       {/* Main Studio Body: Vertical Left Rail + Side Drawer + Sheet Canvas + Right Audit/Gap Drawer */}
@@ -453,6 +478,18 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           onStarClick={openGitHubAndDismiss}
         />
       </React.Suspense>
+
+      {/* Opt-in Track Application Dialog */}
+      <TrackApplicationDialog
+        open={isTrackModalOpen}
+        onClose={() => setIsTrackModalOpen(false)}
+        onConfirm={handleAddApplication}
+        prefillCompany={companyName}
+        prefillRole={targetRole}
+        savedVersions={savedVersions}
+        existingApplications={applications}
+        columns={kanbanColumns}
+      />
     </div>
   );
 };

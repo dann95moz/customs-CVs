@@ -31,6 +31,8 @@ import FormatItalicRoundedIcon from '@mui/icons-material/FormatItalicRounded';
 import HighlightRoundedIcon from '@mui/icons-material/HighlightRounded';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import AspectRatioRoundedIcon from '@mui/icons-material/AspectRatioRounded';
+import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import { useTranslation } from 'react-i18next';
 import { StepPreviewToolbarProps, PageFormat } from '../../../types';
 import { useCvLiveEdit } from './CvLiveEditContext';
@@ -55,6 +57,8 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
   onPageFormatChange,
   isOverflowing = false,
   onAutoFit,
+  onTrackApplication,
+  isTracked = false,
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const liveEdit = useCvLiveEdit();
@@ -259,6 +263,37 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
         )}
 
         <Divider orientation="vertical" flexItem sx={{ mx: 0.25, height: 24, my: 'auto', display: { xs: 'none', sm: 'block' } }} />
+
+        {onTrackApplication && (
+          <Button
+            size="small"
+            variant={isTracked ? 'contained' : 'outlined'}
+            color={isTracked ? 'success' : 'inherit'}
+            startIcon={
+              isTracked ? (
+                <CheckCircleRoundedIcon sx={{ fontSize: '15px !important' }} />
+              ) : (
+                <ViewKanbanRoundedIcon sx={{ fontSize: '15px !important' }} />
+              )
+            }
+            onClick={onTrackApplication}
+            sx={{
+              fontSize: { xs: '0.72rem', sm: '0.78rem' },
+              fontWeight: 700,
+              display: { xs: 'none', sm: 'inline-flex' },
+              bgcolor: isTracked ? alpha(theme.palette.success.main, 0.12) : undefined,
+              color: isTracked ? 'success.main' : undefined,
+              borderColor: isTracked ? alpha(theme.palette.success.main, 0.4) : undefined,
+              '&:hover': {
+                bgcolor: isTracked ? alpha(theme.palette.success.main, 0.2) : undefined,
+              },
+            }}
+          >
+            {isTracked
+              ? t('preview:toolbar.tracked', 'Tracked')
+              : t('preview:toolbar.trackApp', 'Track Application')}
+          </Button>
+        )}
 
         <Button
           size="small"
