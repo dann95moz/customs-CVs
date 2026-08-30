@@ -187,7 +187,7 @@ export function cleanRegeneratedBulletText(rawText: string): string {
   cleaned = cleaned.replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/i, '').trim();
 
   // Strip leading bullet markers
-  cleaned = cleaned.replace(/^[-*•]\s+/g, '');
+  cleaned = cleaned.replace(/^(?:[-•]\s*|\*\s+)/g, '');
 
   // Strip surrounding quotes
   cleaned = cleaned.replace(/^["'«»](.*)["'«»]$/s, '$1').trim();
@@ -210,7 +210,7 @@ export function cleanRegeneratedSummaryText(rawText: string): string {
   cleaned = cleaned.replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/i, '').trim();
 
   // Strip leading bullet markers or headers
-  cleaned = cleaned.replace(/^[-*•]\s+/gm, '');
+  cleaned = cleaned.replace(/^(?:[-•]\s*|\*\s+)/gm, '');
   cleaned = cleaned.replace(/^#+\s+/gm, '');
 
   // Strip surrounding quotes

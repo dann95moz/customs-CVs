@@ -78,7 +78,11 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     parts.push('\n---\n');
     parts.push('## 🎓 EDUCATION & CERTIFICATIONS');
     for (const edu of data.education) {
-      parts.push(`- ${edu.replace(/^[-*•]\s*/, '')}`);
+      let cleanEdu = edu.replace(/^(?:[-•]\s*|\*\s+)/, '');
+      if (/^[^*]+:\*\*/.test(cleanEdu)) {
+        cleanEdu = `**${cleanEdu}`;
+      }
+      parts.push(`- ${cleanEdu}`);
     }
   }
 
@@ -87,7 +91,11 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     parts.push('\n---\n');
     parts.push('## 🌐 LANGUAGES');
     for (const lang of data.languages) {
-      parts.push(`- ${lang.replace(/^[-*•]\s*/, '')}`);
+      let cleanLang = lang.replace(/^(?:[-•]\s*|\*\s+)/, '');
+      if (/^[^*]+:\*\*/.test(cleanLang)) {
+        cleanLang = `**${cleanLang}`;
+      }
+      parts.push(`- ${cleanLang}`);
     }
   }
 

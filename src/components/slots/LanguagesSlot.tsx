@@ -13,16 +13,26 @@ export const LanguagesSlot: React.FC<LanguagesSlotProps> = ({ data, className = 
     <section className={`cv-section section-languages section-block ${className}`}>
       <h2 className="cv-section-title">{data.title}</h2>
       <ul className="languages-list section-block">
-        {data.items.map((item, idx) => (
-          <EditableText
-            key={idx}
-            tagName="li"
-            value={item}
-            onSave={(newVal) => liveEdit?.updateLanguageItem(idx, newVal)}
-            htmlContent={marked.parseInline(item) as string}
-            placeholder="Language (Proficiency Level)..."
-          />
-        ))}
+        {data.items.map((rawItem, idx) => {
+          let item = (rawItem || '').trim();
+          // Auto-repair "Spanish:** Level" or "*Spanish:** Level"
+          if (/^\*?[^*]+:\*\*/.test(item)) {
+            item = item.replace(/^\*?([^*]+):\*\*/, '**$1:**');
+          } else if (!item.includes('**') && /^[A-Za-z\s]+:/.test(item)) {
+            item = item.replace(/^([A-Za-z\s]+):/, '**$1:**');
+          }
+
+          return (
+            <EditableText
+              key={idx}
+              tagName="li"
+              value={item}
+              onSave={(newVal) => liveEdit?.updateLanguageItem(idx, newVal)}
+              htmlContent={marked.parseInline(item) as string}
+              placeholder="Language (Proficiency Level)..."
+            />
+          );
+        })}
       </ul>
     </section>
   );

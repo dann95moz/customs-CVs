@@ -182,7 +182,7 @@ function parseListItems(rawContent: string): string[] {
     const trimmed = line.trim();
     if (!trimmed) continue;
 
-    const certPrefixMatch = trimmed.match(/^[-*•]?\s*\*{0,2}(?:certifications?|certificaciones?):\*{0,2}\s*(.+)$/i);
+    const certPrefixMatch = trimmed.match(/^(?:[-•]\s*|\*\s+)?\*{0,2}(?:certifications?|certificaciones?):\*{0,2}\s*(.+)$/i);
     if (certPrefixMatch) {
       const certContent = certPrefixMatch[1].trim();
       let certList: string[] = [];
@@ -219,15 +219,27 @@ function parseListItems(rawContent: string): string[] {
     }
 
     if (trimmed.includes('|') && !trimmed.startsWith('#')) {
-      const cleanLine = trimmed.replace(/^[-*•]\s*/, '');
+      const cleanLine = trimmed.replace(/^(?:[-•]\s*|\*\s+)/, '');
       const parts = cleanLine.split('|').map(s => s.trim()).filter(Boolean);
       for (const part of parts) {
-        items.push(part);
+        let itemText = part;
+        if (/^[^*]+:\*\*/.test(itemText)) {
+          itemText = `**${itemText}`;
+        }
+        items.push(itemText);
       }
     } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ') || trimmed.startsWith('• ')) {
-      items.push(trimmed.replace(/^[-*•]\s*/, '').trim());
+      let itemText = trimmed.replace(/^(?:[-•]\s*|\*\s+)/, '').trim();
+      if (/^[^*]+:\*\*/.test(itemText)) {
+        itemText = `**${itemText}`;
+      }
+      items.push(itemText);
     } else {
-      items.push(trimmed);
+      let itemText = trimmed;
+      if (/^[^*]+:\*\*/.test(itemText)) {
+        itemText = `**${itemText}`;
+      }
+      items.push(itemText);
     }
   }
 
