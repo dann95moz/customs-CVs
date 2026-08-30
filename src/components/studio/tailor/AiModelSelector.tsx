@@ -137,7 +137,7 @@ export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
             </Box>
             <Chip
               icon={currentModel.provider === 'local' ? <LaptopRoundedIcon sx={{ fontSize: '14px !important' }} /> : <KeyRoundedIcon sx={{ fontSize: '14px !important' }} />}
-              label={currentModel.provider === 'local' ? 'Offline Local' : (apiKey ? 'Key Configured' : 'API Key Required')}
+              label={currentModel.provider === 'local' ? t('settings:providers.offlineLocal', 'Offline Local') : (apiKey ? t('settings:providers.keyConfigured', 'Key Configured') : t('settings:providers.apiKeyRequired', 'API Key Required'))}
               size="small"
               color={currentModel.provider === 'local' ? 'secondary' : (apiKey ? 'info' : 'warning')}
               sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
@@ -151,7 +151,7 @@ export const AiModelSelector: React.FC<AiModelSelectorProps> = ({
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pt: 0.25 }}>
             <AutoAwesomeRoundedIcon color="secondary" sx={{ fontSize: 14 }} />
             <Typography variant="caption" sx={{ fontSize: '0.7rem', color: theme.palette.secondary.main, fontWeight: 600 }}>
-              Calibrated for Google XYZ achievement synthesis &amp; ATS keyword alignment
+              {t('settings:providers.calibratedInfo', 'Calibrated for Google XYZ achievement synthesis & ATS keyword alignment')}
             </Typography>
           </Box>
         </Paper>
