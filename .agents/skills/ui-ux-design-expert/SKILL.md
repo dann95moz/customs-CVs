@@ -59,3 +59,14 @@ All visual styles must derive from the centralized design system:
 - [ ] **Keyboard Navigation**: Interactive elements have visible `:focus-visible` outlines and support Enter/Space activation.
 - [ ] **ARIA Landmarks & Tooltips**: Icon-only buttons must have descriptive `aria-label` and `<Tooltip title="...">`.
 - [ ] **Semantic Markup**: Use `<header>`, `<main>`, `<nav>`, `<section>`, `<article>` appropriately instead of generic `<div>` soup.
+
+---
+
+## 5. Strict Design System (DS) Component Compliance Checklist
+
+When creating or modifying components:
+- [ ] **Buttons**: Must NEVER use manual `borderRadius: '6px' / '8px' / '10px'`. Must inherit `MuiButton` pill tokens (`RADIUS_TOKENS.full`).
+- [ ] **Chips**: Must NEVER use manual `borderRadius` or custom inline `height: 18`. Use standard `<Chip size="small" variant="filled | outlined" color="..." />`.
+- [ ] **Colors**: Use MUI palette tokens (`theme.palette.primary.main`, `theme.palette.success.main`, etc.) and `alpha(...)` instead of raw hex codes.
+- [ ] **Alignment**: Action buttons inside cards must use clean flex containers (`justifyContent: 'flex-start' | 'center'`) rather than stretching full-width arbitrarily.
+

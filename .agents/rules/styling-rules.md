@@ -34,3 +34,28 @@ Material-UI breakpoints are standardized:
 - **Overflow & Page Break Marker**: Display visual page break guides when the sheet height exceeds `A4_PAGE_PX - 30px`.
 - **Canvas Scaling on Mobile**: Use `zoomMode === 'fit'` with `autoScale = Math.min(1, Math.max(0.35, availableWidth / 794))` to fit the entire A4 width on mobile screens without horizontal scroll.
 - **Print Stylesheet**: Always ensure `.no-print` elements are hidden in `src/styles/print.css`.
+
+## 4. Strict Design System (DS) Component Compliance & Forbidding Ad-Hoc Overrides
+
+All UI elements must strictly inherit and consume tokens defined in `src/theme/theme.ts` and `src/styles/tokens.css`. Creating ad-hoc or rogue styling is strictly forbidden.
+
+### 🚫 Forbidden Practices (Zero Tolerance)
+1. **Never write inline border radiuses on Buttons or Chips**:
+   - ❌ `borderRadius: '6px'`, `borderRadius: '8px'`, `borderRadius: '10px'` on `<Button>`, `<IconButton>`, `<ToggleButton>`, or `<Chip>`.
+   - ✅ Always allow buttons and chips to inherit `RADIUS_TOKENS.full` (pill shape) from `src/theme/theme.ts`.
+2. **Never hardcode ad-hoc background colors or gradients on Buttons**:
+   - ❌ `bgcolor: '#0284c7'`, `bgcolor: 'primary.main'`, `background: 'linear-gradient(...)'` in button `sx`.
+   - ✅ Use standard MUI variant and color props: `<Button variant="contained" color="primary">`, `<Button variant="outlined">`, `<Button variant="text">`.
+3. **Never write hardcoded chip heights or arbitrary background colors**:
+   - ❌ `sx={{ height: 18, bgcolor: 'rgba(2, 132, 199, 0.15)' }}` on `<Chip>`.
+   - ✅ Use `<Chip size="small" color="primary | success | warning | error" variant="filled | outlined" />`.
+4. **Never stretch buttons across cards awkwardly without alignment**:
+   - ❌ `width: '100%'` or `width: { xs: '100%', sm: 'auto' }` on standard action levers unless designed as a bottom-sheet block CTA.
+   - ✅ Place buttons inside clean flex containers (`display: 'flex', justifyContent: 'flex-start' | 'center'`) with natural sizing.
+
+### 📐 Standard Radius Tokens Reference
+- **Buttons, Chips, Tabs, Badges**: `RADIUS_TOKENS.full` (`9999px` / Pill)
+- **Dialogs & Large Modals**: `RADIUS_TOKENS.xl` (`16px`)
+- **Cards, Panels & Drawers**: `RADIUS_TOKENS.lg` (`12px`)
+- **Inputs & Dropdown Menus**: `RADIUS_TOKENS.md` (`8px`)
+
