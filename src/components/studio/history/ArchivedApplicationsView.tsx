@@ -28,6 +28,7 @@ import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import { useTranslation } from 'react-i18next';
 import { ArchivedApplicationsViewProps, ApplicationItem, GeneratedCvVersion } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
+import { formatLocalizedDate } from '../../../utils/dateUtils';
 
 export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> = ({
   archivedApplications,
@@ -53,18 +54,12 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
     );
   });
 
-  const formatDate = (isoString?: string) => {
-    if (!isoString) return '';
-    try {
-      return new Date(isoString).toLocaleDateString(i18n.language || 'en-US', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      });
-    } catch {
-      return isoString;
-    }
-  };
+  const formatDate = (isoString?: string) =>
+    formatLocalizedDate(isoString, i18n.language || 'en', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
 
   if (filteredArchived.length === 0) {
     return (

@@ -101,3 +101,49 @@ export function extractTargetRole(targetJobText: string, masterDataText: string 
 
   return fallback;
 }
+
+/**
+ * Extracts a clean, executive summary snippet from the CV markdown.
+ */
+export function extractSummaryExcerpt(cvMarkdown?: string): string {
+  if (!cvMarkdown) return '';
+
+  // 1. Try to extract content under ## Professional Summary / Resumen / Pitch
+  const sectionMatch = cvMarkdown.match(/##\s*[^#\n]*(?:SUMMARY|RESUMEN|PROFILE|PERFIL|PITCH)[^\n]*\n+([\s\S]*?)(?=\n+##|\n+---|$)/i);
+  let text = '';
+  if (sectionMatch && sectionMatch[1]) {
+    text = sectionMatch[1].trim();
+  } else {
+    // 2. Fallback: get first non-header, non-contact paragraph
+    const lines = cvMarkdown.split('\n');
+    const contentLines: string[] = [];
+    let started = false;
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!started && (trimmed.startsWith('#') || trimmed.startsWith('**') || trimmed.includes('@') || trimmed.includes('http') || trimmed.startsWith('---'))) {
+        continue;
+      }
+      if (trimmed) {
+        started = true;
+        if (trimmed.startsWith('#')) break;
+        contentLines.push(trimmed);
+      } else if (started) {
+        break;
+      }
+    }
+    text = contentLines.join(' ');
+  }
+
+  // 3. Clean any markdown formatting (headers, bold, italic, links, bullets)
+  return text
+    .replace(/^#+\s+/gm, '')
+    .replace(/^[-*•]\s+/gm, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/_([^_]+)_/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+}

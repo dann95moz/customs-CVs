@@ -19,6 +19,7 @@ import { KanbanBoard } from './history/KanbanBoard';
 import { ArchivedApplicationsView } from './history/ArchivedApplicationsView';
 import { ApplicationCard } from './history/ApplicationCard';
 import { TrackApplicationDialog } from './history/TrackApplicationDialog';
+import { downloadTextFile } from '../../utils/fileUtils';
 import { ColumnEditDialog } from './history/ColumnEditDialog';
 
 export const ApplicationsHistoryView: React.FC = () => {
@@ -83,13 +84,7 @@ export const ApplicationsHistoryView: React.FC = () => {
 
   const handleDownloadMarkdown = (v: GeneratedCvVersion) => {
     const fileName = `CV_${v.candidateName.replace(/\s+/g, '_')}_${v.companyName.replace(/\s+/g, '_')}.md`;
-    const blob = new Blob([v.cvMarkdown], { type: 'text/markdown;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadTextFile(v.cvMarkdown, fileName);
   };
 
   const handleDownloadPdf = async (v: GeneratedCvVersion) => {

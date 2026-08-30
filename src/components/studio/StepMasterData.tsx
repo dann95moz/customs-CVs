@@ -26,6 +26,7 @@ import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { extractCandidateName, parseCvMarkdownToData } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
+import { downloadTextFile } from '../../utils/fileUtils';
 import { StepMasterDataProps } from '../../types';
 import { StudioSkeleton } from './StudioSkeleton';
 
@@ -52,13 +53,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   });
 
   const handleDownload = () => {
-    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'master-profile.md';
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadTextFile(content, 'master-profile.md');
   };
 
   const hasData = content.trim().length > 50 && !content.includes('[CANDIDATE FULL NAME]');

@@ -41,6 +41,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useTranslation } from 'react-i18next';
 import { KanbanCardProps, GeneratedCvVersion } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
+import { formatLocalizedDate } from '../../../utils/dateUtils';
 
 export const KanbanCard: React.FC<KanbanCardProps> = ({
   application,
@@ -86,17 +87,11 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
 
   const palConfig = getPaletteConfig(attachedVersion?.palette || 'corporate-blue');
 
-  const formatDate = (isoString?: string) => {
-    if (!isoString) return '';
-    try {
-      return new Date(isoString).toLocaleDateString(i18n.language || 'en-US', {
-        day: '2-digit',
-        month: 'short',
-      });
-    } catch {
-      return isoString;
-    }
-  };
+  const formatDate = (isoString?: string) =>
+    formatLocalizedDate(isoString, i18n.language || 'en', {
+      day: '2-digit',
+      month: 'short',
+    });
 
   const handleOpenMenu = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();

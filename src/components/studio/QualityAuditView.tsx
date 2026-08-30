@@ -7,6 +7,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icons';
 import { QualityAuditReport, QualityAuditViewProps } from '../../types';
+import { downloadTextFile } from '../../utils/fileUtils';
 import { AuditImprovementModal } from './audit/AuditImprovementModal';
 import { AuditSectionCard } from './audit/AuditSectionCard';
 import { useAuditActions } from '../../hooks/useAuditActions';
@@ -54,13 +55,7 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
   };
 
   const handleDownloadReport = () => {
-    const blob = new Blob([report.markdownReport], { type: 'text/markdown;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Quality_Report_${report.candidateName.replace(/\s+/g, '_')}.md`;
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadTextFile(report.markdownReport, `Quality_Report_${report.candidateName.replace(/\s+/g, '_')}.md`);
   };
 
   const getScoreColor = (score: number) => {

@@ -16,6 +16,7 @@ import {
   DEMO_MASTER_DATA,
   DEMO_TARGET_JOB,
 } from '../constants/templates';
+import { downloadTextFile } from '../utils/fileUtils';
 import { useTranslation } from 'react-i18next';
 import './App.css';
 
@@ -214,13 +215,7 @@ export const App: React.FC = () => {
                   companyName={companyName}
                   targetRole={targetRole}
                   onDownload={() => {
-                    const blob = new Blob([gapMarkdown], { type: 'text/markdown;charset=utf-8;' });
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = `Gap_Analysis_${companyName || 'Target'}.md`;
-                    link.click();
-                    URL.revokeObjectURL(url);
+                    downloadTextFile(gapMarkdown, `Gap_Analysis_${companyName || 'Target'}.md`);
                   }}
                 />
               </Suspense>

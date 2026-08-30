@@ -16,6 +16,7 @@ import {
   extractTargetCompany,
   extractTargetRole,
 } from '../../core/parser';
+import { downloadTextFile } from '../../utils/fileUtils';
 
 export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> = (set, get) => ({
   masterData: BLANK_MASTER_DATA,
@@ -119,12 +120,6 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
     const targetComp = companyName || extractTargetCompany(targetJob, 'Target');
     const fileName = `CV_${candidateName}_${targetComp}.md`;
 
-    const blob = new Blob([cvMarkdown], { type: 'text/markdown;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadTextFile(cvMarkdown, fileName);
   },
 });

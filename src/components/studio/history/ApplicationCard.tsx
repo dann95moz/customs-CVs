@@ -27,6 +27,8 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { useTranslation } from 'react-i18next';
 import { GeneratedCvVersion, ApplicationCardProps } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
+import { extractSummaryExcerpt } from '../../../core/parser';
+import { formatLocalizedDate } from '../../../utils/dateUtils';
 
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -34,52 +36,6 @@ import Tooltip from '@mui/material/Tooltip';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 export type { ApplicationCardProps };
-
-/**
- * Extracts a clean, executive summary snippet from the CV markdown.
- */
-function extractSummaryExcerpt(cvMarkdown?: string): string {
-  if (!cvMarkdown) return '';
-
-  // 1. Try to extract content under ## Professional Summary / Resumen / Pitch
-  const sectionMatch = cvMarkdown.match(/##\s*[^#\n]*(?:SUMMARY|RESUMEN|PROFILE|PERFIL|PITCH)[^\n]*\n+([\s\S]*?)(?=\n+##|\n+---|$)/i);
-  let text = '';
-  if (sectionMatch && sectionMatch[1]) {
-    text = sectionMatch[1].trim();
-  } else {
-    // 2. Fallback: get first non-header, non-contact paragraph
-    const lines = cvMarkdown.split('\n');
-    const contentLines: string[] = [];
-    let started = false;
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!started && (trimmed.startsWith('#') || trimmed.startsWith('**') || trimmed.includes('@') || trimmed.includes('http') || trimmed.startsWith('---'))) {
-        continue;
-      }
-      if (trimmed) {
-        started = true;
-        if (trimmed.startsWith('#')) break;
-        contentLines.push(trimmed);
-      } else if (started) {
-        break;
-      }
-    }
-    text = contentLines.join(' ');
-  }
-
-  // 3. Clean any markdown formatting (headers, bold, italic, links, bullets)
-  return text
-    .replace(/^#+\s+/gm, '')
-    .replace(/^[-*•]\s+/gm, '')
-    .replace(/\*\*([^*]+)\*\*/g, '$1')
-    .replace(/\*([^*]+)\*/g, '$1')
-    .replace(/__([^_]+)__/g, '$1')
-    .replace(/_([^_]+)_/g, '$1')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/`([^`]+)`/g, '$1')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
 
 export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   version,
@@ -95,20 +51,14 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   const palConfig = getPaletteConfig(version.palette);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const formatDate = (isoString: string) => {
-    try {
-      const date = new Date(isoString);
-      return date.toLocaleDateString(i18n.language || 'en-US', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    } catch {
-      return isoString;
-    }
-  };
+  const formattedDate = formatLocalizedDate(version.createdAt, i18n.language || 'en', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
 
   const summaryExcerpt = extractSummaryExcerpt(version.cvMarkdown);
 
@@ -152,7 +102,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
                   {version.companyName || t('target:fields.company', 'Target Company')}
                 </Typography>
                 <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                  <CalendarTodayRoundedIcon sx={{ fontSize: 11 }} /> {formatDate(version.createdAt)}
+                  <CalendarTodayRoundedIcon sx={{ fontSize: 11 }} /> {formattedDate}
                 </Typography>
               </Box>
             </Box>
