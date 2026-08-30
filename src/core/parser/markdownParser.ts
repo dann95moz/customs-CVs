@@ -223,21 +223,21 @@ function parseListItems(rawContent: string): string[] {
       const parts = cleanLine.split('|').map(s => s.trim()).filter(Boolean);
       for (const part of parts) {
         let itemText = part;
-        if (/^[^*]+:\*\*/.test(itemText)) {
-          itemText = `**${itemText}`;
+        if (/^\*?[^*]+\*\*/.test(itemText)) {
+          itemText = itemText.replace(/^\*?([^*]+)\*\*/, '**$1**');
         }
         items.push(itemText);
       }
     } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ') || trimmed.startsWith('• ')) {
       let itemText = trimmed.replace(/^(?:[-•]\s*|\*\s+)/, '').trim();
-      if (/^[^*]+:\*\*/.test(itemText)) {
-        itemText = `**${itemText}`;
+      if (/^\*?[^*]+\*\*/.test(itemText)) {
+        itemText = itemText.replace(/^\*?([^*]+)\*\*/, '**$1**');
       }
       items.push(itemText);
     } else {
       let itemText = trimmed;
-      if (/^[^*]+:\*\*/.test(itemText)) {
-        itemText = `**${itemText}`;
+      if (/^\*?[^*]+\*\*/.test(itemText)) {
+        itemText = itemText.replace(/^\*?([^*]+)\*\*/, '**$1**');
       }
       items.push(itemText);
     }
