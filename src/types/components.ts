@@ -304,14 +304,12 @@ export interface StepPreviewToolbarProps {
   onViewModeChange?: (mode: PreviewViewMode) => void;
   activeTemplateName: string;
   onOpenTemplates: () => void;
-  isEditingMarkdown: boolean;
-  onToggleMarkdown: () => void;
-  onSaveAndExitMarkdown: () => void;
-  onSaveVersion: () => void;
-  savedSuccess: boolean;
+  onSaveVersion?: () => void;
+  savedSuccess?: boolean;
   onReTailor: () => void;
   isGenerating: boolean;
   onDownloadPdf: () => void;
+  onDownloadMarkdown?: () => void;
   onPrintPdf?: () => void;
   isExportingPdf?: boolean;
   pageFormat?: PageFormat;
@@ -325,8 +323,6 @@ export interface StepPreviewToolbarProps {
 export interface StepPreviewNavRailProps {
   activeSidePanel: PreviewSidePanelType | null;
   onToggleSidePanel: (panel: PreviewSidePanelType) => void;
-  isEditingMarkdown: boolean;
-  onToggleMarkdown: () => void;
 }
 
 export interface TemplatesPanelProps {

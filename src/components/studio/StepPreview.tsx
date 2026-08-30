@@ -6,11 +6,13 @@ import {
   ButtonGroup,
   Chip,
   Typography,
+  Snackbar,
+  Alert,
   useTheme,
+  alpha,
 } from '@mui/material';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import {
   useResumeStore,
   useParsedCv,
@@ -30,11 +32,9 @@ import { useTranslation } from 'react-i18next';
 import { getPageFormatConfig } from '../../theme/dimensions';
 import { StudioSkeleton } from './StudioSkeleton';
 import { TrackApplicationDialog } from './history/TrackApplicationDialog';
+import { StepPreviewMobileEdit } from './preview/StepPreviewMobileEdit';
 
-// Dynamically loaded preview sidebars and heavy editors
-const SplitMarkdownEditor = React.lazy(() =>
-  import('./SplitMarkdownEditor').then((m) => ({ default: m.SplitMarkdownEditor }))
-);
+// Dynamically loaded preview sidebars
 const TemplatesPanel = React.lazy(() =>
   import('./preview/TemplatesPanel').then((m) => ({ default: m.TemplatesPanel }))
 );
@@ -53,14 +53,10 @@ export type { StepPreviewProps };
 export const StepPreview: React.FC<StepPreviewProps> = () => {
   const { t } = useTranslation(['preview', 'target', 'common']);
   const muiTheme = useTheme();
-  const { isExportingPdf, handleDirectDownload, handlePrintPdf } = usePrintPdf();
+  const { isExportingPdf, handleDirectDownload } = usePrintPdf();
   const { isPromptOpen, triggerPrompt, dismissPrompt, openGitHubAndDismiss } = useGitHubStarPrompt();
 
   const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
-  const setCvMarkdown = useResumeStore((s) => s.setCvMarkdown);
-  const masterData = useResumeStore((s) => s.masterData);
-  const companyName = useResumeStore((s) => s.companyName);
-  const targetRole = useResumeStore((s) => s.targetRole);
   const theme = useResumeStore((s) => s.theme);
   const setTheme = useResumeStore((s) => s.setTheme);
   const palette = useResumeStore((s) => s.palette);
@@ -71,53 +67,68 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const setFontFamily = useResumeStore((s) => s.setFontFamily);
   const spacingDensity = useResumeStore((s) => s.spacingDensity);
   const setSpacingDensity = useResumeStore((s) => s.setSpacingDensity);
-  const pageFormat = useResumeStore((s) => s.pageFormat || 'a4');
+  const pageFormat = useResumeStore((s) => s.pageFormat);
   const setPageFormat = useResumeStore((s) => s.setPageFormat);
-  const isGenerating = useResumeStore((s) => s.isGenerating);
-  const handleGenerate = useResumeStore((s) => s.handleGenerate);
-  const handleDownloadCvMarkdown = useResumeStore((s) => s.handleDownloadCvMarkdown);
-  const gapMarkdown = useResumeStore((s) => s.gapMarkdown);
   const handleSaveCurrentVersion = useResumeStore((s) => s.handleSaveCurrentVersion);
+  const handleDownloadCvMarkdown = useResumeStore((s) => s.handleDownloadCvMarkdown);
+  const handleGenerate = useResumeStore((s) => s.handleGenerate);
+  const isGenerating = useResumeStore((s) => s.isGenerating);
   const setWizardStep = useResumeStore((s) => s.setWizardStep);
-  const savedVersions = useResumeStore((s) => s.savedVersions);
-  const applications = useResumeStore((s) => s.applications || []);
-  const kanbanColumns = useResumeStore((s) => s.kanbanColumns || []);
-  const handleAddApplication = useResumeStore((s) => s.handleAddApplication);
 
-  // Derived parsed and audit data via memoized hooks
+  const companyName = useResumeStore((s) => s.companyName);
+  const targetRole = useResumeStore((s) => s.targetRole);
+  const masterData = useResumeStore((s) => s.masterData);
+  const applications = useResumeStore((s) => s.applications);
+  const kanbanColumns = useResumeStore((s) => s.kanbanColumns);
+  const handleAddApplication = useResumeStore((s) => s.handleAddApplication);
+  const savedVersions = useResumeStore((s) => s.savedVersions);
+  const gapMarkdown = useResumeStore((s) => s.gapMarkdown);
+
   const parsedCv = useParsedCv();
   const auditReport = useAuditReport();
   const gapInfo = useGapInfo();
 
+  const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
+  const [trackSuccess, setTrackSuccess] = useState<boolean>(false);
+  const [sheetHeight, setSheetHeight] = useState<number>(0);
+  const [isTrackModalOpen, setIsTrackModalOpen] = useState<boolean>(false);
+  const paperRef = useRef<HTMLDivElement>(null);
+
+  // Get standardized page dimensions for target format
   const formatConfig = getPageFormatConfig(pageFormat);
   const targetPagePx = formatConfig.heightPx;
   const targetPageWidthPx = formatConfig.widthPx;
 
-  const [sheetHeight, setSheetHeight] = useState<number>(0);
-  const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
-  const [isTrackModalOpen, setIsTrackModalOpen] = useState<boolean>(false);
-  const paperRef = useRef<HTMLDivElement>(null);
-
-  // Track if current company is already active in Kanban applications
+  // Check if current target application is already tracked
   const isTracked = Boolean(
-    companyName &&
-    applications.some(
-      (a) =>
-        !a.isArchived &&
-        a.companyName.toLowerCase().trim() === companyName.toLowerCase().trim() &&
-        a.targetRole.toLowerCase().trim() === (targetRole || 'Specialist').toLowerCase().trim()
+    companyName && applications.some((app) =>
+      app.companyName.toLowerCase().trim() === companyName.toLowerCase().trim() &&
+      (!targetRole || app.targetRole.toLowerCase().trim() === targetRole.toLowerCase().trim())
     )
   );
 
-  const handleTrackApplication = () => {
-    // Save current version if not yet saved so it's guaranteed to be available in the version list
+  const handleSaveToHistory = () => {
     handleSaveCurrentVersion();
+    setSavedSuccess(true);
+    setTimeout(() => setSavedSuccess(false), 2500);
+  };
+
+  const handleTrackApplication = () => {
+    if (savedVersions.length === 0) {
+      handleSaveCurrentVersion();
+    }
     setIsTrackModalOpen(true);
   };
 
-  // Left Side Drawer state ('templates' open by default on desktop, closed by default on mobile)
+  const handleConfirmTrackApplication = (appData: Parameters<typeof handleAddApplication>[0]) => {
+    handleAddApplication(appData);
+    setTrackSuccess(true);
+    setTimeout(() => setTrackSuccess(false), 3000);
+  };
+
+  // Left Tool Rail active side panel
   const [activeSidePanel, setActiveSidePanel] = useState<PreviewSidePanelType | null>(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 860) {
+    if (typeof window !== 'undefined' && window.innerWidth < 900) {
       return null;
     }
     return 'templates';
@@ -127,8 +138,8 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const [isAuditGapOpen, setIsAuditGapOpen] = useState<boolean>(false);
   const [auditGapTab, setAuditGapTab] = useState<'audit' | 'gap'>('audit');
 
-  // Toggle between rendered sheet page (default) and raw markdown editor
-  const [isEditingMarkdown, setIsEditingMarkdown] = useState<boolean>(false);
+  // Mobile mode toggle: 'edit' (card-based touch list) vs 'preview' (scaled PDF sheet)
+  const [mobileViewMode, setMobileViewMode] = useState<'edit' | 'preview'>('edit');
 
   const activeTemplateMeta = getTemplateMetadata(theme);
 
@@ -142,7 +153,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     updateHeight();
     const timer = setTimeout(updateHeight, 150);
     return () => clearTimeout(timer);
-  }, [cvMarkdown, theme, palette, customColor, fontFamily, spacingDensity, pageFormat, isEditingMarkdown]);
+  }, [cvMarkdown, theme, palette, customColor, fontFamily, spacingDensity, pageFormat]);
 
   const isOverflowing = sheetHeight > targetPagePx + 8;
   const estimatedPages = isOverflowing ? Math.max(2, Math.ceil(sheetHeight / targetPagePx)) : 1;
@@ -158,17 +169,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     }
   };
 
-  const handleSaveToHistory = () => {
-    handleSaveCurrentVersion();
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 2500);
-  };
-
-  const handleSaveAndExitMarkdown = () => {
-    handleSaveToHistory();
-    setIsEditingMarkdown(false);
-  };
-
   const candidateName = sanitizeFileName(
     parsedCv.name || extractCandidateName(masterData, 'Candidate')
   );
@@ -182,11 +182,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     }
   };
 
-  const onTriggerSystemPrintPdf = () => {
-    handlePrintPdf(targetPdfName, pageFormat);
-    triggerPrompt(2000);
-  };
-
   return (
     <div className="preview-workspace-layout" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       {/* Top Studio Control Bar */}
@@ -196,15 +191,12 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           setActiveSidePanel('templates');
           setIsAuditGapOpen(false);
         }}
-        isEditingMarkdown={isEditingMarkdown}
-        onToggleMarkdown={() => setIsEditingMarkdown(prev => !prev)}
-        onSaveAndExitMarkdown={handleSaveAndExitMarkdown}
         onSaveVersion={handleSaveToHistory}
         savedSuccess={savedSuccess}
         onReTailor={handleGenerate}
         isGenerating={isGenerating}
         onDownloadPdf={onTriggerDirectDownloadPdf}
-        onPrintPdf={onTriggerSystemPrintPdf}
+        onDownloadMarkdown={handleDownloadCvMarkdown}
         isExportingPdf={isExportingPdf}
         pageFormat={pageFormat}
         onPageFormatChange={setPageFormat}
@@ -235,8 +227,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               }
             }
           }}
-          isEditingMarkdown={isEditingMarkdown}
-          onToggleMarkdown={() => setIsEditingMarkdown(prev => !prev)}
         />
 
         {/* 2. Expandable Left Side Panel */}
@@ -298,63 +288,141 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           </Box>
         )}
 
-        {/* 3. Main Center Canvas: Raw Markdown or Pristine Document Sheet */}
+        {/* 3. Main Center Canvas: Document Sheet & Mobile Touch Editor */}
         <div className="preview-canvas-wrapper" style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', order: 1 }}>
-          {isEditingMarkdown ? (
-            <div className="split-pane-editor-full">
-              <React.Suspense fallback={<StudioSkeleton variant="masterData" />}>
-                <SplitMarkdownEditor
-                  content={cvMarkdown}
-                  onChange={setCvMarkdown}
-                  onDownload={handleDownloadCvMarkdown}
-                  fileName={`CV_${candidateName}.md`}
-                />
-              </React.Suspense>
-            </div>
-          ) : (
-            <main className="preview-pane-canvas" style={{ position: 'relative' }}>
-              <div
-                className="paper-sheet-wrapper"
-                style={{
-                  width: `${targetPageWidthPx}px`,
-                  display: 'flex',
-                  justifyContent: 'center',
+          {/* Mobile View Mode Segmented Control (Visible only on mobile xs/sm) */}
+          <Box
+            className="no-print"
+            sx={{
+              display: { xs: 'flex', md: 'none' },
+              alignItems: 'center',
+              justifyContent: 'center',
+              py: 1,
+              px: 2,
+              bgcolor: 'background.paper',
+              borderBottom: `1px solid ${muiTheme.palette.divider}`,
+              zIndex: 10,
+            }}
+          >
+            <ButtonGroup
+              variant="outlined"
+              size="small"
+              sx={{
+                borderRadius: '999px',
+                bgcolor: alpha(muiTheme.palette.primary.main, 0.06),
+                p: 0.35,
+                border: 'none',
+                gap: 0.5,
+              }}
+            >
+              <Button
+                onClick={() => setMobileViewMode('edit')}
+                variant={mobileViewMode === 'edit' ? 'contained' : 'text'}
+                sx={{
+                  borderRadius: '999px !important',
+                  px: 3,
+                  py: 0.6,
+                  minHeight: 36,
+                  fontWeight: 700,
+                  fontSize: '0.82rem',
+                  textTransform: 'none',
+                  boxShadow: 'none',
+                  bgcolor: mobileViewMode === 'edit' ? 'primary.main' : 'transparent',
+                  color: mobileViewMode === 'edit' ? '#ffffff' : 'text.secondary',
                 }}
               >
+                {t('preview:aiRegen.mobileModeEdit', 'Editar')}
+              </Button>
+              <Button
+                onClick={() => setMobileViewMode('preview')}
+                variant={mobileViewMode === 'preview' ? 'contained' : 'text'}
+                sx={{
+                  borderRadius: '999px !important',
+                  px: 3,
+                  py: 0.6,
+                  minHeight: 36,
+                  fontWeight: 700,
+                  fontSize: '0.82rem',
+                  textTransform: 'none',
+                  boxShadow: 'none',
+                  bgcolor: mobileViewMode === 'preview' ? 'primary.main' : 'transparent',
+                  color: mobileViewMode === 'preview' ? '#ffffff' : 'text.secondary',
+                }}
+              >
+                {t('preview:aiRegen.mobileModePreview', 'Vista Previa')}
+              </Button>
+            </ButtonGroup>
+          </Box>
+
+          {/* Mobile 'Edit' Mode: Vertical List of Cards with Large Touch Buttons */}
+          {mobileViewMode === 'edit' && (
+            <Box
+              sx={{
+                display: { xs: 'block', md: 'none' },
+                flex: 1,
+                overflowY: 'auto',
+                bgcolor: 'background.default',
+              }}
+            >
+              <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
+                <StepPreviewMobileEdit parsedCv={parsedCv} />
+              </CvLiveEditProvider>
+            </Box>
+          )}
+
+          {/* Desktop OR Mobile 'Preview' Mode: Standard Pristine Canvas */}
+          <Box
+            component="main"
+            className="preview-pane-canvas"
+            sx={{
+              position: 'relative',
+              display: mobileViewMode === 'edit' ? { xs: 'none', md: 'flex' } : 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              overflow: 'auto',
+            }}
+          >
+            <div
+              className="paper-sheet-wrapper"
+              style={{
+                width: `${targetPageWidthPx}px`,
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <div
+                ref={paperRef}
+                className={`paper-sheet ${overflowPercentage > 0 && overflowPercentage <= 25 ? 'compact-fit' : ''}`}
+                style={{
+                  width: `${targetPageWidthPx}px`,
+                  margin: '0 auto',
+                }}
+              >
+                <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
+                  <CVRenderer
+                    data={parsedCv}
+                    theme={theme}
+                    palette={palette}
+                    customColor={palette === 'custom' ? customColor : undefined}
+                    fontFamily={fontFamily}
+                    spacingDensity={spacingDensity}
+                  />
+                </CvLiveEditProvider>
+              </div>
+
+              {/* Visual Page Break Marker only on actual overflow */}
+              {isOverflowing && (
                 <div
-                  ref={paperRef}
-                  className={`paper-sheet ${overflowPercentage > 0 && overflowPercentage <= 25 ? 'compact-fit' : ''}`}
+                  className="page-break-guide"
                   style={{
-                    width: `${targetPageWidthPx}px`,
-                    margin: '0 auto',
+                    top: `${targetPagePx}px`,
                   }}
                 >
-                  <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
-                    <CVRenderer
-                      data={parsedCv}
-                      theme={theme}
-                      palette={palette}
-                      customColor={palette === 'custom' ? customColor : undefined}
-                      fontFamily={fontFamily}
-                      spacingDensity={spacingDensity}
-                    />
-                  </CvLiveEditProvider>
+                  <span>✂️ {t('preview:toolbar.pageBoundary', 'Page 1 Boundary ({{format}} Standard)', { format: pageFormat.toUpperCase() })}</span>
                 </div>
-
-                {/* Visual Page Break Marker only on actual overflow */}
-                {isOverflowing && (
-                  <div
-                    className="page-break-guide"
-                    style={{
-                      top: `${targetPagePx}px`,
-                    }}
-                  >
-                    <span>✂️ {t('preview:toolbar.pageBoundary', 'Page 1 Boundary ({{format}} Standard)', { format: pageFormat.toUpperCase() })}</span>
-                  </div>
-                )}
-              </div>
-            </main>
-          )}
+              )}
+            </div>
+          </Box>
 
           {/* Bottom Navigation Bar */}
           <Paper
@@ -384,21 +452,19 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              {!isEditingMarkdown && (
-                <Chip
-                  icon={<EditRoundedIcon sx={{ fontSize: '13px !important' }} />}
-                  label={t('preview:toolbar.liveHotEdit', 'Live Hot Edit • Click text to edit & re-audit')}
-                  size="small"
-                  variant="outlined"
-                  color="primary"
-                  sx={{
-                    fontSize: '0.72rem',
-                    fontWeight: 600,
-                    height: 24,
-                    display: { xs: 'none', md: 'inline-flex' },
-                  }}
-                />
-              )}
+              <Chip
+                icon={<EditRoundedIcon sx={{ fontSize: '13px !important' }} />}
+                label={t('preview:toolbar.liveHotEdit', 'Live Hot Edit • Click text to edit & re-audit')}
+                size="small"
+                variant="outlined"
+                color="primary"
+                sx={{
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  height: 24,
+                  display: { xs: 'none', md: 'inline-flex' },
+                }}
+              />
 
               <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
                 {t('preview:toolbar.pageFit', 'Estimated Length')}: <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>{estimatedPages} {estimatedPages === 1 ? `Page (${pageFormat.toUpperCase()})` : 'Pages'}</strong> • Height: {sheetHeight}px / {targetPagePx}px
@@ -407,26 +473,24 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           </Paper>
         </div>
 
-        {/* 4. Unified Right-Side Audit & Gap Drawer (Floating Pills when collapsed, Side Panel when expanded) */}
-        {!isEditingMarkdown && (
-          <React.Suspense fallback={null}>
-            <PreviewAuditGapDrawer
-              auditReport={auditReport}
-              gapInfo={gapInfo}
-              gapMarkdown={gapMarkdown}
-              companyName={companyName}
-              targetRole={targetRole}
-              isOpen={isAuditGapOpen}
-              activeTab={auditGapTab}
-              onToggleTab={(tab) => {
-                setIsAuditGapOpen(true);
-                setAuditGapTab(tab);
-                setActiveSidePanel(null);
-              }}
-              onClose={() => setIsAuditGapOpen(false)}
-            />
-          </React.Suspense>
-        )}
+        {/* 4. Unified Right-Side Audit & Gap Drawer */}
+        <React.Suspense fallback={null}>
+          <PreviewAuditGapDrawer
+            auditReport={auditReport}
+            gapInfo={gapInfo}
+            gapMarkdown={gapMarkdown}
+            companyName={companyName}
+            targetRole={targetRole}
+            isOpen={isAuditGapOpen}
+            activeTab={auditGapTab}
+            onToggleTab={(tab) => {
+              setIsAuditGapOpen(true);
+              setAuditGapTab(tab);
+              setActiveSidePanel(null);
+            }}
+            onClose={() => setIsAuditGapOpen(false)}
+          />
+        </React.Suspense>
       </Box>
 
       {/* One-Time Post-Export GitHub Star Satisfaction Toast */}
@@ -442,13 +506,25 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
       <TrackApplicationDialog
         open={isTrackModalOpen}
         onClose={() => setIsTrackModalOpen(false)}
-        onConfirm={handleAddApplication}
+        onConfirm={handleConfirmTrackApplication}
         prefillCompany={companyName}
         prefillRole={targetRole}
         savedVersions={savedVersions}
         existingApplications={applications}
         columns={kanbanColumns}
       />
+
+      {/* Toast Feedback when application is tracked */}
+      <Snackbar
+        open={trackSuccess}
+        autoHideDuration={3000}
+        onClose={() => setTrackSuccess(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity="success" variant="filled" sx={{ borderRadius: '10px', fontWeight: 600 }}>
+          {t('preview:toolbar.trackedSuccess', 'Guardado en Mis Candidaturas')}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

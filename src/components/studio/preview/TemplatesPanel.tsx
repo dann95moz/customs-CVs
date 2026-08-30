@@ -5,7 +5,7 @@ import {
   IconButton,
   Tooltip,
   useTheme,
-  alpha
+  alpha,
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import FormatPaintRoundedIcon from '@mui/icons-material/FormatPaintRounded';
@@ -47,27 +47,47 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
         </IconButton>
       </Box>
 
-      {/* Circular Color Swatches Row at Top */}
+      {/* Color Palette Selector: Wrapped Grid (No Horizontal Scroll) */}
       <Box sx={{ mb: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.25 }}>
+          <Typography
+            variant="caption"
+            sx={{
+              fontWeight: 800,
+              fontSize: '0.75rem',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              color: 'text.secondary',
+            }}
+          >
+            {t('preview:panels.templates.palette', 'Color Palette')}
+          </Typography>
+          {palette === 'custom' && (
+            <Typography variant="caption" sx={{ fontWeight: 700, color: 'primary.main', fontSize: '0.72rem' }}>
+              {customColor}
+            </Typography>
+          )}
+        </Box>
+
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
+            flexWrap: 'wrap',
             gap: 1.2,
-            overflowX: 'auto',
-            py: 0.5,
-            px: 0.25,
-            '&::-webkit-scrollbar': { height: 4 },
-            '&::-webkit-scrollbar-thumb': { bgcolor: 'divider', borderRadius: 4 },
+            p: 1.25,
+            borderRadius: '12px',
+            bgcolor: alpha(muiTheme.palette.divider, 0.04),
+            border: `1px solid ${muiTheme.palette.divider}`,
           }}
         >
-          {/* Custom Color Swatch */}
+          {/* Custom Color Swatch with Native Color Picker */}
           <Tooltip title={`${t('preview:panels.design.primaryColor', 'Accent Color')} (${customColor})`}>
             <Box
               component="label"
               sx={{
-                width: 26,
-                height: 26,
+                width: 28,
+                height: 28,
                 borderRadius: '50%',
                 bgcolor: customColor,
                 cursor: 'pointer',
@@ -80,9 +100,9 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
                   ? `2.5px solid ${muiTheme.palette.primary.main}`
                   : '1.5px solid rgba(0,0,0,0.2)',
                 boxShadow: palette === 'custom' ? `0 0 0 2px ${alpha(customColor, 0.4)}` : 'none',
-                transform: palette === 'custom' ? 'scale(1.15)' : 'scale(1)',
+                transform: palette === 'custom' ? 'scale(1.12)' : 'scale(1)',
                 transition: 'all 0.15s ease',
-                '&:hover': { transform: 'scale(1.22)' }
+                '&:hover': { transform: 'scale(1.2)' },
               }}
             >
               <input
@@ -98,6 +118,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
             </Box>
           </Tooltip>
 
+          {/* Curated Preset Swatches */}
           {palettes.map((p) => {
             const isSelected = palette === p.id;
             return (
@@ -108,19 +129,19 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
                     onCustomColorChange(p.primaryColor);
                   }}
                   sx={{
-                    width: 26,
-                    height: 26,
+                    width: 28,
+                    height: 28,
                     borderRadius: '50%',
                     bgcolor: p.previewColor,
                     cursor: 'pointer',
                     flexShrink: 0,
                     border: isSelected
                       ? `2.5px solid ${muiTheme.palette.primary.main}`
-                      : '1.5px solid rgba(0,0,0,0.12)',
+                      : '1.5px solid rgba(0,0,0,0.14)',
                     boxShadow: isSelected ? `0 0 0 2px ${alpha(p.previewColor, 0.4)}` : 'none',
-                    transform: isSelected ? 'scale(1.15)' : 'scale(1)',
+                    transform: isSelected ? 'scale(1.12)' : 'scale(1)',
                     transition: 'all 0.15s ease',
-                    '&:hover': { transform: 'scale(1.22)' }
+                    '&:hover': { transform: 'scale(1.2)' },
                   }}
                 />
               </Tooltip>

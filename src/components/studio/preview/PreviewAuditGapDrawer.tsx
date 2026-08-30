@@ -70,6 +70,18 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
   const auditScore = auditReport.overallScore || 9;
   const matchScore = gapInfo.matchScore || 92;
 
+  const [scoreUpdated, setScoreUpdated] = useState(false);
+  const prevScoreRef = React.useRef(auditScore);
+
+  React.useEffect(() => {
+    if (prevScoreRef.current !== auditScore) {
+      prevScoreRef.current = auditScore;
+      setScoreUpdated(true);
+      const timer = setTimeout(() => setScoreUpdated(false), 2200);
+      return () => clearTimeout(timer);
+    }
+  }, [auditScore]);
+
   // Split keywords into matched and missing/suggested
   const keywords = gapInfo.keywords && gapInfo.keywords.length > 0
     ? gapInfo.keywords
@@ -95,9 +107,12 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           }}
         >
           {/* Audit Pill */}
-          <Tooltip title={t('audit:title', 'Resume Quality Audit')} placement="left">
+          <Tooltip
+            title={scoreUpdated ? t('audit:liveRecalculated', 'Audit score recalculated in real-time') : t('audit:title', 'Resume Quality Audit')}
+            placement="left"
+          >
             <Paper
-              elevation={4}
+              elevation={scoreUpdated ? 8 : 4}
               onClick={() => onToggleTab('audit')}
               sx={{
                 width: 62,
@@ -105,7 +120,9 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 p: 0.5,
                 borderRadius: '16px',
                 bgcolor: alpha(theme.palette.success.main, isDark ? 0.2 : 0.15),
-                border: `1.5px solid ${theme.palette.success.main}`,
+                border: scoreUpdated
+                  ? `2px solid ${theme.palette.primary.main}`
+                  : `1.5px solid ${theme.palette.success.main}`,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -114,6 +131,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 userSelect: 'none',
                 overflow: 'hidden',
+                boxShadow: scoreUpdated
+                  ? `0 0 16px ${alpha(theme.palette.primary.main, 0.6)}`
+                  : undefined,
+                animation: scoreUpdated ? 'pulse 1.2s infinite' : undefined,
                 '&:hover': {
                   transform: 'translateX(-4px) scale(1.05)',
                   boxShadow: `0 6px 20px ${alpha(theme.palette.success.main, 0.35)}`,
@@ -126,7 +147,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   fontWeight: 900,
                   fontSize: '1.25rem',
                   lineHeight: 1,
-                  color: isDark ? '#4ade80' : '#15803d',
+                  color: scoreUpdated
+                    ? (isDark ? '#38bdf8' : '#0284c7')
+                    : (isDark ? '#4ade80' : '#15803d'),
+                  transition: 'color 0.2s ease',
                 }}
               >
                 {auditScore}
