@@ -98,16 +98,6 @@
   overflow: hidden;
 }
 
-/* Scroll down bounce float animation */
-@keyframes bounceFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
 /* Document Canvas: Exact A4 Sheet Simulation at 96 DPI */
 .preview-pane-canvas {
   flex: 1;
@@ -207,8 +197,8 @@
   }
 
   .preview-pane-canvas {
-    padding: 14px 6px 52px;
-    align-items: center;
+    padding: 14px 6px 24px;
+    align-items: flex-start;
     justify-content: flex-start;
     overflow-x: auto;
     overflow-y: auto;

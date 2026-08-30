@@ -13,8 +13,6 @@ import {
 } from '@mui/material';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 import {
   useResumeStore,
   useParsedCv,
@@ -148,9 +146,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   // Canvas container reference and mobile auto-scale factor
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const [canvasScale, setCanvasScale] = useState<number>(1);
-  const [canScrollDown, setCanScrollDown] = useState<boolean>(false);
-  const [canScrollRight, setCanScrollRight] = useState<boolean>(false);
-  const [mobileZoomMode, setMobileZoomMode] = useState<'fit' | '100%'>('fit');
+  const [mobileZoomMode, setMobileZoomMode] = useState<'fit' | '100%'>('100%');
 
   // Measure rendered paper sheet height whenever styling or content changes
   useEffect(() => {
@@ -195,24 +191,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
       observer.disconnect();
     };
   }, [targetPageWidthPx, mobileViewMode, mobileZoomMode]);
-
-  // Track canvas scroll to show/hide scroll affordance indicators
-  const handleCanvasScroll = () => {
-    if (!canvasContainerRef.current) return;
-    const { scrollTop, scrollHeight, clientHeight, scrollLeft, scrollWidth, clientWidth } = canvasContainerRef.current;
-    const hasScrollableVertical = scrollHeight > clientHeight + 25;
-    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 35;
-    setCanScrollDown(hasScrollableVertical && !isAtBottom);
-
-    const hasScrollableHorizontal = scrollWidth > clientWidth + 15;
-    const isAtRight = scrollLeft + clientWidth >= scrollWidth - 20;
-    setCanScrollRight(hasScrollableHorizontal && !isAtRight);
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(handleCanvasScroll, 200);
-    return () => clearTimeout(timer);
-  }, [sheetHeight, canvasScale, mobileViewMode, mobileZoomMode]);
 
   const isOverflowing = sheetHeight > targetPagePx + 8;
   const estimatedPages = isOverflowing ? Math.max(2, Math.ceil(sheetHeight / targetPagePx)) : 1;
@@ -349,7 +327,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
 
         {/* 3. Main Center Canvas: Document Sheet & Mobile Touch Editor */}
         <div
-          className={`preview-canvas-wrapper ${canScrollDown ? 'has-scroll-below' : ''}`}
+          className="preview-canvas-wrapper"
           style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', order: 1 }}
         >
           {/* Mobile View Mode Segmented Control (Visible only on mobile xs/sm) */}
@@ -450,7 +428,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             component="main"
             ref={canvasContainerRef}
             className="preview-pane-canvas"
-            onScroll={handleCanvasScroll}
             sx={{
               position: 'relative',
               display: mobileViewMode === 'edit' ? { xs: 'none', md: 'flex' } : 'flex',
@@ -519,110 +496,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                 )}
               </div>
             </div>
-
-            {/* Floating Affordance Indicators (Scroll Down & Slide Right) */}
-            <Box
-              className="no-print"
-              sx={{
-                position: 'sticky',
-                bottom: 14,
-                alignSelf: 'center',
-                zIndex: 25,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                pointerEvents: 'none',
-              }}
-            >
-              {canScrollDown && (
-                <Box
-                  onClick={() => {
-                    if (canvasContainerRef.current) {
-                      canvasContainerRef.current.scrollBy({ top: 320, behavior: 'smooth' });
-                    }
-                  }}
-                  sx={{
-                    pointerEvents: 'auto',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 0.75,
-                    px: 2,
-                    py: 0.6,
-                    borderRadius: '9999px',
-                    bgcolor: muiTheme.palette.mode === 'dark' ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.95)',
-                    backdropFilter: 'blur(12px)',
-                    border: `1px solid ${muiTheme.palette.divider}`,
-                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.28)',
-                    cursor: 'pointer',
-                    animation: 'bounceFloat 2s infinite ease-in-out',
-                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                    '&:hover': {
-                      transform: 'translateY(-2px) scale(1.04)',
-                      borderColor: 'primary.main',
-                      boxShadow: '0 12px 28px rgba(0, 0, 0, 0.38)',
-                    },
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      fontWeight: 700,
-                      fontSize: '0.74rem',
-                      color: 'text.primary',
-                      letterSpacing: 0.2,
-                      userSelect: 'none',
-                    }}
-                  >
-                    {t('preview:toolbar.scrollDown', 'Desliza para ver más')}
-                  </Typography>
-                  <KeyboardArrowDownRoundedIcon sx={{ fontSize: 18, color: 'primary.main' }} />
-                </Box>
-              )}
-
-              {canScrollRight && (
-                <Box
-                  onClick={() => {
-                    if (canvasContainerRef.current) {
-                      canvasContainerRef.current.scrollBy({ left: 240, behavior: 'smooth' });
-                    }
-                  }}
-                  sx={{
-                    pointerEvents: 'auto',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 0.75,
-                    px: 1.75,
-                    py: 0.6,
-                    borderRadius: '9999px',
-                    bgcolor: muiTheme.palette.mode === 'dark' ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.95)',
-                    backdropFilter: 'blur(12px)',
-                    border: `1px solid ${muiTheme.palette.divider}`,
-                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.28)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                    '&:hover': {
-                      transform: 'translateY(-2px) scale(1.04)',
-                      borderColor: 'primary.main',
-                      boxShadow: '0 12px 28px rgba(0, 0, 0, 0.38)',
-                    },
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      fontWeight: 700,
-                      fontSize: '0.74rem',
-                      color: 'text.primary',
-                      letterSpacing: 0.2,
-                      userSelect: 'none',
-                    }}
-                  >
-                    {t('preview:toolbar.scrollRight', 'Desliza a la derecha')}
-                  </Typography>
-                  <KeyboardArrowRightRoundedIcon sx={{ fontSize: 18, color: 'primary.main' }} />
-                </Box>
-              )}
-            </Box>
           </Box>
 
           {/* Bottom Navigation Bar */}
