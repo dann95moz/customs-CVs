@@ -23,7 +23,7 @@
   "editor": {
     "editText": "Text bearbeiten",
     "formattedPreview": "Formatierte Vorschau",
-    "editModeTitle": "Stellenbeschreibung (Klartext / Markdown)",
+    "editModeTitle": "Stellenbeschreibung (Klartext / Direktkopie)",
     "previewModeTitle": "Formatierte Stellenvorschau",
     "placeholder": "Fügen Sie hier die Stellenbeschreibung ein...\n\nÜber die Stelle:\nWir suchen einen erfahrenen Entwickler...\n\nAnforderungen:\n• Erfahrung mit modernen Webtechnologien",
     "noJobPasted": "*Noch keine Stellenbeschreibung eingefügt.*",

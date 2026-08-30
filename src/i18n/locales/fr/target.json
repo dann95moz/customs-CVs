@@ -23,7 +23,7 @@
   "editor": {
     "editText": "Modifier le Texte",
     "formattedPreview": "Aperçu Formaté",
-    "editModeTitle": "Description du Poste (Texte Brut / Markdown)",
+    "editModeTitle": "Description du Poste (Texte Brut / Copie Directe)",
     "previewModeTitle": "Aperçu de l'Offre",
     "placeholder": "Collez la description de l'offre d'emploi ici...\n\nÀ propos du poste :\nNous recherchons un ingénieur expérimenté...\n\nCompétences requises :\n• Expérience avec les technologies web modernes",
     "noJobPasted": "*Aucune description collée pour le moment.*",

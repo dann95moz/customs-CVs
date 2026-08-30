@@ -311,7 +311,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <EditNoteRoundedIcon fontSize="small" color="secondary" />
               <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: { xs: '0.82rem', sm: '0.875rem' } }}>
-                {t('target:editor.editModeTitle', 'Job Description (Plain Text / Markdown)')}
+                {t('target:editor.editModeTitle', 'Job Description (Plain Text / Raw Posting)')}
               </Typography>
             </Box>
 

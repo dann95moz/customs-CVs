@@ -48,18 +48,11 @@ Feel free to write as much as you need, don't worry about formatting or grammar,
 - **[Second Language]:** C1 – Advanced / Full Professional Working Proficiency
 `;
 
-export const BLANK_TARGET_JOB = `# 🎯 Target Job Posting
+export const BLANK_TARGET_JOB = `Company: [Target Company Name]
+Role: [e.g. Senior Software Engineer]
+Location: [Remote / City, Country]
 
-## 📌 Vacancy Overview
-- **Company:** [Target Company Name]
-- **Target Role:** [e.g. Senior Software Engineer]
-- **Location:** [Remote / City, Country]
-- **Job Link:** [https://...]
-
----
-
-## 📋 Full Job Description & Requirements
-[Paste the raw job description, responsibilities, required qualifications, and tech stack here...]
+Paste the raw job description, responsibilities, required qualifications, and tech stack directly here...
 `;
 
 export const BLANK_TAILORED_CV = `# [CANDIDATE FULL NAME]
@@ -168,29 +161,28 @@ Senior Frontend Engineer with 6+ years of experience specialized in architecting
 - **Spanish:** C1 – Professional Working Proficiency
 `;
 
-export const DEMO_TARGET_JOB = `# 🎯 Target Job Posting
+export const DEMO_TARGET_JOB = `Company: Stripe
+Role: Senior Frontend Engineer – Core Payments Platform
+Location: Remote (Americas / Global)
+Job Link: https://stripe.com/jobs/senior-frontend-engineer
 
-## 📌 Vacancy Overview
-- **Company:** Stripe
-- **Target Role:** Senior Frontend Engineer – Core Payments Platform
-- **Location:** Remote (Global / Americas)
-- **Job Portal:** https://stripe.com/jobs/senior-frontend-engineer
+About Stripe:
+Stripe is a financial infrastructure platform for businesses. Millions of companies—from the world’s largest enterprises to the most ambitious startups—use Stripe to accept payments, grow their revenue, and accelerate new business opportunities.
 
----
+About the Role:
+We are looking for a Senior Frontend Engineer to build resilient, ultra-fast web user experiences for our global payments platform. You will design modular UI components, optimize bundle sizes, and collaborate on mission-critical transactional workflows.
 
-## 📋 Full Job Description & Requirements
-We are looking for a Senior Frontend Engineer to build resilient, ultra-fast web user experiences for global payments. You will design modular UI components, optimize bundle sizes, and collaborate on mission-critical transactional workflows.
+Key Responsibilities:
+• Build performant, accessible web applications using TypeScript, React, and modern state architectures.
+• Architect modular frontend components and microfrontends with zero runtime errors.
+• Optimize CI/CD pipelines, automated testing (Jest/Vitest), and Core Web Vitals across high-traffic checkout flows.
+• Partner closely with product managers, designers, and backend engineers to integrate high-throughput financial APIs.
 
-### Key Responsibilities:
-- Build performant, accessible web applications using TypeScript, React, and modern state architectures.
-- Architect modular frontend components and microfrontends with zero runtime errors.
-- Optimize CI/CD pipelines, automated testing (Jest/Vitest), and Core Web Vitals.
-- Partner with product managers and backend engineers to integrate high-throughput APIs.
-
-### Ideal Qualifications:
-- 5+ years of experience with React, TypeScript, and modern frontend ecosystems.
-- Deep understanding of Webpack/Vite module federation, performance profiling, and state management (Zustand/Redux).
-- Proven track record using metrics and quantifiable results (Google XYZ achievement formula).
+Requirements & Qualifications:
+• 5+ years of experience with React, TypeScript, and modern frontend ecosystems.
+• Deep understanding of Webpack/Vite module federation, performance profiling, and state management (Zustand/Redux).
+• Experience building responsive, accessible (WCAG), and localized web applications.
+• Strong communication skills and a track record of delivering measurable engineering results (Google XYZ achievement formula).
 `;
 
 export const DEMO_TAILORED_CV = `# ALEX MORGAN

@@ -23,7 +23,7 @@
   "editor": {
     "editText": "Modifica Testo",
     "formattedPreview": "Anteprima Formattata",
-    "editModeTitle": "Descrizione del Lavoro (Testo / Markdown)",
+    "editModeTitle": "Descrizione del Lavoro (Testo Normale / Copia Diretta)",
     "previewModeTitle": "Anteprima Offerta Formattata",
     "placeholder": "Incolla qui la descrizione del lavoro da LinkedIn, Indeed o dal sito aziendale...\n\nInformazioni sul ruolo:\nCerchiamo un ingegnere esperto...\n\nRequisiti principali:\n• Esperienza con le moderne tecnologie web",
     "noJobPasted": "*Nessuna offerta incollata al momento.*",

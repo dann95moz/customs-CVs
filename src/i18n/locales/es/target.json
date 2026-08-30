@@ -23,7 +23,7 @@
   "editor": {
     "editText": "Editar Texto",
     "formattedPreview": "Vista Formateada",
-    "editModeTitle": "Descripción del Puesto (Texto Plano / Markdown)",
+    "editModeTitle": "Descripción del Puesto (Texto Plano / Copiado Directo)",
     "previewModeTitle": "Vista Previa Formateada",
     "placeholder": "Pega aquí la descripción del puesto de LinkedIn, Indeed o la página de empleo...\n\nAcerca del Puesto:\nBuscamos un ingeniero con experiencia...\n\nRequisitos Clave:\n• Experiencia con tecnologías web modernas\n• Historial comprobado de resolución de problemas",
     "noJobPasted": "*Aún no se ha pegado ninguna descripción del puesto. Cambia a Editar Texto para agregar una.*",
