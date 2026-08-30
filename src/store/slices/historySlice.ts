@@ -28,8 +28,23 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
     } = get();
 
     const candName = extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ');
-    const comp = companyName || extractTargetCompany(targetJob, 'Target Company');
+    const comp = customTitle || companyName || extractTargetCompany(targetJob, 'Target Company');
     const role = targetRole || extractTargetRole(targetJob, masterData, 'Specialist');
+
+    // Duplicate prevention: if an identical version already exists, avoid creating a redundant clone
+    const existingDuplicate = savedVersions.find(
+      (v) =>
+        v.cvMarkdown.trim() === cvMarkdown.trim() &&
+        v.companyName.trim().toLowerCase() === comp.trim().toLowerCase() &&
+        v.targetRole.trim().toLowerCase() === role.trim().toLowerCase() &&
+        v.theme === theme &&
+        v.palette === palette &&
+        v.pageBudget === pageBudget
+    );
+
+    if (existingDuplicate) {
+      return existingDuplicate.id;
+    }
 
     let matchScore = 92;
     const scoreMatch = gapMarkdown.match(/Estimated Match Score:\*{0,2}\s*(\d{1,3})/i);
@@ -44,7 +59,7 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
       id: newVersionId,
       createdAt: new Date().toISOString(),
       candidateName: candName,
-      companyName: customTitle || comp,
+      companyName: comp,
       targetRole: role,
       matchScore: matchScore || 92,
       qualityScore: audit.overallScore || 8.8,
@@ -83,6 +98,20 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
   handleDeleteVersion: (id: string) => {
     set({
       savedVersions: get().savedVersions.filter((v) => v.id !== id),
+    });
+  },
+
+  handleDeleteMultipleVersions: (ids: string[]) => {
+    const { applications, savedVersions } = get();
+    // Protect versions that are linked to active (non-archived) Kanban applications
+    const activeApps = applications.filter((app) => !app.isArchived);
+    const protectedIds = new Set(
+      activeApps.map((app) => app.appliedVersionId).filter((id): id is string => Boolean(id))
+    );
+
+    const idsToDelete = new Set(ids.filter((id) => !protectedIds.has(id)));
+    set({
+      savedVersions: savedVersions.filter((v) => !idsToDelete.has(v.id)),
     });
   },
 

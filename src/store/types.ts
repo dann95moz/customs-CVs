@@ -78,6 +78,7 @@ export interface HistorySlice {
   handleSaveCurrentVersion: (customTitle?: string) => string;
   handleLoadVersion: (id: string) => void;
   handleDeleteVersion: (id: string) => void;
+  handleDeleteMultipleVersions: (ids: string[]) => void;
   handleAddApplication: (appData: {
     companyName: string;
     targetRole: string;

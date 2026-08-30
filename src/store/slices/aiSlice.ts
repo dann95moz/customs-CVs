@@ -32,6 +32,10 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
   },
 
   handleGenerate: async () => {
+    if (get().isGenerating) {
+      return;
+    }
+
     set({
       isGenerating: true,
       generationError: null,
@@ -77,26 +81,41 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
       const comp = companyName || extractTargetCompany(targetJob, 'Target Company');
       const role = targetRole || extractTargetRole(targetJob, masterData, 'Specialist');
 
-      const autoSavedVersion: GeneratedCvVersion = {
-        id: `cv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-        createdAt: new Date().toISOString(),
-        candidateName: candName,
-        companyName: comp,
-        targetRole: role,
-        matchScore: response.estimatedMatchScore || 94,
-        qualityScore: 9.0,
-        theme,
-        palette,
-        pageBudget,
-        cvMarkdown: tailoredCv,
-        gapMarkdown: gapReport,
-        targetJobSnippet: targetJob.slice(0, 280),
-      };
+      // Check if an identical version exists in savedVersions
+      const existingDuplicate = savedVersions.find(
+        (v) =>
+          v.cvMarkdown.trim() === tailoredCv.trim() &&
+          v.companyName.trim().toLowerCase() === comp.trim().toLowerCase() &&
+          v.targetRole.trim().toLowerCase() === role.trim().toLowerCase() &&
+          v.theme === theme &&
+          v.palette === palette &&
+          v.pageBudget === pageBudget
+      );
+
+      let nextSavedVersions = savedVersions;
+      if (!existingDuplicate) {
+        const autoSavedVersion: GeneratedCvVersion = {
+          id: `cv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          createdAt: new Date().toISOString(),
+          candidateName: candName,
+          companyName: comp,
+          targetRole: role,
+          matchScore: response.estimatedMatchScore || 94,
+          qualityScore: 9.0,
+          theme,
+          palette,
+          pageBudget,
+          cvMarkdown: tailoredCv,
+          gapMarkdown: gapReport,
+          targetJobSnippet: targetJob.slice(0, 280),
+        };
+        nextSavedVersions = [autoSavedVersion, ...savedVersions.filter((v) => v.id !== autoSavedVersion.id)];
+      }
 
       set({
         cvMarkdown: tailoredCv,
         gapMarkdown: gapReport,
-        savedVersions: [autoSavedVersion, ...savedVersions.filter(v => v.id !== autoSavedVersion.id)],
+        savedVersions: nextSavedVersions,
         generationStep: 'Done! Resume tailored successfully.',
       });
 

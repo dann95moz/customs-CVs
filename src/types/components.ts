@@ -306,6 +306,7 @@ export interface StepPreviewToolbarProps {
   onOpenTemplates: () => void;
   onSaveVersion?: () => void;
   savedSuccess?: boolean;
+  isSavingVersion?: boolean;
   onReTailor: () => void;
   isGenerating: boolean;
   onDownloadPdf: () => void;
@@ -484,6 +485,11 @@ export interface ApplicationCardProps {
   onDownloadPdf?: (v: GeneratedCvVersion) => void;
   onTrack?: (v: GeneratedCvVersion) => void;
   isDownloadingPdf?: boolean;
+  selectionMode?: boolean;
+  isSelected?: boolean;
+  onToggleSelect?: (id: string) => void;
+  isLinkedToActiveApp?: boolean;
+  activeAppName?: string;
 }
 
 export interface KanbanBoardProps {
