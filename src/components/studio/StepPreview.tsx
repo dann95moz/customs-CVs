@@ -96,10 +96,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const [sheetHeight, setSheetHeight] = useState<number>(0);
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
   const [isTrackModalOpen, setIsTrackModalOpen] = useState<boolean>(false);
-  const [zoomMode, setZoomMode] = useState<'fit' | '100%'>('fit');
-  const [windowWidth, setWindowWidth] = useState<number>(
-    typeof window !== 'undefined' ? window.innerWidth : 1200
-  );
   const paperRef = useRef<HTMLDivElement>(null);
 
   // Track if current company is already active in Kanban applications
@@ -118,13 +114,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     handleSaveCurrentVersion();
     setIsTrackModalOpen(true);
   };
-
-  // Track viewport resize for responsive scaling
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Left Side Drawer state ('templates' open by default on desktop, closed by default on mobile)
   const [activeSidePanel, setActiveSidePanel] = useState<PreviewSidePanelType | null>(() => {
@@ -158,12 +147,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const isOverflowing = sheetHeight > targetPagePx + 8;
   const estimatedPages = isOverflowing ? Math.max(2, Math.ceil(sheetHeight / targetPagePx)) : 1;
   const overflowPercentage = isOverflowing ? Math.round(((sheetHeight - targetPagePx) / targetPagePx) * 100) : 0;
-
-  const isMobile = windowWidth < 860;
-  const canvasPadding = isMobile ? 24 : 48;
-  const availableWidth = windowWidth - (isMobile ? 0 : (activeSidePanel ? 380 : 76)) - canvasPadding;
-  const autoScale = Math.min(1, Math.max(0.35, availableWidth / targetPageWidthPx));
-  const currentScale = zoomMode === 'fit' && isMobile ? autoScale : 1;
 
   const handleMagicAutoFit = () => {
     if (spacingDensity === 'spacious') {
@@ -333,9 +316,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               <div
                 className="paper-sheet-wrapper"
                 style={{
-                  width: isMobile && zoomMode === 'fit' ? `${targetPageWidthPx * currentScale}px` : `${targetPageWidthPx}px`,
-                  height: isMobile && zoomMode === 'fit' && sheetHeight ? `${sheetHeight * currentScale}px` : 'auto',
-                  transition: 'width 0.2s ease, height 0.2s ease',
+                  width: `${targetPageWidthPx}px`,
                   display: 'flex',
                   justifyContent: 'center',
                 }}
@@ -344,8 +325,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   ref={paperRef}
                   className={`paper-sheet ${overflowPercentage > 0 && overflowPercentage <= 25 ? 'compact-fit' : ''}`}
                   style={{
-                    transform: isMobile && zoomMode === 'fit' ? `scale(${currentScale})` : 'none',
-                    transformOrigin: 'top center',
                     width: `${targetPageWidthPx}px`,
                     margin: '0 auto',
                   }}
@@ -367,7 +346,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   <div
                     className="page-break-guide"
                     style={{
-                      top: isMobile && zoomMode === 'fit' ? `${targetPagePx * currentScale}px` : `${targetPagePx}px`,
+                      top: `${targetPagePx}px`,
                     }}
                   >
                     <span>✂️ {t('preview:toolbar.pageBoundary', 'Page 1 Boundary ({{format}} Standard)', { format: pageFormat.toUpperCase() })}</span>
@@ -419,26 +398,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                     display: { xs: 'none', md: 'inline-flex' },
                   }}
                 />
-              )}
-
-              {/* Zoom Mode Toggle on Mobile */}
-              {isMobile && (
-                <ButtonGroup size="small" variant="outlined">
-                  <Button
-                    variant={zoomMode === 'fit' ? 'contained' : 'outlined'}
-                    onClick={() => setZoomMode('fit')}
-                    sx={{ fontSize: '0.7rem', px: 1, py: 0.2 }}
-                  >
-                    Fit
-                  </Button>
-                  <Button
-                    variant={zoomMode === '100%' ? 'contained' : 'outlined'}
-                    onClick={() => setZoomMode('100%')}
-                    sx={{ fontSize: '0.7rem', px: 1, py: 0.2 }}
-                  >
-                    100%
-                  </Button>
-                </ButtonGroup>
               )}
 
               <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
