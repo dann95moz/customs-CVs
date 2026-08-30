@@ -29,7 +29,20 @@ All agent operations in this repository must strictly adhere to the following ru
 
 ---
 
-## 3. Directory Layout
+## 3. Specialized Agent Skills & Personas
+
+The repository includes dedicated on-demand skills located in `.agents/skills/`:
+
+- 🎨 **`ui-ux-design-expert`**: UI components, design tokens, micro-interactions, responsive mobile layouts, a11y, and UX heuristics.
+- 🏗️ **`architecture-code-quality`**: Clean layer architecture, SOLID design, Zustand state slices, strict TypeScript typing, and memoization.
+- 📄 **`cv-templates-manager`**: ATS resume templates registry, color palettes, font pairings, and print CSS stylesheets.
+- ⚡ **`ai-tailoring-workflow`**: Gemini/OpenAI synthesis prompts, Google XYZ formula, integrity safeguards, and ATS gap scoring.
+- 🌐 **`i18n-workflow`**: 5-locale synchronization (`en`, `es`, `de`, `fr`, `it`), namespace organization, and fallback standards.
+- 🧪 **`qa-testing-compliance`**: Typechecking (`tsc --noEmit`), build verification, i18n parity audits, and print rendering validation.
+
+---
+
+## 4. Directory Layout
 
 ```text
 customs CVs/
@@ -60,7 +73,7 @@ customs CVs/
 
 ---
 
-## 4. Key Development Commands
+## 5. Key Development Commands
 
 - `npm run dev`: Start local Vite development server with HMR.
 - `npm run build`: Typecheck with `tsc` and create optimized Vite production bundle in `dist/`.
@@ -70,7 +83,7 @@ customs CVs/
 
 ---
 
-## 5. Verification Checklist for Agents
+## 6. Verification Checklist for Agents
 
 Before completing any task:
 1. Ensure TypeScript compiles cleanly (`npm run build` or `npm run typecheck` exits with code 0).
