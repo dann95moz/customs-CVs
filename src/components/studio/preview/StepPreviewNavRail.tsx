@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography, useTheme, alpha } from '@mui/material';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import FormatPaintRoundedIcon from '@mui/icons-material/FormatPaintRounded';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import SpellcheckRoundedIcon from '@mui/icons-material/SpellcheckRounded';
 import { useTranslation } from 'react-i18next';
 import { PreviewSidePanelType, StepPreviewNavRailProps } from '../../../types';
@@ -12,8 +11,6 @@ export type { PreviewSidePanelType, StepPreviewNavRailProps };
 export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
   activeSidePanel,
   onToggleSidePanel,
-  isEditingMarkdown,
-  onToggleMarkdown,
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const theme = useTheme();

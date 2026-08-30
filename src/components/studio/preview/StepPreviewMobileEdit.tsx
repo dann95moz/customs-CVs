@@ -1,0 +1,492 @@
+import React, { useState } from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  useTheme,
+  alpha,
+} from '@mui/material';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
+import { useTranslation } from 'react-i18next';
+import { marked } from 'marked';
+import { CVData } from '../../../types/cv';
+import { useCvLiveEdit } from './CvLiveEditContext';
+import { AiRegeneratePopover } from './AiRegeneratePopover';
+
+export interface StepPreviewMobileEditProps {
+  parsedCv: CVData;
+}
+
+interface ActiveEditItem {
+  type: 'bullet' | 'summary';
+  fieldKey: string;
+  sectionType?: 'experience' | 'projects';
+  itemIndex?: number;
+  bulletIndex?: number;
+  company?: string;
+  role?: string;
+  initialText: string;
+}
+
+export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ parsedCv }) => {
+  const { t } = useTranslation(['preview', 'common']);
+  const liveEdit = useCvLiveEdit();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
+  // State for direct manual text edit modal
+  const [editingItem, setEditingItem] = useState<ActiveEditItem | null>(null);
+  const [editText, setEditText] = useState<string>('');
+
+  // State for AI regeneration bottom sheet
+  const [aiTarget, setAiTarget] = useState<ActiveEditItem | null>(null);
+
+  const handleOpenEdit = (item: ActiveEditItem) => {
+    setEditingItem(item);
+    setEditText(item.initialText);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingItem || !liveEdit) return;
+
+    if (editingItem.type === 'summary') {
+      liveEdit.updateSummary(editText);
+    } else if (editingItem.type === 'bullet' && editingItem.itemIndex !== undefined && editingItem.bulletIndex !== undefined) {
+      liveEdit.updateExperienceBullet(
+        editingItem.sectionType || 'experience',
+        editingItem.itemIndex,
+        editingItem.bulletIndex,
+        editText
+      );
+    }
+    setEditingItem(null);
+  };
+
+  const handleOpenAiRegenerate = (item: ActiveEditItem) => {
+    setAiTarget(item);
+  };
+
+  const handleExecuteAiRegenerate = async (guidance: string) => {
+    if (!aiTarget || !liveEdit) return;
+
+    if (aiTarget.type === 'summary') {
+      await liveEdit.regenerateSummaryBlock({
+        fieldKey: aiTarget.fieldKey,
+        currentSummary: aiTarget.initialText,
+        userGuidance: guidance,
+      });
+    } else if (aiTarget.type === 'bullet' && aiTarget.itemIndex !== undefined && aiTarget.bulletIndex !== undefined) {
+      await liveEdit.regenerateExperienceBullet({
+        fieldKey: aiTarget.fieldKey,
+        sectionType: aiTarget.sectionType || 'experience',
+        itemIndex: aiTarget.itemIndex,
+        bulletIndex: aiTarget.bulletIndex,
+        company: aiTarget.company || '',
+        role: aiTarget.role,
+        currentBullet: aiTarget.initialText,
+        userGuidance: guidance,
+      });
+    }
+  };
+
+  const handleUndo = (fieldKey: string, onRevert: (val: string) => void) => {
+    if (!liveEdit) return;
+    liveEdit.undoItem(fieldKey, onRevert);
+  };
+
+  return (
+    <Box sx={{ px: 2, py: 2, pb: 6, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+      {/* 1. Summary Block Card */}
+      {parsedCv.summary && (
+        <Box>
+          <Typography
+            variant="overline"
+            sx={{
+              fontWeight: 800,
+              fontSize: '0.75rem',
+              letterSpacing: '0.08em',
+              color: 'text.secondary',
+              mb: 1,
+              display: 'block',
+            }}
+          >
+            {t('preview:sections.summary', 'Professional Summary')}
+          </Typography>
+
+          <Card
+            variant="outlined"
+            sx={{
+              borderRadius: '14px',
+              bgcolor: 'background.paper',
+              borderColor: alpha(theme.palette.divider, 0.9),
+              boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
+            }}
+          >
+            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+              <Box
+                sx={{
+                  fontSize: '0.88rem',
+                  lineHeight: 1.55,
+                  color: 'text.primary',
+                  mb: 1.75,
+                  '& strong': { fontWeight: 700, color: 'text.primary' },
+                }}
+                dangerouslySetInnerHTML={{ __html: marked.parse(parsedCv.summary) as string }}
+              />
+
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flexWrap: 'wrap' }}>
+                <Button
+                  size="medium"
+                  variant="outlined"
+                  onClick={() =>
+                    handleOpenEdit({
+                      type: 'summary',
+                      fieldKey: 'summary-main',
+                      initialText: parsedCv.summary || '',
+                    })
+                  }
+                  startIcon={<EditRoundedIcon sx={{ fontSize: 16 }} />}
+                  sx={{ flex: 1 }}
+                >
+                  {t('preview:aiRegen.editItem', 'Editar')}
+                </Button>
+
+                <Button
+                  size="medium"
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    handleOpenAiRegenerate({
+                      type: 'summary',
+                      fieldKey: 'summary-main',
+                      initialText: parsedCv.summary || '',
+                    })
+                  }
+                  startIcon={<AutoAwesomeRoundedIcon sx={{ fontSize: 16 }} />}
+                  sx={{ flex: 1 }}
+                >
+                  {t('preview:aiRegen.button', 'Regenerar')}
+                </Button>
+
+                {liveEdit?.undoMap['summary-main'] !== undefined && (
+                  <Button
+                    size="medium"
+                    variant="outlined"
+                    onClick={() =>
+                      handleUndo('summary-main', (val) => liveEdit?.updateSummary(val))
+                    }
+                    startIcon={<UndoRoundedIcon sx={{ fontSize: 16 }} />}
+                  >
+                    {t('preview:aiRegen.undo', 'Deshacer')}
+                  </Button>
+                )}
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+      )}
+
+      {/* 2. Professional Experience Bullets Cards */}
+      {parsedCv.experience && parsedCv.experience.length > 0 && (
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {parsedCv.experience.map((item, idx) => (
+            <Box key={idx} sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
+              <Box>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: '0.74rem',
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    color: 'primary.main',
+                  }}
+                >
+                  {item.company}
+                </Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.9rem' }}>
+                  {item.role} {item.date ? `• ${item.date}` : ''}
+                </Typography>
+              </Box>
+
+              {item.bullets && item.bullets.map((bullet, bIdx) => {
+                const fieldKey = `experience-${idx}-${bIdx}`;
+                const hasUndo = liveEdit?.undoMap[fieldKey] !== undefined;
+
+                return (
+                  <Card
+                    key={bIdx}
+                    variant="outlined"
+                    sx={{
+                      borderRadius: '14px',
+                      bgcolor: 'background.paper',
+                      borderColor: alpha(theme.palette.divider, 0.9),
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                    }}
+                  >
+                    <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                      <Box
+                        sx={{
+                          fontSize: '0.86rem',
+                          lineHeight: 1.5,
+                          color: 'text.primary',
+                          mb: 1.75,
+                          '& strong': { fontWeight: 700, color: 'text.primary' },
+                        }}
+                        dangerouslySetInnerHTML={{ __html: marked.parseInline(bullet) as string }}
+                      />
+
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flexWrap: 'wrap' }}>
+                        <Button
+                          size="medium"
+                          variant="outlined"
+                          onClick={() =>
+                            handleOpenEdit({
+                              type: 'bullet',
+                              fieldKey,
+                              sectionType: 'experience',
+                              itemIndex: idx,
+                              bulletIndex: bIdx,
+                              company: item.company,
+                              role: item.role,
+                              initialText: bullet,
+                            })
+                          }
+                          startIcon={<EditRoundedIcon sx={{ fontSize: 16 }} />}
+                          sx={{ flex: 1 }}
+                        >
+                          {t('preview:aiRegen.editItem', 'Editar')}
+                        </Button>
+
+                        <Button
+                          size="medium"
+                          variant="contained"
+                          color="primary"
+                          onClick={() =>
+                            handleOpenAiRegenerate({
+                              type: 'bullet',
+                              fieldKey,
+                              sectionType: 'experience',
+                              itemIndex: idx,
+                              bulletIndex: bIdx,
+                              company: item.company,
+                              role: item.role,
+                              initialText: bullet,
+                            })
+                          }
+                          startIcon={<AutoAwesomeRoundedIcon sx={{ fontSize: 16 }} />}
+                          sx={{ flex: 1 }}
+                        >
+                          {t('preview:aiRegen.button', 'Regenerar')}
+                        </Button>
+
+                        {hasUndo && (
+                          <Button
+                            size="medium"
+                            variant="outlined"
+                            onClick={() =>
+                              handleUndo(fieldKey, (val) =>
+                                liveEdit?.updateExperienceBullet('experience', idx, bIdx, val)
+                              )
+                            }
+                            startIcon={<UndoRoundedIcon sx={{ fontSize: 16 }} />}
+                          >
+                            {t('preview:aiRegen.undo', 'Deshacer')}
+                          </Button>
+                        )}
+                      </Box>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </Box>
+          ))}
+        </Box>
+      )}
+
+      {/* 3. Featured Projects Bullets Cards */}
+      {parsedCv.projects && parsedCv.projects.length > 0 && (
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {parsedCv.projects.map((item, idx) => (
+            <Box key={idx} sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
+              <Box>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: '0.74rem',
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    color: 'primary.main',
+                  }}
+                >
+                  {item.company}
+                </Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.9rem' }}>
+                  {item.role} {item.date ? `• ${item.date}` : ''}
+                </Typography>
+              </Box>
+
+              {item.bullets && item.bullets.map((bullet, bIdx) => {
+                const fieldKey = `projects-${idx}-${bIdx}`;
+                const hasUndo = liveEdit?.undoMap[fieldKey] !== undefined;
+
+                return (
+                  <Card
+                    key={bIdx}
+                    variant="outlined"
+                    sx={{
+                      borderRadius: '14px',
+                      borderColor: alpha(theme.palette.divider, 0.9),
+                      boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
+                    }}
+                  >
+                    <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                      <Box
+                        sx={{
+                          fontSize: '0.88rem',
+                          lineHeight: 1.55,
+                          color: 'text.primary',
+                          mb: 1.75,
+                          '& strong': { fontWeight: 700, color: 'text.primary' },
+                        }}
+                        dangerouslySetInnerHTML={{ __html: marked.parseInline(bullet) as string }}
+                      />
+
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flexWrap: 'wrap' }}>
+                        <Button
+                          size="medium"
+                          variant="outlined"
+                          onClick={() =>
+                            handleOpenEdit({
+                              type: 'bullet',
+                              fieldKey,
+                              sectionType: 'projects',
+                              itemIndex: idx,
+                              bulletIndex: bIdx,
+                              company: item.company,
+                              role: item.role,
+                              initialText: bullet,
+                            })
+                          }
+                          startIcon={<EditRoundedIcon sx={{ fontSize: 16 }} />}
+                          sx={{ flex: 1 }}
+                        >
+                          {t('preview:aiRegen.editItem', 'Editar')}
+                        </Button>
+
+                        <Button
+                          size="medium"
+                          variant="contained"
+                          color="primary"
+                          onClick={() =>
+                            handleOpenAiRegenerate({
+                              type: 'bullet',
+                              fieldKey,
+                              sectionType: 'projects',
+                              itemIndex: idx,
+                              bulletIndex: bIdx,
+                              company: item.company,
+                              role: item.role,
+                              initialText: bullet,
+                            })
+                          }
+                          startIcon={<AutoAwesomeRoundedIcon sx={{ fontSize: 16 }} />}
+                          sx={{ flex: 1 }}
+                        >
+                          {t('preview:aiRegen.button', 'Regenerar')}
+                        </Button>
+
+                        {hasUndo && (
+                          <Button
+                            size="medium"
+                            variant="outlined"
+                            onClick={() =>
+                              handleUndo(fieldKey, (val) =>
+                                liveEdit?.updateExperienceBullet('projects', idx, bIdx, val)
+                              )
+                            }
+                            startIcon={<UndoRoundedIcon sx={{ fontSize: 16 }} />}
+                          >
+                            {t('preview:aiRegen.undo', 'Deshacer')}
+                          </Button>
+                        )}
+                      </Box>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </Box>
+          ))}
+        </Box>
+      )}
+
+      {/* Manual Touch Edit Dialog Modal */}
+      <Dialog
+        open={Boolean(editingItem)}
+        onClose={() => setEditingItem(null)}
+        fullWidth
+        maxWidth="sm"
+        slotProps={{
+          paper: {
+            sx: { borderRadius: '16px', p: 1 },
+          },
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: 700, fontSize: '1rem', pb: 1 }}>
+          {t('preview:aiRegen.editItem', 'Editar Contenido')}
+        </DialogTitle>
+        <DialogContent sx={{ pt: 1 }}>
+          <TextField
+            autoFocus
+            fullWidth
+            multiline
+            rows={4}
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '10px',
+                fontSize: '0.88rem',
+              },
+            }}
+          />
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button
+            onClick={() => setEditingItem(null)}
+            variant="text"
+            color="inherit"
+          >
+            {t('preview:aiRegen.cancelItem', 'Cancelar')}
+          </Button>
+          <Button
+            onClick={handleSaveEdit}
+            variant="contained"
+            color="primary"
+          >
+            {t('preview:aiRegen.saveItem', 'Guardar')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* AI Regenerate Bottom Sheet */}
+      <AiRegeneratePopover
+        open={Boolean(aiTarget)}
+        anchorEl={null}
+        onClose={() => setAiTarget(null)}
+        type={aiTarget?.type}
+        onRegenerate={handleExecuteAiRegenerate}
+      />
+    </Box>
+  );
+};

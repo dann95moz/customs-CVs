@@ -66,6 +66,9 @@ export const htmlToMarkdown = (html: string): string => {
     }
 
     const element = node as HTMLElement;
+    if (element.classList.contains('no-print') || element.classList.contains('cv-ai-hover-actions')) {
+      return '';
+    }
     const tagName = element.tagName.toLowerCase();
     const style = element.style || ({} as CSSStyleDeclaration);
 
