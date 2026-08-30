@@ -12,6 +12,7 @@ import enAudit from './locales/en/audit.json';
 import enGap from './locales/en/gap.json';
 import enHistory from './locales/en/history.json';
 import enSettings from './locales/en/settings.json';
+import enFeedback from './locales/en/feedback.json';
 
 // Spanish
 import esCommon from './locales/es/common.json';
@@ -23,6 +24,7 @@ import esAudit from './locales/es/audit.json';
 import esGap from './locales/es/gap.json';
 import esHistory from './locales/es/history.json';
 import esSettings from './locales/es/settings.json';
+import esFeedback from './locales/es/feedback.json';
 
 // French
 import frCommon from './locales/fr/common.json';
@@ -34,6 +36,7 @@ import frAudit from './locales/fr/audit.json';
 import frGap from './locales/fr/gap.json';
 import frHistory from './locales/fr/history.json';
 import frSettings from './locales/fr/settings.json';
+import frFeedback from './locales/fr/feedback.json';
 
 // German
 import deCommon from './locales/de/common.json';
@@ -45,6 +48,7 @@ import deAudit from './locales/de/audit.json';
 import deGap from './locales/de/gap.json';
 import deHistory from './locales/de/history.json';
 import deSettings from './locales/de/settings.json';
+import deFeedback from './locales/de/feedback.json';
 
 // Italian
 import itCommon from './locales/it/common.json';
@@ -56,6 +60,7 @@ import itAudit from './locales/it/audit.json';
 import itGap from './locales/it/gap.json';
 import itHistory from './locales/it/history.json';
 import itSettings from './locales/it/settings.json';
+import itFeedback from './locales/it/feedback.json';
 
 export const resources = {
   en: {
@@ -68,6 +73,7 @@ export const resources = {
     gap: enGap,
     history: enHistory,
     settings: enSettings,
+    feedback: enFeedback,
   },
   es: {
     common: esCommon,
@@ -79,6 +85,7 @@ export const resources = {
     gap: esGap,
     history: esHistory,
     settings: esSettings,
+    feedback: esFeedback,
   },
   fr: {
     common: frCommon,
@@ -90,6 +97,7 @@ export const resources = {
     gap: frGap,
     history: frHistory,
     settings: frSettings,
+    feedback: frFeedback,
   },
   de: {
     common: deCommon,
@@ -101,6 +109,7 @@ export const resources = {
     gap: deGap,
     history: deHistory,
     settings: deSettings,
+    feedback: deFeedback,
   },
   it: {
     common: itCommon,
@@ -112,6 +121,7 @@ export const resources = {
     gap: itGap,
     history: itHistory,
     settings: itSettings,
+    feedback: itFeedback,
   },
 } as const;
 
@@ -123,7 +133,7 @@ i18n
     fallbackLng: 'en',
     supportedLngs: ['en', 'es', 'fr', 'de', 'it'],
     defaultNS: 'common',
-    ns: ['common', 'landing', 'profile', 'target', 'preview', 'audit', 'gap', 'history', 'settings'],
+    ns: ['common', 'landing', 'profile', 'target', 'preview', 'audit', 'gap', 'history', 'settings', 'feedback'],
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       lookupLocalStorage: 'i18nextLng',

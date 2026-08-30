@@ -50,6 +50,7 @@ export const NAMESPACES = [
   'gap',
   'history',
   'settings',
+  'feedback',
 ] as const;
 
 export type Namespace = typeof NAMESPACES[number];
