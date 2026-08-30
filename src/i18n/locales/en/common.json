@@ -3,9 +3,12 @@
   "tagline": "AI-Powered Resume Engine",
   "nav": {
     "resumeStudio": "Resume Studio",
+    "studio": "Studio",
     "myApplications": "My Applications",
+    "applicationsShort": "Apps",
     "settingsAndAi": "Settings & AI",
     "settings": "Settings",
+    "settingsShort": "Settings",
     "viewOverview": "View Product Overview & Guide",
     "starGithub": "Star on GitHub ⭐",
     "switchTheme": "Switch to {{mode}} mode",

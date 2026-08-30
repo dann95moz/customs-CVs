@@ -182,9 +182,9 @@ export const App: React.FC = () => {
               <LockedViewCard
                 iconType="target"
                 badgeVariant="target"
-                title={t('gap:locked.noTargetTitle', 'No Target Vacancy Entered Yet')}
-                description={t('gap:locked.noTargetDesc', 'Gap Strategy cross-references your candidate background against specific employer requirements. Please paste or upload a target job posting in the wizard first.')}
-                actionText={t('gap:locked.noTargetAction', 'Add Target Job in Wizard')}
+                title={t('gap:lockedNoJob.title', 'No Target Vacancy Entered Yet')}
+                description={t('gap:lockedNoJob.desc', 'Gap Strategy cross-references your candidate background against specific employer requirements. Please paste or upload a target job posting in the wizard first.')}
+                actionText={t('gap:lockedNoJob.action', 'Add Target Job in Wizard')}
                 actionIcon="file-text"
                 onAction={() => {
                   setActiveTab('wizard');
@@ -195,13 +195,12 @@ export const App: React.FC = () => {
               <LockedViewCard
                 iconType="zap"
                 badgeVariant="ai"
-                title={t('gap:locked.readyTitle', 'Ready to Synthesize Gap Strategy')}
-                description={
-                  <>
-                    {t('gap:locked.readyDesc', 'You have entered target vacancy details for')} <strong>{companyName || 'Target Company'}</strong>. {t('gap:locked.readySub', 'Click below to synthesize your tailored CV and generate the matching strategy report with keyword extraction.')}
-                  </>
-                }
-                actionText={isGenerating ? t('target:actions.tailoring', 'Synthesizing...') : t('target:actions.tailorNow', '✨ Synthesize Tailored CV Now')}
+                title={t('gap:lockedNoReport.title', 'Ready to Synthesize Gap Strategy')}
+                description={t('gap:lockedNoReport.desc', {
+                  company: companyName || 'Target Company',
+                  defaultValue: `You have entered target vacancy details for ${companyName || 'Target Company'}. Click below to synthesize your tailored CV and generate the matching strategy report with keyword extraction.`
+                })}
+                actionText={isGenerating ? t('target:actions.tailoring', 'Synthesizing...') : t('gap:lockedNoReport.action', '✨ Synthesize Tailored CV Now')}
                 actionIcon="zap"
                 isDisabled={isGenerating}
                 onAction={handleGenerate}

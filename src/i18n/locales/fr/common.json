@@ -3,9 +3,12 @@
   "tagline": "Moteur de CV Propulsé par l'IA",
   "nav": {
     "resumeStudio": "Studio de CV",
+    "studio": "Studio",
     "myApplications": "Mes Candidatures",
+    "applicationsShort": "Candidatures",
     "settingsAndAi": "Paramètres & IA",
     "settings": "Paramètres",
+    "settingsShort": "Paramètres",
     "viewOverview": "Voir l'Aperçu du Produit",
     "starGithub": "Étoile sur GitHub ⭐",
     "switchTheme": "Passer en mode {{mode}}",

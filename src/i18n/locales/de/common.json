@@ -3,9 +3,12 @@
   "tagline": "KI-gestützte Lebenslauf-Engine",
   "nav": {
     "resumeStudio": "Lebenslauf Studio",
+    "studio": "Studio",
     "myApplications": "Meine Bewerbungen",
+    "applicationsShort": "Bewerbungen",
     "settingsAndAi": "Einstellungen & KI",
     "settings": "Einstellungen",
+    "settingsShort": "Einstellungen",
     "viewOverview": "Produktübersicht & Anleitung anzeigen",
     "starGithub": "Stern auf GitHub vergeben ⭐",
     "switchTheme": "Zu {{mode}}-Modus wechseln",

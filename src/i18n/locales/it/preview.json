@@ -5,6 +5,7 @@
     "resetZoom": "Adatta alla Pagina",
     "exportPdf": "Esporta PDF (Stampa)",
     "exportPdfShort": "PDF",
+    "tailoredShort": "Personalizzato",
     "formatBold": "Grassetto (Ctrl+B)",
     "formatItalic": "Corsivo (Ctrl+I)",
     "formatHighlight": "Evidenzia (++parola-chiave++)",
@@ -13,6 +14,7 @@
     "copyMarkdown": "Copia Markdown",
     "copied": "Copiato negli appunti!",
     "pageFit": "Adattamento",
+    "page": "Pagina",
     "singlePage": "Vista 1 Pagina",
     "twoPage": "Vista 2 Pagine",
     "pageFormatTooltip": "Formato Carta (A4, US Letter, US Legal)",
@@ -69,6 +71,8 @@
   "drawer": {
     "title": "Analisi di Qualità & Corrispondenza",
     "scoreLabel": "Punteggio Calibrato",
-    "matchLabel": "Allineamento Posizione"
+    "matchLabel": "Allineamento Posizione",
+    "shortScore": "Audit",
+    "shortMatch": "Match"
   }
 }

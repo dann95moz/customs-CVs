@@ -3,9 +3,12 @@
   "tagline": "Motor de CVs Potenciado por IA",
   "nav": {
     "resumeStudio": "Resume Studio",
+    "studio": "Estudio",
     "myApplications": "Mis Candidaturas",
+    "applicationsShort": "Postulaciones",
     "settingsAndAi": "Configuración e IA",
     "settings": "Configuración",
+    "settingsShort": "Ajustes",
     "viewOverview": "Ver Resumen y Guía del Producto",
     "starGithub": "Destacar en GitHub ⭐",
     "switchTheme": "Cambiar a modo {{mode}}",

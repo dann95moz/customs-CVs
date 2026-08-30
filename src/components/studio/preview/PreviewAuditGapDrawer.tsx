@@ -325,7 +325,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                        {t('profile:sections.summary', 'Professional Summary')}
+                        {t('audit:sections.summary', 'Professional Summary')}
                       </Typography>
                       <Chip label="Optimal" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
                     </Box>
@@ -345,7 +345,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                        {t('profile:sections.experience', 'Work Experience')}
+                        {t('audit:sections.experience', 'Work Experience')}
                       </Typography>
                       <Chip label="9/10 XYZ" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
                     </Box>
@@ -365,7 +365,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                        {t('profile:sections.skills', 'Technical Skills & ATS')}
+                        {t('audit:sections.skills', 'Technical Skills & ATS')}
                       </Typography>
                       <Chip label="95% Pass" size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700 }} />
                     </Box>

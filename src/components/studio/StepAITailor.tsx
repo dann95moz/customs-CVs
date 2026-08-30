@@ -348,7 +348,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
               <TuneRoundedIcon color="action" fontSize="small" />
               <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                {t('settings:tabs.providers', 'Advanced AI & Model Settings (Optional)')}
+                {t('settings:providers.title', 'Advanced AI & Model Settings (Optional)')}
               </Typography>
               <Chip
                 label={`Active: ${currentModel.name}`}
@@ -403,7 +403,7 @@ export const StepAITailor: React.FC<StepAITailorProps> = ({
             disabled={isGenerating}
             sx={{ fontWeight: 700, px: 3 }}
           >
-            {t('preview:title', 'View Live CV & PDF Export')}
+            {t('profile:stepper.previewLabel', 'View Live CV & PDF Export')}
           </Button>
         </Paper>
       </Box>
