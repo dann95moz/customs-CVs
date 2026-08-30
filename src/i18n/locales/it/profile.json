@@ -75,7 +75,8 @@
       "remove": "Rimuovi"
     },
     "projects": {
-      "title": "Progetti Principali & Open Source (Opzionale)",
+      "title": "Progetti in Evidenza",
+      "desc": "Aggiungi progetti personali, codice open source o iniziative. Selezioneremo cosa mostrare in base alla posizione.",
       "addProject": "Aggiungi Progetto",
       "projectName": "Titolo del Progetto",
       "role": "Ruolo / Tecnologie",

@@ -54,17 +54,25 @@ export const StudioNavbar: React.FC = () => {
         borderBottom: `1px solid ${muiTheme.palette.divider}`,
         color: 'text.primary',
         zIndex: 30,
+        overflow: 'hidden',
       }}
     >
       <Toolbar
         variant="dense"
         disableGutters
         sx={{
-          px: { xs: 1.5, md: 3 },
-          minHeight: 56,
+          px: { xs: 1, sm: 2, md: 3 },
+          minHeight: { xs: 52, sm: 56 },
           display: 'flex',
           justifyContent: 'space-between',
-          gap: 2,
+          alignItems: 'center',
+          gap: { xs: 1, sm: 2 },
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
+          width: '100%',
         }}
       >
         {/* Brand Logo & Name */}
@@ -74,7 +82,7 @@ export const StudioNavbar: React.FC = () => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: 1.25,
+              gap: { xs: 0.75, sm: 1.25 },
               cursor: 'pointer',
               userSelect: 'none',
               flexShrink: 0,
@@ -86,8 +94,8 @@ export const StudioNavbar: React.FC = () => {
           >
             <Box
               sx={{
-                width: 32,
-                height: 32,
+                width: { xs: 28, sm: 32 },
+                height: { xs: 28, sm: 32 },
                 borderRadius: '8px',
                 background: 'linear-gradient(135deg, #0284c7 0%, #6366f1 100%)',
                 display: 'flex',
@@ -97,7 +105,7 @@ export const StudioNavbar: React.FC = () => {
                 boxShadow: '0 2px 8px rgba(56, 189, 248, 0.3)',
               }}
             >
-              <AutoAwesomeRoundedIcon sx={{ fontSize: 18 }} />
+              <AutoAwesomeRoundedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
             </Box>
             <Typography
               variant="subtitle1"
@@ -107,7 +115,7 @@ export const StudioNavbar: React.FC = () => {
                 background: 'linear-gradient(135deg, #38bdf8 0%, #a5b4fc 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                display: { xs: 'none', sm: 'block' },
+                display: { xs: 'none', md: 'block' },
               }}
             >
               CV Studio
@@ -115,7 +123,7 @@ export const StudioNavbar: React.FC = () => {
           </Box>
         </Tooltip>
 
-        {/* Primary Navigation Tabs */}
+        {/* Primary Navigation Tabs with Smooth Horizontal Touch Slide */}
         <Tabs
           value={activeTab === 'landing' ? false : activeTab}
           onChange={(_, val: StudioTab) => setActiveTab(val)}
@@ -123,29 +131,41 @@ export const StudioNavbar: React.FC = () => {
           scrollButtons="auto"
           allowScrollButtonsMobile
           sx={{
-            minHeight: 48,
-            flex: { xs: 1, sm: '0 1 auto' },
+            minHeight: { xs: 44, sm: 48 },
+            flex: { xs: '1 1 auto', sm: '0 1 auto' },
+            minWidth: 0,
+            mx: { xs: 0.25, sm: 1 },
             '& .MuiTabs-scroller': {
               overflowX: 'auto !important',
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none',
+              '&::-webkit-scrollbar': { display: 'none' },
+            },
+            '& .MuiTabs-flexContainer': {
+              display: 'flex',
+              flexWrap: 'nowrap',
+              gap: { xs: 0.25, sm: 0.5 },
             },
             '& .MuiTabs-indicator': {
               height: 3,
               borderRadius: '3px 3px 0 0',
             },
             '& .MuiTab-root': {
-              minHeight: 48,
-              minWidth: { xs: 64, sm: 100, md: 120 },
-              px: { xs: 0.75, sm: 1.5, md: 2 },
-              fontSize: { xs: '0.74rem', sm: '0.84rem' },
+              minHeight: { xs: 44, sm: 48 },
+              minWidth: { xs: 52, sm: 80, md: 110 },
+              px: { xs: 0.75, sm: 1.25, md: 2 },
+              py: { xs: 0.5, sm: 1 },
+              fontSize: { xs: '0.72rem', sm: '0.82rem' },
               fontWeight: 600,
               textTransform: 'none',
+              whiteSpace: 'nowrap',
               gap: { xs: 0.5, sm: 0.75 },
             },
           }}
         >
           <Tab
             value="wizard"
-            icon={<AutoAwesomeRoundedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
+            icon={<AutoAwesomeRoundedIcon sx={{ fontSize: { xs: 15, sm: 18 } }} />}
             iconPosition="start"
             label={
               <>
@@ -160,7 +180,7 @@ export const StudioNavbar: React.FC = () => {
           />
           <Tab
             value="history"
-            icon={<BusinessRoundedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
+            icon={<BusinessRoundedIcon sx={{ fontSize: { xs: 15, sm: 18 } }} />}
             iconPosition="start"
             label={
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -179,7 +199,7 @@ export const StudioNavbar: React.FC = () => {
                       height: 16,
                       fontSize: '0.65rem',
                       fontWeight: 700,
-                      '& .MuiChip-label': { px: 0.6 },
+                      '& .MuiChip-label': { px: 0.5 },
                     }}
                   />
                 )}
@@ -188,7 +208,7 @@ export const StudioNavbar: React.FC = () => {
           />
           <Tab
             value="settings"
-            icon={<SettingsRoundedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
+            icon={<SettingsRoundedIcon sx={{ fontSize: { xs: 15, sm: 18 } }} />}
             iconPosition="start"
             label={
               <>
@@ -204,7 +224,7 @@ export const StudioNavbar: React.FC = () => {
         </Tabs>
 
         {/* Quick Actions, Language Selector & Theme Switcher */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.5, sm: 0.75, md: 1 }, flexShrink: 0 }}>
           {/* Prominent Language Selector */}
           <LanguageSelector variant="navbar" />
 
@@ -217,7 +237,7 @@ export const StudioNavbar: React.FC = () => {
               rel="noopener noreferrer"
               size="small"
               sx={{
-                p: 0.75,
+                p: { xs: 0.5, sm: 0.75 },
                 border: `1px solid ${muiTheme.palette.divider}`,
                 color: 'text.secondary',
                 bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
@@ -229,7 +249,7 @@ export const StudioNavbar: React.FC = () => {
                 },
               }}
             >
-              <Icon type="github" size={16} style={{ margin: 0 }} />
+              <Icon type="github" size={15} style={{ margin: 0 }} />
             </IconButton>
           </Tooltip>
 
@@ -239,7 +259,7 @@ export const StudioNavbar: React.FC = () => {
               onClick={toggleThemeMode}
               size="small"
               sx={{
-                p: 0.75,
+                p: { xs: 0.5, sm: 0.75 },
                 border: `1px solid ${muiTheme.palette.divider}`,
                 color: mode === 'dark' ? '#fbbf24' : '#0284c7',
                 bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
@@ -250,9 +270,9 @@ export const StudioNavbar: React.FC = () => {
               }}
             >
               {mode === 'dark' ? (
-                <LightModeRoundedIcon fontSize="small" />
+                <LightModeRoundedIcon sx={{ fontSize: { xs: 17, sm: 19 } }} />
               ) : (
-                <DarkModeRoundedIcon fontSize="small" />
+                <DarkModeRoundedIcon sx={{ fontSize: { xs: 17, sm: 19 } }} />
               )}
             </IconButton>
           </Tooltip>

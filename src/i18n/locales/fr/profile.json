@@ -75,7 +75,8 @@
       "remove": "Supprimer"
     },
     "projects": {
-      "title": "Projets Notables & Open Source (Facultatif)",
+      "title": "Projets Notables",
+      "desc": "Ajoutez des projets personnels, du code open source ou des initiatives. Nous sélectionnerons les plus pertinents selon l'offre.",
       "addProject": "Ajouter un Projet",
       "projectName": "Titre du Projet",
       "role": "Rôle / Technologies",

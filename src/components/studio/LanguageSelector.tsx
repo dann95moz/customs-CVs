@@ -58,17 +58,17 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           aria-controls={open ? 'language-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
-          startIcon={<LanguageRoundedIcon sx={{ fontSize: '1.1rem' }} />}
+          startIcon={<LanguageRoundedIcon sx={{ fontSize: { xs: '0.95rem', sm: '1.1rem' } }} />}
           sx={{
             minWidth: variant === 'compact' ? 40 : 'auto',
-            px: variant === 'compact' ? 1 : 1.25,
-            py: 0.6,
+            px: variant === 'compact' ? 1 : { xs: 0.75, sm: 1.25 },
+            py: { xs: 0.4, sm: 0.6 },
             borderRadius: '8px',
             border: `1px solid ${theme.palette.divider}`,
             color: 'text.primary',
             bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
             fontWeight: 600,
-            fontSize: '0.82rem',
+            fontSize: { xs: '0.75rem', sm: '0.82rem' },
             textTransform: 'none',
             transition: 'all 0.2s ease',
             '&:hover': {
@@ -77,7 +77,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             },
           }}
         >
-          <Box component="span" sx={{ mr: 0.5, fontSize: '0.95rem' }}>
+          <Box component="span" sx={{ mr: { xs: 0.25, sm: 0.5 }, fontSize: { xs: '0.85rem', sm: '0.95rem' } }}>
             {currentLang.flag}
           </Box>
           {showLabel && (

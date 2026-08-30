@@ -75,7 +75,8 @@
       "remove": "Remove"
     },
     "projects": {
-      "title": "Key Projects & Open Source (Optional)",
+      "title": "Featured Projects",
+      "desc": "Add personal projects, open-source work, or side ventures. We'll prioritize what to show based on each job vacancy.",
       "addProject": "Add Project",
       "projectName": "Project Title",
       "role": "Role / Technology",

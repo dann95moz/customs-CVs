@@ -65,7 +65,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <AutoAwesomeRoundedIcon color="primary" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {t('profile:sections.projects.title', '7. Projects & Extras')}
+            {t('profile:sections.projects.title', '7. Featured Projects')}
           </Typography>
           <Chip
             label={t('common:badge.optional', 'Optional')}
@@ -93,7 +93,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
       <AccordionDetails sx={{ pt: 1, pb: 3 }}>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          {t('profile:sections.projects.title', 'Add anything that doesn\'t fit above — projects, publications, volunteering. We\'ll pick what to show based on each job vacancy.')}
+          {t('profile:sections.projects.desc', 'Add personal projects, open-source work, or side ventures. We\'ll prioritize what to show based on each job vacancy.')}
         </Typography>
 
         <Stack spacing={2.5}>

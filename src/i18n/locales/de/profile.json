@@ -75,7 +75,8 @@
       "remove": "Entfernen"
     },
     "projects": {
-      "title": "Wichtige Projekte & Open Source (Optional)",
+      "title": "Hervorgehobene Projekte",
+      "desc": "Fügen Sie persönliche Projekte, Open-Source-Beiträge oder Initiativen hinzu. Wir wählen passende Inhalte je nach Stelle aus.",
       "addProject": "Projekt hinzufügen",
       "projectName": "Projekttitel",
       "role": "Rolle / Technologie",

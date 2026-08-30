@@ -75,7 +75,8 @@
       "remove": "Eliminar"
     },
     "projects": {
-      "title": "Proyectos Destacados y Código Abierto (Opcional)",
+      "title": "Proyectos Destacados",
+      "desc": "Añade proyectos personales, código abierto o iniciativas destacadas. Seleccionaremos qué mostrar según la oferta.",
       "addProject": "Agregar Proyecto",
       "projectName": "Título del Proyecto",
       "role": "Rol / Tecnología",
