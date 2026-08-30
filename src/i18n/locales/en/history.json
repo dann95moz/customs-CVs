@@ -5,7 +5,7 @@
   "newApplication": "Tailor New CV",
   "searchPlaceholder": "Filter by company name or target role...",
   "actions": {
-    "trackApp": "+ Track Application"
+    "trackApp": "Track Application"
   },
   "views": {
     "board": "Active Board",

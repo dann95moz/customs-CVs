@@ -26,10 +26,13 @@
     "generatingPdf": "Génération du PDF...",
     "directPdfItem": "Téléchargement Direct du PDF",
     "directPdfDesc": "Téléchargement automatique en 1 clic",
-    "printPdfItem": "Imprimer via le Navigateur",
-    "printPdfDesc": "Fenêtre d'impression système (Ctrl+P)",
+    "downloadMdItem": "Télécharger en Markdown (.md)",
+    "downloadMdDesc": "Document source au format Markdown",
     "trackApp": "Suivre la Candidature",
     "tracked": "Dans le Tableau",
+    "trackedSuccess": "Enregistré dans Mes Candidatures",
+    "regenerateCv": "Régénérer le CV",
+    "regeneratingCv": "Régénération...",
     "liveHotEdit": "Édition en Direct • Cliquez sur le texte pour modifier et réévaluer",
     "clickToEdit": "Cliquez pour modifier • Sélectionnez du texte pour gras/italique (Ctrl+B)"
   },
@@ -86,5 +89,28 @@
     "matchLabel": "Alignement Poste",
     "shortScore": "Audit",
     "shortMatch": "Match"
+  },
+  "aiRegen": {
+    "titleBullet": "Régénérer cette réalisation",
+    "titleSummary": "Régénérer le résumé professionnel",
+    "placeholder": "Optionnel : dites-nous quoi ajuster (ex. 'mettre l'accent sur le travail d'équipe')",
+    "chips": {
+      "concise": "Plus concis",
+      "leadership": "Orienté leadership",
+      "angle": "Autre angle",
+      "metrics": "Métriques renforcées",
+      "targetFit": "Adapté au poste"
+    },
+    "button": "Régénérer",
+    "regenerating": "Régénération...",
+    "regenerated": "Régénéré",
+    "undo": "Annuler",
+    "tooltip": "Régénérer avec l'IA",
+    "error": "Échec de la régénération. Vérifiez votre clé API dans les Paramètres IA.",
+    "mobileModeEdit": "Modifier",
+    "mobileModePreview": "Aperçu",
+    "editItem": "Modifier",
+    "saveItem": "Enregistrer",
+    "cancelItem": "Annuler"
   }
 }

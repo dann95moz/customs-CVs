@@ -5,7 +5,7 @@
   "newApplication": "Neuen CV anpassen",
   "searchPlaceholder": "Nach Unternehmen oder Position filtern...",
   "actions": {
-    "trackApp": "+ Als beworben markieren"
+    "trackApp": "Als beworben markieren"
   },
   "views": {
     "board": "Aktives Board",

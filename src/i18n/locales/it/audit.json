@@ -5,6 +5,7 @@
   "overallScore": "Punteggio Complessivo di Qualità",
   "calibratedScale": "Scala Calibrata 1–10",
   "refreshScore": "Aggiorna Audit",
+  "liveRecalculated": "Punteggio di audit ricalcolato in tempo reale",
   "gapIdentified": "Divario Identificato",
   "actionLevers": "Leve Strategiche per Raggiungere 10/10",
   "quickSuggestions": "Suggerimenti Rapidi (Clicca per applicare):",

@@ -5,6 +5,7 @@
   "overallScore": "Overall Quality Score",
   "calibratedScale": "Calibrated 1–10 Scale",
   "refreshScore": "Refresh Audit",
+  "liveRecalculated": "Audit score recalculated in real-time",
   "gapIdentified": "Identified Gap",
   "actionLevers": "Strategic Levers to Reach 10/10",
   "quickSuggestions": "Quick Suggestions (Click to apply):",

@@ -26,10 +26,13 @@
     "generatingPdf": "Generating PDF...",
     "directPdfItem": "Direct PDF Download",
     "directPdfDesc": "1-Click instant file download",
-    "printPdfItem": "Print via Browser",
-    "printPdfDesc": "System print window (Ctrl+P)",
+    "downloadMdItem": "Download Markdown (.md)",
+    "downloadMdDesc": "Raw ATS Markdown document",
     "trackApp": "Track Application",
     "tracked": "Tracked in Board",
+    "trackedSuccess": "Saved to My Applications",
+    "regenerateCv": "Regenerate CV",
+    "regeneratingCv": "Regenerating...",
     "liveHotEdit": "Live Hot Edit • Click text to edit & re-audit",
     "clickToEdit": "Click to edit • Select text to format bold/italic (Ctrl+B)"
   },
@@ -86,5 +89,28 @@
     "matchLabel": "Job Match",
     "shortScore": "Audit",
     "shortMatch": "Match"
+  },
+  "aiRegen": {
+    "titleBullet": "Regenerate this achievement",
+    "titleSummary": "Regenerate professional summary",
+    "placeholder": "Optional: tell us what to adjust (e.g. 'emphasize teamwork')",
+    "chips": {
+      "concise": "More concise",
+      "leadership": "Leadership focus",
+      "angle": "Different angle",
+      "metrics": "Stronger metrics",
+      "targetFit": "Target job fit"
+    },
+    "button": "Regenerate",
+    "regenerating": "Regenerating...",
+    "regenerated": "Regenerated",
+    "undo": "Undo",
+    "tooltip": "Regenerate with AI",
+    "error": "Failed to regenerate. Please check your AI API key in AI Settings.",
+    "mobileModeEdit": "Edit",
+    "mobileModePreview": "Preview",
+    "editItem": "Edit",
+    "saveItem": "Save",
+    "cancelItem": "Cancel"
   }
 }

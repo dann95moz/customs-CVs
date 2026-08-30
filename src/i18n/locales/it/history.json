@@ -5,7 +5,7 @@
   "newApplication": "Adatta Nuovo CV",
   "searchPlaceholder": "Filtra per azienda o ruolo target...",
   "actions": {
-    "trackApp": "+ Segna come Candidato"
+    "trackApp": "Segna come Candidato"
   },
   "views": {
     "board": "Bacheca Attiva",

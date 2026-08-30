@@ -26,12 +26,15 @@
     "generatingPdf": "Generazione PDF...",
     "directPdfItem": "Download Diretto PDF",
     "directPdfDesc": "Download immediato in 1 clic",
-    "printPdfItem": "Stampa via Browser",
-    "printPdfDesc": "Finestra di stampa di sistema (Ctrl+P)",
+    "downloadMdItem": "Scarica Markdown (.md)",
+    "downloadMdDesc": "Documento sorgente in Markdown",
     "trackApp": "Traccia Candidatura",
     "tracked": "Nella Bacheca",
+    "trackedSuccess": "Salvato nelle Mie Candidature",
+    "regenerateCv": "Rigenera CV",
+    "regeneratingCv": "Rigenerazione...",
     "liveHotEdit": "Modifica dal Vivo • Fai clic sul testo per modificare e ricalibrare",
-    "clickToEdit": "Fai clic per modificare • Seleziona il testo per grassetto/corsivo (Ctrl+B)"
+    "clickToEdit": "Fai clic per modificare • Seleziona el testo per grassetto/corsivo (Ctrl+B)"
   },
   "editor": {
     "sourceTitle": "Sorgente Markdown del CV",
@@ -86,5 +89,28 @@
     "matchLabel": "Allineamento Posizione",
     "shortScore": "Audit",
     "shortMatch": "Match"
+  },
+  "aiRegen": {
+    "titleBullet": "Rigenera questo risultato",
+    "titleSummary": "Rigenera il riepilogo professionale",
+    "placeholder": "Opzionale: cosa vorresti modificare? (es. 'enfatizza il lavoro di squadra')",
+    "chips": {
+      "concise": "Più conciso",
+      "leadership": "Orientato alla leadership",
+      "angle": "Altra prospettiva",
+      "metrics": "Metriche più forti",
+      "targetFit": "Allineato alla posizione"
+    },
+    "button": "Rigenera",
+    "regenerating": "Rigenerazione...",
+    "regenerated": "Rigenerato",
+    "undo": "Annulla",
+    "tooltip": "Rigenera con IA",
+    "error": "Errore durante la rigenerazione. Verifica la chiave API nelle Impostazioni IA.",
+    "mobileModeEdit": "Modifica",
+    "mobileModePreview": "Anteprima",
+    "editItem": "Modifica",
+    "saveItem": "Salva",
+    "cancelItem": "Annulla"
   }
 }

@@ -26,10 +26,13 @@
     "generatingPdf": "PDF wird erstellt...",
     "directPdfItem": "Direkter PDF-Download",
     "directPdfDesc": "1-Klick direkter Dateidownload",
-    "printPdfItem": "Über Browser drucken",
-    "printPdfDesc": "Druckmenü des Browsers (Strg+P)",
+    "downloadMdItem": "Markdown herunterladen (.md)",
+    "downloadMdDesc": "Originales Markdown-Dokument",
     "trackApp": "Bewerbung verfolgen",
     "tracked": "Im Board erfasst",
+    "trackedSuccess": "In Meine Bewerbungen gespeichert",
+    "regenerateCv": "CV neu generieren",
+    "regeneratingCv": "Wird neu generiert...",
     "liveHotEdit": "Live-Bearbeitung • Text anklicken zum Bearbeiten & Neuprüfen",
     "clickToEdit": "Klicken zum Bearbeiten • Text auswählen für Fett/Kursiv (Strg+B)"
   },
@@ -86,5 +89,28 @@
     "matchLabel": "Stellenabgleich",
     "shortScore": "Audit",
     "shortMatch": "Match"
+  },
+  "aiRegen": {
+    "titleBullet": "Diesen Erfolg neu generieren",
+    "titleSummary": "Berufliches Profil neu generieren",
+    "placeholder": "Optional: Was soll angepasst werden? (z.B. 'Teamarbeit betonen')",
+    "chips": {
+      "concise": "Kürzer & prägnanter",
+      "leadership": "Führungsfokus",
+      "angle": "Anderer Blickwinkel",
+      "metrics": "Stärkere Kennzahlen",
+      "targetFit": "Stellenbezogen"
+    },
+    "button": "Neu generieren",
+    "regenerating": "Wird neu generiert...",
+    "regenerated": "Neu generiert",
+    "undo": "Rückgängig",
+    "tooltip": "Mit KI neu generieren",
+    "error": "Fehler beim Neugenerieren. Bitte KI-API-Schlüssel prüfen.",
+    "mobileModeEdit": "Bearbeiten",
+    "mobileModePreview": "Vorschau",
+    "editItem": "Bearbeiten",
+    "saveItem": "Speichern",
+    "cancelItem": "Abbrechen"
   }
 }

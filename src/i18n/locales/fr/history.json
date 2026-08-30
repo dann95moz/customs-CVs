@@ -5,7 +5,7 @@
   "newApplication": "Adapter un nouveau CV",
   "searchPlaceholder": "Filtrer par entreprise ou poste visé...",
   "actions": {
-    "trackApp": "+ Marquer comme postulé"
+    "trackApp": "Marquer comme postulé"
   },
   "views": {
     "board": "Tableau Actif",

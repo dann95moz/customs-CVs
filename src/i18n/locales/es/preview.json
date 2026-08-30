@@ -26,10 +26,13 @@
     "generatingPdf": "Generando PDF...",
     "directPdfItem": "Descarga Directa (PDF)",
     "directPdfDesc": "Descarga automática en 1 clic",
-    "printPdfItem": "Imprimir con el Navegador",
-    "printPdfDesc": "Ventana nativa del navegador (Ctrl+P)",
+    "downloadMdItem": "Descargar Markdown (.md)",
+    "downloadMdDesc": "Documento fuente en Markdown",
     "trackApp": "Marcar como Postulado",
-    "tracked": "En Tablero",
+    "tracked": "En el tablero",
+    "trackedSuccess": "Guardado en Mis Candidaturas",
+    "regenerateCv": "Regenerar CV",
+    "regeneratingCv": "Regenerando...",
     "liveHotEdit": "Edición en Vivo • Haz clic en el texto para editar y reauditar",
     "clickToEdit": "Haz clic para editar • Selecciona texto para formato en negrita/cursiva (Ctrl+B)"
   },
@@ -86,5 +89,28 @@
     "matchLabel": "Alineación de Puesto",
     "shortScore": "Auditoría",
     "shortMatch": "Match"
+  },
+  "aiRegen": {
+    "titleBullet": "Regenerar este logro",
+    "titleSummary": "Regenerar resumen profesional",
+    "placeholder": "Opcional: dinos qué ajustar (ej. 'enfatiza el trabajo en equipo')",
+    "chips": {
+      "concise": "Más conciso",
+      "leadership": "Más orientado a liderazgo",
+      "angle": "Otro ángulo",
+      "metrics": "Mayor impacto cuantitativo",
+      "targetFit": "Enfocado en la vacante"
+    },
+    "button": "Regenerar",
+    "regenerating": "Regenerando...",
+    "regenerated": "Regenerado",
+    "undo": "Deshacer",
+    "tooltip": "Regenerar con IA",
+    "error": "Error al regenerar. Verifica tu clave API en Configuración de IA.",
+    "mobileModeEdit": "Editar",
+    "mobileModePreview": "Vista Previa",
+    "editItem": "Editar",
+    "saveItem": "Guardar",
+    "cancelItem": "Cancelar"
   }
 }
