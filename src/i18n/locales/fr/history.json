@@ -65,11 +65,50 @@
     "lastModified": "Adapté",
     "downloadPdfTip": "Téléchargement direct PDF (1-Clic)",
     "downloadMdTip": "Télécharger Markdown (.md)",
-    "trackVersion": "Marquer como Postulé"
+    "trackVersion": "Marquer comme Postulé",
+    "linkedToApp": "Postulation Active",
+    "linkedTooltip": "Associée à une candidature active sur votre tableau Kanban"
   },
   "deleteDialog": {
     "title": "Supprimer la version du CV ?",
-    "message": "Êtes-vous sûr de vouloir supprimer cette version de CV pour {{company}} ? Cette action est irréversible."
+    "message": "Êtes-vous sûr de vouloir supprimer cette version de CV pour {{company}} ? Cette action est irréversible.",
+    "linkedWarning": "Cette version de CV est actuellement associée à une candidature active sur votre tableau Kanban."
+  },
+  "selection": {
+    "enterSelectMode": "Sélectionner pour supprimer",
+    "selectedCount": "{{count}} sélectionnée(s)",
+    "selectedCount_one": "1 sélectionnée",
+    "selectedCount_other": "{{count}} sélectionnées",
+    "protectedNotice": "{{count}} liée(s) au Kanban (protégée(s))",
+    "protectedNotice_one": "1 liée au Kanban (protégée)",
+    "protectedNotice_other": "{{count}} liées au Kanban (protégées)",
+    "selectAll": "Tout sélectionner",
+    "selectAllFiltered": "Sélectionner filtrés ({{count}})",
+    "deselectAll": "Tout désélectionner",
+    "deleteButton": "Supprimer ({{count}})",
+    "confirmDelete": "Supprimer {{count}} versions",
+    "confirmDelete_one": "Supprimer 1 version",
+    "confirmDelete_other": "Supprimer {{count}} versions",
+    "totalSaved": "{{count}} versions enregistrées au total",
+    "showingFiltered": "Affichage de {{filtered}} sur {{total}} versions enregistrées",
+    "noFilteredTitle": "Aucune version de CV ne correspond au filtre",
+    "noFilteredDesc": "Essayez de modifier votre recherche ou d'effacer le filtre.",
+    "noVersionsTitle": "Aucune version de CV pour l'instant",
+    "noVersionsDesc": "Générez ou enregistrez des CVs dans le Studio pour suivre votre historique ici."
+  },
+  "bulkDeleteDialog": {
+    "title": "Supprimer {{count}} versions de CV ?",
+    "title_one": "Supprimer 1 version de CV ?",
+    "title_other": "Supprimer {{count}} versions de CV ?",
+    "titlePartial": "Supprimer {{count}} versions ?",
+    "titleAllProtected": "Versions de CV protégées",
+    "message": "Êtes-vous sûr de vouloir supprimer {{count}} versions de CV ? Cette action est irréversible.",
+    "message_one": "Êtes-vous sûr de vouloir supprimer 1 version de CV ? Cette action est irréversible.",
+    "message_other": "Êtes-vous sûr de vouloir supprimer {{count}} versions de CV ? Cette action est irréversible.",
+    "messagePartial": "Voulez-vous supprimer les {{deletableCount}} versions non protégées ? Cette action est irréversible.",
+    "protectedAlert": "{{protectedCount}} sur les {{totalCount}} versions sélectionnées sont associées à des candidatures actives et ne seront pas supprimées.",
+    "allProtectedAlert": "Toutes les {{totalCount}} versions sélectionnées sont liées à des candidatures actives et ne peuvent pas être supprimées.",
+    "messageAllProtected": "Toutes les versions sélectionnées sont liées à des candidatures actives. Archivez ou supprimez d'abord la candidature correspondante."
   },
   "trackModal": {
     "title": "Suivre la Candidature",

@@ -23,6 +23,8 @@
   },
   "actions": {
     "save": "Guardar",
+    "saving": "Guardando...",
+    "saved": "¡Guardado!",
     "cancel": "Cancelar",
     "continue": "Continuar",
     "back": "Volver",

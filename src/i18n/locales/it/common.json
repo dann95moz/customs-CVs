@@ -23,6 +23,8 @@
   },
   "actions": {
     "save": "Salva",
+    "saving": "Salvataggio...",
+    "saved": "Salvato!",
     "cancel": "Annulla",
     "continue": "Continua",
     "back": "Indietro",

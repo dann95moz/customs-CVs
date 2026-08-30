@@ -65,11 +65,50 @@
     "lastModified": "Tailored",
     "downloadPdfTip": "Direct PDF Download (1-Click)",
     "downloadMdTip": "Download Raw Markdown (.md)",
-    "trackVersion": "Track Application"
+    "trackVersion": "Track Application",
+    "linkedToApp": "Kanban Active",
+    "linkedTooltip": "Linked to an active application card in your Kanban pipeline"
   },
   "deleteDialog": {
     "title": "Delete CV Version?",
-    "message": "Are you sure you want to delete this tailored CV for {{company}}? This action is permanent and cannot be undone."
+    "message": "Are you sure you want to delete this tailored CV for {{company}}? This action is permanent and cannot be undone.",
+    "linkedWarning": "This CV version is currently attached to an active application on your Kanban board."
+  },
+  "selection": {
+    "enterSelectMode": "Select to Delete",
+    "selectedCount": "{{count}} selected",
+    "selectedCount_one": "1 selected",
+    "selectedCount_other": "{{count}} selected",
+    "protectedNotice": "{{count}} linked to Kanban (protected)",
+    "protectedNotice_one": "1 linked to Kanban (protected)",
+    "protectedNotice_other": "{{count}} linked to Kanban (protected)",
+    "selectAll": "Select All",
+    "selectAllFiltered": "Select Filtered ({{count}})",
+    "deselectAll": "Deselect All",
+    "deleteButton": "Delete ({{count}})",
+    "confirmDelete": "Delete {{count}} Versions",
+    "confirmDelete_one": "Delete 1 Version",
+    "confirmDelete_other": "Delete {{count}} Versions",
+    "totalSaved": "{{count}} total saved versions",
+    "showingFiltered": "Showing {{filtered}} of {{total}} saved versions",
+    "noFilteredTitle": "No CV versions match your filter",
+    "noFilteredDesc": "Try adjusting your search query or clear the filter.",
+    "noVersionsTitle": "No Tailored CV Versions Yet",
+    "noVersionsDesc": "Generate or save tailored CVs in Studio to maintain your application history here."
+  },
+  "bulkDeleteDialog": {
+    "title": "Delete {{count}} CV versions?",
+    "title_one": "Delete 1 CV version?",
+    "title_other": "Delete {{count}} CV versions?",
+    "titlePartial": "Delete {{count}} versions?",
+    "titleAllProtected": "Protected CV Versions",
+    "message": "Are you sure you want to delete {{count}} CV versions? This action is permanent and cannot be undone.",
+    "message_one": "Are you sure you want to delete 1 CV version? This action is permanent and cannot be undone.",
+    "message_other": "Are you sure you want to delete {{count}} CV versions? This action is permanent and cannot be undone.",
+    "messagePartial": "Are you sure you want to delete the remaining {{deletableCount}} versions? This action is permanent and cannot be undone.",
+    "protectedAlert": "{{protectedCount}} of the {{totalCount}} selected versions are linked to active applications on your Kanban board and will not be deleted.",
+    "allProtectedAlert": "All {{totalCount}} selected versions are linked to active job applications in your Kanban board. They cannot be deleted while the application is active.",
+    "messageAllProtected": "All selected versions are currently attached to active applications in your Kanban pipeline. To delete them, first archive or delete the corresponding Kanban applications."
   },
   "trackModal": {
     "title": "Track Job Application",

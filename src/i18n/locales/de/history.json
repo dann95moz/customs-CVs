@@ -65,11 +65,50 @@
     "lastModified": "Angepasst",
     "downloadPdfTip": "Direkter PDF-Download (1-Klick)",
     "downloadMdTip": "Markdown (.md) herunterladen",
-    "trackVersion": "Bewerbung verfolgen"
+    "trackVersion": "Bewerbung verfolgen",
+    "linkedToApp": "Kanban-Aktiv",
+    "linkedTooltip": "Mit einer aktiven Bewerbungskarte in Ihrem Kanban-Board verknüpft"
   },
   "deleteDialog": {
     "title": "CV-Version löschen?",
-    "message": "Möchten Sie diese angepasste CV-Version für {{company}} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    "message": "Möchten Sie diese angepasste CV-Version für {{company}} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "linkedWarning": "Diese CV-Version ist derzeit mit einer aktiven Bewerbung in Ihrem Kanban-Board verknüpft."
+  },
+  "selection": {
+    "enterSelectMode": "Zum Löschen auswählen",
+    "selectedCount": "{{count}} ausgewählt",
+    "selectedCount_one": "1 ausgewählt",
+    "selectedCount_other": "{{count}} ausgewählt",
+    "protectedNotice": "{{count}} mit Kanban verknüpft (geschützt)",
+    "protectedNotice_one": "1 mit Kanban verknüpft (geschützt)",
+    "protectedNotice_other": "{{count}} mit Kanban verknüpft (geschützt)",
+    "selectAll": "Alle auswählen",
+    "selectAllFiltered": "Gefilterte auswählen ({{count}})",
+    "deselectAll": "Auswahl aufheben",
+    "deleteButton": "Löschen ({{count}})",
+    "confirmDelete": "{{count}} Versionen löschen",
+    "confirmDelete_one": "1 Version löschen",
+    "confirmDelete_other": "{{count}} Versionen löschen",
+    "totalSaved": "{{count}} gespeicherte Versionen insgesamt",
+    "showingFiltered": "{{filtered}} von {{total}} gespeicherten Versionen angezeigt",
+    "noFilteredTitle": "Keine CV-Versionen entsprechen dem Filter",
+    "noFilteredDesc": "Passen Sie den Suchbegriff an oder löschen Sie den Filter.",
+    "noVersionsTitle": "Noch keine CV-Versionen vorhanden",
+    "noVersionsDesc": "Erstellen oder speichern Sie CVs im Studio, um Ihren Verlauf hier zu verwalten."
+  },
+  "bulkDeleteDialog": {
+    "title": "{{count}} CV-Versionen löschen?",
+    "title_one": "1 CV-Version löschen?",
+    "title_other": "{{count}} CV-Versionen löschen?",
+    "titlePartial": "{{count}} Versionen löschen?",
+    "titleAllProtected": "Geschützte CV-Versionen",
+    "message": "Möchten Sie {{count}} CV-Versionen wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "message_one": "Möchten Sie 1 CV-Version wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "message_other": "Möchten Sie {{count}} CV-Versionen wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "messagePartial": "Möchten Sie die verbleibenden {{deletableCount}} ungeschützten Versionen wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "protectedAlert": "{{protectedCount}} der {{totalCount}} ausgewählten Versionen sind mit aktiven Bewerbungen in Ihrem Kanban verknüpft und werden nicht gelöscht.",
+    "allProtectedAlert": "Alle {{totalCount}} ausgewählten Versionen sind mit aktiven Bewerbungen verknüpft und können nicht gelöscht werden.",
+    "messageAllProtected": "Alle ausgewählten Versionen sind an aktive Bewerbungen gekoppelt. Archivieren oder löschen Sie zuerst die entsprechende Bewerbung."
   },
   "trackModal": {
     "title": "Bewerbung verfolgen",
