@@ -44,11 +44,24 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   const handleContactChange = (type: ContactType, label: string, url?: string) => {
     updateData(prev => {
       const remaining = prev.contacts.filter(c => c.type !== type);
-      if (label.trim()) {
+      const cleanLabel = label.trim();
+      if (cleanLabel) {
+        let cleanText = cleanLabel;
+        if (type === 'email') {
+          cleanText = cleanLabel.replace(/^mailto:/i, '').trim();
+        }
+
+        let finalUrl = url;
+        if (type === 'email') {
+          finalUrl = cleanText ? `mailto:${cleanText}` : undefined;
+        } else if (!finalUrl && (type === 'linkedin' || type === 'github' || type === 'globe')) {
+          finalUrl = cleanLabel;
+        }
+
         const newContact: ContactItem = {
           type,
-          label: label.trim(),
-          url: url || (type === 'email' ? `mailto:${label.trim()}` : (url || (type === 'linkedin' || type === 'github' || type === 'globe' ? label.trim() : undefined)))
+          label: cleanText,
+          url: finalUrl
         };
         return { ...prev, contacts: [...remaining, newContact] };
       }

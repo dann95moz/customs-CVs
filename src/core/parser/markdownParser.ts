@@ -23,8 +23,8 @@ export function parseContactItem(rawText: string): ContactItem | null {
   // Markdown link: [Label](url)
   const linkMatch = trimmed.match(/\[(.*?)\]\((.*?)\)/);
   if (linkMatch) {
-    const label = linkMatch[1];
-    const url = linkMatch[2];
+    let label = linkMatch[1];
+    let url = linkMatch[2];
     let type: ContactType = 'globe';
 
     if (url.includes('linkedin.com') || label.toLowerCase().includes('linkedin')) {
@@ -33,6 +33,10 @@ export function parseContactItem(rawText: string): ContactItem | null {
       type = 'github';
     } else if (url.startsWith('mailto:') || label.includes('@')) {
       type = 'email';
+      label = label.replace(/^mailto:/i, '').trim();
+      if (!url.startsWith('mailto:') && label) {
+        url = `mailto:${label}`;
+      }
     }
 
     return { type, label, url };
@@ -40,7 +44,8 @@ export function parseContactItem(rawText: string): ContactItem | null {
 
   // Plain email
   if (trimmed.includes('@') && !trimmed.includes(' ')) {
-    return { type: 'email', label: trimmed, url: `mailto:${trimmed}` };
+    const cleanEmail = trimmed.replace(/^mailto:/i, '').trim();
+    return { type: 'email', label: cleanEmail, url: `mailto:${cleanEmail}` };
   }
 
   // Plain phone
