@@ -371,7 +371,13 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                       <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
                         {t('audit:sections.summary', 'Professional Summary')}
                       </Typography>
-                      <Chip label={t('audit:drawerCards.summaryOptimal', 'Optimal')} size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
+                      <Chip
+                        label={t('audit:drawerCards.summaryOptimal', 'Optimal')}
+                        size="small"
+                        color="success"
+                        variant="outlined"
+                        sx={{ fontWeight: 700 }}
+                      />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
                       {t('audit:drawerCards.summaryDesc', 'Concise 3-line hook balancing candidate scope, technical seniority, and target role relevance.')}
@@ -397,7 +403,13 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                       <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
                         {t('audit:sections.experience', 'Work Experience')}
                       </Typography>
-                      <Chip label={t('audit:drawerCards.experienceXyz', '9/10 XYZ')} size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
+                      <Chip
+                        label={t('audit:drawerCards.experienceXyz', '9/10 XYZ')}
+                        size="small"
+                        color="success"
+                        variant="outlined"
+                        sx={{ fontWeight: 700 }}
+                      />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
                       {t('audit:drawerCards.experienceDesc', 'Strong Google XYZ formula use: Accomplished [X], as measured by [Y], by doing [Z] with quantified business impact.')}
@@ -423,7 +435,13 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                       <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
                         {t('audit:sections.skills', 'Technical Skills & ATS')}
                       </Typography>
-                      <Chip label={t('audit:drawerCards.skillsPass', '95% Pass')} size="small" color="success" sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }} />
+                      <Chip
+                        label={t('audit:drawerCards.skillsPass', '95% Pass')}
+                        size="small"
+                        color="success"
+                        variant="outlined"
+                        sx={{ fontWeight: 700 }}
+                      />
                     </Box>
                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
                       {t('audit:drawerCards.skillsDesc', 'High density of exact keywords matching requirements without stuffing.')}
@@ -465,14 +483,15 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                             <Chip
                               label={pillar.impactLevel || 'High'}
                               size="small"
-                              sx={{
-                                height: 18,
-                                fontSize: '0.62rem',
-                                fontWeight: 700,
-                                bgcolor: alpha(theme.palette.warning.main, 0.15),
-                                color: isDark ? '#fbbf24' : '#b45309',
-                                flexShrink: 0,
-                              }}
+                              color={
+                                pillar.impactLevel?.toLowerCase().includes('high')
+                                  ? 'warning'
+                                  : pillar.impactLevel?.toLowerCase().includes('strat')
+                                  ? 'primary'
+                                  : 'default'
+                              }
+                              variant="outlined"
+                              sx={{ fontWeight: 700 }}
                             />
                           </Box>
 
@@ -480,26 +499,24 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                             {pillar.diagnostic}
                           </Typography>
 
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="primary"
-                            startIcon={<BoltRoundedIcon sx={{ fontSize: '13px !important' }} />}
-                            onClick={() => handleOpenAction(pillar.recommendationForMasterData || pillar.diagnostic, pillar.pillarName)}
-                            sx={{
-                              alignSelf: 'flex-start',
-                              fontSize: '0.72rem',
-                              fontWeight: 700,
-                              py: 0.4,
-                              px: 1.25,
-                              textTransform: 'none',
-                              borderRadius: '6px',
-                              mt: 0.25,
-                              width: { xs: '100%', sm: 'auto' },
-                            }}
-                          >
-                            {getActionButtonLabel(pillar.recommendationForMasterData || pillar.pillarName)}
-                          </Button>
+                          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.25 }}>
+                            <Button
+                              variant="contained"
+                              size="small"
+                              color="primary"
+                              startIcon={<BoltRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                              onClick={() => handleOpenAction(pillar.recommendationForMasterData || pillar.diagnostic, pillar.pillarName)}
+                              sx={{
+                                textTransform: 'none',
+                                fontWeight: 700,
+                                fontSize: '0.74rem',
+                                py: 0.35,
+                                px: 1.5,
+                              }}
+                            >
+                              {getActionButtonLabel(pillar.recommendationForMasterData || pillar.pillarName)}
+                            </Button>
+                          </Box>
                         </Paper>
                       ))}
                     </Box>
@@ -554,7 +571,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                         size="small"
                         color="success"
                         variant="outlined"
-                        sx={{ height: 22, fontSize: '0.7rem', fontWeight: 600 }}
+                        sx={{ fontWeight: 600 }}
                       />
                     ))}
                     {missingKeywords.map((kw: string) => (
@@ -565,7 +582,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                         size="small"
                         color="warning"
                         variant="outlined"
-                        sx={{ height: 22, fontSize: '0.7rem', fontWeight: 600 }}
+                        sx={{ fontWeight: 600 }}
                       />
                     ))}
                   </Box>
@@ -602,8 +619,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                     sx={{
                       textTransform: 'none',
                       fontWeight: 700,
-                      borderRadius: '10px',
-                      py: 1,
+                      py: 0.8,
                       fontSize: '0.8rem',
                     }}
                   >
