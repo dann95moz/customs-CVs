@@ -1,5 +1,6 @@
 import { TailorRequest } from '../../types/cv';
 import { extractTargetCompany } from '../parser';
+import { sanitizeMasterDataForAi } from './privacy-guard';
 
 export const DEFAULT_RULES = `# 📋 CV Generation & Tailoring Rules (rules.md)
 
@@ -156,10 +157,13 @@ PART 2: TAILORED CV
 \`\`\`
 `;
 
+  const anonymized = sanitizeMasterDataForAi(req.masterData);
+
   const userPrompt = `Please synthesize the tailored CV for target company "${company}" by strictly analyzing the candidate's real data below.
+Note: Candidate private personal contact details have been anonymized with standard placeholders ([CANDIDATE_NAME], [Email], [Phone], [Links]). Please focus your full synthesis intelligence on optimizing the Summary, Technical Skills, Experience bullets (XYZ formula), and Projects.
 
 === 1. MASTER-DATA.MD (Candidate Single Source of Truth — DO NOT FABRICATE BEYOND THIS) ===
-${req.masterData}
+${anonymized.sanitizedText}
 
 === 2. TARGET-JOB.MD (Target Vacancy Details to Match Against) ===
 ${req.targetJob}

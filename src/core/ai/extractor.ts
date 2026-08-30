@@ -1,4 +1,5 @@
 import { extractCandidateName } from '../parser';
+import { restoreOriginalHeader } from './privacy-guard';
 
 export interface ExtractedCvAndGap {
   cvMarkdown: string;
@@ -26,7 +27,7 @@ export function extractCvAndGap(rawText: string, masterData: string = '', compan
   }
 
   // Extract CV Content cleanly (find where candidate header starts)
-  const candidateHeaderRegex = /(?:#\s+(?:PART\s*2\s*:?\s*)?(?:TAILORED CV|CV OPTIMIZADO)\s*)?(#\s+[A-ZÁÉÍÓÚÑ\s]{4,}[\r\n]+[\s\S]*)$/i;
+  const candidateHeaderRegex = /(?:#\s+(?:PART\s*2\s*:?\s*)?(?:TAILORED CV|CV OPTIMIZADO)\s*)?(#\s+[A-ZÁÉÍÓÚÑ\s\[\]]{4,}[\r\n]+[\s\S]*)$/i;
   const cvMatch = rawText.match(candidateHeaderRegex);
 
   if (cvMatch && cvMatch[1]) {
@@ -42,10 +43,9 @@ export function extractCvAndGap(rawText: string, masterData: string = '', compan
     .replace(/```\s*/g, '')
     .trim();
 
-  // If candidate name wasn't properly in heading, extract from master data
-  if (!cvContent.startsWith('# ') && masterData) {
-    const name = extractCandidateName(masterData, 'Candidate');
-    cvContent = `# ${name.replace(/_/g, ' ').toUpperCase()}\n` + cvContent;
+  // Restore candidate real header deterministically from masterData (preserves privacy while ensuring real header)
+  if (masterData) {
+    cvContent = restoreOriginalHeader(cvContent, masterData);
   }
 
   // Extract Match Score
