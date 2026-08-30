@@ -1,37 +1,89 @@
 {
-  "title": "Dashboard Candidature",
-  "subtitle": "Rivedi e gestisci tutte le tue candidature personalizzate, aziende target e versioni di curriculum generate.",
-  "badge": "Storico Candidature",
-  "newApplication": "+ Nuovo CV Personalizzato",
+  "title": "Bacheca Kanban delle Candidature",
+  "subtitle": "Monitora le tue candidature effettive con le versioni di CV collegate attraverso fasi personalizzabili.",
+  "badge": "Tracker Candidature",
+  "newApplication": "Adatta Nuovo CV",
   "searchPlaceholder": "Filtra per azienda o ruolo target...",
+  "actions": {
+    "trackApp": "+ Segna come Candidato"
+  },
+  "views": {
+    "board": "Bacheca Attiva",
+    "archived": "Archiviate",
+    "allVersions": "Cronologia Versioni CV"
+  },
   "stats": {
-    "total": "Totale CV Personalizzati",
-    "avgMatch": "Punteggio Medio",
+    "total": "Totale CV Adattati",
+    "avgMatch": "Match Medio",
     "companies": "Aziende Target",
-    "applied": "Inviate",
-    "interviews": "Colloqui",
-    "offers": "Offerte"
+    "applied": "Candidature Attive",
+    "interviews": "In Colloquio",
+    "offers": "Offerte Ricevute"
   },
   "status": {
-    "draft": "Bozza Salvata",
+    "draft": "Bozza",
     "applied": "Candidato",
-    "interviewing": "Colloqui in corso",
+    "interviewing": "In Colloquio",
+    "tech_test": "Prova Tecnica",
     "offer": "Offerta Ricevuta",
     "rejected": "Rifiutato",
     "archived": "Archiviato"
   },
+  "board": {
+    "addColumn": "+ Aggiungi Fase"
+  },
+  "column": {
+    "quickAdd": "Aggiungi candidatura a questa fase",
+    "edit": "Modifica nome / colore della fase",
+    "archiveAll": "Archivia tutte in questa fase",
+    "delete": "Elimina fase",
+    "empty": "Nessuna candidatura in questa fase",
+    "add": "+ Aggiungi candidatura",
+    "editTitle": "Modifica Fase",
+    "newTitle": "Nuova Fase Kanban",
+    "nameField": "Nome della Fase",
+    "colorTheme": "Colore di Accento"
+  },
   "card": {
     "openInStudio": "Visualizza & Modifica in Studio",
-    "exportPdf": "Esporta PDF",
-    "viewGap": "Visualizza Report Lacune",
-    "delete": "Elimina Versione",
-    "lastModified": "Personalizzato",
-    "downloadPdfTip": "Download Diretto in PDF (1 Clic)",
+    "exportPdf": "Esporta in PDF",
+    "viewGap": "Visualizza Report Gap",
+    "delete": "Elimina Scheda",
+    "archive": "Archivia Candidatura",
+    "notes": "Note",
+    "lastModified": "Adattato",
+    "downloadPdfTip": "Download Diretto PDF (1-Click)",
     "downloadMdTip": "Scarica Markdown (.md)"
   },
+  "trackModal": {
+    "title": "Monitora Candidatura",
+    "subtitle": "Collega una specifica versione di CV alla tua bacheca Kanban",
+    "duplicateWarning": "Hai già una candidatura attiva presso {{company}} per il ruolo {{role}}. Verrà creata una nuova scheda.",
+    "multiVersionPrompt": "Hai {{count}} versioni per {{company}} — quale hai effettivamente inviato?",
+    "singleVersionPrompt": "Versione CV collegata:",
+    "noVersionsFound": "Nessuna versione salvata trovata per questa azienda. Crea prima un CV.",
+    "initialColumn": "Fase Iniziale",
+    "salary": "Stipendio / Budget (Opzionale)",
+    "location": "Sede / Politica da Remoto",
+    "notes": "Note personali & contatto recruiter",
+    "hideDetails": "Nascondi dettagli aggiuntivi",
+    "addDetails": "+ Aggiungi sede e note",
+    "confirm": "Aggiungi alla Bacheca Kanban"
+  },
+  "archived": {
+    "emptyTitle": "L'archivio è vuoto",
+    "emptyDesc": "Quando archivi le candidature rifiutate o chiuse dalla bacheca Kanban, rimarranno conservate qui.",
+    "noMatch": "Nessuna candidatura archiviata corrisponde alla ricerca",
+    "archivedOn": "Archiviata il {{date}}",
+    "restore": "Ripristina nella Bacheca"
+  },
   "empty": {
-    "title": "Nessuna candidatura salvata al momento",
-    "desc": "Ogni volta che crei un curriculum per un'azienda specifica, verrà salvato automaticamente qui per il tuo tracciamento.",
+    "title": "Nessuna candidatura monitorata",
+    "desc": "Crea o salva un CV in Resume Studio e clicca \"Segna come Candidato\" per organizzare la tua pipeline sulla bacheca Kanban.",
     "action": "Inizia Nuova Candidatura"
+  },
+  "emptyBoardWithVersions": {
+    "title": "Hai {{count}} CV pronti per il monitoraggio",
+    "desc": "Seleziona quale versione hai effettivamente inviato per aggiungerla alla bacheca attiva."
   }
 }

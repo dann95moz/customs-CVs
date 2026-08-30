@@ -1,37 +1,89 @@
 {
-  "title": "Tableau de Bord des Candidatures",
-  "subtitle": "Consultez et gérez toutes vos candidatures ciblées, entreprises visées et versions de CV générées.",
-  "badge": "Historique des Candidatures",
-  "newApplication": "+ Nouveau CV Personnalisé",
-  "searchPlaceholder": "Filtrer par entreprise ou poste ciblé...",
+  "title": "Tableau Kanban des Candidatures",
+  "subtitle": "Suivez vos véritables candidatures avec des versions de CV associées à travers des étapes personnalisables.",
+  "badge": "Suivi des Candidatures",
+  "newApplication": "Adapter un nouveau CV",
+  "searchPlaceholder": "Filtrer par entreprise ou poste visé...",
+  "actions": {
+    "trackApp": "+ Marquer comme postulé"
+  },
+  "views": {
+    "board": "Tableau Actif",
+    "archived": "Archivées",
+    "allVersions": "Historique des Versions CV"
+  },
   "stats": {
-    "total": "Total des CVs Personnalisés",
-    "avgMatch": "Score Moyen d'Adéquation",
-    "companies": "Entreprises Cibles",
-    "applied": "Postulé",
-    "interviews": "Entretiens",
-    "offers": "Offres"
+    "total": "Total CVs Adaptés",
+    "avgMatch": "Match Moyen",
+    "companies": "Entreprises Ciblées",
+    "applied": "Candidatures Actives",
+    "interviews": "En Entretien",
+    "offers": "Offres Reçues"
   },
   "status": {
-    "draft": "Brouillon Sauvegardé",
+    "draft": "Brouillon",
     "applied": "Postulé",
     "interviewing": "En Entretien",
+    "tech_test": "Test Technique",
     "offer": "Offre Reçue",
     "rejected": "Refusé",
     "archived": "Archivé"
   },
+  "board": {
+    "addColumn": "+ Ajouter une étape"
+  },
+  "column": {
+    "quickAdd": "Ajouter une candidature à cette étape",
+    "edit": "Modifier le nom / la couleur de l'étape",
+    "archiveAll": "Tout archiver dans cette étape",
+    "delete": "Supprimer l'étape",
+    "empty": "Aucune candidature dans cette étape",
+    "add": "+ Ajouter une candidature",
+    "editTitle": "Modifier l'étape",
+    "newTitle": "Nouvelle étape Kanban",
+    "nameField": "Nom de l'étape",
+    "colorTheme": "Couleur d'accentuation"
+  },
   "card": {
-    "openInStudio": "Voir & Éditer dans le Studio",
+    "openInStudio": "Voir & modifier dans le Studio",
     "exportPdf": "Exporter en PDF",
-    "viewGap": "Voir le Rapport d'Écarts",
-    "delete": "Supprimer la Version",
+    "viewGap": "Voir le rapport d'adéquation",
+    "delete": "Supprimer la carte",
+    "archive": "Archiver la candidature",
+    "notes": "Notes",
     "lastModified": "Adapté",
-    "downloadPdfTip": "Téléchargement Direct en PDF (1 Clic)",
-    "downloadMdTip": "Télécharger le Markdown (.md)"
+    "downloadPdfTip": "Téléchargement direct PDF (1-Clic)",
+    "downloadMdTip": "Télécharger Markdown (.md)"
+  },
+  "trackModal": {
+    "title": "Suivre la Candidature",
+    "subtitle": "Associez une version de CV spécifique à votre tableau Kanban",
+    "duplicateWarning": "Vous avez déjà une candidature active chez {{company}} pour le poste de {{role}}. Une nouvelle carte sera créée.",
+    "multiVersionPrompt": "Vous avez {{count}} versions pour {{company}} — laquelle avez-vous envoyée ?",
+    "singleVersionPrompt": "Version de CV associée :",
+    "noVersionsFound": "Aucune version enregistrée trouvée pour cette entreprise. Veuillez d'abord adapter un CV.",
+    "initialColumn": "Étape Initiale",
+    "salary": "Salaire / Budget (Optionnel)",
+    "location": "Localisation / Politique Télétravail",
+    "notes": "Notes personnelles & contact recruteur",
+    "hideDetails": "Masquer les détails supplémentaires",
+    "addDetails": "+ Ajouter lieu & notes",
+    "confirm": "Ajouter au Tableau Kanban"
+  },
+  "archived": {
+    "emptyTitle": "Les archives sont vides",
+    "emptyDesc": "Lorsque vous archivez des candidatures refusées ou closes depuis le Kanban, elles sont conservées ici.",
+    "noMatch": "Aucune candidature archivée ne correspond à votre recherche",
+    "archivedOn": "Archivée le {{date}}",
+    "restore": "Restaurer sur le tableau"
   },
   "empty": {
-    "title": "Aucune Candidature Enregistrée",
-    "desc": "Dès que vous générez un CV ciblé pour une offre d'emploi, il sera automatiquement conservé ici pour votre suivi.",
-    "action": "Nouvelle Candidature"
+    "title": "Aucune candidature suivie pour l'instant",
+    "desc": "Créez ou sauvegardez un CV dans le Studio, puis cliquez sur \"Marquer comme postulé\" pour organiser votre pipeline sur le tableau Kanban.",
+    "action": "Démarrer une nouvelle candidature"
+  },
+  "emptyBoardWithVersions": {
+    "title": "Vous avez {{count}} CVs prêts à être suivis",
+    "desc": "Sélectionnez quelle version a été réellement envoyée pour l'ajouter à votre tableau actif."
   }
 }

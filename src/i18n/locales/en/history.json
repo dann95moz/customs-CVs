@@ -1,37 +1,89 @@
 {
-  "title": "Tailored Applications Dashboard",
-  "subtitle": "Review and manage all your tailored applications, target companies, and generated resume versions.",
-  "badge": "Application History",
-  "newApplication": "+ New Tailored Resume",
+  "title": "Job Applications Kanban Studio",
+  "subtitle": "Track real job submissions with linked CV versions across customized recruitment stages.",
+  "badge": "Application Tracker",
+  "newApplication": "Tailor New CV",
   "searchPlaceholder": "Filter by company name or target role...",
+  "actions": {
+    "trackApp": "+ Track Application"
+  },
+  "views": {
+    "board": "Active Board",
+    "archived": "Archived",
+    "allVersions": "CV Versions History"
+  },
   "stats": {
     "total": "Total Tailored CVs",
-    "avgMatch": "Avg. Match Score",
+    "avgMatch": "Avg. Match",
     "companies": "Target Companies",
-    "applied": "Applied",
-    "interviews": "Interviews",
-    "offers": "Offers"
+    "applied": "Active Applications",
+    "interviews": "In Interview",
+    "offers": "Offers Received"
   },
   "status": {
     "draft": "Saved Draft",
     "applied": "Applied",
     "interviewing": "Interviewing",
+    "tech_test": "Technical Assessment",
     "offer": "Offer Received",
     "rejected": "Rejected",
     "archived": "Archived"
+  },
+  "board": {
+    "addColumn": "+ Add Stage"
+  },
+  "column": {
+    "quickAdd": "Add application to this stage",
+    "edit": "Edit Stage Name / Color",
+    "archiveAll": "Archive All in Stage",
+    "delete": "Delete Stage",
+    "empty": "No applications in this stage",
+    "add": "+ Add application",
+    "editTitle": "Edit Stage",
+    "newTitle": "New Kanban Stage",
+    "nameField": "Stage Name",
+    "colorTheme": "Accent Color"
   },
   "card": {
     "openInStudio": "View & Edit in Studio",
     "exportPdf": "Export PDF",
     "viewGap": "View Gap Report",
-    "delete": "Delete Version",
+    "delete": "Delete Card",
+    "archive": "Archive Application",
+    "notes": "Notes",
     "lastModified": "Tailored",
     "downloadPdfTip": "Direct PDF Download (1-Click)",
     "downloadMdTip": "Download Raw Markdown (.md)"
   },
+  "trackModal": {
+    "title": "Track Job Application",
+    "subtitle": "Link a tailored CV version to your Kanban board",
+    "duplicateWarning": "You already have an active application with {{company}} for {{role}}. A new tracking card will be created alongside it.",
+    "multiVersionPrompt": "You have {{count}} versions for {{company}} — which one did you apply with?",
+    "singleVersionPrompt": "Attached CV Version:",
+    "noVersionsFound": "No saved resume versions found for this company. Please save or synthesize a CV first.",
+    "initialColumn": "Initial Stage",
+    "salary": "Salary / Budget (Optional)",
+    "location": "Location / Remote Policy",
+    "notes": "Personal Notes & Interview Contact",
+    "hideDetails": "Hide additional details",
+    "addDetails": "+ Add location & notes",
+    "confirm": "Track in Kanban Board"
+  },
+  "archived": {
+    "emptyTitle": "Archive is Empty",
+    "emptyDesc": "When you archive rejected or closed job applications from your Kanban board, they will be preserved here.",
+    "noMatch": "No archived applications match your search",
+    "archivedOn": "Archived on {{date}}",
+    "restore": "Restore to Board"
+  },
   "empty": {
-    "title": "No Applications Saved Yet",
-    "desc": "Whenever you synthesize a tailored resume for a specific company, it will be automatically saved here for tracking.",
+    "title": "No Applications Tracked Yet",
+    "desc": "Synthesize or save a tailored resume in Resume Studio, then click \"Track Application\" to organize your recruitment pipeline on the Kanban board.",
     "action": "Start New Application"
+  },
+  "emptyBoardWithVersions": {
+    "title": "You have {{count}} tailored CVs ready to track",
+    "desc": "Select which CV version was actually submitted to an employer to add it to your active Kanban board."
   }
 }

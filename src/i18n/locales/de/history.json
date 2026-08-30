@@ -1,37 +1,89 @@
 {
-  "title": "Bewerbungs-Dashboard",
-  "subtitle": "Verwalten Sie alle Ihre maßgeschneiderten Bewerbungen, Zielunternehmen und generierten Lebenslauf-Versionen.",
-  "badge": "Bewerbungshistorie",
-  "newApplication": "+ Neuer Maßgeschneiderter Lebenslauf",
+  "title": "Bewerbungs-Kanban-Studio",
+  "subtitle": "Verfolgen Sie echte Bewerbungen mit verknüpften Lebenslauf-Versionen über anpassbare Phasen.",
+  "badge": "Bewerbungs-Tracker",
+  "newApplication": "Neuen CV anpassen",
   "searchPlaceholder": "Nach Unternehmen oder Position filtern...",
+  "actions": {
+    "trackApp": "+ Als beworben markieren"
+  },
+  "views": {
+    "board": "Aktives Board",
+    "archived": "Archiviert",
+    "allVersions": "CV-Versionshistorie"
+  },
   "stats": {
-    "total": "Gesamte Lebensläufe",
-    "avgMatch": "Durchschn. Übereinstimmung",
+    "total": "Gesamte CVs",
+    "avgMatch": "Durchschn. Match",
     "companies": "Zielunternehmen",
-    "applied": "Beworben",
-    "interviews": "Interviews",
-    "offers": "Angebote"
+    "applied": "Aktive Bewerbungen",
+    "interviews": "Im Vorstellungsgespräch",
+    "offers": "Angebote erhalten"
   },
   "status": {
-    "draft": "Entwurf gespeichert",
+    "draft": "Entwurf",
     "applied": "Beworben",
-    "interviewing": "Im Interview-Prozess",
+    "interviewing": "Im Gespräch",
+    "tech_test": "Fachgespräch / Test",
     "offer": "Angebot erhalten",
     "rejected": "Abgelehnt",
     "archived": "Archiviert"
   },
+  "board": {
+    "addColumn": "+ Phase hinzufügen"
+  },
+  "column": {
+    "quickAdd": "Bewerbung zu dieser Phase hinzufügen",
+    "edit": "Phasenname / Farbe bearbeiten",
+    "archiveAll": "Alle in dieser Phase archivieren",
+    "delete": "Phase löschen",
+    "empty": "Keine Bewerbungen in dieser Phase",
+    "add": "+ Bewerbung hinzufügen",
+    "editTitle": "Phase bearbeiten",
+    "newTitle": "Neue Kanban-Phase",
+    "nameField": "Phasenname",
+    "colorTheme": "Akzentfarbe"
+  },
   "card": {
-    "openInStudio": "Im Studio ansehen & bearbeiten",
+    "openInStudio": "Im Studio anzeigen & bearbeiten",
     "exportPdf": "PDF exportieren",
-    "viewGap": "Lückenbericht ansehen",
-    "delete": "Version löschen",
+    "viewGap": "Gap-Analyse anzeigen",
+    "delete": "Karte löschen",
+    "archive": "Bewerbung archivieren",
+    "notes": "Notizen",
     "lastModified": "Angepasst",
     "downloadPdfTip": "Direkter PDF-Download (1-Klick)",
-    "downloadMdTip": "Markdown herunterladen (.md)"
+    "downloadMdTip": "Markdown (.md) herunterladen"
+  },
+  "trackModal": {
+    "title": "Bewerbung verfolgen",
+    "subtitle": "Verknüpfen Sie eine maßgeschneiderte CV-Version mit Ihrem Kanban-Board",
+    "duplicateWarning": "Sie haben bereits eine aktive Bewerbung bei {{company}} für die Position {{role}}. Es wird eine neue Karte angelegt.",
+    "multiVersionPrompt": "Sie haben {{count}} Versionen für {{company}} — mit welcher haben Sie sich beworben?",
+    "singleVersionPrompt": "Angehängte CV-Version:",
+    "noVersionsFound": "Keine gespeicherten Versionen für dieses Unternehmen gefunden. Bitte erstellen Sie zuerst einen CV.",
+    "initialColumn": "Startphase",
+    "salary": "Gehalt / Budget (Optional)",
+    "location": "Standort / Remote-Regelung",
+    "notes": "Persönliche Notizen & Ansprechpartner",
+    "hideDetails": "Zusätzliche Details ausblenden",
+    "addDetails": "+ Standort & Notizen hinzufügen",
+    "confirm": "Zum Kanban-Board hinzufügen"
+  },
+  "archived": {
+    "emptyTitle": "Archiv ist leer",
+    "emptyDesc": "Wenn Sie abgelehnte oder abgeschlossene Bewerbungen aus dem Kanban-Board archivieren, bleiben sie hier erhalten.",
+    "noMatch": "Keine archivierten Bewerbungen entsprechen der Suche",
+    "archivedOn": "Archiviert am {{date}}",
+    "restore": "Auf dem Board wiederherstellen"
   },
   "empty": {
-    "title": "Noch keine Bewerbungen gespeichert",
-    "desc": "Sobald Sie einen Lebenslauf für ein bestimmtes Unternehmen erstellen, wird er hier automatisch für Sie gespeichert.",
+    "title": "Noch keine Bewerbungen erfasst",
+    "desc": "Erstellen oder speichern Sie einen CV im Studio und klicken Sie auf \"Als beworben markieren\", um Ihre Pipeline zu organisieren.",
     "action": "Neue Bewerbung starten"
+  },
+  "emptyBoardWithVersions": {
+    "title": "Sie haben {{count}} angepasste CVs bereit zur Verfolgung",
+    "desc": "Wählen Sie aus, welche Version Sie tatsächlich eingereicht haben, um sie dem Board hinzuzufügen."
   }
 }

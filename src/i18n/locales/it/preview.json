@@ -25,7 +25,9 @@
     "directPdfItem": "Download Diretto PDF",
     "directPdfDesc": "Download immediato in 1 clic",
     "printPdfItem": "Stampa via Browser",
-    "printPdfDesc": "Finestra di stampa di sistema (Ctrl+P)"
+    "printPdfDesc": "Finestra di stampa di sistema (Ctrl+P)",
+    "trackApp": "Segna come Candidato",
+    "tracked": "Nella Bacheca"
   },
   "navRail": {
     "templates": "Modelli",

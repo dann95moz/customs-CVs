@@ -25,7 +25,9 @@
     "directPdfItem": "Téléchargement Direct du PDF",
     "directPdfDesc": "Téléchargement automatique en 1 clic",
     "printPdfItem": "Imprimer via le Navigateur",
-    "printPdfDesc": "Boîte d'impression système (Ctrl+P)"
+    "printPdfDesc": "Boîte d'impression système (Ctrl+P)",
+    "trackApp": "Marquer comme postulé",
+    "tracked": "Dans le tableau"
   },
   "navRail": {
     "templates": "Modèles",

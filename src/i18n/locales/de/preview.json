@@ -25,7 +25,9 @@
     "directPdfItem": "Direkter PDF-Download",
     "directPdfDesc": "1-Klick direkter Dateidownload",
     "printPdfItem": "Über Browser drucken",
-    "printPdfDesc": "System-Druckfenster (Strg+P)"
+    "printPdfDesc": "System-Druckfenster (Strg+P)",
+    "trackApp": "Als beworben markieren",
+    "tracked": "Im Board"
   },
   "navRail": {
     "templates": "Vorlagen",

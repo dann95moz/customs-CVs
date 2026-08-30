@@ -1,37 +1,89 @@
 {
-  "title": "Panel de Candidaturas Personalizadas",
-  "subtitle": "Revisa y gestiona todas tus postulaciones, empresas objetivo y versiones de CV generadas.",
-  "badge": "Historial de Candidaturas",
-  "newApplication": "+ Nuevo CV Personalizado",
+  "title": "Tablero Kanban de Candidaturas",
+  "subtitle": "Haz seguimiento de tus postulaciones reales con versiones de CV vinculadas a lo largo de etapas personalizables.",
+  "badge": "Gestor de Candidaturas",
+  "newApplication": "Adaptar Nuevo CV",
   "searchPlaceholder": "Filtrar por empresa o puesto objetivo...",
+  "actions": {
+    "trackApp": "+ Marcar como Postulado"
+  },
+  "views": {
+    "board": "Tablero Activo",
+    "archived": "Archivadas",
+    "allVersions": "Historial de Versiones CV"
+  },
   "stats": {
     "total": "Total CVs Personalizados",
-    "avgMatch": "Puntaje Medio de Ajuste",
+    "avgMatch": "Ajuste Medio",
     "companies": "Empresas Objetivo",
-    "applied": "Postulado",
-    "interviews": "Entrevistas",
-    "offers": "Ofertas"
+    "applied": "Postulaciones Activas",
+    "interviews": "En Entrevista",
+    "offers": "Ofertas Recibidas"
   },
   "status": {
     "draft": "Borrador",
     "applied": "Postulado",
     "interviewing": "En Entrevista",
+    "tech_test": "Prueba Técnica",
     "offer": "Oferta Recibida",
     "rejected": "Descartado",
     "archived": "Archivado"
+  },
+  "board": {
+    "addColumn": "+ Añadir Etapa"
+  },
+  "column": {
+    "quickAdd": "Añadir postulación a esta etapa",
+    "edit": "Editar Nombre / Color de Etapa",
+    "archiveAll": "Archivar Todo en esta Etapa",
+    "delete": "Eliminar Etapa",
+    "empty": "No hay postulaciones en esta etapa",
+    "add": "+ Añadir postulación",
+    "editTitle": "Editar Etapa",
+    "newTitle": "Nueva Etapa Kanban",
+    "nameField": "Nombre de la Etapa",
+    "colorTheme": "Color Distintivo"
   },
   "card": {
     "openInStudio": "Ver y Editar en Studio",
     "exportPdf": "Exportar PDF",
     "viewGap": "Ver Reporte de Brechas",
-    "delete": "Eliminar Versión",
+    "delete": "Eliminar Tarjeta",
+    "archive": "Archivar Postulación",
+    "notes": "Notas",
     "lastModified": "Adaptado",
     "downloadPdfTip": "Descarga Directa en PDF (1 Clic)",
     "downloadMdTip": "Descargar Markdown (.md)"
   },
+  "trackModal": {
+    "title": "Seguimiento de Postulación",
+    "subtitle": "Vincula una versión de CV adaptada a tu tablero Kanban",
+    "duplicateWarning": "Ya tienes una postulación activa con {{company}} para el puesto {{role}}. Se creará una nueva tarjeta de seguimiento de forma complementaria.",
+    "multiVersionPrompt": "Tienes {{count}} versiones para {{company}} — ¿con cuál aplicaste?",
+    "singleVersionPrompt": "Versión de CV Adjunta:",
+    "noVersionsFound": "No se encontraron versiones de CV guardadas para esta empresa. Por favor genera o guarda un CV primero.",
+    "initialColumn": "Etapa Inicial",
+    "salary": "Salario / Presupuesto (Opcional)",
+    "location": "Ubicación / Modalidad de Trabajo",
+    "notes": "Notas Personales y Contacto de Entrevista",
+    "hideDetails": "Ocultar detalles adicionales",
+    "addDetails": "+ Añadir ubicación y notas",
+    "confirm": "Añadir al Tablero Kanban"
+  },
+  "archived": {
+    "emptyTitle": "El Archivo está Vacío",
+    "emptyDesc": "Cuando archives postulaciones descartadas o finalizadas de tu tablero Kanban, se conservarán aquí.",
+    "noMatch": "Ninguna postulación archivada coincide con la búsqueda",
+    "archivedOn": "Archivada el {{date}}",
+    "restore": "Restaurar al Tablero"
+  },
   "empty": {
-    "title": "Aún No Hay Candidaturas Guardadas",
-    "desc": "Cuando generes un CV adaptado a una oferta específica, se guardará aquí automáticamente para su seguimiento.",
+    "title": "Aún No Hay Candidaturas en Seguimiento",
+    "desc": "Genera o guarda un CV adaptado en Resume Studio y haz clic en \"Marcar como postulado\" para organizar tu proceso de selección en el tablero Kanban.",
     "action": "Iniciar Nueva Candidatura"
+  },
+  "emptyBoardWithVersions": {
+    "title": "Tienes {{count}} CVs adaptados listos para seguimiento",
+    "desc": "Selecciona qué versión enviaste efectivamente a la empresa para añadirla a tu tablero activo."
   }
 }
