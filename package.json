@@ -64,6 +64,7 @@
     "i18next-browser-languagedetector": "^8.2.1",
     "jspdf": "^4.2.1",
     "marked": "^15.0.7",
+    "pdfjs-dist": "^6.3.289",
     "puppeteer": "^24.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
