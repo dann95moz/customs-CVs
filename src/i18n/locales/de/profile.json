@@ -3,11 +3,18 @@
   "title": "Ihr Karriereprofil",
   "subtitle": "Erfassen Sie Ihren Werdegang und Ihre Fähigkeiten einmalig. Wir passen sie automatisch an jede Bewerbung an.",
   "actions": {
+    "importResume": "Lebenslauf importieren (PDF, .md)",
+    "uploadFile": "Lebenslauf importieren (PDF, .md)",
     "loadSample": "Beispiel-Profil laden",
-    "uploadFile": "Datei hochladen (.md)",
     "exportBackup": "Sicherung exportieren (.md)",
     "exportBackupTip": "Laden Sie Ihr Master-Profil als Markdown (.md) herunter",
     "continueToTarget": "Weiter zur Zielstelle (Schritt 2)"
+  },
+  "dialog": {
+    "confirmReplaceTitle": "Aktuelles Profil ersetzen?",
+    "confirmReplaceDesc": "Der Import dieser Datei überschreibt Ihre aktuellen Profildaten. Möchten Sie fortfahren?",
+    "confirm": "Importieren & Ersetzen",
+    "cancel": "Abbrechen"
   },
   "modes": {
     "guidedAssistant": "Geführter Assistent",
@@ -17,7 +24,14 @@
   },
   "status": {
     "ready": "Master-Profil bereit für die Anpassung",
-    "tipLoadSample": "Tipp: Klicken Sie auf 'Beispielprofil laden', um direkt zu testen"
+    "tipLoadSample": "Tipp: Klicken Sie auf 'Beispielprofil laden', um direkt zu testen",
+    "importingPdf": "PDF-Lebenslauf wird gelesen und strukturiert...",
+    "pdfSuccess": "Karriereprofil erfolgreich aus {{fileName}} importiert",
+    "importedAi": "Strukturiert durch KI-Engine",
+    "importedLocal": "Strukturiert durch lokalen Client-Parser"
+  },
+  "dropzone": {
+    "dropToImport": "Ziehen Sie Ihre PDF-, .md- oder .txt-Datei hierher, um sie zu importieren"
   },
   "sections": {
     "personalInfo": {

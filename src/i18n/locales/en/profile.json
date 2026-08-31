@@ -3,11 +3,18 @@
   "title": "Your Career Profile",
   "subtitle": "Add your career history and skills once. We'll automatically adapt it for every job you apply to.",
   "actions": {
+    "importResume": "Import Resume (PDF, .md)",
+    "uploadFile": "Import Resume (PDF, .md)",
     "loadSample": "Load Sample Profile",
-    "uploadFile": "Upload File (.md)",
     "exportBackup": "Export Backup (.md)",
     "exportBackupTip": "Download your master career profile as Markdown (.md)",
     "continueToTarget": "Continue to Target Vacancy (Step 2)"
+  },
+  "dialog": {
+    "confirmReplaceTitle": "Replace current profile?",
+    "confirmReplaceDesc": "Importing this file will replace your current profile data. Are you sure you want to proceed?",
+    "confirm": "Import & Replace",
+    "cancel": "Cancel"
   },
   "modes": {
     "guidedAssistant": "Guided Assistant",
@@ -17,7 +24,14 @@
   },
   "status": {
     "ready": "Master profile ready for tailoring",
-    "tipLoadSample": "Tip: Click 'Load Sample Profile' to test right away"
+    "tipLoadSample": "Tip: Click 'Load Sample Profile' to test right away",
+    "importingPdf": "Reading and structuring your PDF resume...",
+    "pdfSuccess": "Successfully imported career profile from {{fileName}}",
+    "importedAi": "Structured via AI Engine",
+    "importedLocal": "Structured via Client-Side Local Parser"
+  },
+  "dropzone": {
+    "dropToImport": "Drop your PDF, .md or .txt file here to import"
   },
   "sections": {
     "personalInfo": {

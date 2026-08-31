@@ -3,11 +3,18 @@
   "title": "Tu Perfil Profesional",
   "subtitle": "Ingresa tu trayectoria y habilidades una sola vez. Las adaptaremos automáticamente para cada oferta a la que postules.",
   "actions": {
+    "importResume": "Importar CV (PDF, .md)",
+    "uploadFile": "Importar CV (PDF, .md)",
     "loadSample": "Cargar Perfil de Ejemplo",
-    "uploadFile": "Subir Archivo (.md)",
     "exportBackup": "Exportar Respaldo (.md)",
     "exportBackupTip": "Descargar tu perfil maestro como archivo Markdown (.md)",
     "continueToTarget": "Continuar a Vacante Objetivo (Paso 2)"
+  },
+  "dialog": {
+    "confirmReplaceTitle": "¿Reemplazar el perfil actual?",
+    "confirmReplaceDesc": "Importar este archivo sobrescribirá los datos de tu perfil actual. ¿Deseas continuar?",
+    "confirm": "Importar y Reemplazar",
+    "cancel": "Cancelar"
   },
   "modes": {
     "guidedAssistant": "Asistente Guiado",
@@ -17,7 +24,14 @@
   },
   "status": {
     "ready": "Perfil maestro listo para adaptación",
-    "tipLoadSample": "Consejo: Haz clic en 'Cargar Perfil de Ejemplo' para probar de inmediato"
+    "tipLoadSample": "Consejo: Haz clic en 'Cargar Perfil de Ejemplo' para probar de inmediato",
+    "importingPdf": "Leyendo y estructurando tu CV en PDF...",
+    "pdfSuccess": "Perfil profesional importado exitosamente desde {{fileName}}",
+    "importedAi": "Estructurado con Motor de IA",
+    "importedLocal": "Estructurado con Parser Local del Cliente"
+  },
+  "dropzone": {
+    "dropToImport": "Suelta tu archivo PDF, .md o .txt aquí para importar"
   },
   "sections": {
     "personalInfo": {

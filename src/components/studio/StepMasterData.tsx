@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Paper,
@@ -9,11 +9,19 @@ import {
   Stack,
   Tooltip,
   ButtonGroup,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Snackbar,
+  Alert,
   useTheme,
   alpha
 } from '@mui/material';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
@@ -23,12 +31,14 @@ import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
-import { extractCandidateName, parseCvMarkdownToData } from '../../core/parser';
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
+import { extractCandidateName } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
 import { downloadTextFile } from '../../utils/fileUtils';
 import { StepMasterDataProps } from '../../types';
 import { StudioSkeleton } from './StudioSkeleton';
+import { PdfImportResult } from '../../core/pdf-extractor';
 
 const GuidedProfileForm = React.lazy(() =>
   import('./GuidedProfileForm').then((m) => ({ default: m.GuidedProfileForm }))
@@ -47,16 +57,97 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   const isDark = theme.palette.mode === 'dark';
 
   const [editMode, setEditMode] = React.useState<'guided' | 'markdown'>('guided');
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [pendingFile, setPendingFile] = useState<{
+    content: string;
+    fileName: string;
+    isPdf?: boolean;
+    details?: PdfImportResult;
+  } | null>(null);
 
-  const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
-    onFileLoaded: (text) => onChange(text)
+  const [notification, setNotification] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'info' | 'error';
+    usedAI?: boolean;
+  }>({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
+
+  const hasData = content.trim().length > 60 && !content.includes('[CANDIDATE FULL NAME]');
+
+  const handleApplyImportedData = (importedText: string, fileName: string, isPdf?: boolean, details?: PdfImportResult) => {
+    onChange(importedText);
+    const candidateName = extractCandidateName(importedText, fileName.replace(/\.pdf$/i, ''));
+
+    setNotification({
+      open: true,
+      message: t('profile:status.pdfSuccess', {
+        fileName,
+        defaultValue: `Successfully imported career profile for ${candidateName} from ${fileName}`
+      }),
+      severity: 'success',
+      usedAI: details?.usedAI
+    });
+  };
+
+  const handleFileLoaded = (
+    loadedContent: string,
+    fileName: string,
+    isPdf?: boolean,
+    details?: PdfImportResult
+  ) => {
+    if (hasData) {
+      setPendingFile({ content: loadedContent, fileName, isPdf, details });
+      setShowConfirmDialog(true);
+    } else {
+      handleApplyImportedData(loadedContent, fileName, isPdf, details);
+    }
+  };
+
+  const handleConfirmReplace = () => {
+    if (pendingFile) {
+      handleApplyImportedData(
+        pendingFile.content,
+        pendingFile.fileName,
+        pendingFile.isPdf,
+        pendingFile.details
+      );
+      setPendingFile(null);
+    }
+    setShowConfirmDialog(false);
+  };
+
+  const handleCancelReplace = () => {
+    setPendingFile(null);
+    setShowConfirmDialog(false);
+  };
+
+  const {
+    fileInputRef,
+    isProcessing,
+    isDragging,
+    handleFileUpload,
+    handleDrop,
+    handleDragOver,
+    handleDragLeave,
+    openFileDialog
+  } = useFileUploader({
+    onFileLoaded: handleFileLoaded,
+    onError: (err) => {
+      setNotification({
+        open: true,
+        message: err.message || 'Error processing uploaded file',
+        severity: 'error'
+      });
+    }
   });
 
   const handleDownload = () => {
     downloadTextFile(content, 'master-profile.md');
   };
-
-  const hasData = content.trim().length > 50 && !content.includes('[CANDIDATE FULL NAME]');
 
   return (
     <Box
@@ -67,8 +158,41 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         p: { xs: 1.5, sm: 2, md: 3 },
         display: 'flex',
         justifyContent: 'center',
+        position: 'relative',
       }}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
     >
+      {/* Full-View Drag Overlay */}
+      {isDragging && (
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 12,
+            zIndex: 100,
+            bgcolor: alpha(theme.palette.primary.main, 0.12),
+            backdropFilter: 'blur(8px)',
+            border: `2px dashed ${theme.palette.primary.main}`,
+            borderRadius: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 2,
+            pointerEvents: 'none',
+          }}
+        >
+          <PictureAsPdfRoundedIcon sx={{ fontSize: 56, color: 'primary.main', animation: 'pulse 1.5s infinite' }} />
+          <Typography variant="h5" sx={{ fontWeight: 800, color: 'primary.main' }}>
+            {t('profile:dropzone.dropToImport', 'Drop your PDF, .md or .txt file here to import')}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {t('profile:subtitle', 'We will automatically extract your contact info, experience, and technical skills.')}
+          </Typography>
+        </Box>
+      )}
+
       <Box
         sx={{
           width: '100%',
@@ -78,12 +202,12 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           gap: 2.5,
         }}
       >
-        {/* Hidden File Input for .md / .txt uploads */}
+        {/* Hidden File Input for .pdf, .md, .txt uploads */}
         <input
           type="file"
           ref={fileInputRef}
           style={{ display: 'none' }}
-          accept=".md,.txt"
+          accept=".pdf,.md,.txt,application/pdf,text/plain,text/markdown"
           onChange={handleFileUpload}
         />
 
@@ -140,26 +264,32 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             </Typography>
           </Box>
 
-          {/* Equal-weight action buttons for users with existing data or demo exploration */}
+          {/* Unified clean action buttons */}
           <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, flexShrink: 0 }}>
             <Button
-              variant="outlined"
+              variant="contained"
+              color="primary"
               size="small"
-              startIcon={<RefreshRoundedIcon />}
-              onClick={onLoadSample}
-              sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}
+              startIcon={<CloudUploadRoundedIcon />}
+              onClick={openFileDialog}
+              disabled={isProcessing}
+              sx={{
+                fontWeight: 700,
+                whiteSpace: 'nowrap',
+              }}
             >
-              {t('profile:actions.loadSample', 'Load Sample Profile')}
+              {t('profile:actions.importResume', 'Import Resume (PDF, .md)')}
             </Button>
 
             <Button
               variant="outlined"
               size="small"
-              startIcon={<CloudUploadRoundedIcon />}
-              onClick={() => fileInputRef.current?.click()}
+              startIcon={<RefreshRoundedIcon />}
+              onClick={onLoadSample}
+              disabled={isProcessing}
               sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}
             >
-              {t('profile:actions.uploadFile', 'Upload File (.md)')}
+              {t('profile:actions.loadSample', 'Load Sample Profile')}
             </Button>
           </Stack>
         </Paper>
@@ -227,8 +357,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             </Box>
           ) : (
             <Box
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
               sx={{
                 flex: 1,
                 position: 'relative',
@@ -289,7 +417,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             ) : (
               <Chip
                 icon={<InfoRoundedIcon />}
-                label={t('profile:status.tipLoadSample', "Tip: Click 'Load Sample Profile' to test right away")}
+                label={t('profile:status.tipLoadSample', "Tip: Click 'Import from PDF' or 'Load Sample Profile' to start")}
                 color="warning"
                 variant="outlined"
                 size="small"
@@ -330,6 +458,87 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           </Button>
         </Paper>
       </Box>
+
+      {/* Confirmation Dialog Before Overwriting Existing Profile */}
+      <Dialog
+        open={showConfirmDialog}
+        onClose={handleCancelReplace}
+        slotProps={{
+          paper: {
+            sx: { borderRadius: '16px', p: 1, maxWidth: 480 }
+          }
+        }}
+      >
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 800 }}>
+          <WarningAmberRoundedIcon color="warning" />
+          {t('profile:dialog.confirmReplaceTitle', 'Replace current profile?')}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ color: 'text.secondary', fontSize: '0.92rem' }}>
+            {t(
+              'profile:dialog.confirmReplaceDesc',
+              'Importing this file will overwrite your current career profile data. Are you sure you want to proceed?'
+            )}
+          </DialogContentText>
+          {pendingFile && (
+            <Paper
+              variant="outlined"
+              sx={{
+                mt: 2,
+                p: 1.5,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.5,
+                bgcolor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+                borderRadius: '8px'
+              }}
+            >
+              {pendingFile.isPdf ? (
+                <PictureAsPdfRoundedIcon color="primary" />
+              ) : (
+                <CodeRoundedIcon color="primary" />
+              )}
+              <Box>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                  {pendingFile.fileName}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {t('profile:status.importedLocal', '100% Client-Side Local Parser')}
+                </Typography>
+              </Box>
+            </Paper>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={handleCancelReplace} color="inherit" sx={{ fontWeight: 600 }}>
+            {t('profile:dialog.cancel', 'Cancel')}
+          </Button>
+          <Button
+            onClick={handleConfirmReplace}
+            variant="contained"
+            color="primary"
+            sx={{ fontWeight: 700 }}
+          >
+            {t('profile:dialog.confirm', 'Import & Replace')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Success / Error Snackbar */}
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={6000}
+        onClose={() => setNotification((prev) => ({ ...prev, open: false }))}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          severity={notification.severity}
+          onClose={() => setNotification((prev) => ({ ...prev, open: false }))}
+          sx={{ borderRadius: '12px', fontWeight: 600, boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)' }}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

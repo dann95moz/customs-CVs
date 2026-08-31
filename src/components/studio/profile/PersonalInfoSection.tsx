@@ -32,14 +32,12 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   const getContactVal = (type: ContactType): string => {
     const found = contacts.find(c => c.type === type);
     if (!found) return '';
-    if (type === 'email') {
-      const raw = found.label || found.url || '';
-      return raw.replace(/^mailto:/i, '').trim();
-    }
-    if (type === 'location' || type === 'phone' || type === 'text') {
-      return found.label || '';
-    }
-    return found.url || found.label || '';
+    let raw = type === 'email' ? found.label || found.url || '' : (type === 'location' || type === 'phone' || type === 'text') ? found.label || '' : found.url || found.label || '';
+    return raw
+      .replace(/^mailto:/i, '')
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/[*_\[\]]/g, '')
+      .trim();
   };
 
   return (

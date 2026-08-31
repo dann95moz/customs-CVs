@@ -24,12 +24,14 @@
   },
   "actions": {
     "startBuilding": "Commencer à Créer un CV",
-    "trySample": "Essayer avec un Exemple"
+    "trySample": "Essayer avec un Exemple",
+    "importPdfHero": "Importer un CV en PDF"
   },
   "capabilities": {
     "privacy": "100% Local & Privé",
     "googleXyz": "Formule Google XYZ",
     "auditScore": "Audit Calibré 1–10",
-    "themes": "7 Thèmes ATS de Précision"
+    "themes": "7 Thèmes ATS de Précision",
+    "pdfImport": "Import PDF en 1-Clic"
   }
 }

@@ -2,10 +2,11 @@ import React from 'react';
 import {
   Typography,
   Button,
-  useTheme,
+  CircularProgress,
 } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
 import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
 import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
@@ -16,6 +17,7 @@ import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../store';
+import { useFileUploader } from '../../hooks/useFileUploader';
 import { APP_LINKS } from '../../constants/links';
 
 export interface WelcomeLandingViewProps {
@@ -27,11 +29,20 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
   onStart,
   onExploreDemo,
 }) => {
-  const { t } = useTranslation(['landing', 'common']);
+  const { t } = useTranslation(['landing', 'common', 'profile']);
   const handleStartWizard = useResumeStore((s) => s.handleStartWizard);
   const handleExploreDemo = useResumeStore((s) => s.handleExploreDemo);
-  const muiTheme = useTheme();
-  const isDark = muiTheme.palette.mode === 'dark';
+  const setMasterData = useResumeStore((s) => s.setMasterData);
+  const setActiveTab = useResumeStore((s) => s.setActiveTab);
+  const setWizardStep = useResumeStore((s) => s.setWizardStep);
+
+  const { fileInputRef, isProcessing, handleFileUpload, openFileDialog } = useFileUploader({
+    onFileLoaded: (content) => {
+      setMasterData(content);
+      setActiveTab('wizard');
+      setWizardStep('profile');
+    },
+  });
 
   const handleStart = () => {
     if (onStart) {
@@ -51,6 +62,15 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
 
   return (
     <div className="welcome-landing-wrapper">
+      {/* Hidden file input for Landing PDF/MD Import */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        accept=".pdf,.md,.txt,application/pdf,text/plain,text/markdown"
+        onChange={handleFileUpload}
+      />
+
       <div className="welcome-landing-content">
         {/* Badge Pill */}
         <div className="welcome-badge">
@@ -142,7 +162,7 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
             onClick={handleStart}
             endIcon={<ArrowForwardRoundedIcon />}
             sx={{
-              px: 4,
+              px: 3.5,
               py: 1.5,
               fontSize: '1rem',
               fontWeight: 700,
@@ -153,15 +173,38 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
 
           <Button
             variant="outlined"
+            color="primary"
+            size="large"
+            onClick={openFileDialog}
+            disabled={isProcessing}
+            startIcon={
+              isProcessing ? (
+                <CircularProgress size={18} color="inherit" />
+              ) : (
+                <PictureAsPdfRoundedIcon />
+              )
+            }
+            sx={{
+              px: 3,
+              py: 1.5,
+              fontSize: '0.95rem',
+              fontWeight: 700,
+            }}
+          >
+            {isProcessing ? t('profile:actions.importing', 'Extracting PDF...') : t('landing:actions.importPdfHero', 'Import Existing PDF')}
+          </Button>
+
+          <Button
+            variant="outlined"
+            color="secondary"
             size="large"
             onClick={handleDemo}
-            startIcon={<AutoAwesomeRoundedIcon sx={{ color: '#a78bfa' }} />}
+            startIcon={<AutoAwesomeRoundedIcon />}
             sx={{
-              px: 3.5,
+              px: 3,
               py: 1.5,
               fontSize: '0.95rem',
               fontWeight: 600,
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
             }}
           >
             {t('landing:actions.trySample', 'Try with Sample Data')}
@@ -171,29 +214,58 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
         {/* Capabilities Pill Ribbon */}
         <div className="welcome-capabilities-ribbon">
           <div className="welcome-pill">
-            <LockRoundedIcon sx={{ fontSize: 14, color: '#10b981' }} />
+            <LockRoundedIcon sx={{ fontSize: 14 }} color="success" />
             <span>{t('landing:capabilities.privacy', '100% Local-First & Private')}</span>
           </div>
           <div className="welcome-pill">
-            <CheckCircleRoundedIcon sx={{ fontSize: 14, color: '#38bdf8' }} />
+            <PictureAsPdfRoundedIcon sx={{ fontSize: 14 }} color="error" />
+            <span>{t('landing:capabilities.pdfImport', '1-Click PDF Importer')}</span>
+          </div>
+          <div className="welcome-pill">
+            <CheckCircleRoundedIcon sx={{ fontSize: 14 }} color="info" />
             <span>{t('landing:capabilities.googleXyz', 'Google XYZ Formula')}</span>
           </div>
           <div className="welcome-pill">
-            <SpeedRoundedIcon sx={{ fontSize: 14, color: '#f59e0b' }} />
+            <SpeedRoundedIcon sx={{ fontSize: 14 }} color="warning" />
             <span>{t('landing:capabilities.auditScore', 'Calibrated 1–10 Audit')}</span>
           </div>
           <div className="welcome-pill">
-            <StyleRoundedIcon sx={{ fontSize: 14, color: '#a78bfa' }} />
+            <StyleRoundedIcon sx={{ fontSize: 14 }} color="secondary" />
             <span>{t('landing:capabilities.themes', '7 Precision ATS Themes')}</span>
           </div>
         </div>
 
         {/* Footer Note */}
-        <div className="welcome-footer-note" style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
-          <span>{t('common:footer.privacyNote', 'All data remains in your browser storage. You can switch back here anytime via the top logo.')}</span>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
+        <div
+          className="welcome-footer-note"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px',
+            alignItems: 'center',
+            textAlign: 'center',
+            maxWidth: '600px',
+            margin: '0 auto',
+          }}
+        >
+          <span>
+            {t(
+              'common:footer.privacyNote',
+              'All data remains in your browser storage. You can switch back here anytime via the top logo.'
+            )}
+          </span>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              flexWrap: 'wrap',
+            }}
+          >
             <span>
-              {t('common:footer.craftedBy', 'Crafted by')} <strong>{APP_LINKS.AUTHOR_NAME}</strong>
+              {t('common:footer.craftedBy', 'Crafted by')}{' '}
+              <strong>{APP_LINKS.AUTHOR_NAME}</strong>
             </span>
             <span style={{ opacity: 0.4 }}>•</span>
             <a
@@ -210,7 +282,8 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
                 borderBottom: '1px dotted currentColor',
               }}
             >
-              {t('common:footer.openSource', 'Open source on GitHub')} <StarRoundedIcon sx={{ fontSize: 14, color: 'primary.main' }} />
+              {t('common:footer.openSource', 'Open source on GitHub')}{' '}
+              <StarRoundedIcon sx={{ fontSize: 14, color: 'primary.main' }} />
             </a>
           </div>
         </div>
@@ -218,4 +291,3 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
     </div>
   );
 };
-

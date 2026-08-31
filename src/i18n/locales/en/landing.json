@@ -24,12 +24,14 @@
   },
   "actions": {
     "startBuilding": "Start Building Resume",
-    "trySample": "Try with Sample Data"
+    "trySample": "Try with Sample Data",
+    "importPdfHero": "Import Existing PDF"
   },
   "capabilities": {
     "privacy": "100% Local-First & Private",
     "googleXyz": "Google XYZ Formula",
     "auditScore": "Calibrated 1–10 Audit",
-    "themes": "7 Precision ATS Themes"
+    "themes": "7 Precision ATS Themes",
+    "pdfImport": "1-Click PDF Importer"
   }
 }

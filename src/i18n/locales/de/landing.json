@@ -24,12 +24,14 @@
   },
   "actions": {
     "startBuilding": "Lebenslauf erstellen",
-    "trySample": "Mit Beispieldaten testen"
+    "trySample": "Mit Beispieldaten testen",
+    "importPdfHero": "PDF-Lebenslauf importieren"
   },
   "capabilities": {
     "privacy": "100% Lokal & Privat",
     "googleXyz": "Google XYZ-Formel",
     "auditScore": "Kalibriertes 1–10 Audit",
-    "themes": "7 Präzise ATS-Vorlagen"
+    "themes": "7 Präzise ATS-Vorlagen",
+    "pdfImport": "1-Klick PDF-Import"
   }
 }
