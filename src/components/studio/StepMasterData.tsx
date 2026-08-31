@@ -156,9 +156,11 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         height: '100%',
         overflowY: 'auto',
         p: { xs: 1.5, sm: 2, md: 3 },
+        pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 48px)', sm: 5, md: 6 },
         display: 'flex',
         justifyContent: 'center',
         position: 'relative',
+        boxSizing: 'border-box',
       }}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -264,8 +266,16 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             </Typography>
           </Box>
 
-          {/* Unified clean action buttons */}
-          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, flexShrink: 0 }}>
+          {/* Unified clean action buttons responsive layout */}
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1}
+            sx={{
+              width: { xs: '100%', sm: 'auto' },
+              gap: 1,
+              flexShrink: 0,
+            }}
+          >
             <Button
               variant="contained"
               color="primary"
@@ -273,9 +283,11 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               startIcon={<CloudUploadRoundedIcon />}
               onClick={openFileDialog}
               disabled={isProcessing}
+              fullWidth
               sx={{
                 fontWeight: 700,
                 whiteSpace: 'nowrap',
+                width: { xs: '100%', sm: 'auto' },
               }}
             >
               {t('profile:actions.importResume', 'Import Resume (PDF, .md)')}
@@ -287,7 +299,12 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               startIcon={<RefreshRoundedIcon />}
               onClick={onLoadSample}
               disabled={isProcessing}
-              sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}
+              fullWidth
+              sx={{
+                fontWeight: 700,
+                whiteSpace: 'nowrap',
+                width: { xs: '100%', sm: 'auto' },
+              }}
             >
               {t('profile:actions.loadSample', 'Load Sample Profile')}
             </Button>
@@ -329,12 +346,12 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               </Typography>
             </Box>
 
-            <ButtonGroup size="small" variant="outlined">
+            <ButtonGroup size="small" variant="outlined" sx={{ width: { xs: '100%', sm: 'auto' } }}>
               <Button
                 variant={editMode === 'guided' ? 'contained' : 'outlined'}
                 startIcon={<FormatListBulletedRoundedIcon />}
                 onClick={() => setEditMode('guided')}
-                sx={{ fontWeight: 600, fontSize: '0.8rem' }}
+                sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' } }}
               >
                 {t('profile:modes.guidedAssistant', 'Guided Assistant')}
               </Button>
@@ -342,7 +359,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 variant={editMode === 'markdown' ? 'contained' : 'outlined'}
                 startIcon={<CodeRoundedIcon />}
                 onClick={() => setEditMode('markdown')}
-                sx={{ fontWeight: 600, fontSize: '0.8rem' }}
+                sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' } }}
               >
                 {t('profile:modes.markdownEditor', 'Markdown Editor')}
               </Button>
@@ -392,19 +409,21 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         {/* Navigation Footer */}
         <Paper
           sx={{
-            p: 1.5,
-            px: 2,
+            p: { xs: 2, sm: 2 },
+            px: { xs: 2, sm: 2.5 },
+            pb: { xs: 2.5, sm: 2 },
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'stretch', sm: 'center' },
             justifyContent: 'space-between',
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
-            borderRadius: '12px',
-            flexWrap: 'wrap',
-            gap: 1.5,
+            borderRadius: '16px',
+            gap: { xs: 1.5, sm: 2 },
+            boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap', justifyContent: { xs: 'center', sm: 'flex-start' } }}>
             {hasData ? (
               <Chip
                 icon={<CheckCircleRoundedIcon />}
@@ -452,11 +471,19 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             color="primary"
             endIcon={<ArrowForwardRoundedIcon />}
             onClick={onNextStep}
-            sx={{ fontWeight: 700, px: 3 }}
+            sx={{
+              fontWeight: 700,
+              px: 3,
+              py: 1.2,
+              width: { xs: '100%', sm: 'auto' },
+            }}
           >
             {t('profile:actions.continueToTarget', 'Continue to Target Vacancy (Step 2)')}
           </Button>
         </Paper>
+
+        {/* Dedicated End-of-Scroll Safe Spacer (Ensures card ending is 100% visible on mobile) */}
+        <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 1px)', sm: 20 }, flexShrink: 0 }} />
       </Box>
 
       {/* Confirmation Dialog Before Overwriting Existing Profile */}

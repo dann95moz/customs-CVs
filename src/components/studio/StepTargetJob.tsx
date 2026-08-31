@@ -113,8 +113,10 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
         height: '100%',
         overflowY: 'auto',
         p: { xs: 1.5, sm: 2, md: 3 },
+        pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 48px)', sm: 5, md: 6 },
         display: 'flex',
         justifyContent: 'center',
+        boxSizing: 'border-box',
       }}
     >
       <Box
@@ -218,7 +220,12 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             size="small"
             startIcon={<RefreshRoundedIcon />}
             onClick={onLoadSample}
-            sx={{ fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0 }}
+            sx={{
+              fontWeight: 700,
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+              width: { xs: '100%', sm: 'auto' },
+            }}
           >
             {t('target:actions.loadSample', 'Load Sample Vacancy')}
           </Button>
@@ -300,10 +307,11 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             display: 'flex',
             flexDirection: 'column',
             minHeight: 400,
-            overflow: 'hidden',
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
-            borderRadius: '12px',
+            borderRadius: '16px',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.03)',
+            overflow: 'hidden',
           }}
         >
           {/* Editor Header Toolbar with Subtle Attachment Action */}
@@ -316,6 +324,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               justifyContent: 'space-between',
               borderBottom: `1px solid ${theme.palette.divider}`,
               bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.02)',
+              flexShrink: 0,
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -370,6 +379,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               style={{
                 width: '100%',
                 height: '100%',
+                minHeight: '280px',
                 border: 'none',
                 outline: 'none',
                 padding: '18px',
@@ -379,6 +389,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                 resize: 'none',
                 backgroundColor: 'transparent',
                 color: isDark ? '#f8fafc' : '#0f172a',
+                boxSizing: 'border-box',
               }}
             />
           </Box>
@@ -386,19 +397,21 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           {/* Understated Helper Link below the textarea */}
           <Box
             sx={{
-              px: 2,
-              py: 1,
+              px: { xs: 1.5, sm: 2 },
+              py: { xs: 1.5, sm: 1 },
               borderTop: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
               display: 'flex',
-              alignItems: 'center',
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { xs: 'flex-start', sm: 'center' },
               justifyContent: 'space-between',
-              flexWrap: 'wrap',
               gap: 1,
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.015)'
+              bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.015)',
+              boxSizing: 'border-box',
+              flexShrink: 0,
             }}
           >
-            <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-              {t('target:editor.uploadHint', 'Have a job posting file instead of text?')}
+            <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.5, display: 'inline', width: { xs: '100%', sm: 'auto' } }}>
+              {t('target:editor.uploadHint', 'Have a job posting file instead of text?')}{' '}
               <Box
                 component="button"
                 type="button"
@@ -410,9 +423,12 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                   cursor: 'pointer',
                   fontWeight: 700,
                   p: 0,
+                  m: 0,
+                  display: 'inline',
                   fontFamily: 'inherit',
                   fontSize: 'inherit',
                   textDecoration: 'underline',
+                  verticalAlign: 'baseline',
                   '&:hover': { opacity: 0.8 }
                 }}
               >
@@ -420,7 +436,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               </Box>
             </Typography>
 
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.5, flexShrink: 0, alignSelf: { xs: 'flex-end', sm: 'center' } }}>
               {wordCount} {t('target:fields.words', 'words')}
             </Typography>
           </Box>
@@ -429,15 +445,18 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
         {/* Navigation & Direct Action Footer */}
         <Paper
           sx={{
-            p: 1.5,
-            px: 2,
+            p: { xs: 2, sm: 2 },
+            px: { xs: 2, sm: 2.5 },
+            pb: { xs: 2.5, sm: 2 },
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: { xs: 'column-reverse', sm: 'row' },
+            alignItems: { xs: 'stretch', sm: 'center' },
             justifyContent: 'space-between',
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
-            flexWrap: 'wrap',
-            gap: 1.5,
+            borderRadius: '16px',
+            gap: { xs: 1.5, sm: 2 },
+            boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
           }}
         >
           <Button
@@ -445,37 +464,54 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             startIcon={<ArrowBackRoundedIcon />}
             onClick={onPrevStep}
             disabled={isGenerating}
+            sx={{
+              fontWeight: 600,
+              width: { xs: '100%', sm: 'auto' },
+            }}
           >
             {t('target:actions.backToProfile', 'Back to Profile (Step 1)')}
           </Button>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
-            {hasJob ? (
-              <Chip
-                icon={<CheckCircleRoundedIcon />}
-                label={isGenerating ? (generationStep || t('target:actions.tailoring', 'Tailoring Resume...')) : t('target:status.ready', 'Job details ready')}
-                color={isGenerating ? 'info' : 'success'}
-                variant="outlined"
-                size="small"
-                sx={{ fontWeight: 600 }}
-              />
-            ) : (
-              <Chip
-                icon={<InfoRoundedIcon />}
-                label={t('target:status.missing', 'Paste a job description to tailor')}
-                color="warning"
-                variant="outlined"
-                size="small"
-                sx={{ fontWeight: 600 }}
-              />
-            )}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { xs: 'stretch', sm: 'center' },
+              gap: 1.5,
+              width: { xs: '100%', sm: 'auto' },
+            }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-start' } }}>
+              {hasJob ? (
+                <Chip
+                  icon={<CheckCircleRoundedIcon />}
+                  label={isGenerating ? (generationStep || t('target:actions.tailoring', 'Tailoring Resume...')) : t('target:status.ready', 'Job details ready')}
+                  color={isGenerating ? 'info' : 'success'}
+                  variant="outlined"
+                  size="small"
+                  sx={{ fontWeight: 600 }}
+                />
+              ) : (
+                <Chip
+                  icon={<InfoRoundedIcon />}
+                  label={t('target:status.missing', 'Paste a job description to tailor')}
+                  color="warning"
+                  variant="outlined"
+                  size="small"
+                  sx={{ fontWeight: 600 }}
+                />
+              )}
+            </Box>
 
             {hasGeneratedCv && !isGenerating && (
               <Button
                 variant="outlined"
                 color="inherit"
                 onClick={onNextStep}
-                sx={{ fontWeight: 600 }}
+                sx={{
+                  fontWeight: 600,
+                  width: { xs: '100%', sm: 'auto' },
+                }}
               >
                 {t('target:actions.viewExisting', 'View Existing CV')}
               </Button>
@@ -491,7 +527,8 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               sx={{
                 fontWeight: 700,
                 px: 3.5,
-                py: 1,
+                py: 1.2,
+                width: { xs: '100%', sm: 'auto' },
                 boxShadow: isDark ? '0 4px 14px rgba(2, 132, 199, 0.4)' : '0 4px 14px rgba(2, 132, 199, 0.25)',
               }}
             >
@@ -499,6 +536,9 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             </Button>
           </Box>
         </Paper>
+
+        {/* Dedicated End-of-Scroll Safe Spacer (Ensures card ending is 100% visible on mobile) */}
+        <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 36px)', sm: 20 }, flexShrink: 0 }} />
       </Box>
 
       {/* Contextual AI Setup Modal (opens on click if key is missing) */}
