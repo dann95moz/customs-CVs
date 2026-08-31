@@ -38,7 +38,7 @@ Run these terminal commands to verify that the project is completely clean and e
 - **Automatic Metadata Extraction**: Confirm employer name and target role are accurately inferred from raw posting text.
 
 ### Milestone 3: AI Synthesis & Strategy Execution (Step 3)
-- **Model Compatibility**: Ensure AI model identifiers match real public provider endpoints (`gemini-2.0-flash`, `gemini-1.5-flash`, `gpt-4o`, `claude-3-7-sonnet`, `llama3.2`).
+- **Model Compatibility**: Ensure AI model identifiers match real public provider endpoints (`gemini-3.6-flash`, `gemini-3.5-flash`, `gpt-4o`, `claude-3-7-sonnet`, `llama3.2`).
 - **Anthropic Direct Browser Header**: Confirm `anthropic-dangerous-direct-browser-access: "true"` is supplied for direct Anthropic browser requests.
 - **Strategy Fallback & Error Handling**: Test handling of rate limits (HTTP 429), quota exhaustion, and invalid API keys with informative user guidance.
 - **XSS & Content Sanitization**: Verify all markdown parsed through `marked` is sanitized via `DOMPurify` before DOM injection.

@@ -1,4 +1,4 @@
-# 🚀 CV Studio & Tailor Engine (v2.0)
+# 🚀 CV Studio & Tailor Engine (v1.0)
 
 <div align="center">
 
@@ -37,16 +37,16 @@ Traditional resume builders lock your data in proprietary cloud databases, charg
 
 | Feature | Description | Status |
 | :--- | :--- | :---: |
-| 🗂️ **Local PDF & File Importer** | 100% client-side parser that extracts career history from PDF, .md, or .txt directly in-browser. | ✅ Ready |
-| 🧙 **3-Step Guided Wizard** | Visual guided profile form + raw Markdown editor with real-time bi-directional synchronization. | ✅ Ready |
-| 🤖 **Multi-Provider AI Strategies** | Supports Local AI (Ollama/LM Studio), Google Gemini, Groq, OpenAI (GPT-4o/o3-mini), Anthropic Claude, & OpenRouter. | ✅ Ready |
-| ✍️ **Live Hot Editing & Selection Bubble** | Click any bullet or text directly on the rendered A4 canvas to edit, format (`Ctrl+B`, `Ctrl+I`, highlight), or regenerate with AI. | ✅ Ready |
-| 📊 **Interactive Kanban Pipeline** | Full recruitment pipeline board (Wishlist, Applied, Interview, Offer) with version linking, metrics & analytics. | ✅ Ready |
-| 🔍 **ATS Quality & Gap Audit Engine** | 6-dimension scoring matrix (1-10), Google XYZ formula compliance, keyword cloud, and 1-click action levers. | ✅ Ready |
-| 🎨 **7 Engineered ATS Templates** | 7 layout themes (Modern Tech, Executive, Minimal ATS, Two-Column, Designer, Formal Legal, Academic Research). | ✅ Ready |
-| 🌈 **10 Curated Palettes + Custom HEX** | WCAG AA compliant color themes with dark/light mode and custom brand color picker. | ✅ Ready |
-| 🌐 **5-Language Internationalization** | Complete multilingual UI with instant locale switching (`English`, `Español`, `Deutsch`, `Français`, `Italiano`). | ✅ Ready |
-| 🖨️ **Dual PDF Export Engine** | Direct 1-click in-browser vector PDF generator + headless Puppeteer CLI with sub-millimeter margins. | ✅ Ready |
+| 🗂️ **Local PDF & File Importer** | 100% client-side parser that extracts career history from PDF, .md, or .txt directly in-browser. 
+| 🧙 **3-Step Guided Wizard** | Visual guided profile form + raw Markdown editor with real-time bi-directional synchronization. 
+| 🤖 **Multi-Provider AI Strategies** | Supports Local AI (Ollama/LM Studio), Google Gemini, Groq, OpenAI (GPT-4o/o3-mini), Anthropic Claude, & OpenRouter. 
+| ✍️ **Live Hot Editing & Selection Bubble** | Click any bullet or text directly on the rendered A4 canvas to edit, format (`Ctrl+B`, `Ctrl+I`, highlight), or regenerate with AI. 
+| 📊 **Interactive Kanban Pipeline** | Full recruitment pipeline board (Wishlist, Applied, Interview, Offer) with version linking, metrics & analytics. 
+| 🔍 **ATS  Gap Audit Engine** | 6-dimension scoring matrix (1-10), Google XYZ formula compliance, keyword cloud, and 1-click action levers. 
+| 🎨 **7 Engineered ATS Templates** | 7 layout themes (Modern Tech, Executive, Minimal ATS, Two-Column, Designer, Formal Legal, Academic Research). 
+| 🌈 **10 Curated Palettes + Custom HEX** | WCAG AA compliant color themes with dark/light mode and custom brand color picker. 
+| 🌐 **5-Language Internationalization** | Complete multilingual UI with instant locale switching (`English`, `Español`, `Deutsch`, `Français`, `Italiano`). 
+| 🖨️ **Dual PDF Export Engine** | Direct 1-click in-browser vector PDF generator + headless Puppeteer CLI with sub-millimeter margins. 
 
 ---
 

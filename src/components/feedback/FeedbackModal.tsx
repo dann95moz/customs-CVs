@@ -97,7 +97,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
       message: trimmedMsg,
       email: email.trim() || undefined,
       context: {
-        appVersion: '2.0.0',
+        appVersion: '1.0.0',
         locale: i18n.language || 'en',
         route: currentRoute,
       },
