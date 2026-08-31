@@ -19,8 +19,11 @@ import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import { useTranslation } from 'react-i18next';
 import { marked } from 'marked';
 import { CVData } from '../../../types/cv';
+import { useResumeStore } from '../../../store';
+import { extractCandidateInitials } from '../../../core/parser';
 import { useCvLiveEdit } from './CvLiveEditContext';
 import { AiRegeneratePopover } from './AiRegeneratePopover';
+import { ProfilePhotoDisplay } from '../photo/ProfilePhotoDisplay';
 
 export interface StepPreviewMobileEditProps {
   parsedCv: CVData;
@@ -103,8 +106,77 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
     liveEdit.undoItem(fieldKey, onRevert);
   };
 
+  const activeTheme = useResumeStore((s) => s.theme);
+  const initials = extractCandidateInitials(parsedCv.name || 'Candidate');
+  const isTwoColumnTheme = ['executive', 'two-column', 'designer-uiux', 'academic-research'].includes(activeTheme);
+
   return (
-    <Box sx={{ px: 2, py: 2, pb: 6, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+    <Box sx={{ px: 2, py: 2, pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 72px)', sm: 8 }, display: 'flex', flexDirection: 'column', gap: 2.5, boxSizing: 'border-box' }}>
+      {/* 0. Header & Profile Photo Card (Two-Column Themes) */}
+      {isTwoColumnTheme && (
+        <Box>
+          <Typography
+            variant="overline"
+            sx={{
+              fontWeight: 800,
+              fontSize: '0.75rem',
+              letterSpacing: '0.08em',
+              color: 'text.secondary',
+              mb: 1,
+              display: 'block',
+            }}
+          >
+            {t('preview:panels.design.photoTitle', 'Profile Photo & Header')}
+          </Typography>
+
+          <Card
+            variant="outlined"
+            sx={{
+              borderRadius: '14px',
+              bgcolor: 'background.paper',
+              borderColor: alpha(theme.palette.divider, 0.9),
+              boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
+            }}
+          >
+            <CardContent
+              sx={{
+                p: 2,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 2,
+                '&:last-child': { pb: 2 },
+              }}
+            >
+              <Box sx={{ minWidth: 0, flex: 1 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 800, lineHeight: 1.2 }}>
+                  {parsedCv.name || 'Candidate Name'}
+                </Typography>
+                {parsedCv.title && (
+                  <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, display: 'block', mt: 0.25 }}>
+                    {parsedCv.title}
+                  </Typography>
+                )}
+                <Typography variant="caption" sx={{ color: 'primary.main', fontWeight: 700, display: 'block', mt: 0.5, fontSize: '0.7rem' }}>
+                  {t('preview:panels.design.photoUploadTooltip', 'Tap photo to upload or crop')}
+                </Typography>
+              </Box>
+
+              <ProfilePhotoDisplay
+                maskShape={activeTheme === 'academic-research' ? 'circle' : activeTheme === 'designer-uiux' ? 'squircle' : 'rounded'}
+                size={54}
+                border={`2px solid ${theme.palette.primary.main}`}
+                boxShadow="0 4px 12px rgba(0,0,0,0.15)"
+                fallbackInitials={initials}
+                fallbackIcon={activeTheme === 'two-column' ? 'diamond' : 'monogram'}
+                activeTheme={activeTheme}
+                editable={true}
+              />
+            </CardContent>
+          </Card>
+        </Box>
+      )}
+
       {/* 1. Summary Block Card */}
       {parsedCv.summary && (
         <Box>
@@ -487,6 +559,9 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
         type={aiTarget?.type}
         onRegenerate={handleExecuteAiRegenerate}
       />
+
+      {/* Dedicated End-of-Scroll Safe Spacer */}
+      <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 36px)', sm: 20 }, flexShrink: 0 }} />
     </Box>
   );
 };

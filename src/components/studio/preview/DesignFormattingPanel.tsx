@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -10,14 +10,33 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   LinearProgress,
+  Switch,
+  FormControlLabel,
+  Button,
+  Alert,
+  Tooltip,
+  Slider,
   useTheme,
-  alpha
+  alpha,
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
+import AddAPhotoRoundedIcon from '@mui/icons-material/AddAPhotoRounded';
+import CropRoundedIcon from '@mui/icons-material/CropRounded';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTranslation } from 'react-i18next';
-import { PaletteId, FontFamilyId, SpacingDensity, PageFormat, DesignFormattingPanelProps } from '../../../types';
+import {
+  PaletteId,
+  FontFamilyId,
+  SpacingDensity,
+  PageFormat,
+  ProfilePhotoConfig,
+  DesignFormattingPanelProps,
+} from '../../../types';
 import { getAllPalettes } from '../../../constants/palettes';
+import { ProfilePhotoDisplay } from '../photo/ProfilePhotoDisplay';
+import { PhotoCropperModal } from '../photo/PhotoCropperModal';
 
 export type { DesignFormattingPanelProps };
 
@@ -36,14 +55,51 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
   sheetHeight,
   a4PagePx,
   estimatedPages,
+  photo,
+  onPhotoChange,
+  onPhotoToggle,
+  activeTheme = 'modern-tech',
   onClose,
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const muiTheme = useTheme();
   const palettes = getAllPalettes();
+  const [cropperOpen, setCropperOpen] = useState<boolean>(false);
+
+  const isTwoColumnTheme = ['executive', 'two-column', 'designer-uiux', 'academic-research'].includes(
+    activeTheme
+  );
+
+  const handlePhotoUploadFromFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Photo file size is too large (max 5MB). Please upload a smaller image.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (typeof event.target?.result === 'string') {
+        const newPhoto: ProfilePhotoConfig = {
+          url: event.target.result,
+          crop: { x: 0, y: 0, zoom: 1.0 },
+          enabled: true,
+        };
+        onPhotoChange?.(newPhoto);
+        setCropperOpen(true);
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const hiddenFileInputRef = React.useRef<HTMLInputElement>(null);
 
   return (
-    <Box sx={{ p: 2.5 }}>
+    <Box sx={{ p: 2.5, pb: 'calc(env(safe-area-inset-bottom, 0px) + 36px)', boxSizing: 'border-box' }}>
+      {/* Header */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h6" sx={{ fontWeight: 800, color: 'text.primary' }}>
           {t('preview:panels.design.title', 'Design & Formatting')}
@@ -52,6 +108,15 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           <CloseRoundedIcon />
         </IconButton>
       </Box>
+
+      {/* Hidden File Input for quick upload */}
+      <input
+        ref={hiddenFileInputRef}
+        type="file"
+        accept="image/png, image/jpeg, image/webp"
+        style={{ display: 'none' }}
+        onChange={handlePhotoUploadFromFileInput}
+      />
 
       {/* Section 1: Brand Color Picker */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>
@@ -78,7 +143,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
             border: '2px solid rgba(0,0,0,0.15)',
             boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
             transition: 'transform 0.15s ease',
-            '&:hover': { transform: 'scale(1.06)' }
+            '&:hover': { transform: 'scale(1.06)' },
           }}
         >
           <input
@@ -103,17 +168,25 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           sx={{ flex: 1 }}
           slotProps={{
             htmlInput: {
-              style: { fontFamily: 'monospace', fontWeight: 700, fontSize: '0.85rem' }
-            }
+              style: { fontFamily: 'monospace', fontWeight: 700, fontSize: '0.85rem' },
+            },
           }}
         />
         {palette === 'custom' && (
-          <Chip label={t('preview:panels.design.customActive', 'Custom Active')} color="primary" size="small" sx={{ fontWeight: 700, fontSize: '0.7rem' }} />
+          <Chip
+            label={t('preview:panels.design.customActive', 'Custom Active')}
+            color="primary"
+            size="small"
+            sx={{ fontWeight: 700, fontSize: '0.7rem' }}
+          />
         )}
       </Box>
 
       {/* Curated Accent Palettes */}
-      <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 1, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+      <Typography
+        variant="caption"
+        sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 1, textTransform: 'uppercase', letterSpacing: 0.5 }}
+      >
         {t('preview:panels.templates.palette', 'Color Palette')}
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.8, maxHeight: 180, overflowY: 'auto', pr: 0.5, mb: 2.5 }}>
@@ -137,7 +210,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
                 borderColor: isSelected ? 'primary.main' : 'divider',
                 bgcolor: isSelected ? alpha(muiTheme.palette.primary.main, 0.08) : 'background.paper',
                 transition: 'all 0.15s ease',
-                '&:hover': { borderColor: 'primary.main' }
+                '&:hover': { borderColor: 'primary.main' },
               }}
             >
               <Box
@@ -165,7 +238,170 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       <Divider sx={{ my: 2 }} />
 
-      {/* Section 2: Typography Selection */}
+      {/* Section 2: Profile Photo (Two-Column & Regional Customization) */}
+      <Box sx={{ mb: 2.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+            {t('preview:panels.design.photoTitle', 'Profile Photo')}
+          </Typography>
+          {isTwoColumnTheme && photo && (
+            <FormControlLabel
+              control={
+                <Switch
+                  size="small"
+                  checked={Boolean(photo.enabled)}
+                  onChange={(e) => onPhotoToggle?.(e.target.checked)}
+                />
+              }
+              label={
+                <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontSize: '0.74rem' }}>
+                  {photo.enabled ? 'Enabled' : 'Hidden'}
+                </Typography>
+              }
+              sx={{ m: 0 }}
+            />
+          )}
+        </Box>
+
+        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5, lineHeight: 1.4 }}>
+          {t(
+            'preview:panels.design.photoSubtitle',
+            'Optional headshot with pan & zoom framing. Recommended for EU & LatAm applications.'
+          )}
+        </Typography>
+
+        {/* Two-Column vs Single-Column State */}
+        {!isTwoColumnTheme ? (
+          <Alert
+            severity="info"
+            icon={<InfoOutlinedIcon fontSize="inherit" />}
+            sx={{
+              borderRadius: '8px',
+              fontSize: '0.72rem',
+              lineHeight: 1.35,
+              bgcolor: alpha(muiTheme.palette.info.main, 0.08),
+            }}
+          >
+            Photos are active on two-column designs (Corporate Banner, Contrast Sidebar, Pastel Card, Dual-Tone). Single-column ATS designs omit photos for 100% parser compliance.
+          </Alert>
+        ) : photo && photo.url ? (
+          <>
+            <Paper
+              variant="outlined"
+              sx={{
+                p: 1.5,
+                borderRadius: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 1.5,
+                bgcolor: alpha(muiTheme.palette.background.paper, 0.8),
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <ProfilePhotoDisplay
+                  photo={photo}
+                  maskShape={activeTheme === 'academic-research' ? 'circle' : activeTheme === 'designer-uiux' ? 'squircle' : 'rounded'}
+                  size={48}
+                  border={`1.5px solid ${muiTheme.palette.primary.main}`}
+                  boxShadow="0 2px 8px rgba(0,0,0,0.15)"
+                />
+                <Box>
+                  <Typography variant="caption" sx={{ fontWeight: 800, display: 'block', color: 'text.primary', fontSize: '0.78rem' }}>
+                    Headshot Configured
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.68rem', display: 'block' }}>
+                    Zoom: {photo.crop.zoom.toFixed(1)}x • Offset: {Math.round(photo.crop.x)}%, {Math.round(photo.crop.y)}%
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box sx={{ display: 'flex', gap: 0.5 }}>
+                <Tooltip title={t('preview:panels.design.photoEdit', 'Adjust Framing & Zoom')}>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={() => setCropperOpen(true)}
+                    sx={{ bgcolor: alpha(muiTheme.palette.primary.main, 0.1) }}
+                  >
+                    <CropRoundedIcon sx={{ fontSize: 18 }} />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={t('preview:panels.design.photoRemove', 'Remove Photo')}>
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={() => onPhotoChange?.(null)}
+                    sx={{ bgcolor: alpha(muiTheme.palette.error.main, 0.08) }}
+                  >
+                    <DeleteOutlineRoundedIcon sx={{ fontSize: 18 }} />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Paper>
+
+            {/* Photo Display Size Slider & Preset Chips */}
+            <Box sx={{ mt: 1.5, px: 0.5 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
+                <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>
+                  {t('preview:panels.design.photoSize', 'Display Size in Template')}
+                </Typography>
+                <Typography variant="caption" sx={{ fontWeight: 800, color: 'primary.main' }}>
+                  {photo.size || 108}px
+                </Typography>
+              </Box>
+              <Slider
+                size="small"
+                value={photo.size || 108}
+                min={80}
+                max={144}
+                step={4}
+                onChange={(_, val) => onPhotoChange?.({ ...photo, size: val as number })}
+                sx={{ mb: 1 }}
+              />
+              <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                {[
+                  { label: t('preview:panels.design.sizeCompact', 'Compact'), val: 88 },
+                  { label: t('preview:panels.design.sizeStandard', 'Standard'), val: 104 },
+                  { label: t('preview:panels.design.sizeLarge', 'Large'), val: 120 },
+                  { label: t('preview:panels.design.sizeHero', 'Hero'), val: 140 },
+                ].map((preset) => (
+                  <Chip
+                    key={preset.val}
+                    label={`${preset.label} (${preset.val}px)`}
+                    size="small"
+                    variant={(photo.size || 108) === preset.val ? 'filled' : 'outlined'}
+                    color={(photo.size || 108) === preset.val ? 'primary' : 'default'}
+                    onClick={() => onPhotoChange?.({ ...photo, size: preset.val })}
+                    sx={{ fontSize: '0.68rem', height: 22, cursor: 'pointer' }}
+                  />
+                ))}
+              </Box>
+            </Box>
+          </>
+        ) : (
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              startIcon={<AddAPhotoRoundedIcon />}
+              onClick={() => hiddenFileInputRef.current?.click()}
+              sx={{ fontSize: '0.78rem', textTransform: 'none', py: 0.75 }}
+              fullWidth
+            >
+              {t('preview:panels.design.photoUpload', 'Upload Professional Photo')}
+            </Button>
+            <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.68rem', textAlign: 'center' }}>
+              PNG, JPG or WebP (Max 5MB)
+            </Typography>
+          </Box>
+        )}
+      </Box>
+
+      <Divider sx={{ my: 2 }} />
+
+      {/* Section 3: Typography Selection */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>
         {t('preview:panels.design.fontFamily', 'Font Family')}
       </Typography>
@@ -197,7 +433,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       <Divider sx={{ my: 2 }} />
 
-      {/* Section 3: Spacing & Content Density */}
+      {/* Section 4: Spacing & Content Density */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>
         {t('preview:panels.design.sectionSpacing', 'Section Spacing')}
       </Typography>
@@ -226,7 +462,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       <Divider sx={{ my: 2 }} />
 
-      {/* Section 4: Page Paper Format */}
+      {/* Section 5: Page Paper Format */}
       <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.5 }}>
         {t('preview:panels.design.pageFormat', 'Paper Format')}
       </Typography>
@@ -255,7 +491,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
       <Divider sx={{ my: 2 }} />
 
-      {/* Section 5: Page Budget & Scale Meter */}
+      {/* Section 6: Page Budget & Scale Meter */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
         <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
           {t('preview:toolbar.pageFit', 'Page Budget & Scale')}
@@ -273,15 +509,25 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
       </Box>
       <Paper variant="outlined" sx={{ p: 1.5, borderRadius: '8px' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-          <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>Paper Standard:</Typography>
-          <Typography variant="caption" sx={{ fontWeight: 700 }}>{pageFormat.toUpperCase()} ({a4PagePx}px)</Typography>
+          <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+            Paper Standard:
+          </Typography>
+          <Typography variant="caption" sx={{ fontWeight: 700 }}>
+            {pageFormat.toUpperCase()} ({a4PagePx}px)
+          </Typography>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-          <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>Rendered Height:</Typography>
-          <Typography variant="caption" sx={{ fontWeight: 700 }}>{sheetHeight}px / {a4PagePx}px</Typography>
+          <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+            Rendered Height:
+          </Typography>
+          <Typography variant="caption" sx={{ fontWeight: 700 }}>
+            {sheetHeight}px / {a4PagePx}px
+          </Typography>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-          <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>Page Status:</Typography>
+          <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+            Page Status:
+          </Typography>
           <Typography variant="caption" sx={{ fontWeight: 800, color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>
             {estimatedPages === 1 ? 'Perfect 1 Page ✓' : `${estimatedPages} Pages`}
           </Typography>
@@ -293,10 +539,26 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           color={estimatedPages === 1 ? 'success' : 'warning'}
           sx={{ height: 6, borderRadius: 3 }}
         />
-        <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.66rem', mt: 0.5, display: 'block', textAlign: 'right' }}>
+        <Typography
+          variant="caption"
+          sx={{ color: 'text.secondary', fontSize: '0.66rem', mt: 0.5, display: 'block', textAlign: 'right' }}
+        >
           {Math.round((sheetHeight / a4PagePx) * 100)}% of 1 {pageFormat.toUpperCase()} Page
         </Typography>
       </Paper>
+
+      {/* Pan & Zoom Photo Cropper Modal */}
+      {cropperOpen && (
+        <PhotoCropperModal
+          open={cropperOpen}
+          onClose={() => setCropperOpen(false)}
+          photo={photo || null}
+          onSave={(updatedPhoto) => {
+            onPhotoChange?.(updatedPhoto);
+          }}
+          activeTheme={activeTheme}
+        />
+      )}
     </Box>
   );
 };

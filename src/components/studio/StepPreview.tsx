@@ -69,6 +69,9 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const setSpacingDensity = useResumeStore((s) => s.setSpacingDensity);
   const pageFormat = useResumeStore((s) => s.pageFormat);
   const setPageFormat = useResumeStore((s) => s.setPageFormat);
+  const photo = useResumeStore((s) => s.photo);
+  const setProfilePhoto = useResumeStore((s) => s.setProfilePhoto);
+  const setProfilePhotoEnabled = useResumeStore((s) => s.setProfilePhotoEnabled);
   const handleSaveCurrentVersion = useResumeStore((s) => s.handleSaveCurrentVersion);
   const handleDownloadCvMarkdown = useResumeStore((s) => s.handleDownloadCvMarkdown);
   const handleGenerate = useResumeStore((s) => s.handleGenerate);
@@ -334,6 +337,10 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   sheetHeight={sheetHeight}
                   a4PagePx={targetPagePx}
                   estimatedPages={estimatedPages}
+                  photo={photo}
+                  onPhotoChange={setProfilePhoto}
+                  onPhotoToggle={setProfilePhotoEnabled}
+                  activeTheme={theme}
                   onClose={() => setActiveSidePanel(null)}
                 />
               )}
@@ -455,6 +462,8 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               overflowY: 'auto',
               WebkitOverflowScrolling: 'touch',
               p: { xs: 1.5, sm: 2, md: 3.5 },
+              pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 64px)', sm: 5, md: 6 },
+              boxSizing: 'border-box',
             }}
           >
             {/* Scaled Wrapper Container with strict visual pixel footprint */}
@@ -495,6 +504,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                       customColor={palette === 'custom' ? customColor : undefined}
                       fontFamily={fontFamily}
                       spacingDensity={spacingDensity}
+                      photo={photo}
                     />
                   </CvLiveEditProvider>
                 </div>
