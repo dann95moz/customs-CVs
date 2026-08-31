@@ -317,7 +317,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           </Box>
 
           {/* Panel Content Body */}
-          <Box sx={{ p: { xs: 1.5, sm: 2 }, display: 'flex', flexDirection: 'column', gap: 2.5, flex: 1, overflowY: 'auto', overflowX: 'hidden', boxSizing: 'border-box' }}>
+          <Box sx={{ p: { xs: 1.5, sm: 2 }, pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 36px)', sm: 4 }, display: 'flex', flexDirection: 'column', gap: 2.5, flex: 1, overflowY: 'auto', overflowX: 'hidden', boxSizing: 'border-box' }}>
             {/* TAB 1: AUDIT BREAKDOWN */}
             {activeTab === 'audit' && (
               <>

@@ -32,7 +32,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
   const allTemplates = getAllTemplates();
 
   return (
-    <Box sx={{ p: 2.5 }}>
+    <Box sx={{ p: 2.5, pb: 'calc(env(safe-area-inset-bottom, 0px) + 36px)', boxSizing: 'border-box' }}>
       {/* Header: Title + Close Button */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h5" sx={{ fontWeight: 800, color: 'text.primary', letterSpacing: -0.5 }}>

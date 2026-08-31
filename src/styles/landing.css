@@ -232,7 +232,7 @@
 
 @media (max-width: 600px) {
   .welcome-landing-wrapper {
-    padding: 20px 14px 48px;
+    padding: 20px 14px calc(env(safe-area-inset-bottom, 0px) + 56px);
   }
   .welcome-landing-content {
     gap: 20px;

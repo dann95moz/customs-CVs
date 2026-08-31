@@ -31,7 +31,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const isDark = muiTheme.palette.mode === 'dark';
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', p: { xs: 1.5, sm: 2, md: 3 }, display: 'flex', flexDirection: 'column', gap: { xs: 2, md: 3 }, boxSizing: 'border-box' }}>
+    <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', p: { xs: 1.5, sm: 2, md: 3 }, pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 48px)', sm: 5, md: 6 }, display: 'flex', flexDirection: 'column', gap: { xs: 2, md: 3 }, boxSizing: 'border-box' }}>
       {/* Header Banner */}
       <Paper
         sx={{
@@ -227,6 +227,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           {t('common:actions.reset', 'Reset Workspace')}
         </Button>
       </Paper>
+
+      {/* Dedicated End-of-Scroll Safe Spacer */}
+      <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 36px)', sm: 20 }, flexShrink: 0 }} />
 
       {/* In-App Feedback Modal */}
       <FeedbackModal

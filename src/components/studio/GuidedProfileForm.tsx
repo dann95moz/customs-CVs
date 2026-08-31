@@ -281,7 +281,7 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: { xs: 1, sm: 2 } }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: { xs: 1, sm: 2 }, pb: { xs: 3, sm: 4 }, boxSizing: 'border-box' }}>
       {/* 1. Identity & Contact Links */}
       <PersonalInfoSection
         isExpanded={expandedSection === 'personal'}

@@ -205,6 +205,7 @@ export const ApplicationsHistoryView: React.FC = () => {
         overflowX: 'hidden',
         boxSizing: 'border-box',
         p: { xs: 1.5, sm: 2, md: 3 },
+        pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 48px)', sm: 5, md: 6 },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -574,6 +575,9 @@ export const ApplicationsHistoryView: React.FC = () => {
             )}
           </Box>
         )}
+
+        {/* Dedicated End-of-Scroll Safe Spacer */}
+        <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 36px)', sm: 20 }, flexShrink: 0 }} />
       </Box>
 
       {/* Bulk Delete Confirmation Dialog with Exact Counts & Kanban Protection Notice */}

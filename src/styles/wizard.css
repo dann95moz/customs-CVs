@@ -9,6 +9,7 @@
   flex-direction: column;
   flex: 1;
   height: calc(100vh - var(--navbar-height));
+  height: calc(100dvh - var(--navbar-height));
   overflow: hidden;
   position: relative;
   background: var(--bg-dark);
@@ -29,7 +30,7 @@
   flex: 1;
   height: 100%;
   overflow-y: auto;
-  padding: 20px 24px;
+  padding: 20px 24px calc(env(safe-area-inset-bottom, 0px) + 36px);
   gap: 16px;
   max-width: var(--container-xl);
   margin: 0 auto;
@@ -46,7 +47,7 @@
 /* Responsive adjustments */
 @media (max-width: 900px) {
   .wizard-step-view {
-    padding: 14px;
+    padding: 14px 14px calc(env(safe-area-inset-bottom, 0px) + 40px);
     gap: 12px;
   }
 }
