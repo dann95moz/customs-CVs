@@ -61,15 +61,15 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
         {/* Hero Title & Subtitle */}
         <div className="welcome-hero-header">
           <Typography variant="h1" className="welcome-hero-title">
-            {t('landing:hero.titlePrefix', 'Tailor High-Impact Resumes')}{' '}
+            {t('landing:hero.titlePrefix', 'Multiply Your Interviews')}{' '}
             <span className="welcome-gradient-text">
-              {t('landing:hero.titleGradient', 'for Every Opportunity')}
+              {t('landing:hero.titleGradient', 'by Tailoring Your CV in Seconds')}
             </span>
           </Typography>
           <Typography variant="body1" className="welcome-hero-subtitle">
             {t(
               'landing:hero.subtitle',
-              'Transform your master career data into tailored, ATS-compliant resumes with Google XYZ-formula bullets, real-time 1–10 quality scoring, and 1-page design precision.'
+              'Transform your career history into a high-impact resume with quantifiable Google XYZ-formula bullets, guaranteed ATS compliance, and 100% on-device privacy.'
             )}
           </Typography>
         </div>

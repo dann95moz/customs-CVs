@@ -1,8 +1,8 @@
 # 🚀 CV Studio & Tailor Engine (v2.0)
 
-A modular, production-grade resume tailoring, preview, and PDF generation engine built with **TypeScript**, **React 19**, **MUI 9**, **Vite**, **Puppeteer**, and **Multi-Provider AI Strategies**.
+> **Multiply your interviews by tailoring your resume in seconds.** An intelligent, privacy-first ATS resume studio designed to tailor career histories to target job descriptions with quantifiable Google XYZ-formula bullets, real-time quality audits, and pixel-perfect 1-page PDF exports.
 
-Designed to produce high-impact, pixel-perfect CVs optimized for **Applicant Tracking Systems (ATS)**, executive recruiters, and modern technical hiring managers.
+Designed to produce high-impact, pixel-perfect CVs optimized for **Applicant Tracking Systems (ATS)**, executive recruiters, and modern hiring managers. Built with **TypeScript**, **React 19**, **MUI 9**, **Vite**, **Puppeteer**, and **Multi-Provider AI Strategies**.
 
 ---
 
