@@ -30,6 +30,8 @@ export interface CvDataSlice {
   targetJob: string;
   cvMarkdown: string;
   gapMarkdown: string;
+  coverLetterMarkdown: string;
+  coverLetterTone: 'corporate' | 'startup' | 'leadership';
   rules: string;
   companyName: string;
   targetRole: string;
@@ -37,6 +39,8 @@ export interface CvDataSlice {
   setTargetJob: (val: string | ((prev: string) => string)) => void;
   setCvMarkdown: (val: string | ((prev: string) => string)) => void;
   setGapMarkdown: (val: string | ((prev: string) => string)) => void;
+  setCoverLetterMarkdown: (val: string | ((prev: string) => string)) => void;
+  setCoverLetterTone: (val: 'corporate' | 'startup' | 'leadership') => void;
   setRules: (val: string | ((prev: string) => string)) => void;
   setCompanyName: (val: string) => void;
   setTargetRole: (val: string) => void;

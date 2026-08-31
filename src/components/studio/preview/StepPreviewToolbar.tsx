@@ -30,6 +30,7 @@ import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import AspectRatioRoundedIcon from '@mui/icons-material/AspectRatioRounded';
 import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import { useTranslation } from 'react-i18next';
 import { StepPreviewToolbarProps, PageFormat } from '../../../types';
 import { useCvLiveEdit } from './CvLiveEditContext';
@@ -38,6 +39,8 @@ import { PAGE_FORMAT_CONFIGS } from '../../../theme/dimensions';
 export type { StepPreviewToolbarProps };
 
 export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
+  previewDocType = 'cv',
+  onPreviewDocTypeChange,
   activeTemplateName,
   onOpenTemplates,
   onSaveVersion,
@@ -87,26 +90,75 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
         zIndex: 20,
       }}
     >
-      {/* Left: Active Template, Format, AutoFit & In-Place Text Formatting Tools */}
+      {/* Left: Document Switcher (CV vs Cover Letter) & Active Template */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
-        {/* Active Template Chip */}
-        <Chip
-          icon={<StyleRoundedIcon sx={{ fontSize: '14px !important' }} />}
-          label={activeTemplateName}
-          size="small"
-          variant="outlined"
-          onClick={onOpenTemplates}
-          sx={{
-            fontWeight: 700,
-            fontSize: '0.72rem',
-            cursor: 'pointer',
-            display: { xs: 'none', sm: 'inline-flex' },
-            '&:hover': {
-              borderColor: 'primary.main',
-              bgcolor: alpha(theme.palette.primary.main, 0.08),
-            },
-          }}
-        />
+        {/* Document Type Switcher */}
+        {onPreviewDocTypeChange && (
+          <ButtonGroup
+            size="small"
+            variant="outlined"
+            sx={{
+              p: 0.25,
+              borderRadius: '9999px',
+              bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${theme.palette.divider}`,
+            }}
+          >
+            <Button
+              variant={previewDocType === 'cv' ? 'contained' : 'text'}
+              color="primary"
+              onClick={() => onPreviewDocTypeChange('cv')}
+              startIcon={<ArticleRoundedIcon sx={{ fontSize: '14px !important' }} />}
+              sx={{
+                borderRadius: '9999px !important',
+                fontWeight: 700,
+                fontSize: '0.74rem',
+                textTransform: 'none',
+                px: { xs: 1, sm: 1.5 },
+                py: 0.35,
+              }}
+            >
+              {t('preview:toolbar.docCv', 'Resume (CV)')}
+            </Button>
+            <Button
+              variant={previewDocType === 'cover-letter' ? 'contained' : 'text'}
+              color="secondary"
+              onClick={() => onPreviewDocTypeChange('cover-letter')}
+              startIcon={<EmailRoundedIcon sx={{ fontSize: '14px !important' }} />}
+              sx={{
+                borderRadius: '9999px !important',
+                fontWeight: 700,
+                fontSize: '0.74rem',
+                textTransform: 'none',
+                px: { xs: 1, sm: 1.5 },
+                py: 0.35,
+              }}
+            >
+              {t('preview:toolbar.docCoverLetter', 'Cover Letter')}
+            </Button>
+          </ButtonGroup>
+        )}
+
+        {/* Active Template Chip (shown for CV mode) */}
+        {previewDocType === 'cv' && (
+          <Chip
+            icon={<StyleRoundedIcon sx={{ fontSize: '14px !important' }} />}
+            label={activeTemplateName}
+            size="small"
+            variant="outlined"
+            onClick={onOpenTemplates}
+            sx={{
+              fontWeight: 700,
+              fontSize: '0.72rem',
+              cursor: 'pointer',
+              display: { xs: 'none', sm: 'inline-flex' },
+              '&:hover': {
+                borderColor: 'primary.main',
+                bgcolor: alpha(theme.palette.primary.main, 0.08),
+              },
+            }}
+          />
+        )}
 
         {/* Page Format Selector (A4 / Letter / Legal) */}
         {onPageFormatChange && (

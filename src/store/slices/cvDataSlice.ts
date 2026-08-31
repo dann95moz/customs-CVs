@@ -23,6 +23,8 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
   targetJob: BLANK_TARGET_JOB,
   cvMarkdown: BLANK_TAILORED_CV,
   gapMarkdown: BLANK_GAP_REPORT,
+  coverLetterMarkdown: '',
+  coverLetterTone: 'corporate',
   rules: DEFAULT_RULES,
   companyName: '',
   targetRole: '',
@@ -55,6 +57,15 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
   setGapMarkdown: (val) => {
     const nextVal = typeof val === 'function' ? val(get().gapMarkdown) : val;
     set({ gapMarkdown: nextVal });
+  },
+
+  setCoverLetterMarkdown: (val) => {
+    const nextVal = typeof val === 'function' ? val(get().coverLetterMarkdown) : val;
+    set({ coverLetterMarkdown: nextVal });
+  },
+
+  setCoverLetterTone: (coverLetterTone) => {
+    set({ coverLetterTone });
   },
 
   setRules: (val) => {
