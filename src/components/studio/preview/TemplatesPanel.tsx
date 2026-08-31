@@ -168,16 +168,20 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
           gap: 1.75,
         }}
       >
-        {allTemplates.map((t) => (
+        {allTemplates.map((tpl) => (
           <TemplateThumbnailMiniature
-            key={t.id}
-            themeId={t.id}
+            key={tpl.id}
+            themeId={tpl.id}
             paletteId={palette}
             customColor={palette === 'custom' ? customColor : undefined}
-            name={t.name}
-            category={t.category}
-            isSelected={theme === t.id}
-            onClick={() => onSelectTheme(t.id)}
+            name={tpl.name}
+            category={tpl.category}
+            description={tpl.description}
+            recommendedFor={tpl.recommendedFor}
+            layout={tpl.layout}
+            icon={tpl.icon}
+            isSelected={theme === tpl.id}
+            onClick={() => onSelectTheme(tpl.id)}
           />
         ))}
       </Box>

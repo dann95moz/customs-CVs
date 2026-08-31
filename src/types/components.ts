@@ -326,6 +326,20 @@ export interface StepPreviewNavRailProps {
   onToggleSidePanel: (panel: PreviewSidePanelType) => void;
 }
 
+export interface TemplateThumbnailMiniatureProps {
+  themeId: ThemeId;
+  paletteId: PaletteId;
+  customColor?: string;
+  name: string;
+  category: string;
+  description?: string;
+  recommendedFor?: string;
+  layout?: 'single-column' | 'two-column' | 'ats-linear';
+  icon?: string;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
 export interface TemplatesPanelProps {
   theme: ThemeId;
   onSelectTheme: (id: ThemeId) => void;
