@@ -425,8 +425,19 @@ function parseListItems(rawContent: string): string[] {
  * Main parser: transforms Markdown string to structured CVData object
  */
 export function parseCvMarkdownToData(rawMarkdown: string): CVData {
-  if (!rawMarkdown) {
-    return { name: '', title: '', contacts: [], sections: [] };
+  if (!rawMarkdown || !rawMarkdown.trim() || rawMarkdown.trim() === '#') {
+    return {
+      name: '',
+      title: '',
+      contacts: [],
+      summary: '',
+      experience: [],
+      education: [],
+      skillGroups: [],
+      languages: [],
+      projects: [],
+      sections: []
+    };
   }
 
   const lines = rawMarkdown.split(/\r?\n/);

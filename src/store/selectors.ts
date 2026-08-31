@@ -21,30 +21,15 @@ export const extractGapInfo = (gapMarkdown: string): { matchScore: number; keywo
 };
 
 export const checkHasTargetJob = (targetJob: string): boolean => {
-  return Boolean(
-    targetJob &&
-    targetJob.trim().length > 40 &&
-    !targetJob.includes('[Paste the raw job description') &&
-    !targetJob.includes('[Target Company Name]')
-  );
+  return Boolean(targetJob && targetJob.trim().length > 20);
 };
 
 export const checkHasGeneratedCv = (cvMarkdown: string): boolean => {
-  return Boolean(
-    cvMarkdown &&
-    cvMarkdown.trim().length > 60 &&
-    !cvMarkdown.includes('[CANDIDATE FULL NAME]') &&
-    !cvMarkdown.includes('[Target Role Title')
-  );
+  return Boolean(cvMarkdown && cvMarkdown.trim().length > 30);
 };
 
 export const checkHasGapReport = (gapMarkdown: string): boolean => {
-  return Boolean(
-    gapMarkdown &&
-    gapMarkdown.trim().length > 50 &&
-    !gapMarkdown.includes('--/100') &&
-    !gapMarkdown.includes('[Target Company]')
-  );
+  return Boolean(gapMarkdown && gapMarkdown.trim().length > 30);
 };
 
 /**

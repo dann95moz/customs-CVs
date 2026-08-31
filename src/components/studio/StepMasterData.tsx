@@ -76,7 +76,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
     severity: 'success'
   });
 
-  const hasData = content.trim().length > 60 && !content.includes('[CANDIDATE FULL NAME]');
+  const hasData = Boolean(content && content.trim().length > 20);
 
   const handleApplyImportedData = (importedText: string, fileName: string, isPdf?: boolean, details?: PdfImportResult) => {
     onChange(importedText);

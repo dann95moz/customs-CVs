@@ -5,6 +5,23 @@ import { CVData } from '../../types/cv';
  * Principle: Single Responsibility (S) - focuses exclusively on converting CV model to Markdown text.
  */
 export function serializeCvDataToMarkdown(data: CVData): string {
+  const hasContent = Boolean(
+    (data.name && data.name.trim()) ||
+    (data.title && data.title.trim()) ||
+    (data.contacts && data.contacts.length > 0) ||
+    (data.summary && data.summary.trim()) ||
+    (data.skillGroups && data.skillGroups.length > 0) ||
+    (data.experience && data.experience.length > 0) ||
+    (data.education && data.education.length > 0) ||
+    (data.languages && data.languages.length > 0) ||
+    (data.projects && data.projects.length > 0) ||
+    (data.sections && data.sections.length > 0)
+  );
+
+  if (!hasContent) {
+    return '';
+  }
+
   const parts: string[] = [];
 
   // Name

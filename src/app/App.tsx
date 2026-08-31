@@ -88,7 +88,7 @@ export const App: React.FC = () => {
         <WizardStepper
           currentStep={wizardStep}
           onSelectStep={setWizardStep}
-          hasMasterData={Boolean(masterData && masterData.trim().length > 60 && !masterData.includes('[CANDIDATE FULL NAME]'))}
+          hasMasterData={Boolean(masterData && masterData.trim().length > 10)}
           hasTargetJob={hasTargetJob}
           hasGeneratedCv={hasGeneratedCv}
         />
