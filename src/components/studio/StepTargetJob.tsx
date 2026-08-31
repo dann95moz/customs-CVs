@@ -81,6 +81,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
 
     const isConfigured = Boolean(
       (providerSettings.provider === 'local') ||
+      (providerSettings.provider === 'custom' && providerSettings.customEndpoint?.trim()) ||
       (providerSettings.apiKey && providerSettings.apiKey.trim().length > 5)
     );
 

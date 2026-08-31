@@ -200,7 +200,7 @@ export class ClaudeStrategy implements AIProviderStrategy {
           'Content-Type': 'application/json',
           'x-api-key': apiKey,
           'anthropic-version': '2023-06-01',
-          'dangerously-allow-browser': 'true'
+          'anthropic-dangerous-direct-browser-access': 'true'
         },
         body: JSON.stringify({
           model: settings.model || 'claude-3-7-sonnet-latest',
