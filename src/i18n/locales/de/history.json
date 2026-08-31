@@ -142,5 +142,22 @@
     "title_one": "Sie haben 1 angepassten CV bereit zur Verfolgung",
     "title_other": "Sie haben {{count}} angepasste CVs bereit zur Verfolgung",
     "desc": "Wählen Sie aus, welche Version Sie tatsächlich eingereicht haben, um sie dem Board hinzuzufügen."
+  },
+  "diff": {
+    "title": "Visueller Versionsvergleich (Diff)",
+    "subtitle": "Angepasste Varianten nebeneinander oder kombiniert vergleichen",
+    "compareButton": "Versionen vergleichen (Diff)",
+    "masterCv": "Master-Profil (SSOT)",
+    "currentTailored": "Aktueller CV im Editor",
+    "baseVersion": "Basisversion (Original):",
+    "targetVersion": "Vergleichsversion (Ziel):",
+    "unified": "Kombinierter Diff",
+    "split": "Nebeneinander",
+    "additions": "Hinzugefügt",
+    "deletions": "Entfernt",
+    "similarity": "Übereinstimmung",
+    "metricsEnhanced": "Metriken optimiert",
+    "copyDiff": "Roh-Diff kopieren",
+    "openInEditor": "Version in Editor laden"
   }
 }

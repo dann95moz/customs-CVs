@@ -26,6 +26,7 @@ import DeselectRoundedIcon from '@mui/icons-material/DeselectRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
+import DifferenceRoundedIcon from '@mui/icons-material/DifferenceRounded';
 import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../store';
 import { GeneratedCvVersion, KanbanColumn } from '../../types/cv';
@@ -36,11 +37,15 @@ import { ApplicationCard } from './history/ApplicationCard';
 import { TrackApplicationDialog } from './history/TrackApplicationDialog';
 import { downloadTextFile } from '../../utils/fileUtils';
 import { ColumnEditDialog } from './history/ColumnEditDialog';
+import { VersionDiffModal } from './history/VersionDiffModal';
 
 export const ApplicationsHistoryView: React.FC = () => {
   const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+
+  const [isDiffModalOpen, setIsDiffModalOpen] = useState<boolean>(false);
+  const [diffSelectedVersionId, setDiffSelectedVersionId] = useState<string | undefined>(undefined);
 
   const savedVersions = useResumeStore((s) => s.savedVersions);
   const applications = useResumeStore((s) => s.applications || []);
@@ -507,17 +512,34 @@ export const ApplicationsHistoryView: React.FC = () => {
                     </Typography>
                   </Box>
 
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    color="primary"
-                    disabled={savedVersions.length === 0}
-                    onClick={handleStartSelectionMode}
-                    startIcon={<CheckCircleOutlineRoundedIcon sx={{ fontSize: 16 }} />}
-                    sx={{ fontWeight: 700, fontSize: '0.78rem' }}
-                  >
-                    {t('history:selection.enterSelectMode', 'Select to Delete')}
-                  </Button>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="secondary"
+                      disabled={savedVersions.length === 0}
+                      onClick={() => {
+                        setDiffSelectedVersionId(undefined);
+                        setIsDiffModalOpen(true);
+                      }}
+                      startIcon={<DifferenceRoundedIcon sx={{ fontSize: 16 }} />}
+                      sx={{ fontWeight: 700, fontSize: '0.78rem' }}
+                    >
+                      {t('history:diff.compareButton', 'Compare Versions (Diff)')}
+                    </Button>
+
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="primary"
+                      disabled={savedVersions.length === 0}
+                      onClick={handleStartSelectionMode}
+                      startIcon={<CheckCircleOutlineRoundedIcon sx={{ fontSize: 16 }} />}
+                      sx={{ fontWeight: 700, fontSize: '0.78rem' }}
+                    >
+                      {t('history:selection.enterSelectMode', 'Select to Delete')}
+                    </Button>
+                  </Box>
                 </>
               )}
             </Paper>
@@ -709,6 +731,16 @@ export const ApplicationsHistoryView: React.FC = () => {
           setEditingColumn(null);
         }}
         onSave={handleSaveColumn}
+      />
+
+      {/* Visual Version Diff Modal */}
+      <VersionDiffModal
+        open={isDiffModalOpen}
+        onClose={() => {
+          setIsDiffModalOpen(false);
+          setDiffSelectedVersionId(undefined);
+        }}
+        initialVersionBId={diffSelectedVersionId}
       />
     </Box>
   );

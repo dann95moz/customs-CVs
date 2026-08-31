@@ -142,5 +142,22 @@
     "title_one": "Vous avez 1 CV prêt à être suivi",
     "title_other": "Vous avez {{count}} CVs prêts à être suivis",
     "desc": "Sélectionnez quelle version a été réellement envoyée pour l'ajouter à votre tableau actif."
+  },
+  "diff": {
+    "title": "Comparateur Visuel de Versions (Diff)",
+    "subtitle": "Comparez les variantes adaptées côte à côte ou de façon unifiée",
+    "compareButton": "Comparer les Versions (Diff)",
+    "masterCv": "Profil Principal (SSOT)",
+    "currentTailored": "CV Adapté Actuel (Éditeur)",
+    "baseVersion": "Version de Base (Originale) :",
+    "targetVersion": "Version Cible (Adaptée) :",
+    "unified": "Diff Unifié",
+    "split": "Côte à Côte",
+    "additions": "Ajouts",
+    "deletions": "Suppressions",
+    "similarity": "Similarité du Contenu",
+    "metricsEnhanced": "Métriques Optimisées",
+    "copyDiff": "Copier le Diff Brut",
+    "openInEditor": "Charger la Version dans l'Éditeur"
   }
 }

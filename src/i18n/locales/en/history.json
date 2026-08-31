@@ -142,5 +142,22 @@
     "title_one": "You have 1 tailored CV ready to track",
     "title_other": "You have {{count}} tailored CVs ready to track",
     "desc": "Select which CV version was actually submitted to an employer to add it to your active Kanban board."
+  },
+  "diff": {
+    "title": "Visual Version Diff Comparator",
+    "subtitle": "Compare tailored variants side-by-side or unified",
+    "compareButton": "Compare Versions (Diff)",
+    "masterCv": "Master Profile (SSOT)",
+    "currentTailored": "Current Tailored CV (Editor)",
+    "baseVersion": "Base Version (Original):",
+    "targetVersion": "Compare Target (Tailored):",
+    "unified": "Unified Diff",
+    "split": "Side-by-Side",
+    "additions": "Additions",
+    "deletions": "Deletions",
+    "similarity": "Match Similarity",
+    "metricsEnhanced": "Metrics Enhanced",
+    "copyDiff": "Copy Raw Diff",
+    "openInEditor": "Load Version into Editor"
   }
 }
