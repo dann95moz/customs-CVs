@@ -116,5 +116,8 @@
     "editItem": "Editar",
     "saveItem": "Guardar",
     "cancelItem": "Cancelar"
+  },
+  "actions": {
+    "backToTarget": "Volver a Vacante Objetivo (Paso 2)"
   }
 }

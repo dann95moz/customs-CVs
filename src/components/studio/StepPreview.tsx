@@ -388,7 +388,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   color: mobileViewMode === 'edit' ? '#ffffff' : 'text.secondary',
                 }}
               >
-                {t('preview:aiRegen.mobileModeEdit', 'Editar')}
+                {t('preview:aiRegen.mobileModeEdit', 'Edit')}
               </Button>
               <Button
                 onClick={() => setMobileViewMode('preview')}
@@ -406,7 +406,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   color: mobileViewMode === 'preview' ? '#ffffff' : 'text.secondary',
                 }}
               >
-                {t('preview:aiRegen.mobileModePreview', 'Vista Previa')}
+                {t('preview:aiRegen.mobileModePreview', 'Preview')}
               </Button>
             </ButtonGroup>
 
@@ -414,7 +414,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             {mobileViewMode === 'preview' && (
               <Chip
                 size="small"
-                label={mobileZoomMode === 'fit' ? t('preview:toolbar.zoomFit', 'Ajustar ancho') : t('preview:toolbar.zoom100', '100% Real')}
+                label={mobileZoomMode === 'fit' ? t('preview:toolbar.zoomFit', 'Fit Width') : t('preview:toolbar.zoom100', '100% Real')}
                 color={mobileZoomMode === 'fit' ? 'primary' : 'default'}
                 variant={mobileZoomMode === 'fit' ? 'filled' : 'outlined'}
                 onClick={() => setMobileZoomMode((m) => (m === 'fit' ? '100%' : 'fit'))}
@@ -538,7 +538,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               size="small"
               sx={{ fontSize: { xs: '0.74rem', sm: '0.8rem' } }}
             >
-              {t('target:actions.backToProfile', 'Back to Target Vacancy (Step 2)')}
+              {t('preview:actions.backToTarget', 'Back to Target Vacancy (Step 2)')}
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -612,7 +612,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert severity="success" variant="filled" sx={{ borderRadius: '10px', fontWeight: 600 }}>
-          {t('preview:toolbar.trackedSuccess', 'Guardado en Mis Candidaturas')}
+          {t('preview:toolbar.trackedSuccess', 'Saved to My Applications')}
         </Alert>
       </Snackbar>
     </div>

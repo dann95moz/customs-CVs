@@ -512,11 +512,11 @@ export const EditableText: React.FC<EditableTextProps> = ({
                     },
                   }}
                 >
-                  {t('preview:aiRegen.undo', 'Deshacer')}
+                  {t('preview:aiRegen.undo', 'Undo')}
                 </Button>
               )}
 
-              <Tooltip title={t('preview:aiRegen.tooltip', 'Regenerar con IA')} arrow placement="top">
+              <Tooltip title={t('preview:aiRegen.tooltip', 'Regenerate with AI')} arrow placement="top">
                 <IconButton
                   size="small"
                   onClick={handleOpenAiPopover}
@@ -644,11 +644,11 @@ export const EditableText: React.FC<EditableTextProps> = ({
                   },
                 }}
               >
-                {t('preview:aiRegen.undo', 'Deshacer')}
+                {t('preview:aiRegen.undo', 'Undo')}
               </Button>
             )}
 
-            <Tooltip title={t('preview:aiRegen.tooltip', 'Regenerar con IA')} arrow placement="top">
+            <Tooltip title={t('preview:aiRegen.tooltip', 'Regenerate with AI')} arrow placement="top">
               <IconButton
                 size="small"
                 onClick={handleOpenAiPopover}

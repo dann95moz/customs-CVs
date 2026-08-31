@@ -116,5 +116,8 @@
     "editItem": "Edit",
     "saveItem": "Save",
     "cancelItem": "Cancel"
+  },
+  "actions": {
+    "backToTarget": "Back to Target Vacancy (Step 2)"
   }
 }

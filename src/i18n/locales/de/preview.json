@@ -116,5 +116,8 @@
     "editItem": "Bearbeiten",
     "saveItem": "Speichern",
     "cancelItem": "Abbrechen"
+  },
+  "actions": {
+    "backToTarget": "Zurück zur Ziel-Stellenanzeige (Schritt 2)"
   }
 }

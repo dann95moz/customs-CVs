@@ -116,5 +116,8 @@
     "editItem": "Modifier",
     "saveItem": "Enregistrer",
     "cancelItem": "Annuler"
+  },
+  "actions": {
+    "backToTarget": "Retour à l'Offre Ciblée (Étape 2)"
   }
 }
