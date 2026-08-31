@@ -365,7 +365,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             color="inherit"
             variant="outlined"
             size="small"
-            sx={{ fontWeight: 700, borderRadius: '8px' }}
+            sx={{ fontWeight: 700 }}
           >
             {t('common:actions.cancel', 'Cancel')}
           </Button>
@@ -378,7 +378,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             variant="contained"
             size="small"
             startIcon={<DeleteOutlineRoundedIcon />}
-            sx={{ fontWeight: 700, borderRadius: '8px' }}
+            sx={{ fontWeight: 700 }}
           >
             {t('common:actions.delete', 'Delete Permanently')}
           </Button>

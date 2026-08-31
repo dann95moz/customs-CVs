@@ -440,7 +440,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
             color="inherit"
             variant="outlined"
             size="small"
-            sx={{ fontWeight: 700, borderRadius: '8px' }}
+            sx={{ fontWeight: 700 }}
           >
             {t('common:actions.cancel', 'Cancel')}
           </Button>
@@ -453,7 +453,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
             variant="contained"
             size="small"
             startIcon={<DeleteOutlineRoundedIcon />}
-            sx={{ fontWeight: 700, borderRadius: '8px' }}
+            sx={{ fontWeight: 700 }}
           >
             {t('common:actions.delete', 'Delete Permanently')}
           </Button>
