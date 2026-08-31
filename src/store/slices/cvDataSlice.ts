@@ -93,25 +93,18 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
   },
 
   handleResetWorkspace: () => {
-    if (typeof window !== 'undefined' && window.confirm('Are you sure you want to reset all workspace data to a clean blank slate?')) {
-      get().handleStartBlank();
-      set({
-        rules: DEFAULT_RULES,
-        pageBudget: 1,
-        theme: 'modern-tech',
-        palette: 'corporate-blue',
-        customColor: '#1d4ed8',
-        fontFamily: 'inter',
-        spacingDensity: 'standard',
-        activeTab: 'landing',
-        wizardStep: 'profile',
-      });
-      try {
-        localStorage.clear();
-      } catch {
-        // Ignore
-      }
-    }
+    get().handleStartBlank();
+    set({
+      rules: DEFAULT_RULES,
+      pageBudget: 1,
+      theme: 'modern-tech',
+      palette: 'corporate-blue',
+      customColor: '#1d4ed8',
+      fontFamily: 'inter',
+      spacingDensity: 'standard',
+      activeTab: 'landing',
+      wizardStep: 'profile',
+    });
   },
 
   handleDownloadCvMarkdown: () => {
