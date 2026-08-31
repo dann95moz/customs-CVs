@@ -88,7 +88,7 @@ function parseSkillGroups(rawContent: string): SkillCategory[] {
       const rawSkills = match[3] !== undefined ? match[3] : '';
       const skills = rawSkills.split(',').map(s => s.trim()).filter(Boolean);
       if (category || skills.length > 0) {
-        groups.push({ category: category || 'Specialized Domain', skills });
+        groups.push({ category: category || '', skills });
       }
     }
   }
@@ -105,7 +105,7 @@ function parseExperienceItems(rawContent: string): ExperienceItem[] {
   let currentItem: ExperienceItem | null = null;
 
   function flush() {
-    if (currentItem && (currentItem.company || currentItem.role || currentItem.bullets.length > 0)) {
+    if (currentItem && (currentItem.company || currentItem.role || currentItem.bullets.length > 0 || currentItem.location || currentItem.date)) {
       items.push(currentItem);
       currentItem = null;
     }
@@ -145,7 +145,7 @@ function parseExperienceItems(rawContent: string): ExperienceItem[] {
       const bulletText = trimmed.replace(/^[-*•]\s*/, '').trim();
       if (!currentItem) {
         currentItem = {
-          company: 'Experience',
+          company: '',
           bullets: []
         };
       }
@@ -257,7 +257,7 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     if (
-      line.startsWith('# ') && 
+      (line.startsWith('# ') || line === '#') && 
       !line.toLowerCase().includes('ejemplo') && 
       !line.toLowerCase().includes('reporte') && 
       !line.toLowerCase().includes('gap')
@@ -279,7 +279,7 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
   // 1. Name
   while (lineIdx < cvLines.length) {
     const line = cvLines[lineIdx].trim();
-    if (line.startsWith('# ')) {
+    if (line.startsWith('# ') || line === '#') {
       name = line.replace(/^#\s*/, '').trim();
       lineIdx++;
       break;

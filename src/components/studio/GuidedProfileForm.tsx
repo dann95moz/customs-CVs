@@ -24,8 +24,13 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   const [formData, setFormData] = useState<CVData>(() => parseCvMarkdownToData(markdownContent));
   const [expandedSection, setExpandedSection] = useState<string | false>('personal');
   const [skillsTextMap, setSkillsTextMap] = useState<Record<number, string>>({});
+  const lastEmittedMarkdownRef = React.useRef<string>(markdownContent);
 
   useEffect(() => {
+    if (markdownContent === lastEmittedMarkdownRef.current) {
+      return;
+    }
+    lastEmittedMarkdownRef.current = markdownContent;
     const parsed = parseCvMarkdownToData(markdownContent);
     setFormData(parsed);
     setSkillsTextMap({});
@@ -35,6 +40,7 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     setFormData(prev => {
       const next = updater(prev);
       const newMarkdown = serializeCvDataToMarkdown(next);
+      lastEmittedMarkdownRef.current = newMarkdown;
       onChange(newMarkdown);
       return next;
     });
@@ -60,7 +66,7 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
 
         const newContact: ContactItem = {
           type,
-          label: cleanText,
+          label: label,
           url: finalUrl
         };
         return { ...prev, contacts: [...remaining, newContact] };

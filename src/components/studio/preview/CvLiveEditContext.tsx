@@ -96,7 +96,7 @@ export const CvLiveEditProvider: React.FC<CvLiveEditProviderProps> = ({
   const updateName = useCallback((name: string) => {
     applyCvUpdate((prev) => ({
       ...prev,
-      name: name.trim() || 'Candidate Name',
+      name: name.trim(),
     }));
   }, [applyCvUpdate]);
 

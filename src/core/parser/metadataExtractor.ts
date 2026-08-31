@@ -48,6 +48,23 @@ export function extractCandidateName(masterDataText: string, fallback: string = 
       return sanitizeFileName(raw);
     }
   }
+
+  const headingMatch = masterDataText.match(/^#\s+([^\r\n]+)/m);
+  if (headingMatch) {
+    const raw = headingMatch[1].trim();
+    if (
+      !raw.toLowerCase().includes('tu nombre') && 
+      !raw.toLowerCase().includes('nombre y apellido') &&
+      !raw.toLowerCase().includes('candidate full name') &&
+      !raw.toLowerCase().includes('candidate name') &&
+      !raw.toLowerCase().includes('ejemplo') &&
+      !raw.toLowerCase().includes('reporte') &&
+      !raw.toLowerCase().includes('gap')
+    ) {
+      return sanitizeFileName(raw);
+    }
+  }
+
   return sanitizeFileName(fallback);
 }
 

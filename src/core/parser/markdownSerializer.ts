@@ -8,7 +8,7 @@ export function serializeCvDataToMarkdown(data: CVData): string {
   const parts: string[] = [];
 
   // Name
-  parts.push(`# ${data.name || 'CANDIDATE FULL NAME'}`);
+  parts.push(`# ${data.name || ''}`);
 
   // Title
   if (data.title) {
@@ -38,7 +38,7 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     parts.push('\n---\n');
     parts.push('## 🛠️ MASTER TECH STACK & COMPETENCIES');
     for (const group of data.skillGroups) {
-      const cat = group.category ? group.category.trim() : 'Specialized Domain';
+      const cat = group.category ? group.category.trim() : '';
       const skl = group.skills && group.skills.length > 0 ? group.skills.join(', ') : '';
       parts.push(`- **${cat}:** ${skl}`);
     }
@@ -49,8 +49,10 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     parts.push('\n---\n');
     parts.push('## 💼 CAREER HISTORY & KEY ACHIEVEMENTS\n');
     const expItemsFormatted = data.experience.map(exp => {
-      const headerLine = `### **${exp.company || 'Company'}**${exp.location ? ` | ${exp.location}` : ''}`;
-      const subHeaderLine = `*${exp.role || 'Role'}*${exp.date ? ` | **${exp.date}**` : ''}`;
+      const company = exp.company || '';
+      const role = exp.role || '';
+      const headerLine = `### **${company}**${exp.location ? ` | ${exp.location}` : ''}`;
+      const subHeaderLine = `*${role}*${exp.date ? ` | **${exp.date}**` : ''}`;
       const bullets = (exp.bullets || []).map(b => (b.startsWith('- ') ? b : `- ${b}`)).join('\n');
       return `${headerLine}\n${subHeaderLine}\n${bullets}`;
     });
@@ -62,8 +64,10 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     parts.push('\n---\n');
     parts.push('## 🚀 PROJECTS & EXTRAS\n');
     const projItemsFormatted = data.projects.map(proj => {
-      const headerLine = `### **${proj.company || 'Project'}**${proj.location ? ` | ${proj.location}` : ''}`;
-      const subHeaderLine = `*${proj.role || 'Project'}*${proj.date ? ` | **${proj.date}**` : ''}`;
+      const company = proj.company || '';
+      const role = proj.role || '';
+      const headerLine = `### **${company}**${proj.location ? ` | ${proj.location}` : ''}`;
+      const subHeaderLine = `*${role}*${proj.date ? ` | **${proj.date}**` : ''}`;
       const bullets = (proj.bullets || [])
         .filter(b => Boolean(b && b.trim()))
         .map(b => (b.startsWith('- ') ? b : `- ${b}`))
