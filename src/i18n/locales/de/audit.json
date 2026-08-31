@@ -52,5 +52,28 @@
     "experienceDesc": "Starke Anwendung der Google-XYZ-Formel: [X] erreicht, gemessen an [Y], durch [Z] mit quantifizierter Wirkung.",
     "skillsPass": "95% Bestanden",
     "skillsDesc": "Hohe Dichte an exakten Schlüsselwörtern passend zu den Anforderungen ohne künstliches Keyword-Stuffing."
+  },
+  "interview": {
+    "title": "Gap-Gesteuerter Interview-Simulator",
+    "subtitle": "Individuelle Coaching-Fragen zu erkannten ATS-Schlüsselwortlücken mit strukturierter STAR-Antwortstrategie.",
+    "pillTooltip": "Gap-Gesteuerter Interview-Simulator",
+    "regenerate": "Neu generieren",
+    "copyAll": "Kit kopieren",
+    "copied": "Frage & STAR-Strategie in die Zwischenablage kopiert!",
+    "copiedAll": "Vollständiges Interview-Vorbereitungsset kopiert!",
+    "generating": "ATS-Lücken werden analysiert und STAR-Fragen generiert...",
+    "tipsTitle": "Wichtige Strategie-Tipps für dieses Interview",
+    "questionsCount": "{{count}} Gezielte Fragen & STAR-Leitfäden",
+    "gapTag": "Lückenfokus",
+    "techTag": "Technischer Deep-Dive",
+    "behavioralTag": "Verhalten (STAR)",
+    "leadershipTag": "Strategie & Führung",
+    "rationaleTitle": "Warum die Interviewer dies fragen:",
+    "starTitle": "Empfohlene Antwortstrategie (STAR-Formel):",
+    "situation": "Situation (Kontext):",
+    "task": "Aufgabe (Herausforderung):",
+    "action": "Handlung (Was Sie getan haben):",
+    "result": "Ergebnis (Messbare Wirkung):",
+    "speakingOutline": "Wichtige Argumentationspunkte:"
   }
 }

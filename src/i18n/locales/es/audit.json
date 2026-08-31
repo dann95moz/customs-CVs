@@ -52,5 +52,28 @@
     "experienceDesc": "Excelente aplicación de la fórmula Google XYZ: Logrado [X], medido por [Y], haciendo [Z] con impacto de negocio cuantificado.",
     "skillsPass": "95% Aprobado",
     "skillsDesc": "Alta densidad de palabras clave exactas según los requisitos sin sobrecarga artificial."
+  },
+  "interview": {
+    "title": "Simulador de Entrevista por Brechas",
+    "subtitle": "Preguntas estratégicas de coaching orientadas a las brechas detectadas de ATS, con respuestas estructuradas bajo el método STAR.",
+    "pillTooltip": "Simulador de Entrevista por Brechas",
+    "regenerate": "Regenerar",
+    "copyAll": "Copiar Kit",
+    "copied": "¡Pregunta y estrategia STAR copiadas al portapapeles!",
+    "copiedAll": "¡Kit completo de preparación de entrevista copiado al portapapeles!",
+    "generating": "Analizando brechas de ATS y redactando preguntas de entrevista STAR...",
+    "tipsTitle": "Consejos Estratégicos Clave para esta Entrevista",
+    "questionsCount": "{{count}} Preguntas Dirigidas y Guías STAR",
+    "gapTag": "Objetivo de Brecha",
+    "techTag": "Profundización Técnica",
+    "behavioralTag": "Conductual (STAR)",
+    "leadershipTag": "Estratégica y Liderazgo",
+    "rationaleTitle": "¿Por qué te preguntarán esto?:",
+    "starTitle": "Estrategia Recomendada de Respuesta (Fórmula STAR):",
+    "situation": "Situación (Contexto):",
+    "task": "Tarea (Desafío):",
+    "action": "Acción (Lo que hiciste):",
+    "result": "Resultado (Impacto Cuantificable):",
+    "speakingOutline": "Puntos Clave de Argumentación:"
   }
 }

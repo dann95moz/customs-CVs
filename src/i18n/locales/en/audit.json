@@ -52,5 +52,28 @@
     "experienceDesc": "Strong Google XYZ formula use: Accomplished [X], as measured by [Y], by doing [Z] with quantified business impact.",
     "skillsPass": "95% Pass",
     "skillsDesc": "High density of exact keywords matching requirements without stuffing."
+  },
+  "interview": {
+    "title": "Gap-Driven Interview Simulator",
+    "subtitle": "Custom coaching questions targeting your detected ATS keyword gaps, with structured STAR answering strategies.",
+    "pillTooltip": "Gap-Driven Interview Simulator",
+    "regenerate": "Regenerate",
+    "copyAll": "Copy Kit",
+    "copied": "Question & STAR strategy copied to clipboard!",
+    "copiedAll": "Full interview preparation kit copied to clipboard!",
+    "generating": "Analyzing ATS gaps and crafting STAR interview questions...",
+    "tipsTitle": "Key Strategy Tips for this Interview",
+    "questionsCount": "{{count}} Targeted Questions & STAR Guides",
+    "gapTag": "Gap Target",
+    "techTag": "Technical Deep-Dive",
+    "behavioralTag": "Behavioral (STAR)",
+    "leadershipTag": "Strategic & Leadership",
+    "rationaleTitle": "Why the interviewer asks this:",
+    "starTitle": "Recommended Response Strategy (STAR Formula):",
+    "situation": "Situation (Context):",
+    "task": "Task (Challenge):",
+    "action": "Action (What You Did):",
+    "result": "Result (Quantifiable Impact):",
+    "speakingOutline": "Key Speaking Points:"
   }
 }

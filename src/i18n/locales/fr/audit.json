@@ -52,5 +52,28 @@
     "experienceDesc": "Forte utilisation de la formule Google XYZ : Accomplissement de [X], mesuré par [Y], en réalisant [Z] avec un impact mesuré.",
     "skillsPass": "95% Réussi",
     "skillsDesc": "Forte densité de mots-clés précis alignés sur les exigences sans remplissage artificiel."
+  },
+  "interview": {
+    "title": "Simulateur d'Entretien Orienté Lacunes",
+    "subtitle": "Questions de coaching ciblées sur les lacunes de mots-clés ATS détectées, avec des stratégies de réponse structurées selon la méthode STAR.",
+    "pillTooltip": "Simulateur d'Entretien Orienté Lacunes",
+    "regenerate": "Régénérer",
+    "copyAll": "Copier le Kit",
+    "copied": "Question et stratégie STAR copiées dans le presse-papiers !",
+    "copiedAll": "Kit complet de préparation d'entretien copié dans le presse-papiers !",
+    "generating": "Analyse des lacunes ATS et génération des questions STAR...",
+    "tipsTitle": "Conseils Stratégiques Clés pour cet Entretien",
+    "questionsCount": "{{count}} Questions Ciblées & Guides STAR",
+    "gapTag": "Cible de Lacune",
+    "techTag": "Approfondissement Technique",
+    "behavioralTag": "Comportemental (STAR)",
+    "leadershipTag": "Stratégie & Leadership",
+    "rationaleTitle": "Pourquoi le recruteur pose cette question :",
+    "starTitle": "Stratégie de Réponse Recommandée (Formule STAR) :",
+    "situation": "Situation (Contexte) :",
+    "task": "Tâche (Défi) :",
+    "action": "Action (Ce que vous avez fait) :",
+    "result": "Résultat (Impact Quantifiable) :",
+    "speakingOutline": "Points Clés d'Argumentation :"
   }
 }

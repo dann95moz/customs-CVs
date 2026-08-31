@@ -26,19 +26,21 @@ import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import ArticleRoundedIcon from '@mui/icons-material/ArticleRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import { useTranslation } from 'react-i18next';
 import { marked } from 'marked';
 import { PreviewAuditGapDrawerProps } from '../../../types';
 import { useAuditActions } from '../../../hooks/useAuditActions';
 import { AuditImprovementModal } from '../audit/AuditImprovementModal';
+import { InterviewPrepTab } from '../audit/InterviewPrepTab';
 
 export type { PreviewAuditGapDrawerProps };
 
 /**
  * Unified Right-Side Audit & Gap Strategy Panel for CV Preview.
  * Reference UI:
- * - Collapsed: Floating vertical pills on the right canvas edge (Audit score + Gap %).
- * - Expanded: Unified side panel with [Audit 9/10] and [Gap 92%] segmented tabs and progressive disclosure.
+ * - Collapsed: Floating vertical pills on the right canvas edge (Audit score + Gap % + Interview Prep).
+ * - Expanded: Unified side panel with [Audit 9/10], [Gap 92%], and [Prep] segmented tabs and progressive disclosure.
  */
 export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
   auditReport,
@@ -46,6 +48,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
   gapMarkdown = '',
   companyName,
   targetRole,
+  cvData,
   isOpen,
   activeTab,
   onToggleTab,
@@ -225,6 +228,50 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
               </Typography>
             </Paper>
           </Tooltip>
+
+          {/* Interview Prep Pill */}
+          <Tooltip title={t('audit:interview.pillTooltip', 'Gap-Driven Interview Simulator')} placement="left">
+            <Paper
+              elevation={4}
+              onClick={() => onToggleTab('interview')}
+              sx={{
+                width: 62,
+                height: 64,
+                p: 0.5,
+                borderRadius: '16px',
+                bgcolor: alpha(theme.palette.secondary.main, isDark ? 0.2 : 0.15),
+                border: `1.5px solid ${theme.palette.secondary.main}`,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                userSelect: 'none',
+                overflow: 'hidden',
+                '&:hover': {
+                  transform: 'translateX(-4px) scale(1.05)',
+                  boxShadow: `0 6px 20px ${alpha(theme.palette.secondary.main, 0.35)}`,
+                },
+              }}
+            >
+              <PsychologyRoundedIcon sx={{ fontSize: 24, color: theme.palette.secondary.main }} />
+              <Typography
+                variant="caption"
+                sx={{
+                  fontWeight: 800,
+                  fontSize: '0.66rem',
+                  color: theme.palette.secondary.main,
+                  mt: 0.35,
+                  lineHeight: 1,
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {t('preview:drawer.shortInterview', 'Prep')}
+              </Typography>
+            </Paper>
+          </Tooltip>
         </Box>
       )}
 
@@ -234,7 +281,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           elevation={4}
           className="no-print"
           sx={{
-            width: { xs: '100%', sm: 340, md: 360 },
+            width: { xs: '100%', sm: 340, md: 380 },
             maxWidth: '100vw',
             position: { xs: 'absolute', lg: 'relative' },
             left: { xs: 0, sm: 'auto' },
@@ -259,13 +306,13 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           {/* Header with Segmented Tabs and Close [X] */}
           <Box
             sx={{
-              p: 1.25,
-              px: { xs: 1.5, sm: 2 },
+              p: 1,
+              px: { xs: 1, sm: 1.5 },
               borderBottom: `1px solid ${theme.palette.divider}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              gap: 1,
+              gap: 0.75,
               bgcolor: isDark ? alpha(theme.palette.background.default, 0.5) : '#f8fafc',
               boxSizing: 'border-box',
               width: '100%',
@@ -277,13 +324,13 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 variant={activeTab === 'audit' ? 'contained' : 'outlined'}
                 color="success"
                 onClick={() => onToggleTab('audit')}
-                startIcon={<AssessmentRoundedIcon sx={{ fontSize: '15px !important' }} />}
+                startIcon={<AssessmentRoundedIcon sx={{ fontSize: '14px !important' }} />}
                 sx={{
                   flex: 1,
                   fontWeight: 800,
-                  fontSize: { xs: '0.72rem', sm: '0.78rem' },
+                  fontSize: { xs: '0.68rem', sm: '0.74rem' },
                   textTransform: 'none',
-                  px: { xs: 0.75, sm: 1.25 },
+                  px: { xs: 0.5, sm: 0.75 },
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -295,19 +342,37 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 variant={activeTab === 'gap' ? 'contained' : 'outlined'}
                 color="primary"
                 onClick={() => onToggleTab('gap')}
-                startIcon={<TrackChangesRoundedIcon sx={{ fontSize: '15px !important' }} />}
+                startIcon={<TrackChangesRoundedIcon sx={{ fontSize: '14px !important' }} />}
                 sx={{
                   flex: 1,
                   fontWeight: 800,
-                  fontSize: { xs: '0.72rem', sm: '0.78rem' },
+                  fontSize: { xs: '0.68rem', sm: '0.74rem' },
                   textTransform: 'none',
-                  px: { xs: 0.75, sm: 1.25 },
+                  px: { xs: 0.5, sm: 0.75 },
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}
               >
                 {t('preview:drawer.shortMatch', 'Match')} {matchScore}%
+              </Button>
+              <Button
+                variant={activeTab === 'interview' ? 'contained' : 'outlined'}
+                color="secondary"
+                onClick={() => onToggleTab('interview')}
+                startIcon={<PsychologyRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                sx={{
+                  flex: 1,
+                  fontWeight: 800,
+                  fontSize: { xs: '0.68rem', sm: '0.74rem' },
+                  textTransform: 'none',
+                  px: { xs: 0.5, sm: 0.75 },
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {t('preview:drawer.shortInterview', 'Prep')}
               </Button>
             </ButtonGroup>
 
@@ -627,6 +692,16 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   </Button>
                 )}
               </>
+            )}
+
+            {/* TAB 3: INTERVIEW PREPARATION (GAP SIMULATOR) */}
+            {activeTab === 'interview' && (
+              <InterviewPrepTab
+                gapKeywords={missingKeywords}
+                companyName={companyName || ''}
+                targetRole={targetRole || ''}
+                cvData={cvData || { name: '', title: '', contacts: [], sections: [] }}
+              />
             )}
           </Box>
         </Paper>

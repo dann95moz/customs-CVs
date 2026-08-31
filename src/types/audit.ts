@@ -39,3 +39,26 @@ export interface ActionModalState {
   inputValue: string;
   presets: string[];
 }
+
+export interface InterviewQuestion {
+  id: string;
+  question: string;
+  category: 'gap' | 'technical' | 'behavioral' | 'leadership';
+  relatedGap?: string;
+  rationale: string;
+  starStrategy: {
+    situation: string;
+    task: string;
+    action: string;
+    result: string;
+  };
+  sampleAnswerOutline?: string;
+}
+
+export interface InterviewPrepResult {
+  targetRole: string;
+  companyName?: string;
+  overallTips: string[];
+  questions: InterviewQuestion[];
+  generatedAt: string;
+}
