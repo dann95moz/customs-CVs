@@ -16,7 +16,8 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
   const header: HeaderSlotData = {
     name: data.name || 'Candidate',
     title: data.title,
-    contacts: data.contacts || []
+    contacts: data.contacts || [],
+    photo: data.photo,
   };
 
   let summary: SummarySlotData | undefined;
@@ -127,6 +128,7 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
     projects,
     education,
     languages,
-    genericSections
+    genericSections,
+    photo: data.photo,
   };
 }

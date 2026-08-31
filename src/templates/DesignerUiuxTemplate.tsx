@@ -11,6 +11,7 @@ import {
 } from '../components/slots';
 import { EditableText } from '../components/studio/preview/EditableText';
 import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
+import { ProfilePhotoDisplay } from '../components/studio/photo/ProfilePhotoDisplay';
 
 /**
  * Editorial Pastel Card Template (Photo 4 Reference):
@@ -33,6 +34,18 @@ export const DesignerUiuxTemplate: React.FC<CVTemplateProps> = ({ slots, theme }
         <div className="pastel-top-grid">
           {/* Top-Left Pastel Tinted Card */}
           <div className="pastel-header-card">
+            {slots.header.photo && slots.header.photo.enabled && slots.header.photo.url && (
+              <ProfilePhotoDisplay
+                photo={slots.header.photo}
+                maskShape="squircle"
+                size={54}
+                border="1.5px solid var(--cv-accent-border, rgba(0,0,0,0.15))"
+                boxShadow="0 4px 12px rgba(0, 0, 0, 0.12)"
+                activeTheme={theme}
+                editable={true}
+                style={{ margin: '0 auto 8px' }}
+              />
+            )}
             <EditableText
               tagName="h1"
               className="pastel-card-name"

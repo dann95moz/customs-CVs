@@ -11,6 +11,7 @@ import {
 } from '../components/slots';
 import { EditableText } from '../components/studio/preview/EditableText';
 import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
+import { ProfilePhotoDisplay } from '../components/studio/photo/ProfilePhotoDisplay';
 
 /**
  * Modern Contrast Sidebar Template (Photo 3 Reference):
@@ -85,13 +86,19 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
 
         {/* RIGHT SOLID COLORED SIDEBAR */}
         <aside className="contrast-sidebar-col">
-          {/* Geometric Diamond Emblem Card (like Photo 3) */}
-          <div className="contrast-emblem-card">
-            <svg viewBox="0 0 24 24" className="contrast-emblem-svg">
-              <path d="M12 2L15 9.5L22 12L15 14.5L12 22L9 14.5L2 12L9 9.5Z" />
-            </svg>
-            <span className="contrast-emblem-initials">{initials}</span>
-          </div>
+          {/* Geometric Diamond Emblem Card / Profile Photo */}
+          <ProfilePhotoDisplay
+            photo={slots.header.photo}
+            maskShape="rounded"
+            size={56}
+            border="2px solid #ffffff"
+            boxShadow="0 4px 14px rgba(0, 0, 0, 0.25)"
+            fallbackInitials={initials}
+            fallbackIcon="diamond"
+            activeTheme={theme}
+            editable={true}
+            style={{ margin: '0 auto 12px' }}
+          />
 
           {/* Contact Details with Circular Icon Badges */}
           {basicContacts.length > 0 && (

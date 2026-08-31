@@ -12,6 +12,7 @@ import {
 } from '../components/slots';
 import { EditableText } from '../components/studio/preview/EditableText';
 import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
+import { ProfilePhotoDisplay } from '../components/studio/photo/ProfilePhotoDisplay';
 
 /**
  * Corporate Top Banner Template (Photo 2 Reference):
@@ -32,9 +33,18 @@ export const ExecutiveTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
       <div className="cv-container">
         {/* Full-width Top Header Banner */}
         <header className="banner-header cv-header">
-          <div className="banner-monogram-box">
-            <span className="banner-monogram">{initials}</span>
-          </div>
+          <ProfilePhotoDisplay
+            photo={slots.header.photo}
+            maskShape="rounded"
+            size={54}
+            border="2px solid rgba(255, 255, 255, 0.85)"
+            boxShadow="0 4px 12px rgba(0, 0, 0, 0.25)"
+            fallbackInitials={initials}
+            fallbackIcon="monogram"
+            activeTheme={theme}
+            editable={true}
+            style={{ margin: '0 auto 8px' }}
+          />
           <EditableText
             tagName="h1"
             className="banner-name"

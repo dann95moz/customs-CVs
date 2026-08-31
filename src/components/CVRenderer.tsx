@@ -44,9 +44,14 @@ export const CVRenderer: React.FC<CVRendererProps> = ({
   customColor,
   fontFamily = 'inter',
   spacingDensity = 'standard',
+  photo,
 }) => {
   const TemplateComponent = getTemplate(theme);
-  const slots = mapDataToSlots(data);
+  const effectiveData: CVData = {
+    ...data,
+    photo: photo !== undefined ? photo : data.photo,
+  };
+  const slots = mapDataToSlots(effectiveData);
   const palConfig = getPaletteConfig(palette, customColor);
   const density = DENSITY_MAP[spacingDensity] || DENSITY_MAP.standard;
   const fontFam = FONT_MAP[fontFamily] || FONT_MAP.inter;
@@ -73,7 +78,7 @@ export const CVRenderer: React.FC<CVRendererProps> = ({
 
   return (
     <div className="cv-palette-wrapper" style={styleVariables}>
-      <TemplateComponent data={data} slots={slots} theme={theme} />
+      <TemplateComponent data={effectiveData} slots={slots} theme={theme} photo={effectiveData.photo} />
     </div>
   );
 };

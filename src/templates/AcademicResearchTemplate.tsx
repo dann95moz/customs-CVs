@@ -13,6 +13,7 @@ import {
 } from '../components/slots';
 import { EditableText } from '../components/studio/preview/EditableText';
 import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
+import { ProfilePhotoDisplay } from '../components/studio/photo/ProfilePhotoDisplay';
 
 /**
  * Executive Dual-Tone Template (Photo 5 Reference):
@@ -32,10 +33,19 @@ export const AcademicResearchTemplate: React.FC<CVTemplateProps> = ({ slots, the
       <div className="cv-container dualtone-grid-layout">
         {/* LEFT DARK CHARCOAL SIDEBAR */}
         <aside className="dualtone-sidebar-col">
-          {/* Monogram Initials Avatar Circle */}
-          <div className="dualtone-avatar-circle">
-            <span className="dualtone-avatar-initials">{initials}</span>
-          </div>
+          {/* Monogram Initials Avatar Circle / Profile Photo */}
+          <ProfilePhotoDisplay
+            photo={slots.header.photo}
+            maskShape="circle"
+            size={56}
+            border="2px solid rgba(255, 255, 255, 0.7)"
+            boxShadow="0 4px 14px rgba(0, 0, 0, 0.35)"
+            fallbackInitials={initials}
+            fallbackIcon="monogram"
+            activeTheme={theme}
+            editable={true}
+            style={{ margin: '0 auto 12px' }}
+          />
 
           {/* Contact Details */}
           {basicContacts.length > 0 && (
