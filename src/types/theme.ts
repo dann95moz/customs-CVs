@@ -37,3 +37,16 @@ export interface ThemeConfig {
   accentColor: string;
   isTwoColumn?: boolean;
 }
+
+export interface ProfilePhotoCrop {
+  x: number;
+  y: number;
+  zoom: number;
+}
+
+export interface ProfilePhotoConfig {
+  url: string;
+  crop: ProfilePhotoCrop;
+  enabled: boolean;
+  size?: number; // Display size in px (min: 44, max: 96, default: 64)
+}

@@ -5,7 +5,7 @@
  * preview modes, nav rail panels, and historical version records.
  */
 
-import { ThemeId, PaletteId } from './theme';
+import { ThemeId, PaletteId, ProfilePhotoConfig } from './theme';
 
 export type WizardStep = 
   | 'profile' 
@@ -50,6 +50,7 @@ export interface GeneratedCvVersion {
   cvMarkdown: string;
   gapMarkdown?: string;
   targetJobSnippet?: string;
+  photo?: ProfilePhotoConfig | null;
 }
 
 export interface KanbanColumn {

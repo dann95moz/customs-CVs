@@ -24,6 +24,7 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
       theme,
       palette,
       pageBudget,
+      photo,
       savedVersions,
     } = get();
 
@@ -69,6 +70,7 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
       cvMarkdown,
       gapMarkdown,
       targetJobSnippet: targetJob.slice(0, 280),
+      photo: photo || undefined,
     };
 
     set({
@@ -89,6 +91,7 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
         ...(found.theme ? { theme: found.theme } : {}),
         ...(found.palette ? { palette: found.palette } : {}),
         ...(found.pageBudget ? { pageBudget: found.pageBudget } : {}),
+        photo: found.photo || null,
         activeTab: 'wizard',
         wizardStep: 'preview',
       });

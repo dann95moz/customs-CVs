@@ -58,6 +58,8 @@ export interface CVSection {
   rawContent: string;
 }
 
+import { ProfilePhotoConfig } from './theme';
+
 export interface CVData {
   name: string;
   title: string;
@@ -69,6 +71,7 @@ export interface CVData {
   projects?: ExperienceItem[];
   education?: string[];
   languages?: string[];
+  photo?: ProfilePhotoConfig | null;
 }
 
 // Re-export domain-specific types for seamless backward compatibility

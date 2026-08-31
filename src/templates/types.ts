@@ -1,9 +1,10 @@
-import { CVData, ThemeId, ContactItem, SkillCategory, ExperienceItem } from '../types/cv';
+import { CVData, ThemeId, ContactItem, SkillCategory, ExperienceItem, ProfilePhotoConfig } from '../types/cv';
 
 export interface HeaderSlotData {
   name: string;
   title?: string;
   contacts: ContactItem[];
+  photo?: ProfilePhotoConfig | null;
 }
 
 export interface SummarySlotData {
@@ -43,12 +44,14 @@ export interface CVSlotMap {
   education?: ListSlotData;
   languages?: ListSlotData;
   genericSections: GenericSlotData[];
+  photo?: ProfilePhotoConfig | null;
 }
 
 export interface CVTemplateProps {
   data: CVData;
   slots: CVSlotMap;
   theme: ThemeId;
+  photo?: ProfilePhotoConfig | null;
 }
 
 export interface TemplateMetadata {

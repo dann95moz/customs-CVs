@@ -4,6 +4,8 @@ import {
   FontFamilyId,
   SpacingDensity,
   PageFormat,
+  ProfilePhotoConfig,
+  ProfilePhotoCrop,
   StudioTab,
   WizardStep,
   AIProviderSettings,
@@ -52,6 +54,7 @@ export interface DesignSlice {
   customColor: string;
   fontFamily: FontFamilyId;
   spacingDensity: SpacingDensity;
+  photo: ProfilePhotoConfig | null;
   setPageBudget: (val: 1 | 2) => void;
   setPageFormat: (val: PageFormat) => void;
   setTheme: (val: ThemeId) => void;
@@ -59,6 +62,10 @@ export interface DesignSlice {
   setCustomColor: (val: string) => void;
   setFontFamily: (val: FontFamilyId) => void;
   setSpacingDensity: (val: SpacingDensity) => void;
+  setProfilePhoto: (photo: ProfilePhotoConfig | null) => void;
+  setProfilePhotoEnabled: (enabled: boolean) => void;
+  updateProfilePhotoCrop: (crop: ProfilePhotoCrop) => void;
+  updateProfilePhotoSize: (size: number) => void;
 }
 
 export interface AiSlice {

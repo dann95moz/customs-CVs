@@ -14,7 +14,7 @@ import {
   SkillCategory,
   CVSection,
 } from './cv';
-import { ThemeId, PaletteId, FontFamilyId, SpacingDensity, PageFormat } from './theme';
+import { ThemeId, PaletteId, FontFamilyId, SpacingDensity, PageFormat, ProfilePhotoConfig } from './theme';
 import { AIProviderId, AIProviderSettings } from './ai';
 import {
   WizardStep,
@@ -84,6 +84,7 @@ export interface CVRendererProps {
   spacingDensity?: SpacingDensity;
   density?: SpacingDensity;
   containerId?: string;
+  photo?: ProfilePhotoConfig | null;
 }
 
 export interface LockedViewCardProps {
@@ -375,6 +376,10 @@ export interface DesignFormattingPanelProps {
   activeDensity?: SpacingDensity;
   onSelectFont?: (font: FontFamilyId) => void;
   onSelectDensity?: (density: SpacingDensity) => void;
+  photo?: ProfilePhotoConfig | null;
+  onPhotoChange?: (photo: ProfilePhotoConfig | null) => void;
+  onPhotoToggle?: (enabled: boolean) => void;
+  activeTheme?: ThemeId;
 }
 
 export interface PreviewQualityAuditPanelProps {
