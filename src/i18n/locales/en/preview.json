@@ -38,7 +38,9 @@
     "scrollDown": "Scroll down for more",
     "scrollRight": "Slide right to view more",
     "zoomFit": "Fit width",
-    "zoom100": "100% Zoom"
+    "zoom100": "100% Zoom",
+    "docCv": "Resume (CV)",
+    "docCoverLetter": "Cover Letter"
   },
   "editor": {
     "sourceTitle": "CV Markdown Source",
@@ -53,7 +55,8 @@
     "templates": "Templates",
     "design": "Design & Format",
     "audit": "Quality & Gaps",
-    "compare": "Compare"
+    "compare": "Compare",
+    "linkedin": "LinkedIn"
   },
   "panels": {
     "templates": {
@@ -137,5 +140,32 @@
   },
   "actions": {
     "backToTarget": "Back to Target Vacancy (Step 2)"
+  },
+  "drawer": {
+    "shortScore": "Audit",
+    "shortMatch": "Match",
+    "shortInterview": "Prep"
+  },
+  "coverLetter": {
+    "tone": "Tone",
+    "corporate": "Corporate",
+    "startup": "Startup / Direct",
+    "leadership": "Leadership",
+    "viewMode": "Preview",
+    "editMode": "Edit",
+    "regenerate": "Regenerate",
+    "crafting": "Crafting high-impact tailored cover letter...",
+    "generatedSuccess": "Cover letter generated successfully!"
+  },
+  "linkedin": {
+    "title": "LinkedIn Brand Tailoring",
+    "subtitle": "Optimized Headlines & Storytelling About",
+    "generating": "Generating optimized LinkedIn profile package...",
+    "headlinesTitle": "1. Optimized Headlines (Max 220 Chars)",
+    "recruiterReady": "Recruiter Ready",
+    "aboutTitle": "2. Storytelling 'About' Section (Max 2,600 Chars)",
+    "copyAbout": "Copy 'About' Text",
+    "regenerate": "Regenerate LinkedIn Package",
+    "copiedToast": "{{label}} copied to clipboard!"
   }
 }

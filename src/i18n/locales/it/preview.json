@@ -38,7 +38,9 @@
     "scrollDown": "Scorri verso il basso",
     "scrollRight": "Scorri a destra",
     "zoomFit": "Adatta larghezza",
-    "zoom100": "100% Zoom"
+    "zoom100": "100% Zoom",
+    "docCv": "Curriculum (CV)",
+    "docCoverLetter": "Lettera di Presentazione"
   },
   "editor": {
     "sourceTitle": "Sorgente Markdown del CV",
@@ -53,7 +55,8 @@
     "templates": "Modelli",
     "design": "Design & Formato",
     "audit": "Qualità & Gap",
-    "compare": "Confronta"
+    "compare": "Confronta",
+    "linkedin": "LinkedIn"
   },
   "panels": {
     "templates": {
@@ -137,5 +140,32 @@
   },
   "actions": {
     "backToTarget": "Torna all'Offerta di Lavoro (Passo 2)"
+  },
+  "drawer": {
+    "shortScore": "Audit",
+    "shortMatch": "Match",
+    "shortInterview": "Prep"
+  },
+  "coverLetter": {
+    "tone": "Tono",
+    "corporate": "Aziendale / Formale",
+    "startup": "Startup / Diretto",
+    "leadership": "Leadership",
+    "viewMode": "Anteprima",
+    "editMode": "Modifica",
+    "regenerate": "Rigenera",
+    "crafting": "Elaborazione della tua lettera di presentazione mirata...",
+    "generatedSuccess": "Lettera di presentazione generata con successo!"
+  },
+  "linkedin": {
+    "title": "Personalizzazione Brand LinkedIn",
+    "subtitle": "Titoli ottimizzati per ATS e biografia narrativa",
+    "generating": "Generazione del pacchetto di ottimizzazione LinkedIn...",
+    "headlinesTitle": "1. Titoli Ottimizzati (Max 220 Caratteri)",
+    "recruiterReady": "Pronto per i Recruiter",
+    "aboutTitle": "2. Sezione 'Informazioni' Narrativa (Max 2.600 Caratteri)",
+    "copyAbout": "Copia Testo 'Informazioni'",
+    "regenerate": "Rigenera Pacchetto LinkedIn",
+    "copiedToast": "{{label}} copiato negli appunti!"
   }
 }

@@ -144,9 +144,10 @@ export interface PreviewAuditGapDrawerProps {
   gapMarkdown?: string;
   companyName?: string;
   targetRole?: string;
+  cvData?: import('./cv').CVData;
   isOpen: boolean;
-  activeTab: 'audit' | 'gap';
-  onToggleTab: (tab: 'audit' | 'gap') => void;
+  activeTab: 'audit' | 'gap' | 'interview';
+  onToggleTab: (tab: 'audit' | 'gap' | 'interview') => void;
   onClose: () => void;
 }
 
@@ -303,6 +304,8 @@ export interface ProjectsSectionProps {
 export interface StepPreviewToolbarProps {
   viewMode?: PreviewViewMode;
   onViewModeChange?: (mode: PreviewViewMode) => void;
+  previewDocType?: 'cv' | 'cover-letter';
+  onPreviewDocTypeChange?: (docType: 'cv' | 'cover-letter') => void;
   activeTemplateName: string;
   onOpenTemplates: () => void;
   onSaveVersion?: () => void;

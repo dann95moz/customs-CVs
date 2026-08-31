@@ -38,7 +38,9 @@
     "scrollDown": "Desliza para ver más",
     "scrollRight": "Desliza a la derecha",
     "zoomFit": "Ajustar ancho",
-    "zoom100": "100% Real"
+    "zoom100": "100% Real",
+    "docCv": "Currículum (CV)",
+    "docCoverLetter": "Carta de Presentación"
   },
   "editor": {
     "sourceTitle": "Fuente Markdown del CV",
@@ -53,7 +55,8 @@
     "templates": "Plantillas",
     "design": "Diseño & Formato",
     "audit": "Calidad & Brechas",
-    "compare": "Comparar"
+    "compare": "Comparar",
+    "linkedin": "LinkedIn"
   },
   "panels": {
     "templates": {
@@ -137,5 +140,32 @@
   },
   "actions": {
     "backToTarget": "Volver a Vacante Objetivo (Paso 2)"
+  },
+  "drawer": {
+    "shortScore": "Auditoría",
+    "shortMatch": "Ajuste",
+    "shortInterview": "Prep"
+  },
+  "coverLetter": {
+    "tone": "Tono",
+    "corporate": "Corporativo",
+    "startup": "Startup / Directo",
+    "leadership": "Liderazgo",
+    "viewMode": "Vista Previa",
+    "editMode": "Editar",
+    "regenerate": "Regenerar",
+    "crafting": "Redactando carta de presentación personalizada de alto impacto...",
+    "generatedSuccess": "¡Carta de presentación generada con éxito!"
+  },
+  "linkedin": {
+    "title": "Optimización de Marca en LinkedIn",
+    "subtitle": "Titulares optimizados para ATS y biografía narrativa",
+    "generating": "Generando paquete de optimización de perfil de LinkedIn...",
+    "headlinesTitle": "1. Titulares Optimizados (Máx. 220 Caracteres)",
+    "recruiterReady": "Listo para Reclutadores",
+    "aboutTitle": "2. Sección 'Acerca de' Narrativa (Máx. 2.600 Caracteres)",
+    "copyAbout": "Copiar Texto 'Acerca de'",
+    "regenerate": "Regenerar Paquete de LinkedIn",
+    "copiedToast": "¡{{label}} copiado al portapapeles!"
   }
 }

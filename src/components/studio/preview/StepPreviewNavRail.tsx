@@ -3,6 +3,7 @@ import { Box, Typography, useTheme, alpha } from '@mui/material';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import FormatPaintRoundedIcon from '@mui/icons-material/FormatPaintRounded';
 import SpellcheckRoundedIcon from '@mui/icons-material/SpellcheckRounded';
+import DifferenceRoundedIcon from '@mui/icons-material/DifferenceRounded';
 import { useTranslation } from 'react-i18next';
 import { PreviewSidePanelType, StepPreviewNavRailProps } from '../../../types';
 
@@ -178,6 +179,104 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
           }}
         >
           {t('preview:navRail.audit', 'Quality & Gaps')}
+        </Typography>
+      </Box>
+
+      {/* LinkedIn Tailoring Rail Button */}
+      <Box
+        onClick={() => onToggleSidePanel('linkedin')}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          cursor: 'pointer',
+          flex: { xs: 1, md: 'none' },
+          width: { xs: 'auto', md: '100%' },
+          px: 0.25,
+          gap: 0.25,
+          color: activeSidePanel === 'linkedin' ? '#0a66c2' : 'text.secondary',
+          transition: 'all 0.15s ease',
+          '&:hover': { color: 'text.primary' }
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: 36, md: 44 },
+            height: { xs: 36, md: 44 },
+            borderRadius: { xs: '10px', md: '14px' },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bgcolor: activeSidePanel === 'linkedin'
+              ? alpha('#0a66c2', isDark ? 0.25 : 0.12)
+              : 'transparent',
+            color: activeSidePanel === 'linkedin' ? '#0a66c2' : 'inherit',
+            transition: 'all 0.15s ease',
+            fontWeight: 900,
+            fontSize: { xs: '0.9rem', md: '1rem' },
+          }}
+        >
+          in
+        </Box>
+        <Typography
+          variant="caption"
+          sx={{
+            fontSize: { xs: '0.65rem', md: '0.68rem' },
+            fontWeight: activeSidePanel === 'linkedin' ? 700 : 500,
+            textAlign: 'center',
+            lineHeight: 1.15,
+            px: 0.25,
+          }}
+        >
+          {t('preview:navRail.linkedin', 'LinkedIn')}
+        </Typography>
+      </Box>
+
+      {/* Compare Versions Diff Rail Button */}
+      <Box
+        onClick={() => onToggleSidePanel('compare')}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          cursor: 'pointer',
+          flex: { xs: 1, md: 'none' },
+          width: { xs: 'auto', md: '100%' },
+          px: 0.25,
+          gap: 0.25,
+          color: activeSidePanel === 'compare' ? 'secondary.main' : 'text.secondary',
+          transition: 'all 0.15s ease',
+          '&:hover': { color: 'text.primary' }
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: 36, md: 44 },
+            height: { xs: 36, md: 44 },
+            borderRadius: { xs: '10px', md: '14px' },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bgcolor: activeSidePanel === 'compare'
+              ? alpha(theme.palette.secondary.main, isDark ? 0.25 : 0.12)
+              : 'transparent',
+            color: activeSidePanel === 'compare' ? 'secondary.main' : 'inherit',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <DifferenceRoundedIcon sx={{ fontSize: { xs: 20, md: 22 } }} />
+        </Box>
+        <Typography
+          variant="caption"
+          sx={{
+            fontSize: { xs: '0.65rem', md: '0.68rem' },
+            fontWeight: activeSidePanel === 'compare' ? 700 : 500,
+            textAlign: 'center',
+            lineHeight: 1.15,
+            px: 0.25,
+          }}
+        >
+          {t('preview:navRail.compare', 'Compare')}
         </Typography>
       </Box>
     </Box>

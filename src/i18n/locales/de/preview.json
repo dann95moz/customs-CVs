@@ -38,7 +38,9 @@
     "scrollDown": "Nach unten scrollen",
     "scrollRight": "Nach rechts schieben",
     "zoomFit": "Breite anpassen",
-    "zoom100": "100% Zoom"
+    "zoom100": "100% Zoom",
+    "docCv": "Lebenslauf (CV)",
+    "docCoverLetter": "Anschreiben"
   },
   "editor": {
     "sourceTitle": "CV-Markdown-Quelle",
@@ -53,7 +55,8 @@
     "templates": "Vorlagen",
     "design": "Design & Format",
     "audit": "Qualität & Lücken",
-    "compare": "Vergleichen"
+    "compare": "Vergleichen",
+    "linkedin": "LinkedIn"
   },
   "panels": {
     "templates": {
@@ -137,5 +140,32 @@
   },
   "actions": {
     "backToTarget": "Zurück zur Ziel-Stellenanzeige (Schritt 2)"
+  },
+  "drawer": {
+    "shortScore": "Audit",
+    "shortMatch": "Passung",
+    "shortInterview": "Prep"
+  },
+  "coverLetter": {
+    "tone": "Tonfall",
+    "corporate": "Formell / Corporate",
+    "startup": "Startup / Direkt",
+    "leadership": "Führung",
+    "viewMode": "Vorschau",
+    "editMode": "Bearbeiten",
+    "regenerate": "Neu generieren",
+    "crafting": "Maßgeschneidertes Anschreiben wird generiert...",
+    "generatedSuccess": "Anschreiben erfolgreich generiert!"
+  },
+  "linkedin": {
+    "title": "LinkedIn-Markenoptimierung",
+    "subtitle": "ATS-optimierte Überschriften & Storytelling-Bio",
+    "generating": "LinkedIn-Profilpaket wird generiert...",
+    "headlinesTitle": "1. Optimierte Überschriften (Max. 220 Zeichen)",
+    "recruiterReady": "Bereit für Recruiter",
+    "aboutTitle": "2. Storytelling 'Info'-Bereich (Max. 2.600 Zeichen)",
+    "copyAbout": "'Info'-Text kopieren",
+    "regenerate": "LinkedIn-Paket neu generieren",
+    "copiedToast": "{{label}} in die Zwischenablage kopiert!"
   }
 }

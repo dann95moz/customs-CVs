@@ -25,7 +25,7 @@ export type StudioTab =
 
 export type PreviewViewMode = 'tailored' | 'generic' | 'compare';
 
-export type PreviewSidePanelType = 'templates' | 'design' | 'audit';
+export type PreviewSidePanelType = 'templates' | 'design' | 'audit' | 'linkedin' | 'compare';
 
 export interface StepMeta {
   id: WizardStep;

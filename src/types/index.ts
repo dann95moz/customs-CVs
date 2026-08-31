@@ -11,3 +11,4 @@ export * from './audit';
 export * from './studio';
 export * from './components';
 export * from './feedback';
+export * from './linkedin';

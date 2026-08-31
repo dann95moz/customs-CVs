@@ -44,6 +44,15 @@ const DesignFormattingPanel = React.lazy(() =>
 const PreviewAuditGapDrawer = React.lazy(() =>
   import('./preview/PreviewAuditGapDrawer').then((m) => ({ default: m.PreviewAuditGapDrawer }))
 );
+const CoverLetterView = React.lazy(() =>
+  import('./preview/CoverLetterView').then((m) => ({ default: m.CoverLetterView }))
+);
+const LinkedInPanel = React.lazy(() =>
+  import('./preview/LinkedInPanel').then((m) => ({ default: m.LinkedInPanel }))
+);
+const VersionDiffModal = React.lazy(() =>
+  import('./history/VersionDiffModal').then((m) => ({ default: m.VersionDiffModal }))
+);
 const GitHubStarToast = React.lazy(() =>
   import('./GitHubStarToast').then((m) => ({ default: m.GitHubStarToast }))
 );
@@ -55,6 +64,9 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const muiTheme = useTheme();
   const { isExportingPdf, handleDirectDownload } = usePrintPdf();
   const { isPromptOpen, triggerPrompt, dismissPrompt, openGitHubAndDismiss } = useGitHubStarPrompt();
+
+  const [previewDocType, setPreviewDocType] = useState<'cv' | 'cover-letter'>('cv');
+  const [isDiffModalOpen, setIsDiffModalOpen] = useState<boolean>(false);
 
   const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
   const theme = useResumeStore((s) => s.theme);
@@ -154,7 +166,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
 
   // Right Side Unified Audit & Gap Drawer state
   const [isAuditGapOpen, setIsAuditGapOpen] = useState<boolean>(false);
-  const [auditGapTab, setAuditGapTab] = useState<'audit' | 'gap'>('audit');
+  const [auditGapTab, setAuditGapTab] = useState<'audit' | 'gap' | 'interview'>('audit');
 
   // Mobile mode toggle: 'edit' (card-based touch list) vs 'preview' (scaled PDF sheet)
   const [mobileViewMode, setMobileViewMode] = useState<'edit' | 'preview'>('edit');
@@ -241,6 +253,8 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     <div className="preview-workspace-layout" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       {/* Top Studio Control Bar */}
       <StepPreviewToolbar
+        previewDocType={previewDocType}
+        onPreviewDocTypeChange={setPreviewDocType}
         activeTemplateName={activeTemplateMeta.name}
         onOpenTemplates={() => {
           setActiveSidePanel('templates');
@@ -268,6 +282,10 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         <StepPreviewNavRail
           activeSidePanel={activeSidePanel}
           onToggleSidePanel={(panel: PreviewSidePanelType) => {
+            if (panel === 'compare') {
+              setIsDiffModalOpen(true);
+              return;
+            }
             if (panel === 'audit') {
               const willBeOpen = !isAuditGapOpen;
               setIsAuditGapOpen(willBeOpen);
@@ -344,107 +362,145 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   onClose={() => setActiveSidePanel(null)}
                 />
               )}
+
+              {activeSidePanel === 'linkedin' && (
+                <LinkedInPanel
+                  cvData={parsedCv}
+                  companyName={companyName}
+                  targetRole={targetRole}
+                  onClose={() => setActiveSidePanel(null)}
+                />
+              )}
             </React.Suspense>
           </Box>
         )}
 
-        {/* 3. Main Center Canvas: Document Sheet & Mobile Touch Editor */}
+        {/* 3. Main Center Canvas: Document Sheet & Mobile Touch Editor or Cover Letter */}
         <div
           className="preview-canvas-wrapper"
           style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', order: 1 }}
         >
-          {/* Mobile View Mode Segmented Control (Visible only on mobile xs/sm) */}
-          <Box
-            className="no-print"
-            sx={{
-              display: { xs: 'flex', md: 'none' },
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              py: 0.75,
-              px: 1.5,
-              bgcolor: 'background.paper',
-              borderBottom: `1px solid ${muiTheme.palette.divider}`,
-              zIndex: 10,
-              gap: 1,
-            }}
-          >
-            <ButtonGroup
-              variant="outlined"
-              size="small"
-              sx={{
-                borderRadius: '999px',
-                bgcolor: alpha(muiTheme.palette.primary.main, 0.06),
-                p: 0.3,
-                border: 'none',
-                gap: 0.5,
-              }}
-            >
-              <Button
-                onClick={() => setMobileViewMode('edit')}
-                variant={mobileViewMode === 'edit' ? 'contained' : 'text'}
-                sx={{
-                  borderRadius: '999px !important',
-                  px: 2.25,
-                  py: 0.5,
-                  minHeight: 32,
-                  fontWeight: 700,
-                  fontSize: '0.78rem',
-                  textTransform: 'none',
-                  boxShadow: 'none',
-                  bgcolor: mobileViewMode === 'edit' ? 'primary.main' : 'transparent',
-                  color: mobileViewMode === 'edit' ? '#ffffff' : 'text.secondary',
-                }}
-              >
-                {t('preview:aiRegen.mobileModeEdit', 'Edit')}
-              </Button>
-              <Button
-                onClick={() => setMobileViewMode('preview')}
-                variant={mobileViewMode === 'preview' ? 'contained' : 'text'}
-                sx={{
-                  borderRadius: '999px !important',
-                  px: 2.25,
-                  py: 0.5,
-                  minHeight: 32,
-                  fontWeight: 700,
-                  fontSize: '0.78rem',
-                  textTransform: 'none',
-                  boxShadow: 'none',
-                  bgcolor: mobileViewMode === 'preview' ? 'primary.main' : 'transparent',
-                  color: mobileViewMode === 'preview' ? '#ffffff' : 'text.secondary',
-                }}
-              >
-                {t('preview:aiRegen.mobileModePreview', 'Preview')}
-              </Button>
-            </ButtonGroup>
-
-            {/* Mobile Zoom Fit Mode Toggle */}
-            {mobileViewMode === 'preview' && (
-              <Chip
-                size="small"
-                label={mobileZoomMode === 'fit' ? t('preview:toolbar.zoomFit', 'Fit Width') : t('preview:toolbar.zoom100', '100% Real')}
-                color={mobileZoomMode === 'fit' ? 'primary' : 'default'}
-                variant={mobileZoomMode === 'fit' ? 'filled' : 'outlined'}
-                onClick={() => setMobileZoomMode((m) => (m === 'fit' ? '100%' : 'fit'))}
-                sx={{ fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}
-              />
-            )}
-          </Box>
-
-          {/* Mobile 'Edit' Mode: Vertical List of Cards with Large Touch Buttons */}
-          {mobileViewMode === 'edit' && (
+          {previewDocType === 'cover-letter' ? (
             <Box
               sx={{
-                display: { xs: 'block', md: 'none' },
                 flex: 1,
                 overflowY: 'auto',
+                overflowX: 'hidden',
+                p: { xs: 1.5, sm: 3 },
+                pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 64px)', sm: 6 },
                 bgcolor: 'background.default',
+                display: 'flex',
+                justifyContent: 'center',
+                boxSizing: 'border-box',
               }}
             >
-              <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
-                <StepPreviewMobileEdit parsedCv={parsedCv} />
-              </CvLiveEditProvider>
+              <React.Suspense fallback={<StudioSkeleton variant="preview" />}>
+                <CoverLetterView
+                  cvData={parsedCv}
+                  companyName={companyName}
+                  targetRole={targetRole}
+                  themeId={theme}
+                  paletteId={palette}
+                  customColor={customColor}
+                  fontFamily={fontFamily}
+                  onExportPdf={onTriggerDirectDownloadPdf}
+                />
+              </React.Suspense>
             </Box>
-          )}
+          ) : (
+            <>
+              {/* Mobile View Mode Segmented Control (Visible only on mobile xs/sm) */}
+              <Box
+                className="no-print"
+                sx={{
+                  display: { xs: 'flex', md: 'none' },
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  py: 0.75,
+                  px: 1.5,
+                  bgcolor: 'background.paper',
+                  borderBottom: `1px solid ${muiTheme.palette.divider}`,
+                  zIndex: 10,
+                  gap: 1,
+                }}
+              >
+                <ButtonGroup
+                  variant="outlined"
+                  size="small"
+                  sx={{
+                    borderRadius: '999px',
+                    bgcolor: alpha(muiTheme.palette.primary.main, 0.06),
+                    p: 0.3,
+                    border: 'none',
+                    gap: 0.5,
+                  }}
+                >
+                  <Button
+                    onClick={() => setMobileViewMode('edit')}
+                    variant={mobileViewMode === 'edit' ? 'contained' : 'text'}
+                    sx={{
+                      borderRadius: '999px !important',
+                      px: 2.25,
+                      py: 0.5,
+                      minHeight: 32,
+                      fontWeight: 700,
+                      fontSize: '0.78rem',
+                      textTransform: 'none',
+                      boxShadow: 'none',
+                      bgcolor: mobileViewMode === 'edit' ? 'primary.main' : 'transparent',
+                      color: mobileViewMode === 'edit' ? '#ffffff' : 'text.secondary',
+                    }}
+                  >
+                    {t('preview:aiRegen.mobileModeEdit', 'Edit')}
+                  </Button>
+                  <Button
+                    onClick={() => setMobileViewMode('preview')}
+                    variant={mobileViewMode === 'preview' ? 'contained' : 'text'}
+                    sx={{
+                      borderRadius: '999px !important',
+                      px: 2.25,
+                      py: 0.5,
+                      minHeight: 32,
+                      fontWeight: 700,
+                      fontSize: '0.78rem',
+                      textTransform: 'none',
+                      boxShadow: 'none',
+                      bgcolor: mobileViewMode === 'preview' ? 'primary.main' : 'transparent',
+                      color: mobileViewMode === 'preview' ? '#ffffff' : 'text.secondary',
+                    }}
+                  >
+                    {t('preview:aiRegen.mobileModePreview', 'Preview')}
+                  </Button>
+                </ButtonGroup>
+
+                {/* Mobile Zoom Fit Mode Toggle */}
+                {mobileViewMode === 'preview' && (
+                  <Chip
+                    size="small"
+                    label={mobileZoomMode === 'fit' ? t('preview:toolbar.zoomFit', 'Fit Width') : t('preview:toolbar.zoom100', '100% Real')}
+                    color={mobileZoomMode === 'fit' ? 'primary' : 'default'}
+                    variant={mobileZoomMode === 'fit' ? 'filled' : 'outlined'}
+                    onClick={() => setMobileZoomMode((m) => (m === 'fit' ? '100%' : 'fit'))}
+                    sx={{ fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}
+                  />
+                )}
+              </Box>
+
+              {/* Mobile 'Edit' Mode: Vertical List of Cards with Large Touch Buttons */}
+              {mobileViewMode === 'edit' && (
+                <Box
+                  sx={{
+                    display: { xs: 'block', md: 'none' },
+                    flex: 1,
+                    overflowY: 'auto',
+                    bgcolor: 'background.default',
+                  }}
+                >
+                  <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
+                    <StepPreviewMobileEdit parsedCv={parsedCv} />
+                  </CvLiveEditProvider>
+                </Box>
+              )}
 
           {/* Desktop OR Mobile 'Preview' Mode: Standard Pristine Canvas */}
           <Box
@@ -571,6 +627,8 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               </Typography>
             </Box>
           </Paper>
+            </>
+          )}
         </div>
 
         {/* 4. Unified Right-Side Audit & Gap Drawer */}
@@ -581,6 +639,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             gapMarkdown={gapMarkdown}
             companyName={companyName}
             targetRole={targetRole}
+            cvData={parsedCv}
             isOpen={isAuditGapOpen}
             activeTab={auditGapTab}
             onToggleTab={(tab) => {
@@ -613,6 +672,14 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         existingApplications={applications}
         columns={kanbanColumns}
       />
+
+      {/* Visual Version Diff Modal */}
+      <React.Suspense fallback={null}>
+        <VersionDiffModal
+          open={isDiffModalOpen}
+          onClose={() => setIsDiffModalOpen(false)}
+        />
+      </React.Suspense>
 
       {/* Toast Feedback when application is tracked */}
       <Snackbar

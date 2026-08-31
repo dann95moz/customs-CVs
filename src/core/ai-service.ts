@@ -8,10 +8,13 @@ import {
 import { buildPrompts, DEFAULT_RULES, PromptBundle } from './ai/prompt-builder';
 import { extractCvAndGap, ExtractedCvAndGap } from './ai/extractor';
 import { getAIStrategy } from './ai/strategies';
+import { generateInterviewPrep } from './ai/interview-prep-generator';
+import { generateCoverLetter } from './ai/cover-letter-generator';
+import { generateLinkedInProfile } from './ai/linkedin-generator';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export type { AIModelOption, AIProviderSettings, AIConnectionTestResult, TailorRequest, TailorResponse };
-export { buildPrompts, DEFAULT_RULES, extractCvAndGap };
+export { buildPrompts, DEFAULT_RULES, extractCvAndGap, generateInterviewPrep, generateCoverLetter, generateLinkedInProfile };
 
 export const AVAILABLE_AI_MODELS: AIModelOption[] = [
   // 1. Local AI Models (Ollama, LM Studio, LocalAI, vLLM - 100% Free & Offline)
