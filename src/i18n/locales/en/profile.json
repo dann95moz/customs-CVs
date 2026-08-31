@@ -8,7 +8,7 @@
     "loadSample": "Load Sample Profile",
     "exportBackup": "Export Backup (.md)",
     "exportBackupTip": "Download your master career profile as Markdown (.md)",
-    "continueToTarget": "Continue to Target Vacancy (Step 2)"
+    "continueToTarget": "Continue to Target Vacancy"
   },
   "dialog": {
     "confirmReplaceTitle": "Replace current profile?",

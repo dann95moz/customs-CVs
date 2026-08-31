@@ -8,7 +8,7 @@
     "loadSample": "Beispiel-Profil laden",
     "exportBackup": "Sicherung exportieren (.md)",
     "exportBackupTip": "Laden Sie Ihr Master-Profil als Markdown (.md) herunter",
-    "continueToTarget": "Weiter zur Zielstelle (Schritt 2)"
+    "continueToTarget": "Weiter zur Zielstelle"
   },
   "dialog": {
     "confirmReplaceTitle": "Aktuelles Profil ersetzen?",

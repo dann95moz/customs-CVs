@@ -7,8 +7,8 @@
     "uploadFile": "Importa CV (PDF, .md)",
     "loadSample": "Carica Profilo di Esempio",
     "exportBackup": "Esporta Backup (.md)",
-    "exportBackupTip": "Scarica il tuo profilo master come file Markdown (.md)",
-    "continueToTarget": "Continua alla Posizione Obiettivo (Passo 2)"
+    "exportBackupTip": "Scarica il tuo profilo master in formato Markdown (.md)",
+    "continueToTarget": "Continua alla Posizione Obiettivo"
   },
   "dialog": {
     "confirmReplaceTitle": "Sostituire il profilo corrente?",

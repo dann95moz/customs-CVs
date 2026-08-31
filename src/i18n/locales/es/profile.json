@@ -8,7 +8,7 @@
     "loadSample": "Cargar Perfil de Ejemplo",
     "exportBackup": "Exportar Respaldo (.md)",
     "exportBackupTip": "Descargar tu perfil maestro como archivo Markdown (.md)",
-    "continueToTarget": "Continuar a Vacante Objetivo (Paso 2)"
+    "continueToTarget": "Continuar a Vacante Objetivo"
   },
   "dialog": {
     "confirmReplaceTitle": "¿Reemplazar el perfil actual?",

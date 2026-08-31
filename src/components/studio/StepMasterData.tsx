@@ -478,7 +478,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               width: { xs: '100%', sm: 'auto' },
             }}
           >
-            {t('profile:actions.continueToTarget', 'Continue to Target Vacancy (Step 2)')}
+            {t('profile:actions.continueToTarget', 'Continue to Target Vacancy')}
           </Button>
         </Paper>
 

@@ -113,7 +113,8 @@
     "scoreLabel": "Kalibrierter Score",
     "matchLabel": "Stellenabgleich",
     "shortScore": "Audit",
-    "shortMatch": "Match"
+    "shortMatch": "Passung",
+    "shortInterview": "Prep"
   },
   "aiRegen": {
     "titleBullet": "Diesen Erfolg neu generieren",
@@ -139,12 +140,7 @@
     "cancelItem": "Abbrechen"
   },
   "actions": {
-    "backToTarget": "Zurück zur Ziel-Stellenanzeige (Schritt 2)"
-  },
-  "drawer": {
-    "shortScore": "Audit",
-    "shortMatch": "Passung",
-    "shortInterview": "Prep"
+    "backToTarget": "Zurück zur Zielstelle"
   },
   "coverLetter": {
     "tone": "Tonfall",

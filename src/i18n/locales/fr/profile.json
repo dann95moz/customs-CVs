@@ -8,7 +8,7 @@
     "loadSample": "Charger un Profil d'Exemple",
     "exportBackup": "Exporter une Sauvegarde (.md)",
     "exportBackupTip": "Télécharger votre profil maître au format Markdown (.md)",
-    "continueToTarget": "Continuer vers l'Offre Cible (Étape 2)"
+    "continueToTarget": "Continuer vers l'Offre Cible"
   },
   "dialog": {
     "confirmReplaceTitle": "Remplacer le profil actuel ?",

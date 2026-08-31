@@ -604,7 +604,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               size="small"
               sx={{ fontSize: { xs: '0.74rem', sm: '0.8rem' } }}
             >
-              {t('preview:actions.backToTarget', 'Back to Target Vacancy (Step 2)')}
+              {t('preview:actions.backToTarget', 'Back to Target Vacancy')}
             </Button>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>

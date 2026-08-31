@@ -469,7 +469,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               width: { xs: '100%', sm: 'auto' },
             }}
           >
-            {t('target:actions.backToProfile', 'Back to Profile (Step 1)')}
+            {t('target:actions.backToProfile', 'Back to Profile')}
           </Button>
 
           <Box

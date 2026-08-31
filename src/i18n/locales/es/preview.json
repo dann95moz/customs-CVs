@@ -113,7 +113,8 @@
     "scoreLabel": "Puntuación Calibrada",
     "matchLabel": "Alineación de Puesto",
     "shortScore": "Auditoría",
-    "shortMatch": "Match"
+    "shortMatch": "Ajuste",
+    "shortInterview": "Prep"
   },
   "aiRegen": {
     "titleBullet": "Regenerar este logro",
@@ -139,12 +140,7 @@
     "cancelItem": "Cancelar"
   },
   "actions": {
-    "backToTarget": "Volver a Vacante Objetivo (Paso 2)"
-  },
-  "drawer": {
-    "shortScore": "Auditoría",
-    "shortMatch": "Ajuste",
-    "shortInterview": "Prep"
+    "backToTarget": "Volver a Vacante Objetivo"
   },
   "coverLetter": {
     "tone": "Tono",
