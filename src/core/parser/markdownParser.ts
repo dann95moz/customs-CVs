@@ -9,6 +9,7 @@ import {
   LanguageItem,
   CEFRLevel
 } from '../../types/cv';
+import { classifySectionType } from '../../constants/sectionKeywords';
 
 /**
  * Markdown-to-Structured CV AST Parser.
@@ -90,7 +91,7 @@ export function parseContactItem(rawText: string): ContactItem | null {
   }
 
   // Location
-  if (clean.includes(',') || /remoto|remote|colombia|mexico|spain|argentina|chile|peru|usa|canada|germany|france/i.test(clean)) {
+  if (clean.includes(',') || /remot[eo]|hybrid|h[íi]brido|onsite|presencial/i.test(clean)) {
     return { type: 'location', label: clean };
   }
 
@@ -193,7 +194,9 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
       !addedTypes.has('location') &&
       locClean.length >= 3 &&
       locClean.length <= 60 &&
-      (locClean.includes(',') || /remoto|remote|colombia|mexico|spain|usa|chile|argentina|peru|germany|france/i.test(locClean))
+      (locClean.includes(',') ||
+        /remot[eo]|hybrid|h[íi]brido|onsite|presencial/i.test(locClean) ||
+        (!locClean.includes('@') && !locClean.includes('/') && !/\d{5,}/.test(locClean) && !locClean.toLowerCase().includes('github') && !locClean.toLowerCase().includes('linkedin')))
     ) {
       results.push({ type: 'location', label: locClean });
       addedTypes.add('location');
@@ -234,10 +237,8 @@ function parseSkillGroups(rawContent: string): SkillCategory[] {
       continue;
     }
 
-    // Check if line contains one or more embedded category patterns, e.g.
-    // '- **Frontend Stack:** Angular, React **Architecture:** Microfrontends'
-    // or '- Frontend Stack: Angular, React.js, TypeScript'
-    const categoryTokens = trimmed.split(/(?:^|(?<=[,\s]))(?:\*{0,2})([A-Z][A-Za-z0-9\s&/\\-]{2,30}?)(?:\*{0,2}):\s*/);
+    // Check if line contains one or more embedded category patterns, supporting Unicode characters (e.g. Á, É, Í, Ó, Ú, Ü, Ä, Ö, etc.)
+    const categoryTokens = trimmed.split(/(?:^|(?<=[,\s]))(?:\*{0,2})([\p{Lu}\p{L}][\p{L}0-9\s&/\\-]{2,35}?)(?:\*{0,2}):\s*/u);
 
     if (categoryTokens.length > 1) {
       // We found structured category:skills segments
@@ -375,7 +376,7 @@ function parseExperienceItems(rawContent: string): ExperienceItem[] {
         const cleanPart = p.trim();
         if (/\d{4}|present|presente|actual/i.test(cleanPart)) {
           currentItem.date = cleanPart;
-        } else if (/remoto|remote|,|colombia|mexico|usa|chile|spain/i.test(cleanPart)) {
+        } else if (/remot[eo]|hybrid|h[íi]brido|onsite|presencial|,/i.test(cleanPart)) {
           currentItem.location = cleanPart;
         } else if (!currentItem.role) {
           currentItem.role = cleanPart;
@@ -660,48 +661,7 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
       const cleanTitle = cleanSectionTitle(rawTitle);
       const upper = cleanTitle.toUpperCase();
 
-      let type: SectionType = 'generic';
-      if (upper.includes('RESUMEN') || upper.includes('SUMMARY') || upper.includes('PERFIL') || upper.includes('PITCH')) {
-        type = 'summary';
-      } else if (
-        upper.includes('HABILIDADES') ||
-        upper.includes('SKILLS') ||
-        upper.includes('COMPETENCIAS') ||
-        upper.includes('COMPETENCIES') ||
-        upper.includes('TECH STACK') ||
-        upper.includes('STACK')
-      ) {
-        type = 'skills';
-      } else if (
-        upper.includes('EXPERIENCIA') ||
-        upper.includes('EXPERIENCE') ||
-        upper.includes('HISTORIAL') ||
-        upper.includes('CAREER HISTORY') ||
-        upper.includes('WORK HISTORY')
-      ) {
-        type = 'experience';
-      } else if (
-        upper.includes('PROYECTOS') ||
-        upper.includes('PROJECTS') ||
-        upper.includes('EXTRAS') ||
-        upper.includes('PUBLICACIONES') ||
-        upper.includes('PUBLICATIONS') ||
-        upper.includes('VOLUNTEERING') ||
-        upper.includes('VOLUNTARIADO') ||
-        upper.includes('INITIATIVES') ||
-        upper.includes('SIDE VENTURES')
-      ) {
-        type = 'projects';
-      } else if (
-        upper.includes('EDUCACI') ||
-        upper.includes('EDUCATION') ||
-        upper.includes('CERTIFICA') ||
-        upper.includes('ACADEMIC')
-      ) {
-        type = 'education';
-      } else if (upper.includes('IDIOMA') || upper.includes('LANGUAGE')) {
-        type = 'languages';
-      }
+      const type: SectionType = classifySectionType(cleanTitle);
 
       currentSec = {
         id: `sec-${sections.length}-${type}`,
