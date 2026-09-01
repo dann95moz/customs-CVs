@@ -34,7 +34,18 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
   const { header, summary, skills, experience, education, languages, projects, genericSections } = slots;
 
   return (
-    <div className={`theme-${theme} template-europass`} style={{ fontFamily: "'Inter', Arial, sans-serif", color: '#1e293b', fontSize: '13px', lineHeight: 1.45 }}>
+    <div
+      className={`theme-${theme} template-europass cv-container`}
+      style={{
+        fontFamily: "'Inter', Arial, sans-serif",
+        color: '#1e293b',
+        fontSize: '13px',
+        lineHeight: 1.45,
+        padding: '32px 38px',
+        boxSizing: 'border-box',
+        width: '100%',
+      }}
+    >
       {/* EUROPASS OFFICIAL HEADER BANNER */}
       <header
         style={{
@@ -291,16 +302,25 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
             </h2>
 
             <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              {education.items.map((edu, eduIdx) => (
-                <EditableText
-                  key={eduIdx}
-                  tagName="li"
-                  value={edu}
-                  onSave={(val) => liveEdit?.updateEducationItem(eduIdx, val)}
-                  htmlContent={marked.parseInline(edu) as string}
-                  style={{ fontSize: '12px', color: '#334155', lineHeight: 1.45 }}
-                />
-              ))}
+              {education.items.map((rawEdu, eduIdx) => {
+                let edu = (rawEdu || '').trim();
+                if (/^\*?[^*]+\*\*/.test(edu)) {
+                  edu = edu.replace(/^\*?([^*]+)\*\*/, '**$1**');
+                } else if (!edu.includes('**') && /^[A-Za-z0-9\s.,/&()-]+?\s+[–—\-]\s+/.test(edu)) {
+                  edu = edu.replace(/^([A-Za-z0-9\s.,/&()-]+?)\s+([–—\-])\s+/, '**$1** $2 ');
+                }
+
+                return (
+                  <EditableText
+                    key={eduIdx}
+                    tagName="li"
+                    value={edu}
+                    onSave={(val) => liveEdit?.updateEducationItem(eduIdx, val)}
+                    htmlContent={marked.parseInline(edu) as string}
+                    style={{ fontSize: '12px', color: '#334155', lineHeight: 1.45 }}
+                  />
+                );
+              })}
             </ul>
           </section>
         )}
