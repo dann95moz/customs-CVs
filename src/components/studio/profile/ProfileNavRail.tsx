@@ -142,7 +142,7 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
         alignSelf: 'stretch',
         borderRight: { xs: 'none', md: `1px solid ${theme.palette.divider}` },
         borderBottom: { xs: `1px solid ${theme.palette.divider}`, md: 'none' },
-        bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.012)',
+        bgcolor: alpha(theme.palette.text.primary, isDark ? 0.015 : 0.012),
         overflowX: { xs: 'auto', md: 'visible' },
         overflowY: { xs: 'visible', md: 'auto' },
         py: { xs: 0.5, md: 1 },
@@ -243,7 +243,7 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
                 minHeight: 40,
                 py: 0.75,
                 px: 1.5,
-                borderRadius: '8px',
+                borderRadius: 1,
                 textTransform: 'none',
                 alignItems: 'stretch',
                 bgcolor: isActive
@@ -256,9 +256,7 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
                     ? isDark
                       ? alpha(theme.palette.primary.main, 0.2)
                       : alpha(theme.palette.primary.main, 0.12)
-                    : isDark
-                    ? 'rgba(255, 255, 255, 0.04)'
-                    : 'rgba(0, 0, 0, 0.03)'
+                    : alpha(theme.palette.text.primary, 0.04)
                 },
                 transition: 'all 0.15s ease-in-out'
               }}
@@ -285,13 +283,14 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
               py: 0.8,
               justifyContent: 'flex-start',
               px: 1.5,
-              borderRadius: '8px',
+              borderRadius: 1,
             }}
           >
             {t('profile:customSections.addSectionBtn', 'Agregar Sección')}
           </Button>
         </Box>
       )}
+
 
       {/* Horizontal Tabs for Mobile View */}
       <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 0.5, width: '100%', minWidth: 0 }}>
@@ -371,13 +370,14 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
                   fontSize: '0.75rem',
                   py: 0.4,
                   px: 1,
-                  borderRadius: '8px',
+                  borderRadius: 1,
                   whiteSpace: 'nowrap',
                   flexShrink: 0,
                 }}
               >
                 {t('profile:customSections.addSectionBtnShort', 'Sección +')}
               </Button>
+
             </Tooltip>
           </Box>
         )}

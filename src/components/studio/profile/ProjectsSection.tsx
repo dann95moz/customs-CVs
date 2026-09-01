@@ -56,9 +56,9 @@ const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
       variant="outlined"
       sx={{
         p: 2,
-        borderRadius: '10px',
+        borderRadius: 1.5,
         borderColor: theme.palette.divider,
-        bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.012)',
+        bgcolor: alpha(theme.palette.text.primary, isDark ? 0.015 : 0.012),
         display: 'flex',
         flexDirection: 'column',
         gap: 1.5
@@ -88,7 +88,6 @@ const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
           onChange={(e) => onFieldChange(projIdx, 'company', e.target.value)}
           placeholder="e.g. CV Studio Pro"
           fullWidth
-          sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
         />
         <Autocomplete
           freeSolo
@@ -103,7 +102,6 @@ const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
               label={t('profile:sections.projects.role', 'Categoría / Rol')}
               size="small"
               placeholder="e.g. Personal Project"
-              sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
             />
           )}
         />
@@ -117,7 +115,6 @@ const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
           onChange={(e) => onFieldChange(projIdx, 'location', e.target.value)}
           placeholder="e.g. github.com/user/project"
           fullWidth
-          sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
         />
         <TextField
           label={t('profile:sections.projects.date', 'Año / Fecha')}
@@ -126,7 +123,6 @@ const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
           onChange={(e) => onFieldChange(projIdx, 'date', e.target.value)}
           placeholder="e.g. 2024"
           fullWidth
-          sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
         />
       </Box>
 
@@ -143,7 +139,6 @@ const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
         }}
         placeholder="Breve descripción del proyecto, impacto técnico y métricas conseguidas..."
         fullWidth
-        sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
       />
     </Paper>
   );
@@ -187,12 +182,13 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = React.memo(({
           sx={{
             p: 3,
             textAlign: 'center',
-            borderRadius: '10px',
+            borderRadius: 1.5,
             borderColor: theme.palette.divider,
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.015)'
+            bgcolor: alpha(theme.palette.text.primary, 0.015),
           }}
         >
           <Typography variant="body2" color="text.secondary">
+
             {t('profile:sections.projects.empty', 'No hay proyectos agregados aún. Agrega proyectos personales, open-source o iniciativas.')}
           </Typography>
         </Paper>

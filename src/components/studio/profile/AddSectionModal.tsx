@@ -61,7 +61,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
       descKey: 'profile:customSections.presets.certificationsDesc',
       defaultDesc: 'AWS, Azure, CISSP, PMP, Scrum Master, acreditaciones profesionales',
       icon: <WorkspacePremiumRoundedIcon sx={{ fontSize: 24 }} />,
-      color: '#0284c7',
+      color: theme.palette.info.main,
     },
     {
       presetType: 'awards',
@@ -70,7 +70,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
       descKey: 'profile:customSections.presets.awardsDesc',
       defaultDesc: 'Hackathons, distinciones académicas, empleado del año, becas',
       icon: <EmojiEventsRoundedIcon sx={{ fontSize: 24 }} />,
-      color: '#eab308',
+      color: theme.palette.warning.main,
     },
     {
       presetType: 'publications',
@@ -79,7 +79,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
       descKey: 'profile:customSections.presets.publicationsDesc',
       defaultDesc: 'Artículos científicos, libros, papers técnicos, patentes registradas',
       icon: <MenuBookRoundedIcon sx={{ fontSize: 24 }} />,
-      color: '#8b5cf6',
+      color: theme.palette.secondary.main,
     },
     {
       presetType: 'volunteering',
@@ -88,7 +88,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
       descKey: 'profile:customSections.presets.volunteeringDesc',
       defaultDesc: 'Liderazgo comunitario, ONGs, mentorías y causas sociales',
       icon: <VolunteerActivismRoundedIcon sx={{ fontSize: 24 }} />,
-      color: '#10b981',
+      color: theme.palette.success.main,
     },
     {
       presetType: 'conferences',
@@ -97,7 +97,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
       descKey: 'profile:customSections.presets.conferencesDesc',
       defaultDesc: 'Keynotes, ponencias en eventos de la industria, workshops dictados',
       icon: <RecordVoiceOverRoundedIcon sx={{ fontSize: 24 }} />,
-      color: '#f97316',
+      color: theme.palette.primary.main,
     },
   ];
 
@@ -142,18 +142,8 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
       onClose={onClose}
       maxWidth="sm"
       fullWidth
-      slotProps={{
-        paper: {
-          sx: {
-            borderRadius: '16px',
-            backgroundImage: isDark
-              ? 'linear-gradient(135deg, rgba(16, 22, 35, 0.95) 0%, rgba(21, 29, 46, 0.98) 100%)'
-              : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-            border: `1px solid ${theme.palette.divider}`,
-          },
-        },
-      }}
     >
+
 
       <DialogTitle
         sx={{
@@ -193,7 +183,6 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
                 key={preset.presetType}
                 variant="outlined"
                 sx={{
-                  borderRadius: '12px',
                   borderColor: isSelected ? preset.color : theme.palette.divider,
                   bgcolor: isSelected
                     ? isDark
@@ -213,7 +202,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
                   <Box
                     sx={{
                       p: 1,
-                      borderRadius: '8px',
+                      borderRadius: 1,
                       bgcolor: alpha(preset.color, 0.12),
                       color: preset.color,
                       display: 'flex',
@@ -241,7 +230,6 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
           <Card
             variant="outlined"
             sx={{
-              borderRadius: '12px',
               borderColor: selectedPreset === 'custom' ? theme.palette.primary.main : theme.palette.divider,
               bgcolor: selectedPreset === 'custom'
                 ? isDark
@@ -258,7 +246,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
               <Box
                 sx={{
                   p: 1,
-                  borderRadius: '8px',
+                  borderRadius: 1,
                   bgcolor: alpha(theme.palette.text.secondary, 0.1),
                   color: 'text.secondary',
                   display: 'flex',
@@ -294,12 +282,8 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({
           placeholder={t('profile:customSections.inputPlaceholder', 'Ej. Certificaciones Profesionales')}
           error={error}
           helperText={error ? t('profile:customSections.errorRequired', 'El título es requerido') : ''}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '8px',
-            },
-          }}
         />
+
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 2.5, pt: 1, justifyContent: 'space-between' }}>

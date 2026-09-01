@@ -192,9 +192,9 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
           sx={{
             p: 3,
             textAlign: 'center',
-            borderRadius: '10px',
+            borderRadius: 1.5,
             borderColor: theme.palette.divider,
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.015)'
+            bgcolor: alpha(theme.palette.text.primary, 0.015),
           }}
         >
           <Typography variant="body2" color="text.secondary">
@@ -213,9 +213,9 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
                   variant="outlined"
                   sx={{
                     p: 2,
-                    borderRadius: '10px',
+                    borderRadius: 1.5,
                     borderColor: 'primary.main',
-                    bgcolor: isDark ? alpha(theme.palette.primary.main, 0.08) : alpha(theme.palette.primary.main, 0.04),
+                    bgcolor: alpha(theme.palette.primary.main, isDark ? 0.08 : 0.04),
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 1.5
@@ -234,7 +234,6 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
                       placeholder={t('profile:sections.education.degreePlaceholder', 'ej. Ingeniería de Sistemas')}
                       value={degreeField}
                       onChange={(e) => setDegreeField(e.target.value)}
-                      sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
                     />
                     <TextField
                       size="small"
@@ -242,7 +241,6 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
                       placeholder={t('profile:sections.education.institutionPlaceholder', 'ej. Universidad Nacional / Udemy')}
                       value={institutionField}
                       onChange={(e) => setInstitutionField(e.target.value)}
-                      sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
                     />
                     <TextField
                       size="small"
@@ -250,7 +248,6 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
                       placeholder={t('profile:sections.education.yearPlaceholder', 'ej. 2018 – 2022')}
                       value={yearField}
                       onChange={(e) => setYearField(e.target.value)}
-                      sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
                     />
                   </Box>
 
@@ -266,7 +263,6 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
                     <Button
                       size="small"
                       variant="contained"
-                      color="primary"
                       onClick={() => handleSaveEdit(idx)}
                       startIcon={<CheckRoundedIcon sx={{ fontSize: 16 }} />}
                     >
@@ -288,11 +284,11 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
                   justifyContent: 'space-between',
                   p: 1.25,
                   px: 1.75,
-                  borderRadius: '8px',
+                  borderRadius: 1.5,
                   border: `1px solid ${theme.palette.divider}`,
-                  bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.015)',
+                  bgcolor: alpha(theme.palette.text.primary, 0.02),
                   '&:hover': {
-                    bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)'
+                    bgcolor: alpha(theme.palette.text.primary, 0.04),
                   },
                   transition: 'background-color 0.15s ease-in-out'
                 }}

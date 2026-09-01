@@ -9,9 +9,11 @@ import {
   Paper,
   Stack,
   Collapse,
+  Divider,
   useTheme,
   alpha
 } from '@mui/material';
+
 import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
@@ -53,16 +55,12 @@ const ExperienceCard: React.FC<ExperienceCardProps> = React.memo(({
     <Paper
       variant="outlined"
       sx={{
-        borderRadius: '10px',
+        borderRadius: 1.5,
         borderColor: isExpanded ? 'primary.main' : theme.palette.divider,
         borderWidth: isExpanded ? 1.5 : 1,
         bgcolor: isExpanded
-          ? isDark
-            ? alpha(theme.palette.primary.main, 0.04)
-            : alpha(theme.palette.primary.main, 0.02)
-          : isDark
-          ? 'rgba(255, 255, 255, 0.015)'
-          : 'rgba(0, 0, 0, 0.012)',
+          ? alpha(theme.palette.primary.main, isDark ? 0.04 : 0.02)
+          : alpha(theme.palette.text.primary, isDark ? 0.015 : 0.01),
         overflow: 'hidden',
         transition: 'all 0.15s ease-in-out'
       }}
@@ -79,7 +77,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = React.memo(({
           cursor: 'pointer',
           userSelect: 'none',
           '&:hover': {
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'
+            bgcolor: alpha(theme.palette.text.primary, 0.02)
           }
         }}
       >
@@ -88,14 +86,12 @@ const ExperienceCard: React.FC<ExperienceCardProps> = React.memo(({
             {exp.company || t('profile:sections.experience.company', 'Empresa / Organización')}
           </Typography>
           <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500, fontSize: '0.8rem' }}>
-            {exp.role || t('profile:sections.experience.role', 'Cargo')}
-            {exp.date ? ` · ${exp.date}` : ''}
-            {exp.location ? ` (${exp.location})` : ''}
+            {exp.role ? `${exp.role} ` : ''}{exp.date ? `• ${exp.date}` : ''}
           </Typography>
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <Tooltip title={t('profile:sections.experience.removeRole', 'Eliminar puesto')}>
+          <Tooltip title={t('profile:sections.experience.removeExp', 'Eliminar experiencia')}>
             <IconButton
               size="small"
               color="error"
@@ -103,20 +99,23 @@ const ExperienceCard: React.FC<ExperienceCardProps> = React.memo(({
                 e.stopPropagation();
                 onRemoveExperience(expIdx);
               }}
-              sx={{ p: 0.5 }}
             >
-              <DeleteOutlineRoundedIcon sx={{ fontSize: 17 }} />
+              <DeleteOutlineRoundedIcon sx={{ fontSize: 18 }} />
             </IconButton>
           </Tooltip>
-          <IconButton size="small" sx={{ p: 0.5 }}>
-            {isExpanded ? <ExpandLessRoundedIcon /> : <ExpandMoreRoundedIcon />}
+
+          <IconButton size="small" sx={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+            <ExpandMoreRoundedIcon sx={{ fontSize: 20 }} />
           </IconButton>
         </Box>
       </Box>
 
-      {/* Expanded Details Form */}
+      {/* Collapsible Form Body */}
       <Collapse in={isExpanded} timeout="auto" unmountOnExit>
         <Box sx={{ p: 2, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Divider sx={{ mb: 1 }} />
+
+          {/* 4 Core Metadata Inputs (Grid 2 cols) */}
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
             <TextField
               label={t('profile:sections.experience.company', 'Empresa')}
@@ -124,7 +123,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = React.memo(({
               value={exp.company}
               onChange={(e) => onFieldChange(expIdx, 'company', e.target.value)}
               placeholder="e.g. Aval Digital Labs"
-              sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
             />
             <TextField
               label={t('profile:sections.experience.role', 'Cargo / Puesto')}
@@ -132,7 +130,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = React.memo(({
               value={exp.role || ''}
               onChange={(e) => onFieldChange(expIdx, 'role', e.target.value)}
               placeholder="e.g. Frontend Developer"
-              sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
             />
             <TextField
               label={t('profile:sections.experience.dates', 'Fechas')}
@@ -140,7 +137,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = React.memo(({
               value={exp.date || ''}
               onChange={(e) => onFieldChange(expIdx, 'date', e.target.value)}
               placeholder="e.g. Oct 2024 – Presente"
-              sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
             />
             <TextField
               label={t('profile:sections.experience.location', 'Ubicación / Modalidad')}
@@ -148,7 +144,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = React.memo(({
               value={exp.location || ''}
               onChange={(e) => onFieldChange(expIdx, 'location', e.target.value)}
               placeholder="e.g. Remoto, Colombia"
-              sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
             />
           </Box>
 
@@ -172,8 +167,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = React.memo(({
                     placeholder="Acción clave lograda medida por métricas o impacto..."
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        bgcolor: 'background.paper',
-                        borderRadius: '8px',
                         fontSize: '0.86rem',
                         lineHeight: 1.4
                       }
@@ -261,15 +254,16 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = React.memo(({
           sx={{
             p: 3,
             textAlign: 'center',
-            borderRadius: '10px',
+            borderRadius: 1.5,
             borderColor: theme.palette.divider,
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.015)'
+            bgcolor: alpha(theme.palette.text.primary, 0.015),
           }}
         >
           <Typography variant="body2" color="text.secondary">
             {t('profile:sections.experience.empty', 'No hay experiencias laborales agregadas aún.')}
           </Typography>
         </Paper>
+
       ) : (
         <Stack spacing={1.5}>
           {experience.map((exp, idx) => (

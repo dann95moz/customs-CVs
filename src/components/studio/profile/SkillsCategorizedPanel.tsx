@@ -217,9 +217,9 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
             gap: 1,
             minHeight: 52,
             p: 1.5,
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.015)',
+            bgcolor: alpha(theme.palette.text.primary, 0.02),
             border: `1px solid ${theme.palette.divider}`,
-            borderRadius: '10px'
+            borderRadius: 1.5
           }}
         >
           {currentGroup.skills.length === 0 ? (
@@ -248,16 +248,11 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
           value={newSkillInput}
           onChange={(e) => setNewSkillInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '8px',
-              bgcolor: 'background.paper'
-            }
-          }}
         />
         <Button
           size="small"
           variant="contained"
+
           color="primary"
           onClick={() => handleAddSkill()}
           disabled={!newSkillInput.trim()}

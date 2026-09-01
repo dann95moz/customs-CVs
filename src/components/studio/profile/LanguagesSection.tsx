@@ -13,8 +13,10 @@ import {
   Select,
   MenuItem,
   Autocomplete,
-  useTheme
+  useTheme,
+  alpha
 } from '@mui/material';
+
 import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
@@ -151,9 +153,9 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
           sx={{
             p: 3,
             textAlign: 'center',
-            borderRadius: '10px',
+            borderRadius: 1.5,
             borderColor: theme.palette.divider,
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.015)'
+            bgcolor: alpha(theme.palette.text.primary, 0.015),
           }}
         >
           <Typography variant="body2" color="text.secondary">
@@ -181,11 +183,11 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
                   gap: 1.5,
                   alignItems: { xs: 'stretch', sm: 'center' },
                   p: 1.5,
-                  borderRadius: '10px',
+                  borderRadius: 1.5,
                   border: `1px solid ${theme.palette.divider}`,
-                  bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.015)',
+                  bgcolor: alpha(theme.palette.text.primary, 0.02),
                   '&:hover': {
-                    bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)'
+                    bgcolor: alpha(theme.palette.text.primary, 0.04),
                   },
                   transition: 'background-color 0.15s ease-in-out'
                 }}
@@ -206,12 +208,6 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
                         {...params}
                         label={t('profile:sections.languages.language', 'Idioma')}
                         placeholder={t('profile:sections.languages.languagePlaceholder', 'ej. Español, Inglés...')}
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            bgcolor: 'background.paper',
-                            borderRadius: '8px'
-                          }
-                        }}
                       />
                     )}
                   />
@@ -226,10 +222,6 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
                       label={t('profile:sections.languages.proficiency', 'Nivel de Dominio')}
                       value={matchedLevel}
                       onChange={(e) => handleFieldChange(idx, 'level', e.target.value)}
-                      sx={{
-                        borderRadius: '8px',
-                        bgcolor: 'background.paper'
-                      }}
                     >
                       {levelOptions.map((opt) => (
                         <MenuItem key={opt.value} value={opt.value}>
@@ -239,6 +231,7 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
                     </Select>
                   </FormControl>
                 </Box>
+
 
                 {/* Delete button */}
                 <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-end', sm: 'center' }, flexShrink: 0 }}>

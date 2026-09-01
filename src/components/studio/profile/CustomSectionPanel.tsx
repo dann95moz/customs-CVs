@@ -126,8 +126,8 @@ export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderRadius: '12px',
-          bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.015)',
+          borderRadius: 1.5,
+          bgcolor: alpha(theme.palette.text.primary, isDark ? 0.02 : 0.015),
           borderColor: theme.palette.divider,
         }}
       >
@@ -135,7 +135,7 @@ export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
           <Box
             sx={{
               p: 1,
-              borderRadius: '8px',
+              borderRadius: 1,
               bgcolor: isDark ? alpha(theme.palette.primary.main, 0.12) : alpha(theme.palette.primary.main, 0.08),
               color: 'primary.main',
               display: 'flex',
@@ -160,9 +160,6 @@ export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
                     setTempTitle(section.title);
                     setEditingTitle(false);
                   }
-                }}
-                sx={{
-                  '& .MuiOutlinedInput-root': { borderRadius: '8px' },
                 }}
               />
               <Button size="small" variant="contained" onClick={handleSaveTitle}>
@@ -222,11 +219,6 @@ export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
           placeholder={getPlaceholder(section.presetType)}
           value={newItemText}
           onChange={(e) => setNewItemText(e.target.value)}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '8px',
-            },
-          }}
         />
         <Button
           type="submit"
@@ -256,13 +248,13 @@ export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1.5,
-                borderRadius: '8px',
+                borderRadius: 1,
                 borderColor: theme.palette.divider,
                 bgcolor: 'background.paper',
                 transition: 'all 0.15s ease',
                 '&:hover': {
                   borderColor: theme.palette.primary.main,
-                  bgcolor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.01)',
+                  bgcolor: alpha(theme.palette.text.primary, isDark ? 0.03 : 0.01),
                 },
               }}
             >
@@ -299,9 +291,10 @@ export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
               py: 5,
               textAlign: 'center',
               border: `1px dashed ${theme.palette.divider}`,
-              borderRadius: '12px',
+              borderRadius: 1.5,
             }}
           >
+
             <Typography variant="body2" color="text.secondary">
               {t('profile:customSections.emptyList', 'Aún no has agregado ningún elemento a esta sección.')}
             </Typography>

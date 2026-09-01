@@ -57,13 +57,12 @@ export const SummarySection: React.FC<SummarySectionProps> = React.memo(({
         fullWidth
         sx={{
           '& .MuiOutlinedInput-root': {
-            borderRadius: '8px',
-            bgcolor: 'background.paper',
             fontSize: '0.88rem',
             lineHeight: 1.55
           }
         }}
       />
+
     </Box>
   );
 });

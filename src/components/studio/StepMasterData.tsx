@@ -237,7 +237,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             bgcolor: alpha(theme.palette.primary.main, 0.12),
             backdropFilter: 'blur(8px)',
             border: `2px dashed ${theme.palette.primary.main}`,
-            borderRadius: '16px',
+            borderRadius: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -283,9 +283,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             alignItems: { xs: 'flex-start', sm: 'center' },
             justifyContent: 'space-between',
             gap: 2,
-            background: isDark
-              ? 'linear-gradient(135deg, rgba(16, 22, 35, 0.8) 0%, rgba(21, 29, 46, 0.9) 100%)'
-              : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+            bgcolor: 'background.paper',
             border: `1px solid ${theme.palette.divider}`,
           }}
         >
@@ -299,16 +297,14 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               sx={{ mb: 1, fontWeight: 700 }}
             />
             <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
-              {t('profile:title', 'Your Career Profile')}
+              {t('profile:title', 'Your Master Career Profile')}
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
-              {t('profile:subtitle', "Add your career history and skills once. We'll automatically adapt it for every job you apply to.")}
+            <Typography variant="body2" color="text.secondary">
+              {t('profile:subtitleShort', 'Your master career database. Fill in your achievements below or import directly from an existing PDF or Markdown resume.')}
+              {' '}
               <Tooltip
-                title={t('common:safeguard.tooltip', 'We never invent achievements, experience, or skills not in your profile.')}
+                title={t('common:safeguard.integrityPromise', 'Zero AI Invention: The AI tailors exclusively using achievements explicitly present in this career profile, strictly obeying the Google XYZ formula.')}
                 arrow
-                placement="top"
-                enterTouchDelay={0}
-                leaveTouchDelay={4000}
               >
                 <IconButton
                   size="small"
@@ -317,7 +313,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                     p: 0.35,
                     color: theme.palette.success.main,
                     bgcolor: alpha(theme.palette.success.main, 0.08),
-                    borderRadius: '6px',
                     '&:hover': { bgcolor: alpha(theme.palette.success.main, 0.16) },
                   }}
                 >
@@ -408,7 +403,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             overflow: { xs: 'visible', md: 'hidden' },
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
-            borderRadius: '12px',
+            borderRadius: 2,
           }}
         >
           <Box
@@ -421,7 +416,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               flexWrap: 'wrap',
               gap: 1,
               borderBottom: `1px solid ${theme.palette.divider}`,
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.02)',
+              bgcolor: alpha(theme.palette.text.primary, 0.02),
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -499,7 +494,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                   lineHeight: 1.65,
                   resize: 'none',
                   backgroundColor: 'transparent',
-                  color: isDark ? '#f8fafc' : '#0f172a',
+                  color: theme.palette.text.primary,
                 }}
               />
             </Box>
@@ -518,11 +513,12 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             justifyContent: 'space-between',
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
-            borderRadius: '16px',
+            borderRadius: 2,
             gap: { xs: 1.5, sm: 2 },
-            boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+            boxShadow: 2,
           }}
         >
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap', justifyContent: { xs: 'center', sm: 'flex-start' } }}>
             {hasData ? (
               <Chip
@@ -595,11 +591,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
       <Dialog
         open={showConfirmDialog}
         onClose={handleCancelReplace}
-        slotProps={{
-          paper: {
-            sx: { borderRadius: '16px', p: 1, maxWidth: 480 }
-          }
-        }}
+        maxWidth="xs"
       >
         <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 800 }}>
           <WarningAmberRoundedIcon color="warning" />
@@ -621,8 +613,8 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1.5,
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
-                borderRadius: '8px'
+                bgcolor: alpha(theme.palette.text.primary, 0.02),
+                borderRadius: 1,
               }}
             >
               {pendingFile.isPdf ? (
@@ -673,7 +665,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         cancelLabel={t('profile:dialog.cancel', 'Cancel')}
       />
 
-
       {/* Success / Error Snackbar */}
       <Snackbar
         open={notification.open}
@@ -684,11 +675,12 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         <Alert
           severity={notification.severity}
           onClose={() => setNotification((prev) => ({ ...prev, open: false }))}
-          sx={{ borderRadius: '12px', fontWeight: 600, boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)' }}
+          sx={{ fontWeight: 600 }}
         >
           {notification.message}
         </Alert>
       </Snackbar>
+
     </Box>
   );
 };

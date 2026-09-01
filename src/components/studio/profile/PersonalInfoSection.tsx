@@ -60,12 +60,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
           onChange={(e) => onNameChange(e.target.value)}
           placeholder="e.g. Daniel Corredor Acosta"
           fullWidth
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '8px',
-              bgcolor: 'background.paper'
-            }
-          }}
         />
 
         {/* Location & Email (Grid 2 cols) */}
@@ -78,12 +72,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
             onChange={(e) => onContactChange('location', e.target.value)}
             placeholder="e.g. Bogotá, Colombia"
             fullWidth
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '8px',
-                bgcolor: 'background.paper'
-              }
-            }}
           />
 
           <TextField
@@ -95,12 +83,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
             onChange={(e) => onContactChange('email', e.target.value)}
             placeholder="e.g. name@example.com"
             fullWidth
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '8px',
-                bgcolor: 'background.paper'
-              }
-            }}
           />
         </Box>
 
@@ -113,12 +95,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
           onChange={(e) => onTitleChange(e.target.value)}
           placeholder="e.g. Staff Frontend Architect | TypeScript & Distributed Systems"
           fullWidth
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '8px',
-              bgcolor: 'background.paper'
-            }
-          }}
         />
 
         {/* Phone, LinkedIn, GitHub & Portfolio (Grid 2 cols) */}
@@ -131,12 +107,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
             onChange={(e) => onContactChange('phone', e.target.value)}
             placeholder="e.g. +57 300 123 4567"
             fullWidth
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '8px',
-                bgcolor: 'background.paper'
-              }
-            }}
           />
 
           <TextField
@@ -147,12 +117,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
             onChange={(e) => onContactChange('linkedin', e.target.value)}
             placeholder="linkedin.com/in/username"
             fullWidth
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '8px',
-                bgcolor: 'background.paper'
-              }
-            }}
           />
 
           <TextField
@@ -163,12 +127,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
             onChange={(e) => onContactChange('github', e.target.value)}
             placeholder="github.com/username"
             fullWidth
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '8px',
-                bgcolor: 'background.paper'
-              }
-            }}
           />
 
           <TextField
@@ -179,15 +137,10 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
             onChange={(e) => onContactChange('globe', e.target.value)}
             placeholder="myportfolio.dev"
             fullWidth
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '8px',
-                bgcolor: 'background.paper'
-              }
-            }}
           />
         </Box>
       </Box>
+
     </Box>
   );
 });
