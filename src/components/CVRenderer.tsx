@@ -1,15 +1,10 @@
 import { CVData, ThemeId, PaletteId, FontFamilyId, SpacingDensity, CVRendererProps } from '../types';
 import { getTemplate, mapDataToSlots } from '../templates';
 import { getPaletteConfig } from '../constants/palettes';
+import { FONT_FAMILY_CSS_MAP } from '../theme/typography';
 
 export type { CVRendererProps };
 
-const FONT_MAP: Record<FontFamilyId, string> = {
-  inter: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-  outfit: "'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif",
-  serif: "'Merriweather', 'EB Garamond', Georgia, serif",
-  mono: "'JetBrains Mono', Consolas, Monaco, monospace",
-};
 
 const DENSITY_MAP: Record<SpacingDensity, { fontSize: string; lineHeight: string; sectionGap: string; itemGap: string }> = {
   compact: {
@@ -54,7 +49,7 @@ export const CVRenderer: React.FC<CVRendererProps> = ({
   const slots = mapDataToSlots(effectiveData);
   const palConfig = getPaletteConfig(palette, customColor);
   const density = DENSITY_MAP[spacingDensity] || DENSITY_MAP.standard;
-  const fontFam = FONT_MAP[fontFamily] || FONT_MAP.inter;
+  const fontFam = FONT_FAMILY_CSS_MAP[fontFamily] || FONT_FAMILY_CSS_MAP.inter;
 
   const styleVariables: React.CSSProperties = {
     '--cv-primary-color': palConfig.primaryColor,

@@ -29,6 +29,8 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../../store';
 import { computeLineDiff } from '../../../utils/diffUtils';
+import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
+import { formatLocalizedDate } from '../../../utils/dateUtils';
 
 export interface VersionDiffModalProps {
   open: boolean;
@@ -43,7 +45,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
   initialVersionAId,
   initialVersionBId,
 }) => {
-  const { t } = useTranslation(['history', 'common']);
+  const { t, i18n } = useTranslation(['history', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -62,6 +64,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
 
   const [viewMode, setViewMode] = useState<'unified' | 'split'>('unified');
   const [snackbar, setSnackbar] = useState<string | null>(null);
+  const { copy } = useCopyToClipboard();
 
   // Helper to resolve markdown content by ID
   const getVersionText = (id: string): { label: string; text: string } => {
@@ -75,25 +78,25 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
     if (found) {
       const company = found.companyName || 'General';
       const role = found.targetRole ? ` • ${found.targetRole}` : '';
-      const date = new Date(found.createdAt).toLocaleDateString();
+      const date = formatLocalizedDate(found.createdAt, i18n.language || 'en');
       return { label: `${company}${role} (${date})`, text: found.cvMarkdown };
     }
     return { label: 'Unknown Version', text: '' };
   };
 
-  const verA = useMemo(() => getVersionText(versionAId), [versionAId, masterData, savedVersions]);
-  const verB = useMemo(() => getVersionText(versionBId), [versionBId, cvMarkdown, savedVersions]);
+  const verA = useMemo(() => getVersionText(versionAId), [versionAId, masterData, savedVersions, i18n.language]);
+  const verB = useMemo(() => getVersionText(versionBId), [versionBId, cvMarkdown, savedVersions, i18n.language]);
 
   // Compute diff
   const diffResult = useMemo(() => {
     return computeLineDiff(verA.text, verB.text);
   }, [verA.text, verB.text]);
 
-  const handleCopyDiff = () => {
+  const handleCopyDiff = async () => {
     const rawDiff = diffResult.lines
       .map((l) => `${l.type === 'added' ? '+ ' : l.type === 'removed' ? '- ' : '  '}${l.content}`)
       .join('\n');
-    navigator.clipboard.writeText(rawDiff);
+    await copy(rawDiff);
     setSnackbar(t('common:actions.copied', 'Copied to clipboard!'));
   };
 
@@ -197,7 +200,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
               <MenuItem value="current">{t('history:diff.currentTailored', 'Current Tailored CV')}</MenuItem>
               {savedVersions.map((v) => (
                 <MenuItem key={v.id} value={v.id}>
-                  {v.companyName || 'General'} {v.targetRole ? `(${v.targetRole})` : ''} - {new Date(v.createdAt).toLocaleDateString()}
+                  {v.companyName || 'General'} {v.targetRole ? `(${v.targetRole})` : ''} - {formatLocalizedDate(v.createdAt, i18n.language || 'en')}
                 </MenuItem>
               ))}
             </Select>
@@ -219,11 +222,12 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
               <MenuItem value="master">{t('history:diff.masterCv', 'Master Profile (SSOT)')}</MenuItem>
               {savedVersions.map((v) => (
                 <MenuItem key={v.id} value={v.id}>
-                  {v.companyName || 'General'} {v.targetRole ? `(${v.targetRole})` : ''} - {new Date(v.createdAt).toLocaleDateString()}
+                  {v.companyName || 'General'} {v.targetRole ? `(${v.targetRole})` : ''} - {formatLocalizedDate(v.createdAt, i18n.language || 'en')}
                 </MenuItem>
               ))}
             </Select>
           </Box>
+
         </Box>
 
         {/* View Mode Toggle: Unified vs Split */}

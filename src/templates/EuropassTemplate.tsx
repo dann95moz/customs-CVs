@@ -3,22 +3,15 @@ import { CVTemplateProps } from './types';
 import { safeMarkdown, safeMarkdownInline, getCleanContactLabel } from '../utils/sanitize';
 import { EditableText } from '../components/studio/preview/EditableText';
 import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
-import { getPaletteConfig } from '../constants/palettes';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
-import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
-import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 
 export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data, photo }) => {
   const liveEdit = useCvLiveEdit();
-  const palette = getPaletteConfig('corporate-blue');
   const euBlue = '#0e4194'; // Official Europass Navy Blue
   const euSoftBg = '#f1f5fa';
   const euBorder = '#d4e2f4';
 
   const { header, summary, skills, experience, education, languages, projects, genericSections } = slots;
+
 
   return (
     <div

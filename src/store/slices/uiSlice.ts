@@ -16,7 +16,6 @@ const getInitialTab = (): StudioTab => {
 export const createUiSlice: StateCreator<ResumeStore, [], [], UiSlice> = (set, get) => ({
   activeTab: getInitialTab(),
   wizardStep: 'profile',
-  editorSplitView: 'split',
 
   setActiveTab: (tab: StudioTab) => {
     set({ activeTab: tab });
@@ -29,9 +28,6 @@ export const createUiSlice: StateCreator<ResumeStore, [], [], UiSlice> = (set, g
     set({ wizardStep: step });
   },
 
-  setEditorSplitView: (view: 'split' | 'preview-only' | 'editor-only') => {
-    set({ editorSplitView: view });
-  },
 
   handleStartWizard: () => {
     get().setActiveTab('wizard');

@@ -98,26 +98,6 @@ export interface LockedViewCardProps {
   isDisabled?: boolean;
 }
 
-export interface SplitMarkdownEditorProps {
-  content: string;
-  onChange: (value: string) => void;
-  onDownload: () => void;
-  fileName?: string;
-  value?: string;
-}
-
-export interface TemplateThumbnailMiniatureProps {
-  themeId: ThemeId;
-  paletteId: PaletteId;
-  customColor?: string;
-  name: string;
-  category: string;
-  isSelected: boolean;
-  onClick: () => void;
-  selected?: boolean;
-  onSelect?: () => void;
-}
-
 // ---------------------------------------------------------------------------
 // 2. Wizard & Form Navigation
 // ---------------------------------------------------------------------------
@@ -181,47 +161,12 @@ export interface StepTargetJobProps {
   onBack?: () => void;
 }
 
-export interface StepAITailorProps {
-  candidateName: string;
-  companyName: string;
-  targetRole: string;
-  pageBudget: 1 | 2;
-  onPageBudgetChange: (val: 1 | 2) => void;
-  providerSettings: AIProviderSettings;
-  onSettingsChange: (settings: AIProviderSettings) => void;
-  onGenerate: () => Promise<void>;
-  isGenerating: boolean;
-  generationStep: string;
-  hasGeneratedCv: boolean;
-  onPrevStep: () => void;
-  onNextStep: () => void;
-  onContinue?: () => void;
-  onBack?: () => void;
-}
-
-export interface PageBudgetSelectorProps {
-  pageBudget: 1 | 2;
-  onPageBudgetChange: (val: 1 | 2) => void;
-  onChange?: (budget: 1 | 2) => void;
-}
-
-export interface AiModelSelectorProps {
-  selectedModelId: string;
-  onSelectModel: (modelId: string) => void;
-  disabled?: boolean;
-  provider?: AIProviderId;
-  model?: string;
-  apiKey?: string;
-  onProviderChange?: (provider: AIProviderId) => void;
-  onModelChange?: (model: string) => void;
-  onApiKeyChange?: (apiKey: string) => void;
-}
-
 export interface GuidedProfileFormProps {
   markdownContent: string;
   onChange: (newMarkdown: string) => void;
   data?: CVData;
 }
+
 
 export interface PersonalInfoSectionProps {
   isExpanded?: boolean;
@@ -241,18 +186,6 @@ export interface SummarySectionProps {
   summary: string;
   onSummaryChange: (val: string) => void;
   onChange?: (summary: string) => void;
-}
-
-export interface SkillsSectionProps {
-  isExpanded?: boolean;
-  onToggle?: (event: React.SyntheticEvent, isExpanded: boolean) => void;
-  skillGroups: SkillCategory[];
-  skillsTextMap: Record<number, string>;
-  onCategoryChange: (index: number, newCategory: string) => void;
-  onSkillsChange: (index: number, skillsStr: string) => void;
-  onAddCategory: () => void;
-  onRemoveCategory: (index: number) => void;
-  onChange?: (groups: SkillCategory[]) => void;
 }
 
 export interface ExperienceSectionProps {
@@ -385,15 +318,6 @@ export interface DesignFormattingPanelProps {
   activeTheme?: ThemeId;
 }
 
-export interface PreviewQualityAuditPanelProps {
-  overallScore: number;
-  matchScore: number;
-  companyName: string;
-  onOpenFullAudit: () => void;
-  onClose: () => void;
-  open?: boolean;
-}
-
 export interface PreviewComparisonViewProps {
   parsedMasterCv: CVData;
   parsedCv: CVData;
@@ -475,13 +399,6 @@ export interface SettingsAiTabProps {
   onTemperatureChange?: (temp: number) => void;
 }
 
-export interface SettingsRulesTabProps {
-  rules: string;
-  onRulesChange: (rules: string) => void;
-  defaultRules: string;
-  onChange?: (val: string) => void;
-  onReset?: () => void;
-}
 
 export interface ApplicationsStatsHeaderProps {
   totalActiveApplications: number;

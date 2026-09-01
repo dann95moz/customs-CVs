@@ -64,56 +64,8 @@ export function getCleanContactLabel(contact: { type?: string; label: string; ur
 }
 
 /**
- * Extracts match score and critical keywords from Gap Analysis Markdown text (DRY).
- * Includes intelligent keyword extraction without hardcoding software-specific frameworks.
+ * Backwards compatibility re-export for extractGapInfo.
+ * SSOT location is src/core/parser/metadataExtractor.ts.
  */
-export function extractGapInfo(
-  gapMarkdown: string,
-  targetJobText: string = ''
-): { matchScore: number; keywords: string[] } {
-  let matchScore = 92;
-  if (gapMarkdown) {
-    const scoreMatch = gapMarkdown.match(/Estimated Match Score:\*{0,2}\s*(\d{1,3})/i);
-    if (scoreMatch) {
-      const parsed = parseInt(scoreMatch[1], 10);
-      if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
-        matchScore = parsed;
-      }
-    }
-  }
+export { extractGapInfo } from '../core/parser';
 
-  let keywords: string[] = [];
-
-  if (gapMarkdown) {
-    const kwMatch = gapMarkdown.match(/Critical Integrated Keywords:\*{0,2}\s*\[?([^\]\r\n]+)\]?/i);
-    if (kwMatch) {
-      keywords = kwMatch[1]
-        .split(/[,|•·;]/)
-        .map((k) => k.replace(/[*_`\[\]]/g, '').trim())
-        .filter(Boolean);
-    }
-  }
-
-  // If no explicit keywords in gap markdown, extract top salient keywords from target job
-  if (keywords.length === 0 && targetJobText && targetJobText.trim().length > 20) {
-    const cleanJob = targetJobText
-      .replace(/[#*`_\[\]()]/g, ' ')
-      .replace(/[^\w\s\u00C0-\u024F\u1E00-\u1EFF-]/g, ' ');
-    const tokens = cleanJob.split(/\s+/).filter((t) => t.length > 3);
-    const stopWords = new Set([
-      'with', 'have', 'from', 'this', 'that', 'your', 'about', 'will', 'must',
-      'para', 'como', 'sobre', 'este', 'esta', 'para', 'con', 'experiencia',
-      'responsibilities', 'qualifications', 'requirements', 'requisitos',
-      'und', 'mit', 'für', 'pour', 'avec', 'dans', 'della', 'delle', 'con'
-    ]);
-    const candidates = Array.from(new Set(tokens.filter((t) => !stopWords.has(t.toLowerCase()))));
-    keywords = candidates.slice(0, 6);
-  }
-
-  // Fallback if completely empty
-  if (keywords.length === 0) {
-    keywords = ['Core Competencies', 'Industry Best Practices', 'Leadership', 'Execution'];
-  }
-
-  return { matchScore, keywords };
-}

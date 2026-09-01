@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
@@ -25,13 +26,9 @@ import { CVData, ThemeId, PaletteId, FontFamilyId } from '../../../types/cv';
 import { useResumeStore } from '../../../store';
 import { generateCoverLetter } from '../../../core/ai-service';
 import { getPaletteConfig } from '../../../constants/palettes';
-
-const FONT_MAP: Record<FontFamilyId, string> = {
-  inter: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-  outfit: "'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif",
-  serif: "'Merriweather', 'EB Garamond', Georgia, serif",
-  mono: "'JetBrains Mono', Consolas, Monaco, monospace",
-};
+import { FONT_FAMILY_CSS_MAP } from '../../../theme/typography';
+import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
+import { formatLocalizedDate } from '../../../utils/dateUtils';
 
 export interface CoverLetterViewProps {
   cvData: CVData;
@@ -54,7 +51,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
   fontFamily,
   onExportPdf,
 }) => {
-  const { t } = useTranslation(['preview', 'common']);
+  const { t, i18n } = useTranslation(['preview', 'common']);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
 
@@ -68,10 +65,11 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [snackbar, setSnackbar] = useState<string | null>(null);
+  const { copied, copy } = useCopyToClipboard();
 
   const palette = getPaletteConfig(paletteId, customColor);
   const primaryColor = palette.primaryColor;
-  const fontCss = FONT_MAP[fontFamily] || FONT_MAP.inter;
+  const fontCss = FONT_FAMILY_CSS_MAP[fontFamily] || FONT_FAMILY_CSS_MAP.inter;
 
   // Generate initial cover letter if empty
   useEffect(() => {
@@ -106,17 +104,18 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
     handleGenerateLetter(tone);
   };
 
-  const handleCopyMarkdown = () => {
+  const handleCopyMarkdown = async () => {
     if (!coverLetterMarkdown) return;
-    navigator.clipboard.writeText(coverLetterMarkdown);
+    await copy(coverLetterMarkdown);
     setSnackbar(t('common:actions.copied', 'Copied to clipboard!'));
   };
 
-  const formattedDate = new Intl.DateTimeFormat('en-US', {
+  const formattedDate = formatLocalizedDate(new Date().toISOString(), i18n.language || 'en', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
-  }).format(new Date());
+  });
+
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2.5, width: '100%', py: 2 }}>
@@ -199,12 +198,13 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
           <Button
             size="small"
             variant="outlined"
-            startIcon={<ContentCopyRoundedIcon />}
+            startIcon={copied ? <CheckRoundedIcon color="success" /> : <ContentCopyRoundedIcon />}
             onClick={handleCopyMarkdown}
             sx={{ fontWeight: 600, fontSize: '0.75rem' }}
           >
-            {t('common:actions.copy', 'Copy')}
+            {copied ? t('common:status.copied', 'Copied!') : t('common:actions.copy', 'Copy')}
           </Button>
+
 
           <Button
             size="small"

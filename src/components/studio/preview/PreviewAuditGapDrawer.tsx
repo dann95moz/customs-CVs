@@ -26,13 +26,16 @@ import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import ArticleRoundedIcon from '@mui/icons-material/ArticleRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import { useTranslation } from 'react-i18next';
 import { safeMarkdown } from '../../../utils/sanitize';
 import { PreviewAuditGapDrawerProps } from '../../../types';
 import { useAuditActions } from '../../../hooks/useAuditActions';
+import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 import { AuditImprovementModal } from '../audit/AuditImprovementModal';
 import { InterviewPrepTab } from '../audit/InterviewPrepTab';
+
 
 export type { PreviewAuditGapDrawerProps };
 
@@ -58,8 +61,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const [fullReportModalOpen, setFullReportModalOpen] = useState(false);
+  const { copied: isReportCopied, copy: copyReport } = useCopyToClipboard();
 
   const {
+
     modalState,
     snackbarMessage,
     handleOpenAction,
@@ -739,13 +744,12 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
             <Button
               size="small"
               variant="outlined"
-              startIcon={<ContentCopyRoundedIcon />}
-              onClick={() => {
-                navigator.clipboard.writeText(gapMarkdown);
-              }}
+              startIcon={isReportCopied ? <CheckRoundedIcon color="success" /> : <ContentCopyRoundedIcon />}
+              onClick={() => copyReport(gapMarkdown)}
             >
-              {t('common:actions.copy', 'Copy Report Text')}
+              {isReportCopied ? t('common:status.copied', 'Copied!') : t('common:actions.copy', 'Copy Report Text')}
             </Button>
+
             <Button variant="contained" onClick={() => setFullReportModalOpen(false)}>
               {t('common:actions.close', 'Close Report')}
             </Button>

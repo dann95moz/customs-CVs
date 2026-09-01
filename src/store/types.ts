@@ -17,13 +17,12 @@ import {
 export interface UiSlice {
   activeTab: StudioTab;
   wizardStep: WizardStep;
-  editorSplitView: 'split' | 'preview-only' | 'editor-only';
   setActiveTab: (tab: StudioTab) => void;
   setWizardStep: (step: WizardStep) => void;
-  setEditorSplitView: (view: 'split' | 'preview-only' | 'editor-only') => void;
   handleStartWizard: () => void;
   handleExploreDemo: () => void;
 }
+
 
 export interface CvDataSlice {
   masterData: string;

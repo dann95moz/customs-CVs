@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icons';
 import { GapAnalysisViewProps } from '../../types';
 import { useGapInfo } from '../../store';
+import { useCopyToClipboard } from '../../hooks/useCopyToClipboard';
 
 export type { GapAnalysisViewProps };
 
@@ -16,19 +17,18 @@ export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
   targetRole,
   onDownload
 }) => {
-  const { t } = useTranslation(['gap', 'common']);
+  const { t } = useTranslation(['gap', 'common', 'preview']);
   const hookGapInfo = useGapInfo();
   const matchScore = propMatchScore ?? hookGapInfo.matchScore;
   const keywords = propKeywords ?? hookGapInfo.keywords;
   const [viewMode, setViewMode] = useState<'formatted' | 'raw'>('formatted');
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopyToClipboard();
 
   const handleCopy = () => {
     if (!gapMarkdown) return;
-    navigator.clipboard.writeText(gapMarkdown);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    copy(gapMarkdown);
   };
+
 
   return (
     <div className="gap-analysis-container">
