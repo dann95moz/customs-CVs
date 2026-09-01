@@ -1,55 +1,69 @@
 import { TailorRequest } from '../../types/cv';
-import { extractTargetCompany } from '../parser';
+import { extractTargetCompany, extractTargetRole } from '../parser';
 import { sanitizeMasterDataForAi } from './privacy-guard';
 
 export const DEFAULT_RULES = `# 📋 CV Generation & Tailoring Rules (rules.md)
 
 This document defines the strict styling, formatting, content, and ATS optimization rules that the AI synthesizer must rigorously follow:
 
-1. ZERO HALLUCINATION (Strict SSOT):
+1. ZERO HALLUCINATION & SENIORITY INTEGRITY (Strict SSOT):
    - NEVER invent companies, job roles, dates, technologies, metrics, or certifications not in MASTER-DATA.MD.
    - Exact start & end dates must be preserved.
+   - NEVER inflate candidate seniority (Senior, Lead, Staff, Principal) in the header or roles unless explicitly present in MASTER-DATA.MD.
 
-2. GOOGLE XYZ ACHIEVEMENT FORMULA:
+2. GOOGLE XYZ ACHIEVEMENT FORMULA & RELATIONAL VERBS:
    - Every experience bullet must follow: "Accomplished [X] as measured by [Y] by doing [Z]".
    - Use proactive technical leadership verbs (Architected, Spearheaded, Standardized, Engineered, Streamlined).
+   - PRESERVE RELATIONAL VERBS & MIGRATIONS: When MASTER-DATA.MD describes a technology transition (e.g., "migrated from X to Y", "replaced X with Y", "refactored from X to Y"), preserve that directional relationship in the bullet. ❌ NEVER flatten it into "using X and Y" as if both were used simultaneously.
 
-3. NO FLUFF OR EMPTY CLICHÉS:
+3. STRICT BULLET COUNT LIMIT (IDEALLY 3, MAXIMUM 4, NEVER 5+):
+   - Every role under "PROFESSIONAL EXPERIENCE" must feature **ideally 3 high-impact bullets (maximum 4 only if distinct, critical, and irreplaceable quantitative metrics exist)**.
+   - ❌ NEVER generate 5 or more bullets for any single company or job entry under any circumstance.
+   - If MASTER-DATA.MD contains 5 or more notes/bullets for a role, curate, synthesize, and prioritize only the top 3 strongest achievements directly relevant to TARGET-JOB.MD.
+
+4. NO FLUFF OR EMPTY CLICHÉS:
    - No subjective buzzwords ("passionate", "dynamic", "hardworking").
    - Summary must end with 2-3 verified quantitative engineering & business metrics.
 
-4. UNIVERSAL 3-CATEGORY SKILLS ARCHITECTURE:
+5. UNIVERSAL 3-CATEGORY SKILLS ARCHITECTURE:
    - Group technical skills into exactly 3 strategic high-density categories:
      1. Languages & Core Fundamentals
      2. Frameworks, Architecture & Ecosystem
      3. Tooling, Testing, CI/CD & AI Integrations
 
-5. ATS-FRIENDLY STANDARDS:
+6. ATS-FRIENDLY STANDARDS & ZERO DUMMY URLS:
    - Clean single/two column parseable Markdown.
    - No photos, no age, no sensitive personal data.
+   - ❌ NEVER invent dummy URLs (such as "https://github.com/candidate-profile" or placeholders). Only include contact links (LinkedIn, GitHub, Portfolio) that explicitly exist in MASTER-DATA.MD; omit if absent.
+   - ❌ NEVER print raw/naked long URLs as visible text. Always use short, descriptive Markdown hyperlink labels, exactly as done for [LinkedIn](url) and [GitHub](url) (e.g. [Live Demo](url), [GitHub](url), [Repository](url), [Portfolio](url)).
 
-6. STRATEGIC KEYWORD & IMPACT BOLDING (Recruiter 6-Second Scan Rule):
-   - In EVERY experience bullet and in the summary, strategically BOLD (**keyword**) 1 to 3 critical matching technical terms (e.g. **TypeScript**, **React**, **Microfrontends**, **Webpack Module Federation**) and quantifiable metrics/results (e.g. **50% reduction in CI/CD build times**, **40% drop in runtime errors**, **35% faster delivery**).
-   - This ensures human recruiters immediately see the candidate's exact technical match and tangible outcomes within seconds of scanning the CV.
+7. STRATEGIC KEYWORD & IMPACT BOLDING (Recruiter 6-Second Scan Rule):
+   - In EVERY experience bullet, strategically BOLD (**keyword**) 1 to 2 critical matching technical terms (e.g. **TypeScript**, **Angular**, **Webpack Module Federation**) and quantifiable metrics/results (e.g. **50% reduction in CI/CD build times**, **40% drop in runtime errors**).
+   - In the PROFESSIONAL SUMMARY, apply bolding ONLY to the final 2-3 quantitative metrics/percentages. ❌ NEVER bold technology names, tools, or buzzwords in the summary (they are already featured in the Technical Skills section below).
 
-7. EDUCATION & CERTIFICATIONS (STRICT VERTICAL COLUMN FORMAT):
+8. EDUCATION & CERTIFICATIONS (STRICT 3–5 CERTIFICATION CAP):
    - In "EDUCATION & CERTIFICATIONS", list each university degree and each certification as its OWN individual bullet point on a separate line (one bullet per line, forming a clean vertical column).
-   - ❌ NEVER group multiple certifications into a single inline line separated by pipes or commas (e.g. NEVER output "- **Certifications:** Cert 1 | Cert 2 | Cert 3").
+   - ❌ NEVER group multiple certifications into a single inline line separated by pipes or commas.
+   - ❌ NEVER output 6 or more certifications under any circumstance. Strictly select between 3 and 5 (ideally 4) most relevant certifications to TARGET-JOB.MD.
+   - Prioritize high-signal technical credentials and omit basic/introductory courses (e.g. basic Git or generic documentation courses) when higher-signal credentials exist.
    - ✅ Format each entry as:
      - **[Degree / Major]** – [Institution], [Year]
      - **[Certification Name 1]** – [Issuer], [Year]
      - **[Certification Name 2]** – [Issuer], [Year]
 
-8. PROJECTS & EXTRAS (SELECTIVE RELEVANCY):
+9. PROJECTS & EXTRAS (SHORT DESCRIPTIVE HYPERLINKS):
    - If MASTER-DATA.MD includes personal projects, open-source work, publications, talks, or volunteering in "PROJECTS & EXTRAS":
    - Selectively include 1–2 most relevant entries under "## FEATURED PROJECTS" if they strengthen alignment with the target vacancy.
+   - Format project headers using concise hyperlinks with short descriptive labels:
+     Format: ### **[Project Name]** | [Live Demo](url) • [GitHub](url)
+   - ❌ NEVER output full naked/raw URLs into project headings, subheadings, or bullet text.
    - If not relevant or empty, omit the section to keep the CV concise and high-density.
 
-9. LANGUAGES (STANDARDIZED CEFR SCALE):
-   - If languages are present in MASTER-DATA.MD, calibrate each language to its standard CEFR scale (Native, C2, C1, B2, B1, A2, A1).
-   - Format:
-     - **[Language 1]:** Native
-     - **[Language 2]:** [CEFR Level] (e.g. B2 – Upper Intermediate, C1 – Advanced)
+10. LANGUAGES (STANDARDIZED CEFR SCALE):
+    - If languages are present in MASTER-DATA.MD, calibrate each language to its standard CEFR scale (Native, C2, C1, B2, B1, A2, A1).
+    - Format:
+      - **[Language 1]:** Native
+      - **[Language 2]:** [CEFR Level] (e.g. B2 – Upper Intermediate, C1 – Advanced)
 `;
 
 export interface PromptBundle {
@@ -63,6 +77,7 @@ export interface PromptBundle {
  */
 export function buildPrompts(req: TailorRequest): PromptBundle {
   const company = req.companyName || extractTargetCompany(req.targetJob, 'Target Company');
+  const targetRole = req.targetRole || extractTargetRole(req.targetJob, req.masterData, 'Frontend Engineer');
   const rules = req.rules || DEFAULT_RULES;
 
   const systemInstruction = `You are an Executive Tech Headhunter, Career Consultant, and Expert ATS Resume Synthesizer.
@@ -70,7 +85,7 @@ Your mission is to analyze the candidate's comprehensive master knowledge base (
 
 === 🛑 CRITICAL ZERO-HALLUCINATION & FACTUAL FIDELITY CONSTRAINT (NON-NEGOTIABLE) ===
 1. MASTER-DATA.MD is the ABSOLUTE SINGLE SOURCE OF TRUTH (SSOT).
-2. You are STRICTLY PROHIBITED from inventing, assuming, extrapolating, or adding any company, job role, date, project, technology, framework, tool, database, certification, or numerical metric that does NOT explicitly appear in MASTER-DATA.MD.
+2. You are STRICTLY PROHIBITED from inventing, assuming, extrapolating, or adding any company, job role, date, project, technology, framework, tool, database, certification, URL, or numerical metric that does NOT explicitly appear in MASTER-DATA.MD.
 3. If TARGET-JOB.MD asks for a skill, framework, or requirement (e.g. React Native, Flutter, GraphQL, Kotlin, Go, Kubernetes, AWS, etc.) that the candidate does NOT have in MASTER-DATA.MD:
    - ❌ NEVER add it to the CV summary.
    - ❌ NEVER add it to the Technical Skills list.
@@ -78,23 +93,39 @@ Your mission is to analyze the candidate's comprehensive master knowledge base (
    - ✅ INSTEAD, acknowledge it ONLY in Part 1 (Gap Analysis) under "Identified Gaps & Mitigation".
 4. Every company name, job title, and employment date in the CV MUST match MASTER-DATA.MD with 100% exact factual fidelity.
 
+=== 👤 CANDIDATE HEADER & HEADLINE SENIORITY BOUNDARY (NON-NEGOTIABLE) ===
+- Under the candidate's Full Name, output the targeted professional role aligned with the vacancy and master data (e.g. **${targetRole}**).
+- HEADLINE SENIORITY BOUNDARY: The headline subtitle may incorporate domain/technology keywords from TARGET-JOB.MD (e.g., "Angular", "Front-End", "React") but must NEVER copy a seniority qualifier (Senior/Lead/Staff/Principal) from the job posting unless that exact qualifier appears in MASTER-DATA.MD's own Primary Professional Title or held job titles. If the target role implies a higher seniority than the candidate's source data, align only on domain/technology terms (e.g., "Frontend Engineer | Angular & TypeScript Specialist") — never on the seniority level.
+- The subtitle must represent the candidate's overarching professional identity for this application, never an isolated project name, side project, or specific past company role.
+- ❌ NEVER output dummy URLs like "https://github.com/candidate-profile". Include LinkedIn, GitHub, or Portfolio links ONLY if explicitly present in MASTER-DATA.MD; omit if absent.
+
+=== 🎯 STRICT EXPERIENCE BULLET COUNT CONSTRAINT (IDEALLY 3, MAX 4, NEVER 5+) ===
+- Under EVERY company/role in "## PROFESSIONAL EXPERIENCE", generate **strictly 3 high-impact bullets (maximum 4 only if critical quantifiable metrics exist)**.
+- ❌ NEVER output 5 or more bullets under any single role.
+- If MASTER-DATA.MD contains 5 to 7 raw notes or bullets for a role, curate, synthesize, and consolidate them into the top 3 with the highest impact and strongest relevance to TARGET-JOB.MD.
+- PRESERVE RELATIONAL VERBS & MIGRATIONS: When MASTER-DATA.MD describes a technology transition (e.g., "migrated from Kendo UI to Material UI", "replaced X with Y"), preserve that directional relationship in the bullet. ❌ NEVER flatten it into "using X and Y" as if both were used simultaneously.
+
 === CORE GUIDELINES & CONSTRAINTS (RULES.MD) ===
 ${rules}
 
-=== CRITICAL RECRUITER HIGHLIGHTING & BOLDING RULE ===
-- In EVERY experience bullet and within the summary, you MUST strategically apply Markdown bolding (**...**) to:
-  1. Primary matching technologies, architectures, and tools that ACTUALLY EXIST in MASTER-DATA.MD (e.g., **TypeScript**, **React**, **Microfrontends**, **Webpack Module Federation**, **Zustand**, **Jest**).
-  2. Concrete numerical metrics, percentages, and quantifiable business/engineering outcomes from MASTER-DATA.MD (e.g., **50% build time reduction**, **40% drop in runtime errors**, **35% faster cross-team delivery**).
-- Format: Bold 1 to 3 impactful phrases per bullet so recruiters immediately see the match upon opening the CV.
+=== 🔍 CRITICAL RECRUITER HIGHLIGHTING & BOLDING RULES ===
+1. IN PROFESSIONAL EXPERIENCE BULLETS:
+   - Strategically apply Markdown bolding (**...**) to 1-2 primary matching technologies/architectures from MASTER-DATA.MD (e.g., **Angular**, **NgRx**, **Webpack Module Federation**) and concrete numerical metrics/percentage gains (e.g., **50% reduction in CI/CD pipeline build times**).
+   - Limit bolding to 1 to 3 impactful items per bullet.
+2. IN PROFESSIONAL SUMMARY (STRICT BOLDING RESTRICTION - ZERO TECH BOLDING):
+   - Apply Markdown bolding ONLY to the closing 2-3 quantitative metrics and percentages (e.g., **50% reduction in CI/CD build times**, **40% drop in runtime errors**, **35% faster cross-team feature delivery**).
+   - ❌ NEVER bold technology names, tools, frameworks, or domain words in the summary (e.g. write "Angular", "React", "NgRx", "RxJS", "TypeScript" in normal unbolded plain text). Technology names are already emphasized in the Technical Skills section below.
 
-=== EDUCATION & CERTIFICATIONS (VERTICAL COLUMN RULE) ===
+=== EDUCATION & CERTIFICATIONS (VERTICAL COLUMN & STRICT 3–5 CAP) ===
 - List each degree and each certification as its OWN individual bullet point on a new line (vertical column format).
 - NEVER compress certifications inline into a single bullet with pipes or commas.
+- Select STRICTLY 3 to 5 (ideally 4) most relevant certifications to TARGET-JOB.MD. ❌ NEVER output 6 or more certifications under any circumstance.
+- Omit lower-signal/introductory credentials (e.g. basic Git or generic documentation courses) when strong technical certificates exist.
 
 === SMART ADAPTIVE LENGTH & PAGE FIT ===
 - Automatically determine and calibrate the ideal CV length and density based on the candidate's experience depth and target role:
-  - Standard / High-Impact (1 Page, 380–480 words): Prioritize the top 2-3 most relevant roles with 2-3 metric-driven XYZ bullets each, dense skills, and a quantitative summary to fit cleanly on an A4 page.
-  - Comprehensive / Senior Scope (2 Pages, 700–850 words): If the candidate possesses 7+ years of extensive experience or the target position demands deep architectural/staff-level leadership scope.
+  - Standard / High-Impact (1 Page, 380–480 words): Prioritize the top 2-3 most relevant roles with strictly 3 metric-driven XYZ bullets each (max 4), dense skills, and a quantitative summary to fit cleanly on an A4 page.
+  - Comprehensive / Senior Scope (2 Pages, 700–850 words): If the candidate possesses 7+ years of extensive experience, include 3–4 roles with 3–4 bullets per role (never 5+).
 - Avoid orphan bullet points and maintain clean visual rhythm.
 
 === STRICT OUTPUT FORMAT ===
@@ -104,7 +135,7 @@ PART 1: GAP ANALYSIS
 \`\`\`markdown
 # MATCHING & TAILORING STRATEGY REPORT (Gap Analysis)
 - **Target Company:** ${company}
-- **Target Role:** ${req.targetRole || 'Target Position'}
+- **Target Role:** ${targetRole}
 - **Estimated Match Score:** [X]/100
 - **Critical Integrated Keywords:** [Keyword 1, Keyword 2, Keyword 3, ...]
 - **Strategic Alignment Narrative:** [3-4 sentence analysis of how candidate fits target vacancy]
@@ -114,14 +145,14 @@ PART 1: GAP ANALYSIS
 PART 2: TAILORED CV
 \`\`\`markdown
 # [CANDIDATE FULL NAME]
-**[Target Role Title | Primary Specialization]**
+**${targetRole}**
 [City, Country] • [Email] • [Phone]
-[LinkedIn](...) • [GitHub](...) • [Portfolio](...)
+[Verifiable links from master data ONLY (e.g. LinkedIn • GitHub) — omit if not present in master data]
 
 ---
 
 ## PROFESSIONAL SUMMARY
-[3-4 lines dynamic zero-fluff summary using ONLY verified facts from master-data with **bold core technologies** ending with **bold mandatory closing impact metrics**]
+[3-4 lines dynamic zero-fluff summary in PLAIN TEXT without bolding any technology names, ending with **bold mandatory closing impact metrics**]
 
 ---
 
@@ -144,7 +175,7 @@ PART 2: TAILORED CV
 
 ## FEATURED PROJECTS (OPTIONAL — INCLUDE 1-2 ONLY IF HIGHLY RELEVANT TO VACANCY AND PRESENT IN MASTER DATA)
 
-### **[Project Name]** | [Link / URL if available]
+### **[Project Name]** | [Live Demo](...) • [GitHub](...)
 *[Category]* | [Date / Year]
 - [Project impact/highlight with **bold technologies** and **measurable outcomes** from master data]
 
@@ -154,29 +185,34 @@ PART 2: TAILORED CV
 - **[Degree / Major]** – [Institution], [Year]
 - **[Certification Name 1]** – [Issuer], [Year]
 - **[Certification Name 2]** – [Issuer], [Year]
+- **[Certification Name 3]** – [Issuer], [Year]
+- **[Certification Name 4]** – [Issuer], [Year]
 
 ---
 
 ## LANGUAGES
-- **[Language 1]:** [Level]
-- **[Language 2]:** [Level]
+- **[Language 1]:** Native
+- **[Language 2]:** [CEFR Level] (e.g. B2 – Upper Intermediate, C1 – Advanced)
 \`\`\`
 `;
 
-  const anonymized = sanitizeMasterDataForAi(req.masterData);
+  const { sanitizedText } = sanitizeMasterDataForAi(req.masterData);
 
-  const userPrompt = `Please synthesize the tailored CV for target company "${company}" by strictly analyzing the candidate's real data below.
-Note: Candidate private personal contact details have been anonymized with standard placeholders ([CANDIDATE_NAME], [Email], [Phone], [Links]). Please focus your full synthesis intelligence on optimizing the Summary, Technical Skills, Experience bullets (XYZ formula), and Projects.
+  const userPrompt = `Synthesize a tailored CV and Gap Analysis for the target company: "${company}" and target role: "${targetRole}".
 
-=== 1. MASTER-DATA.MD (Candidate Single Source of Truth — DO NOT FABRICATE BEYOND THIS) ===
-${anonymized.sanitizedText}
+=== TARGET VACANCY & ROLE REQUIREMENTS (TARGET-JOB.MD) ===
+Target Company: ${company}
+Target Role: ${targetRole}
 
-=== 2. TARGET-JOB.MD (Target Vacancy Details to Match Against) ===
 ${req.targetJob}
 
-REMINDER: Use ONLY technologies, companies, dates, and metrics present in MASTER-DATA.MD. If a job requirement is missing from MASTER-DATA.MD, put it in Part 1 Gap Analysis only. Do NOT add missing skills to the CV!
-In EDUCATION & CERTIFICATIONS, list each degree and each certification as its OWN individual bullet point on a separate line (forming a vertical column). NEVER group certifications inline with pipes or commas!
+=== CANDIDATE KNOWLEDGE BASE (MASTER-DATA.MD - ABSOLUTE SSOT) ===
+${sanitizedText || req.masterData}
 `;
 
-  return { systemInstruction, userPrompt, company };
+  return {
+    systemInstruction,
+    userPrompt,
+    company
+  };
 }

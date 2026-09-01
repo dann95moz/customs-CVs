@@ -1,5 +1,5 @@
 import { parseCvMarkdownToData } from '../parser/markdownParser';
-import { extractCandidateName } from '../parser/metadataExtractor';
+import { extractCandidateName, extractTargetRole } from '../parser/metadataExtractor';
 
 export interface AnonymizedPayload {
   sanitizedText: string;
@@ -87,32 +87,56 @@ export function restoreOriginalHeader(
     }
   }
 
-  // 3. Resolve Target Role Title
+  // 3. Resolve Target Role Title (trust AI synthesis or target override, fallback to master data)
   let roleTitle = targetRoleOverride?.trim() || '';
-  if (!roleTitle) {
-    if (synthParsed.title && synthParsed.title.toLowerCase() !== 'professional specialist' && !synthParsed.title.includes('[Target Role')) {
+  if (!roleTitle || roleTitle.includes('[')) {
+    if (
+      synthParsed.title &&
+      synthParsed.title.toLowerCase() !== 'professional specialist' &&
+      !synthParsed.title.includes('[') &&
+      !synthParsed.title.toLowerCase().includes('dossier') &&
+      !synthParsed.title.toLowerCase().includes('instructions')
+    ) {
       roleTitle = synthParsed.title;
-    } else if (masterParsed?.title && masterParsed.title.toLowerCase() !== 'professional specialist') {
+    } else if (
+      masterParsed?.title &&
+      masterParsed.title.toLowerCase() !== 'professional specialist' &&
+      !masterParsed.title.includes('[') &&
+      !masterParsed.title.toLowerCase().includes('dossier') &&
+      !masterParsed.title.toLowerCase().includes('instructions')
+    ) {
       roleTitle = masterParsed.title;
     } else {
-      roleTitle = 'Professional Specialist';
+      roleTitle = extractTargetRole('', originalMasterData, 'Professional Specialist');
     }
   }
 
-  // 4. Resolve Contacts (prefer real contacts from master data)
-  const contacts = (masterParsed?.contacts && masterParsed.contacts.length > 0)
-    ? masterParsed.contacts
-    : (synthParsed.contacts || []);
+  // 4. Resolve Contacts (strictly use verifiable contacts from master data)
+  const masterContacts = masterParsed?.contacts || [];
+  const synthContacts = synthParsed.contacts || [];
+  const contacts = masterContacts.length > 0 ? masterContacts : synthContacts;
 
   const basicContacts: string[] = [];
   const linkContacts: string[] = [];
 
   for (const c of contacts) {
     if (c.type === 'location' || c.type === 'email' || c.type === 'phone') {
-      if (c.label && !c.label.includes('[candidate-email') && !c.label.includes('[+1 (555)')) {
+      if (
+        c.label &&
+        !c.label.includes('[candidate-email') &&
+        !c.label.includes('[+1 (555)') &&
+        !c.label.includes('[Email') &&
+        !c.label.includes('[Phone')
+      ) {
         basicContacts.push(c.label);
       }
-    } else if (c.url && !c.url.includes('candidate-profile')) {
+    } else if (
+      c.url &&
+      !c.url.includes('candidate-profile') &&
+      !c.url.includes('example.com') &&
+      !c.url.includes('...') &&
+      !c.url.includes('[')
+    ) {
       let displayLabel = c.label;
       if (c.type === 'linkedin') displayLabel = 'LinkedIn';
       else if (c.type === 'github') displayLabel = 'GitHub';
@@ -141,6 +165,12 @@ export function restoreOriginalHeader(
     return `${cleanHeader}\n\n---\n\n${synthesizedMarkdown}`;
   }
 
-  const synthesizedBody = synthesizedMarkdown.slice(firstSectionIndex).trim();
+  let synthesizedBody = synthesizedMarkdown.slice(firstSectionIndex).trim();
+  // Strip any dummy privacy guard URLs if they leaked into body
+  synthesizedBody = synthesizedBody
+    .replace(/https?:\/\/github\.com\/candidate-profile/gi, '')
+    .replace(/https?:\/\/linkedin\.com\/in\/candidate-profile/gi, '')
+    .replace(/\[candidate-email@example\.com\]/gi, '');
+
   return `${cleanHeader}\n\n---\n\n${synthesizedBody}`;
 }

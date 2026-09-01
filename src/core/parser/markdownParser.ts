@@ -624,6 +624,7 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
         !cleanCandidate.toLowerCase().includes('dossier') &&
         !cleanCandidate.toLowerCase().includes('curriculum') &&
         !cleanCandidate.toLowerCase().includes('europass') &&
+        !cleanCandidate.toLowerCase().includes('instructions') &&
         (line.startsWith('*') || line.startsWith('**') || line.endsWith('**') || line.endsWith('*') || cleanCandidate.includes('|') || !cleanCandidate.includes(','))
       ) {
         title = cleanCandidate;

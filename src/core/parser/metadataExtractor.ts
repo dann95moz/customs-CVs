@@ -91,6 +91,9 @@ export function extractTargetCompany(targetJobText: string, fallback: string = '
  * Extracts target role from target-job.md or master-data.md or fallback
  */
 export function extractTargetRole(targetJobText: string, masterDataText: string = '', fallback: string = ''): string {
+  let detectedRole = '';
+
+  // 1. Check explicit vacancy role key-value headers (e.g. "Target Role: Senior Angular Developer")
   if (targetJobText) {
     const match = targetJobText.match(/(?:Target Role|Target Position|Role|Cargo|Puesto|Position|Title|Job Title):\*{0,2}\s*\[?(?:e\.g\.\s*|Ej:\s*)?([^\]\r\n*]+)\]?/i);
     if (match) {
@@ -101,22 +104,76 @@ export function extractTargetRole(targetJobText: string, masterDataText: string 
         !raw.toLowerCase().includes('e.g.') &&
         raw.length < 70
       ) {
+        detectedRole = raw;
+      }
+    }
+
+    // 2. Check natural vacancy opening sentences (e.g. "seeking an experienced Senior Angular/Front-End Developer...")
+    if (!detectedRole) {
+      const seekingMatch = targetJobText.match(/(?:seeking|looking for|hiring|need)\s+(?:an?\s+)?(?:experienced(?:\s+and\s+highly\s+skilled)?|highly skilled|skilled|talented|passionate|senior|lead|staff|principal)?\s*([A-Za-z0-9/ -]+(?:Developer|Engineer|Architect|Lead|Manager|Specialist|Consultant|Designer|Analyst|Scientist))/i);
+      if (seekingMatch && seekingMatch[1]) {
+        const clean = seekingMatch[1].replace(/^[–\-•|:\s]+/, '').replace(/[–\-•|:\s]+$/, '').trim();
+        if (clean.length > 5 && clean.length < 70) {
+          detectedRole = clean;
+        }
+      }
+    }
+  }
+
+  // 3. Check explicit Primary Professional Title field from master-data.md
+  let masterPrimaryTitle = '';
+  if (masterDataText) {
+    const primaryTitleMatch = masterDataText.match(/(?:Primary Professional Title|Professional Title|Cargo Principal|Título Profesional):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+    if (primaryTitleMatch) {
+      const raw = primaryTitleMatch[1].trim();
+      if (
+        raw &&
+        !raw.toLowerCase().includes('primary professional title') &&
+        !raw.toLowerCase().includes('título profesional') &&
+        raw.length < 90
+      ) {
+        masterPrimaryTitle = raw;
+      }
+    }
+  }
+
+  if (detectedRole) {
+    // Seniority Boundary: Check if candidate's master data has Senior/Lead/Staff
+    const seniorityLevels = ['Senior', 'Lead', 'Staff', 'Principal', 'Director', 'Head of'];
+    for (const level of seniorityLevels) {
+      const levelRegex = new RegExp(`\\b${level}\\b`, 'i');
+      if (levelRegex.test(detectedRole)) {
+        const hasLevelInMaster = levelRegex.test(masterPrimaryTitle) || (masterDataText && levelRegex.test(masterDataText.split('## 🛠️')[0]));
+        if (!hasLevelInMaster) {
+          // Strip the inflated seniority level from detected role
+          detectedRole = detectedRole.replace(levelRegex, '').replace(/^[–\-•|/:\s]+|[–\-•|/:\s]+$/g, '').trim();
+        }
+      }
+    }
+    return detectedRole;
+  }
+
+  if (masterPrimaryTitle) {
+    return masterPrimaryTitle;
+  }
+
+  // Fallback: Check top header subtitle line right under # Name
+  if (masterDataText) {
+    const headerTitleMatch = masterDataText.match(/^#\s+[^\r\n]+\r?\n+\*\*([^*]+)\*\*/m);
+    if (headerTitleMatch) {
+      const raw = headerTitleMatch[1].trim();
+      if (
+        raw &&
+        !raw.toLowerCase().includes('dossier') &&
+        !raw.toLowerCase().includes('instructions') &&
+        raw.length < 70
+      ) {
         return raw;
       }
     }
   }
 
-  if (masterDataText) {
-    const matchTitle = masterDataText.match(/^\*\*([^*]+)\*\*\s*$/m);
-    if (matchTitle) {
-      const mainRole = matchTitle[1].split(/[|•]/)[0].trim();
-      if (mainRole && !mainRole.includes('[') && mainRole.length < 70) {
-        return mainRole;
-      }
-    }
-  }
-
-  return fallback;
+  return fallback || 'Professional Specialist';
 }
 
 /**
