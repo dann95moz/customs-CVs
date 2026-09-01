@@ -135,10 +135,7 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
           <Card
             variant="outlined"
             sx={{
-              borderRadius: '14px',
               bgcolor: 'background.paper',
-              borderColor: alpha(theme.palette.divider, 0.9),
-              boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
             }}
           >
             <CardContent
@@ -169,7 +166,6 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
                 maskShape={activeTheme === 'academic-research' ? 'circle' : activeTheme === 'designer-uiux' ? 'squircle' : 'rounded'}
                 size={54}
                 border={`2px solid ${theme.palette.primary.main}`}
-                boxShadow="0 4px 12px rgba(0,0,0,0.15)"
                 fallbackInitials={initials}
                 fallbackIcon={activeTheme === 'two-column' ? 'diamond' : 'monogram'}
                 activeTheme={activeTheme}
@@ -200,12 +196,10 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
           <Card
             variant="outlined"
             sx={{
-              borderRadius: '14px',
               bgcolor: 'background.paper',
-              borderColor: alpha(theme.palette.divider, 0.9),
-              boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
             }}
           >
+
             <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
               <Box
                 sx={{
@@ -302,10 +296,7 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
                     key={bIdx}
                     variant="outlined"
                     sx={{
-                      borderRadius: '14px',
                       bgcolor: 'background.paper',
-                      borderColor: alpha(theme.palette.divider, 0.9),
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
                     }}
                   >
                     <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
@@ -420,9 +411,7 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
                     key={bIdx}
                     variant="outlined"
                     sx={{
-                      borderRadius: '14px',
-                      borderColor: alpha(theme.palette.divider, 0.9),
-                      boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
+                      bgcolor: 'background.paper',
                     }}
                   >
                     <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
@@ -511,11 +500,6 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
         onClose={() => setEditingItem(null)}
         fullWidth
         maxWidth="sm"
-        slotProps={{
-          paper: {
-            sx: { borderRadius: '16px', p: 1 },
-          },
-        }}
       >
         <DialogTitle sx={{ fontWeight: 700, fontSize: '1rem', pb: 1 }}>
           {t('preview:aiRegen.editItem', 'Editar Contenido')}
@@ -530,13 +514,13 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
             onChange={(e) => setEditText(e.target.value)}
             sx={{
               '& .MuiOutlinedInput-root': {
-                borderRadius: '10px',
                 fontSize: '0.88rem',
               },
             }}
           />
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
+
           <Button
             onClick={() => setEditingItem(null)}
             variant="text"

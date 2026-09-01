@@ -194,7 +194,7 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
           width: { xs: 'auto', md: '100%' },
           px: 0.25,
           gap: 0.25,
-          color: activeSidePanel === 'linkedin' ? '#0a66c2' : 'text.secondary',
+          color: activeSidePanel === 'linkedin' ? 'primary.main' : 'text.secondary',
           transition: 'all 0.15s ease',
           '&:hover': { color: 'text.primary' }
         }}
@@ -203,14 +203,14 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
           sx={{
             width: { xs: 36, md: 44 },
             height: { xs: 36, md: 44 },
-            borderRadius: { xs: '10px', md: '14px' },
+            borderRadius: { xs: 1.5, md: 2 },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             bgcolor: activeSidePanel === 'linkedin'
-              ? alpha('#0a66c2', isDark ? 0.25 : 0.12)
+              ? alpha(theme.palette.primary.main, isDark ? 0.25 : 0.12)
               : 'transparent',
-            color: activeSidePanel === 'linkedin' ? '#0a66c2' : 'inherit',
+            color: activeSidePanel === 'linkedin' ? 'primary.main' : 'inherit',
             transition: 'all 0.15s ease',
             fontWeight: 900,
             fontSize: { xs: '0.9rem', md: '1rem' },
@@ -218,6 +218,7 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
         >
           in
         </Box>
+
         <Typography
           variant="caption"
           sx={{

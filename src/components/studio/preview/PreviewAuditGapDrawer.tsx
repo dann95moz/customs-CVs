@@ -12,9 +12,11 @@ import {
   DialogActions,
   Tooltip,
   Snackbar,
+  Slide,
   useTheme,
   alpha,
 } from '@mui/material';
+
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
 import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
@@ -120,7 +122,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
                 width: 62,
                 height: 64,
                 p: 0.5,
-                borderRadius: '16px',
+                borderRadius: 2,
                 bgcolor: alpha(theme.palette.success.main, isDark ? 0.2 : 0.15),
                 border: scoreUpdated
                   ? `2px solid ${theme.palette.primary.main}`
@@ -149,8 +151,8 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
                   fontSize: '1.25rem',
                   lineHeight: 1,
                   color: scoreUpdated
-                    ? (isDark ? '#38bdf8' : '#0284c7')
-                    : (isDark ? '#4ade80' : '#15803d'),
+                    ? 'primary.main'
+                    : 'success.main',
                 }}
               >
                 {auditScore}
@@ -170,7 +172,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
                 width: 62,
                 height: 64,
                 p: 0.5,
-                borderRadius: '16px',
+                borderRadius: 2,
                 bgcolor: alpha(theme.palette.primary.main, isDark ? 0.2 : 0.12),
                 border: `1.5px solid ${theme.palette.primary.main}`,
                 display: 'flex',
@@ -186,7 +188,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
                 },
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: 900, fontSize: '1.15rem', lineHeight: 1, color: isDark ? '#38bdf8' : '#0284c7' }}>
+              <Typography variant="h6" sx={{ fontWeight: 900, fontSize: '1.15rem', lineHeight: 1, color: 'primary.main' }}>
                 {matchScore}%
               </Typography>
               <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.62rem', letterSpacing: 0.5, color: 'text.secondary', textTransform: 'uppercase', mt: 0.35 }}>
@@ -204,7 +206,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
                 width: 62,
                 height: 64,
                 p: 0.5,
-                borderRadius: '16px',
+                borderRadius: 2,
                 bgcolor: alpha(theme.palette.secondary.main, isDark ? 0.2 : 0.12),
                 border: `1.5px solid ${theme.palette.secondary.main}`,
                 display: 'flex',
@@ -230,18 +232,15 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
       )}
 
       {/* 2. EXPANDED STATE: Unified Right-Side Panel */}
-      {isOpen && (
-        <Paper
-          elevation={4}
-          className="no-print"
+      <Slide direction="left" in={isOpen} mountOnEnter unmountOnExit>
+        <Box
           sx={{
-            width: { xs: '100%', sm: 340, md: 380 },
-            maxWidth: '100vw',
-            position: { xs: 'absolute', lg: 'relative' },
-            left: { xs: 0, sm: 'auto' },
+            position: { xs: 'fixed', md: 'relative' },
+            top: { xs: 'var(--navbar-height, 56px)', md: 'auto' },
+            bottom: { xs: 0, md: 'auto' },
             right: 0,
-            top: 0,
-            bottom: 0,
+            width: { xs: '100%', sm: 390, md: 430 },
+            maxWidth: '100vw',
             borderLeft: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
             display: 'flex',
@@ -252,9 +251,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
             flexShrink: 0,
             zIndex: 40,
             boxSizing: 'border-box',
-            boxShadow: isDark
-              ? '-8px 0 28px rgba(0, 0, 0, 0.5)'
-              : '-4px 0 20px rgba(0, 0, 0, 0.08)',
+            boxShadow: 8,
           }}
         >
           {/* Header with Segmented Tabs and Close [X] */}
@@ -267,7 +264,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: 0.75,
-              bgcolor: isDark ? alpha(theme.palette.background.default, 0.5) : '#f8fafc',
+              bgcolor: 'background.default',
               boxSizing: 'border-box',
               width: '100%',
               minWidth: 0,
@@ -372,24 +369,17 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
               />
             )}
           </Box>
-        </Paper>
-      )}
+        </Box>
+      </Slide>
+
 
       {/* 3. Progressive Disclosure Dialog: Full Detailed Markdown Report */}
       {gapMarkdown && (
         <Dialog
           open={fullReportModalOpen}
           onClose={() => setFullReportModalOpen(false)}
-          maxWidth="md"
           fullWidth
-          slotProps={{
-            paper: {
-              sx: {
-                borderRadius: '16px',
-                bgcolor: 'background.paper',
-              },
-            },
-          }}
+          maxWidth="md"
         >
           <DialogTitle sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span>{t('gap:title', 'Target Job Gap Analysis Report')}</span>

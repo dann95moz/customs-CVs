@@ -76,7 +76,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
             flexWrap: 'wrap',
             gap: 1.2,
             p: 1.25,
-            borderRadius: '12px',
+            borderRadius: 2,
             bgcolor: alpha(muiTheme.palette.divider, 0.04),
             border: `1px solid ${muiTheme.palette.divider}`,
           }}
@@ -98,7 +98,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
                 justifyContent: 'center',
                 border: palette === 'custom'
                   ? `2.5px solid ${muiTheme.palette.primary.main}`
-                  : '1.5px solid rgba(0,0,0,0.2)',
+                  : `1.5px solid ${muiTheme.palette.divider}`,
                 boxShadow: palette === 'custom' ? `0 0 0 2px ${alpha(customColor, 0.4)}` : 'none',
                 transform: palette === 'custom' ? 'scale(1.12)' : 'scale(1)',
                 transition: 'all 0.15s ease',
@@ -114,7 +114,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
                 }}
                 style={{ opacity: 0, position: 'absolute', width: '100%', height: '100%', cursor: 'pointer' }}
               />
-              <FormatPaintRoundedIcon sx={{ fontSize: 13, color: '#ffffff', filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6))' }} />
+              <FormatPaintRoundedIcon sx={{ fontSize: 13, color: 'common.white' }} />
             </Box>
           </Tooltip>
 
@@ -137,7 +137,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
                     flexShrink: 0,
                     border: isSelected
                       ? `2.5px solid ${muiTheme.palette.primary.main}`
-                      : '1.5px solid rgba(0,0,0,0.14)',
+                      : `1.5px solid ${muiTheme.palette.divider}`,
                     boxShadow: isSelected ? `0 0 0 2px ${alpha(p.previewColor, 0.4)}` : 'none',
                     transform: isSelected ? 'scale(1.12)' : 'scale(1)',
                     transition: 'all 0.15s ease',
@@ -148,6 +148,7 @@ export const TemplatesPanel: React.FC<TemplatesPanelProps> = ({
             );
           })}
         </Box>
+
       </Box>
 
       {/* Subtitle: All templates */}

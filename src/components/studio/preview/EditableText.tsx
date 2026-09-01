@@ -483,8 +483,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
                 gap: 0.6,
                 bgcolor: 'background.paper',
                 border: `1px solid ${theme.palette.divider}`,
-                borderRadius: '9999px',
-                boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
+                boxShadow: 3,
                 p: 0.35,
               }}
             >
@@ -531,7 +530,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
                     transition: 'all 0.15s ease',
                     '&:hover': {
                       bgcolor: 'primary.main',
-                      color: '#ffffff',
+                      color: 'primary.contrastText',
                       transform: 'scale(1.1)',
                     },
                   }}
@@ -615,8 +614,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
               gap: 0.6,
               bgcolor: 'background.paper',
               border: `1px solid ${theme.palette.divider}`,
-              borderRadius: '9999px',
-              boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
+              boxShadow: 3,
               p: 0.35,
             }}
           >
@@ -663,7 +661,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
                   transition: 'all 0.15s ease',
                   '&:hover': {
                     bgcolor: 'primary.main',
-                    color: '#ffffff',
+                    color: 'primary.contrastText',
                     transform: 'scale(1.1)',
                   },
                 }}

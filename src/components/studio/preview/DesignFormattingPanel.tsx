@@ -132,7 +132,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           sx={{
             width: 38,
             height: 38,
-            borderRadius: '8px',
+            borderRadius: 1,
             bgcolor: customColor,
             cursor: 'pointer',
             flexShrink: 0,
@@ -140,8 +140,8 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            border: '2px solid rgba(0,0,0,0.15)',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
+            border: `2px solid ${muiTheme.palette.divider}`,
+            boxShadow: 1,
             transition: 'transform 0.15s ease',
             '&:hover': { transform: 'scale(1.06)' },
           }}
@@ -155,8 +155,9 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
             }}
             style={{ opacity: 0, position: 'absolute', width: '100%', height: '100%', cursor: 'pointer' }}
           />
-          <ColorLensRoundedIcon sx={{ fontSize: 20, color: '#ffffff', filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' }} />
+          <ColorLensRoundedIcon sx={{ fontSize: 20, color: 'common.white' }} />
         </Box>
+
         <TextField
           size="small"
           value={customColor}
@@ -276,7 +277,6 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
             severity="info"
             icon={<InfoOutlinedIcon fontSize="inherit" />}
             sx={{
-              borderRadius: '8px',
               fontSize: '0.72rem',
               lineHeight: 1.35,
               bgcolor: alpha(muiTheme.palette.info.main, 0.08),
@@ -290,7 +290,6 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
               variant="outlined"
               sx={{
                 p: 1.5,
-                borderRadius: '10px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -304,7 +303,6 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
                   maskShape={activeTheme === 'academic-research' ? 'circle' : activeTheme === 'designer-uiux' ? 'squircle' : 'rounded'}
                   size={48}
                   border={`1.5px solid ${muiTheme.palette.primary.main}`}
-                  boxShadow="0 2px 8px rgba(0,0,0,0.15)"
                 />
                 <Box>
                   <Typography variant="caption" sx={{ fontWeight: 800, display: 'block', color: 'text.primary', fontSize: '0.78rem' }}>
@@ -315,6 +313,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
                   </Typography>
                 </Box>
               </Box>
+
 
               <Box sx={{ display: 'flex', gap: 0.5 }}>
                 <Tooltip title={t('preview:panels.design.photoEdit', 'Adjust Framing & Zoom')}>
@@ -507,7 +506,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           />
         )}
       </Box>
-      <Paper variant="outlined" sx={{ p: 1.5, borderRadius: '8px' }}>
+      <Paper variant="outlined" sx={{ p: 1.5 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
             {t('preview:panels.design.paperStandard', 'Paper Standard')}:
@@ -528,12 +527,13 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
             {t('preview:panels.design.pageStatus', 'Page Status')}:
           </Typography>
-          <Typography variant="caption" sx={{ fontWeight: 800, color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>
+          <Typography variant="caption" sx={{ fontWeight: 800, color: estimatedPages === 1 ? 'success.main' : 'warning.main' }}>
             {estimatedPages === 1
               ? t('preview:panels.design.perfectOnePage', 'Perfect 1 Page ✓')
               : t('preview:panels.design.pagesCount', { count: estimatedPages, defaultValue: `${estimatedPages} Pages` })}
           </Typography>
         </Box>
+
 
         <LinearProgress
           variant="determinate"

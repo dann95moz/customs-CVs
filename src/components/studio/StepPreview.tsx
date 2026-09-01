@@ -325,8 +325,8 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               height: '100%',
               overflowY: 'auto',
               flexShrink: 0,
-              zIndex: 45,
-              boxShadow: { xs: '0 8px 32px rgba(0,0,0,0.5)', md: 'none' },
+              zIndex: 10,
+              boxShadow: { xs: 8, md: 'none' },
             }}
           >
             <React.Suspense fallback={<StudioSkeleton variant="drawer" />}>
@@ -365,6 +365,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   onClose={() => setActiveSidePanel(null)}
                 />
               )}
+
 
               {activeSidePanel === 'linkedin' && (
                 <LinkedInPanel
@@ -434,7 +435,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   variant="outlined"
                   size="small"
                   sx={{
-                    borderRadius: '999px',
                     bgcolor: alpha(muiTheme.palette.primary.main, 0.06),
                     p: 0.3,
                     border: 'none',
@@ -445,7 +445,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                     onClick={() => setMobileViewMode('edit')}
                     variant={mobileViewMode === 'edit' ? 'contained' : 'text'}
                     sx={{
-                      borderRadius: '999px !important',
                       px: 2.25,
                       py: 0.5,
                       minHeight: 32,
@@ -454,7 +453,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                       textTransform: 'none',
                       boxShadow: 'none',
                       bgcolor: mobileViewMode === 'edit' ? 'primary.main' : 'transparent',
-                      color: mobileViewMode === 'edit' ? '#ffffff' : 'text.secondary',
+                      color: mobileViewMode === 'edit' ? 'common.white' : 'text.secondary',
                     }}
                   >
                     {t('preview:aiRegen.mobileModeEdit', 'Edit')}
@@ -463,7 +462,6 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                     onClick={() => setMobileViewMode('preview')}
                     variant={mobileViewMode === 'preview' ? 'contained' : 'text'}
                     sx={{
-                      borderRadius: '999px !important',
                       px: 2.25,
                       py: 0.5,
                       minHeight: 32,
@@ -472,12 +470,13 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                       textTransform: 'none',
                       boxShadow: 'none',
                       bgcolor: mobileViewMode === 'preview' ? 'primary.main' : 'transparent',
-                      color: mobileViewMode === 'preview' ? '#ffffff' : 'text.secondary',
+                      color: mobileViewMode === 'preview' ? 'common.white' : 'text.secondary',
                     }}
                   >
                     {t('preview:aiRegen.mobileModePreview', 'Preview')}
                   </Button>
                 </ButtonGroup>
+
 
                 {/* Mobile Zoom Fit Mode Toggle */}
                 {mobileViewMode === 'preview' && (
@@ -644,7 +643,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               />
 
               <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
-                {t('preview:toolbar.pageFit', 'Estimated Length')}: <strong style={{ color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>{estimatedPages} {estimatedPages === 1 ? `Page (${pageFormat.toUpperCase()})` : 'Pages'}</strong> • Height: {sheetHeight}px / {targetPagePx}px
+                {t('preview:toolbar.pageFit', 'Estimated Length')}: <strong style={{ color: estimatedPages === 1 ? muiTheme.palette.success.main : muiTheme.palette.warning.main }}>{estimatedPages} {estimatedPages === 1 ? `Page (${pageFormat.toUpperCase()})` : 'Pages'}</strong> • Height: {sheetHeight}px / {targetPagePx}px
               </Typography>
             </Box>
           </Paper>
@@ -709,10 +708,11 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         onClose={() => setTrackSuccess(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert severity="success" variant="filled" sx={{ borderRadius: '10px', fontWeight: 600 }}>
+        <Alert severity="success" variant="filled" sx={{ fontWeight: 600 }}>
           {t('preview:toolbar.trackedSuccess', 'Saved to My Applications')}
         </Alert>
       </Snackbar>
     </div>
   );
 };
+

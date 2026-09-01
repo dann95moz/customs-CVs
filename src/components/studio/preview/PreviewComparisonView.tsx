@@ -44,8 +44,9 @@ export const PreviewComparisonView: React.FC<PreviewComparisonViewProps> = ({
         sx={{
           py: 1,
           px: { xs: 1.5, sm: 2.5 },
-          bgcolor: isDark ? alpha(muiTheme.palette.primary.main, 0.08) : '#eff6ff',
+          bgcolor: alpha(muiTheme.palette.primary.main, isDark ? 0.08 : 0.04),
           borderBottom: `1px solid ${alpha(muiTheme.palette.primary.main, 0.2)}`,
+
           display: 'flex',
           flexDirection: { xs: 'column', sm: 'row' },
           alignItems: { xs: 'flex-start', sm: 'center' },

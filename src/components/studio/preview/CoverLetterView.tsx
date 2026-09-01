@@ -126,7 +126,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
         sx={{
           p: 1.5,
           px: 2.5,
-          borderRadius: '16px',
+          borderRadius: 2,
           bgcolor: 'background.paper',
           border: `1px solid ${muiTheme.palette.divider}`,
           display: 'flex',
@@ -144,12 +144,12 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
           <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
             {t('preview:coverLetter.tone', 'Tone')}:
           </Typography>
-          <ButtonGroup size="small" variant="outlined" sx={{ borderRadius: '999px', p: 0.25, bgcolor: alpha(muiTheme.palette.primary.main, 0.05) }}>
+          <ButtonGroup size="small" variant="outlined" sx={{ p: 0.25, bgcolor: alpha(muiTheme.palette.primary.main, 0.05) }}>
             <Button
               variant={coverLetterTone === 'corporate' ? 'contained' : 'text'}
               onClick={() => handleToneChange('corporate')}
               disabled={loading}
-              sx={{ borderRadius: '999px !important', fontWeight: 700, fontSize: '0.72rem', textTransform: 'none', px: 1.5 }}
+              sx={{ fontWeight: 700, fontSize: '0.72rem', textTransform: 'none', px: 1.5 }}
             >
               {t('preview:coverLetter.corporate', 'Corporate')}
             </Button>
@@ -157,7 +157,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
               variant={coverLetterTone === 'startup' ? 'contained' : 'text'}
               onClick={() => handleToneChange('startup')}
               disabled={loading}
-              sx={{ borderRadius: '999px !important', fontWeight: 700, fontSize: '0.72rem', textTransform: 'none', px: 1.5 }}
+              sx={{ fontWeight: 700, fontSize: '0.72rem', textTransform: 'none', px: 1.5 }}
             >
               {t('preview:coverLetter.startup', 'Startup / Direct')}
             </Button>
@@ -165,7 +165,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
               variant={coverLetterTone === 'leadership' ? 'contained' : 'text'}
               onClick={() => handleToneChange('leadership')}
               disabled={loading}
-              sx={{ borderRadius: '999px !important', fontWeight: 700, fontSize: '0.72rem', textTransform: 'none', px: 1.5 }}
+              sx={{ fontWeight: 700, fontSize: '0.72rem', textTransform: 'none', px: 1.5 }}
             >
               {t('preview:coverLetter.leadership', 'Leadership')}
             </Button>
@@ -204,7 +204,6 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
           >
             {copied ? t('common:status.copied', 'Copied!') : t('common:actions.copy', 'Copy')}
           </Button>
-
 
           <Button
             size="small"
@@ -245,12 +244,12 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
             <Typography variant="h4" sx={{ fontWeight: 900, color: primaryColor, letterSpacing: -0.5, lineHeight: 1.1, mb: 0.5 }}>
               {cvData.name || 'Candidate Full Name'}
             </Typography>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#475569', mb: 1.5 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: 'text.secondary', mb: 1.5 }}>
               {cvData.title || 'Professional Title / Specialization'}
             </Typography>
 
             {/* Contact details row */}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, fontSize: '0.84rem', color: '#64748b' }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, fontSize: '0.84rem', color: 'text.secondary' }}>
               {cvData.contacts?.map((contact, i) => (
                 <span key={i}>
                   {contact.label}
@@ -261,8 +260,9 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
           </Box>
 
           {/* Date & Recipient Block */}
-          <Box sx={{ mb: 4, fontSize: '0.9rem', color: '#334155' }}>
+          <Box sx={{ mb: 4, fontSize: '0.9rem', color: 'text.primary' }}>
             <Typography sx={{ fontWeight: 600, mb: 1 }}>{formattedDate}</Typography>
+
             <Typography sx={{ fontWeight: 700, color: primaryColor }}>
               Hiring Team & Leadership
             </Typography>

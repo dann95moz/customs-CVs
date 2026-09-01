@@ -102,8 +102,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
             variant="outlined"
             sx={{
               p: 0.25,
-              borderRadius: '9999px',
-              bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+              bgcolor: alpha(theme.palette.text.primary, 0.04),
               border: `1px solid ${theme.palette.divider}`,
             }}
           >
@@ -113,7 +112,6 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
               onClick={() => onPreviewDocTypeChange('cv')}
               startIcon={<ArticleRoundedIcon sx={{ fontSize: '14px !important' }} />}
               sx={{
-                borderRadius: '9999px !important',
                 fontWeight: 700,
                 fontSize: '0.74rem',
                 textTransform: 'none',
@@ -129,7 +127,6 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
               onClick={() => onPreviewDocTypeChange('cover-letter')}
               startIcon={<EmailRoundedIcon sx={{ fontSize: '14px !important' }} />}
               sx={{
-                borderRadius: '9999px !important',
                 fontWeight: 700,
                 fontSize: '0.74rem',
                 textTransform: 'none',
@@ -174,8 +171,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
               height: 28,
               fontSize: '0.72rem',
               fontWeight: 700,
-              bgcolor: isDark ? 'rgba(255,255,255,0.04)' : '#ffffff',
-              borderRadius: '8px',
+              bgcolor: 'background.paper',
               display: { xs: 'none', md: 'inline-flex' },
               '& .MuiSelect-select': { py: 0.25, px: 1, display: 'flex', alignItems: 'center', gap: 0.5 },
             }}
@@ -206,10 +202,9 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
                 fontSize: '0.72rem',
                 fontWeight: 800,
                 px: 1.2,
-                borderRadius: '8px',
                 display: { xs: 'none', sm: 'inline-flex' },
                 animation: isOverflowing ? 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' : 'none',
-                boxShadow: isOverflowing ? '0 0 12px rgba(245, 158, 11, 0.4)' : 'none',
+                boxShadow: isOverflowing ? `0 0 12px ${alpha(theme.palette.warning.main, 0.4)}` : 'none',
               }}
             >
               {t('preview:toolbar.autoFit', 'Auto-Fit 1 Page')}
@@ -218,13 +213,12 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
         )}
 
         {/* Live Document Text Formatting Tools */}
-        <ButtonGroup size="small" variant="outlined" sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.03)' : '#ffffff', flexShrink: 0 }}>
+        <ButtonGroup size="small" variant="outlined" sx={{ bgcolor: 'background.paper', flexShrink: 0 }}>
           <Tooltip title={t('preview:toolbar.formatBold', 'Bold Selected Text (Ctrl+B)')}>
             <IconButton
               size="small"
               onClick={() => liveEdit?.formatSelection('bold')}
               sx={{
-                borderRadius: '6px',
                 p: 0.6,
                 color: 'text.primary',
                 '&:hover': { color: 'primary.main', bgcolor: alpha(theme.palette.primary.main, 0.1) },
@@ -238,7 +232,6 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
               size="small"
               onClick={() => liveEdit?.formatSelection('italic')}
               sx={{
-                borderRadius: '6px',
                 p: 0.6,
                 color: 'text.primary',
                 '&:hover': { color: 'primary.main', bgcolor: alpha(theme.palette.primary.main, 0.1) },
@@ -252,7 +245,6 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
               size="small"
               onClick={() => liveEdit?.formatSelection('highlight')}
               sx={{
-                borderRadius: '6px',
                 p: 0.6,
                 color: 'text.primary',
                 '&:hover': { color: 'primary.main', bgcolor: alpha(theme.palette.primary.main, 0.1) },
@@ -278,10 +270,10 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
                 py: 0.4,
               }}
             >
-              <CheckCircleOutlineRoundedIcon sx={{ fontSize: 16, color: '#16a34a' }} />
+              <CheckCircleOutlineRoundedIcon sx={{ fontSize: 16, color: 'success.main' }} />
               <Typography
                 component="span"
-                sx={{ fontSize: '0.82rem', fontWeight: 600, color: '#16a34a' }}
+                sx={{ fontSize: '0.82rem', fontWeight: 600, color: 'success.main' }}
               >
                 {t('preview:toolbar.tracked', 'En el tablero')}
               </Typography>
@@ -343,20 +335,20 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
         <Button
           size="small"
           variant="outlined"
+          color="inherit"
           startIcon={<AutoAwesomeRoundedIcon sx={{ fontSize: 14 }} />}
           onClick={onReTailor}
           disabled={isGenerating}
           sx={{
-            borderRadius: '9999px',
             fontSize: '0.82rem',
             fontWeight: 600,
             textTransform: 'none',
             px: 1.8,
             py: 0.5,
             minHeight: 34,
-            borderColor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.18)',
+            borderColor: 'divider',
             color: 'text.primary',
-            bgcolor: isDark ? 'rgba(255,255,255,0.04)' : '#ffffff',
+            bgcolor: 'background.paper',
             boxShadow: 'none',
             display: { xs: 'none', md: 'inline-flex' },
             '&:hover': {
@@ -373,6 +365,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
         {/* 4. Download Dropdown Button (Unified Primary Action Pill) */}
         <Button
           variant="contained"
+          color="primary"
           size="small"
           onClick={handleOpenPdfMenu}
           disabled={isExportingPdf}
@@ -385,21 +378,13 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           }
           endIcon={<ArrowDropDownRoundedIcon sx={{ ml: -0.5, fontSize: 18 }} />}
           sx={{
-            borderRadius: '9999px',
             fontSize: '0.82rem',
             fontWeight: 700,
             textTransform: 'none',
             px: { xs: 1.5, sm: 2 },
             py: 0.6,
             minHeight: 34,
-            bgcolor: isDark ? 'primary.main' : '#0f172a',
-            color: '#ffffff',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
             whiteSpace: 'nowrap',
-            '&:hover': {
-              bgcolor: isDark ? 'primary.dark' : '#1e293b',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-            },
           }}
         >
           <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
@@ -409,6 +394,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
             {isExportingPdf ? '...' : 'PDF'}
           </Box>
         </Button>
+
 
         {/* PDF & Markdown Export Options Dropdown Menu */}
         <Menu
