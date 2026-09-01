@@ -4,6 +4,19 @@ import { marked } from 'marked';
 import { EditableText } from '../components/studio/preview/EditableText';
 import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
 
+function getCleanContactLabel(contact: { type: string; label: string; url?: string }): string {
+  if (contact.type === 'linkedin' && (contact.label.startsWith('http') || contact.label.includes('linkedin.com'))) {
+    return 'LinkedIn';
+  }
+  if (contact.type === 'github' && (contact.label.startsWith('http') || contact.label.includes('github.com'))) {
+    return 'GitHub';
+  }
+  if (contact.type === 'globe' && contact.label.startsWith('http')) {
+    return 'Portfolio';
+  }
+  return contact.label;
+}
+
 export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data, photo }) => {
   const liveEdit = useCvLiveEdit();
   const { header, summary, skills, experience, education, languages, projects, genericSections } = slots;
@@ -80,17 +93,20 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
           </h3>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px', color: '#475569' }}>
-            {header.contacts.map((c, idx) => (
-              <div key={idx} style={{ wordBreak: 'break-word' }}>
-                {c.url ? (
-                  <a href={c.url} target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
-                    {c.label}
-                  </a>
-                ) : (
-                  <span>{c.label}</span>
-                )}
-              </div>
-            ))}
+            {header.contacts.map((c, idx) => {
+              const displayLabel = getCleanContactLabel(c);
+              return (
+                <div key={idx} style={{ wordBreak: 'break-word' }}>
+                  {c.url ? (
+                    <a href={c.url} target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 600 }}>
+                      {displayLabel}
+                    </a>
+                  ) : (
+                    <span>{displayLabel}</span>
+                  )}
+                </div>
+              );
+            })}
 
             {header.nationality && (
               <div>
@@ -301,11 +317,16 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
               {summary.title || 'Profile'}
             </h2>
             <EditableText
-              tagName="p"
+              tagName="div"
               value={summary.rawContent}
               onSave={(val) => liveEdit?.updateSummary(val)}
+              multiline
               htmlContent={marked.parse(summary.rawContent) as string}
               placeholder="Summary text..."
+              aiConfig={{
+                type: 'summary',
+                fieldKey: 'summary-main',
+              }}
               style={{ margin: 0, fontSize: '11.5px', lineHeight: 1.5, color: '#334155' }}
             />
           </section>
@@ -364,6 +385,15 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                           value={bullet}
                           onSave={(val) => liveEdit?.updateExperienceBullet('experience', expIdx, bIdx, val)}
                           htmlContent={marked.parseInline(bullet) as string}
+                          aiConfig={{
+                            type: 'bullet',
+                            fieldKey: `euromodern-exp-${expIdx}-bullet-${bIdx}`,
+                            sectionType: 'experience',
+                            itemIndex: expIdx,
+                            bulletIndex: bIdx,
+                            company: exp.company,
+                            role: exp.role,
+                          }}
                           style={{ fontSize: '11px', color: '#334155', lineHeight: 1.4 }}
                         />
                       ))}

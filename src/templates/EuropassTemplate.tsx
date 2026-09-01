@@ -11,6 +11,19 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 
+function getCleanContactLabel(contact: { type: string; label: string; url?: string }): string {
+  if (contact.type === 'linkedin' && (contact.label.startsWith('http') || contact.label.includes('linkedin.com'))) {
+    return 'LinkedIn';
+  }
+  if (contact.type === 'github' && (contact.label.startsWith('http') || contact.label.includes('github.com'))) {
+    return 'GitHub';
+  }
+  if (contact.type === 'globe' && contact.label.startsWith('http')) {
+    return 'Portfolio';
+  }
+  return contact.label;
+}
+
 export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data, photo }) => {
   const liveEdit = useCvLiveEdit();
   const palette = getPaletteConfig('corporate-blue');
@@ -81,18 +94,21 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
               color: '#334155',
             }}
           >
-            {header.contacts.map((c, i) => (
-              <div key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                <span style={{ fontWeight: 600, color: euBlue }}>•</span>
-                {c.url ? (
-                  <a href={c.url} target="_blank" rel="noreferrer" style={{ color: '#0369a1', textDecoration: 'none' }}>
-                    {c.label}
-                  </a>
-                ) : (
-                  <span>{c.label}</span>
-                )}
-              </div>
-            ))}
+            {header.contacts.map((c, i) => {
+              const displayLabel = getCleanContactLabel(c);
+              return (
+                <div key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ fontWeight: 600, color: euBlue }}>•</span>
+                  {c.url ? (
+                    <a href={c.url} target="_blank" rel="noreferrer" style={{ color: '#0369a1', textDecoration: 'none', fontWeight: 600 }}>
+                      {displayLabel}
+                    </a>
+                  ) : (
+                    <span>{displayLabel}</span>
+                  )}
+                </div>
+              );
+            })}
 
             {header.nationality && (
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
@@ -164,11 +180,16 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
               {summary.title || 'Work Profile'}
             </h2>
             <EditableText
-              tagName="p"
+              tagName="div"
               value={summary.rawContent}
               onSave={(val) => liveEdit?.updateSummary(val)}
+              multiline
               htmlContent={marked.parse(summary.rawContent) as string}
               placeholder="Professional summary..."
+              aiConfig={{
+                type: 'summary',
+                fieldKey: 'summary-main',
+              }}
               style={{ margin: 0, fontSize: '12px', lineHeight: 1.5, color: '#334155' }}
             />
           </section>
@@ -231,6 +252,15 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                           value={bullet}
                           onSave={(val) => liveEdit?.updateExperienceBullet('experience', expIdx, bIdx, val)}
                           htmlContent={marked.parseInline(bullet) as string}
+                          aiConfig={{
+                            type: 'bullet',
+                            fieldKey: `europass-exp-${expIdx}-bullet-${bIdx}`,
+                            sectionType: 'experience',
+                            itemIndex: expIdx,
+                            bulletIndex: bIdx,
+                            company: exp.company,
+                            role: exp.role,
+                          }}
                           style={{ fontSize: '11.5px', color: '#334155', lineHeight: 1.45 }}
                         />
                       ))}
