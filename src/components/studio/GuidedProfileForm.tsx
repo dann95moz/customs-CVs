@@ -464,10 +464,15 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
+        flex: 1,
+        width: '100%',
+        height: '100%',
         minHeight: 520,
+        alignItems: 'stretch',
         boxSizing: 'border-box'
       }}
     >
+
       {/* 1. Left Navigation Rail (Desktop) / Top Tabs (Mobile) */}
       <ProfileNavRail
         activeSection={activeSection}

@@ -139,15 +139,19 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
         flexDirection: { xs: 'row', md: 'column' },
         width: { xs: '100%', md: 220 },
         flexShrink: 0,
+        alignSelf: 'stretch',
         borderRight: { xs: 'none', md: `1px solid ${theme.palette.divider}` },
         borderBottom: { xs: `1px solid ${theme.palette.divider}`, md: 'none' },
         bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.012)',
         overflowX: { xs: 'auto', md: 'visible' },
+        overflowY: { xs: 'visible', md: 'auto' },
         py: { xs: 0.5, md: 1 },
         px: { xs: 0.5, md: 1 },
-        gap: 0.5
+        gap: 0.5,
+        boxSizing: 'border-box',
       }}
     >
+
       <Tabs
         orientation="vertical"
         value={activeSection}

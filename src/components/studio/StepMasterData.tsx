@@ -450,12 +450,13 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           </Box>
 
           {editMode === 'guided' ? (
-            <Box sx={{ flex: 1, overflowY: 'auto', maxHeight: 'calc(100vh - 350px)' }}>
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 520, overflow: 'hidden' }}>
               <React.Suspense fallback={<StudioSkeleton variant="guidedForm" />}>
                 <GuidedProfileForm markdownContent={content} onChange={onChange} />
               </React.Suspense>
             </Box>
           ) : (
+
             <Box
               sx={{
                 flex: 1,
