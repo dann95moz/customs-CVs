@@ -3,7 +3,6 @@ import {
   Box,
   Paper,
   Typography,
-  Chip,
   IconButton,
   Button,
   ButtonGroup,
@@ -19,12 +18,6 @@ import {
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
 import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
-import ArticleRoundedIcon from '@mui/icons-material/ArticleRounded';
-import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
@@ -35,7 +28,9 @@ import { useAuditActions } from '../../../hooks/useAuditActions';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 import { AuditImprovementModal } from '../audit/AuditImprovementModal';
 import { InterviewPrepTab } from '../audit/InterviewPrepTab';
-
+import { AuditScoreHero } from '../audit/AuditScoreHero';
+import { AuditPillarsBreakdown } from '../audit/AuditPillarsBreakdown';
+import { AuditGapTabContent } from '../audit/AuditGapTabContent';
 
 export type { PreviewAuditGapDrawerProps };
 
@@ -45,7 +40,7 @@ export type { PreviewAuditGapDrawerProps };
  * - Collapsed: Floating vertical pills on the right canvas edge (Audit score + Gap % + Interview Prep).
  * - Expanded: Unified side panel with [Audit 9/10], [Gap 92%], and [Prep] segmented tabs and progressive disclosure.
  */
-export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
+export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React.memo(({
   auditReport,
   gapInfo,
   gapMarkdown = '',
@@ -64,7 +59,6 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
   const { copied: isReportCopied, copy: copyReport } = useCopyToClipboard();
 
   const {
-
     modalState,
     snackbarMessage,
     handleOpenAction,
@@ -142,7 +136,6 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 boxShadow: scoreUpdated
                   ? `0 0 16px ${alpha(theme.palette.primary.main, 0.6)}`
                   : undefined,
-                animation: scoreUpdated ? 'pulse 1.2s infinite' : undefined,
                 '&:hover': {
                   transform: 'translateX(-4px) scale(1.05)',
                   boxShadow: `0 6px 20px ${alpha(theme.palette.success.main, 0.35)}`,
@@ -158,30 +151,18 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                   color: scoreUpdated
                     ? (isDark ? '#38bdf8' : '#0284c7')
                     : (isDark ? '#4ade80' : '#15803d'),
-                  transition: 'color 0.2s ease',
                 }}
               >
                 {auditScore}
               </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  fontWeight: 800,
-                  fontSize: '0.66rem',
-                  color: isDark ? '#86efac' : '#166534',
-                  mt: 0.35,
-                  lineHeight: 1,
-                  textAlign: 'center',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {t('preview:drawer.shortScore', 'Audit')}
+              <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.62rem', letterSpacing: 0.5, color: 'text.secondary', textTransform: 'uppercase', mt: 0.35 }}>
+                {t('preview:drawer.shortScore', 'Score')}
               </Typography>
             </Paper>
           </Tooltip>
 
           {/* Gap Pill */}
-          <Tooltip title={t('gap:title', 'Target Job Gap Strategy')} placement="left">
+          <Tooltip title={t('gap:matchScore', 'ATS Keyword Alignment')} placement="left">
             <Paper
               elevation={4}
               onClick={() => onToggleTab('gap')}
@@ -190,7 +171,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 height: 64,
                 p: 0.5,
                 borderRadius: '16px',
-                bgcolor: alpha(theme.palette.primary.main, isDark ? 0.2 : 0.15),
+                bgcolor: alpha(theme.palette.primary.main, isDark ? 0.2 : 0.12),
                 border: `1.5px solid ${theme.palette.primary.main}`,
                 display: 'flex',
                 flexDirection: 'column',
@@ -199,43 +180,23 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 cursor: 'pointer',
                 transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 userSelect: 'none',
-                overflow: 'hidden',
                 '&:hover': {
                   transform: 'translateX(-4px) scale(1.05)',
                   boxShadow: `0 6px 20px ${alpha(theme.palette.primary.main, 0.35)}`,
                 },
               }}
             >
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 900,
-                  fontSize: '1.1rem',
-                  lineHeight: 1,
-                  color: isDark ? '#38bdf8' : '#0284c7',
-                }}
-              >
+              <Typography variant="h6" sx={{ fontWeight: 900, fontSize: '1.15rem', lineHeight: 1, color: isDark ? '#38bdf8' : '#0284c7' }}>
                 {matchScore}%
               </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  fontWeight: 800,
-                  fontSize: '0.66rem',
-                  color: isDark ? '#7dd3fc' : '#0369a1',
-                  mt: 0.35,
-                  lineHeight: 1,
-                  textAlign: 'center',
-                  whiteSpace: 'nowrap',
-                }}
-              >
+              <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.62rem', letterSpacing: 0.5, color: 'text.secondary', textTransform: 'uppercase', mt: 0.35 }}>
                 {t('preview:drawer.shortMatch', 'Match')}
               </Typography>
             </Paper>
           </Tooltip>
 
           {/* Interview Prep Pill */}
-          <Tooltip title={t('audit:interview.pillTooltip', 'Gap-Driven Interview Simulator')} placement="left">
+          <Tooltip title={t('preview:drawer.interviewPrep', 'AI Interview Gap Simulator')} placement="left">
             <Paper
               elevation={4}
               onClick={() => onToggleTab('interview')}
@@ -244,7 +205,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 height: 64,
                 p: 0.5,
                 borderRadius: '16px',
-                bgcolor: alpha(theme.palette.secondary.main, isDark ? 0.2 : 0.15),
+                bgcolor: alpha(theme.palette.secondary.main, isDark ? 0.2 : 0.12),
                 border: `1.5px solid ${theme.palette.secondary.main}`,
                 display: 'flex',
                 flexDirection: 'column',
@@ -253,26 +214,14 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
                 cursor: 'pointer',
                 transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 userSelect: 'none',
-                overflow: 'hidden',
                 '&:hover': {
                   transform: 'translateX(-4px) scale(1.05)',
                   boxShadow: `0 6px 20px ${alpha(theme.palette.secondary.main, 0.35)}`,
                 },
               }}
             >
-              <PsychologyRoundedIcon sx={{ fontSize: 24, color: theme.palette.secondary.main }} />
-              <Typography
-                variant="caption"
-                sx={{
-                  fontWeight: 800,
-                  fontSize: '0.66rem',
-                  color: theme.palette.secondary.main,
-                  mt: 0.35,
-                  lineHeight: 1,
-                  textAlign: 'center',
-                  whiteSpace: 'nowrap',
-                }}
-              >
+              <PsychologyRoundedIcon sx={{ fontSize: 20, color: theme.palette.secondary.main }} />
+              <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.62rem', letterSpacing: 0.5, color: 'text.secondary', textTransform: 'uppercase', mt: 0.35 }}>
                 {t('preview:drawer.shortInterview', 'Prep')}
               </Typography>
             </Paper>
@@ -391,315 +340,29 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
             {/* TAB 1: AUDIT BREAKDOWN */}
             {activeTab === 'audit' && (
               <>
-                {/* Overall Score Status */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                  <Box
-                    sx={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: '12px',
-                      bgcolor: alpha(theme.palette.success.main, 0.15),
-                      border: `1.5px solid ${theme.palette.success.main}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <Typography variant="h5" sx={{ fontWeight: 900, color: theme.palette.success.main }}>
-                      {auditScore}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ minWidth: 0, flex: 1 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                      {t('audit:score', 'Quality Score')}: {auditScore >= 8.5 ? 'Executive Ready' : auditScore >= 7 ? 'Competitive' : 'Needs Polish'}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.4 }}>
-                      {t('audit:atsCheck.description', 'Calibrated across Google XYZ formulas & ATS scan rules.')}
-                    </Typography>
-                  </Box>
-                </Box>
-
-                {/* Section-by-Section Real Content */}
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                  {/* Summary */}
-                  <Paper
-                    variant="outlined"
-                    sx={{
-                      p: 1.5,
-                      borderRadius: '12px',
-                      bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 0.75,
-                      boxSizing: 'border-box',
-                      transition: 'border-color 0.2s ease',
-                      '&:hover': { borderColor: 'success.main' },
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 0.75 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
-                        {t('audit:sections.summary', 'Professional Summary')}
-                      </Typography>
-                      <Chip
-                        label={t('audit:drawerCards.summaryOptimal', 'Optimal')}
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        sx={{ fontWeight: 700 }}
-                      />
-                    </Box>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
-                      {t('audit:drawerCards.summaryDesc', 'Concise 3-line hook balancing candidate scope, technical seniority, and target role relevance.')}
-                    </Typography>
-                  </Paper>
-
-                  {/* Experience */}
-                  <Paper
-                    variant="outlined"
-                    sx={{
-                      p: 1.5,
-                      borderRadius: '12px',
-                      bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 0.75,
-                      boxSizing: 'border-box',
-                      transition: 'border-color 0.2s ease',
-                      '&:hover': { borderColor: 'success.main' },
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 0.75 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
-                        {t('audit:sections.experience', 'Work Experience')}
-                      </Typography>
-                      <Chip
-                        label={t('audit:drawerCards.experienceXyz', '9/10 XYZ')}
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        sx={{ fontWeight: 700 }}
-                      />
-                    </Box>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
-                      {t('audit:drawerCards.experienceDesc', 'Strong Google XYZ formula use: Accomplished [X], as measured by [Y], by doing [Z] with quantified business impact.')}
-                    </Typography>
-                  </Paper>
-
-                  {/* Skills & ATS Density */}
-                  <Paper
-                    variant="outlined"
-                    sx={{
-                      p: 1.5,
-                      borderRadius: '12px',
-                      bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 0.75,
-                      boxSizing: 'border-box',
-                      transition: 'border-color 0.2s ease',
-                      '&:hover': { borderColor: 'success.main' },
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 0.75 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
-                        {t('audit:sections.skills', 'Technical Skills & ATS')}
-                      </Typography>
-                      <Chip
-                        label={t('audit:drawerCards.skillsPass', '95% Pass')}
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        sx={{ fontWeight: 700 }}
-                      />
-                    </Box>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
-                      {t('audit:drawerCards.skillsDesc', 'High density of exact keywords matching requirements without stuffing.')}
-                    </Typography>
-                  </Paper>
-                </Box>
-
-                {/* Key Actionable Recommendations */}
-                {auditReport.strategicPillars && auditReport.strategicPillars.length > 0 && (
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: 'primary.main' }} />
-                      {t('audit:subtitle', 'Strategic Improvements')}
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
-                      {auditReport.strategicPillars.slice(0, 3).map((pillar, idx: number) => (
-                        <Paper
-                          key={idx}
-                          variant="outlined"
-                          sx={{
-                            p: 1.5,
-                            borderRadius: '12px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 1,
-                            bgcolor: isDark ? alpha(theme.palette.background.default, 0.3) : '#ffffff',
-                            boxSizing: 'border-box',
-                            transition: 'all 0.2s ease',
-                            '&:hover': {
-                              borderColor: 'primary.main',
-                              boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
-                            },
-                          }}
-                        >
-                          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
-                            <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.primary', flex: 1, lineHeight: 1.35 }}>
-                              {pillar.pillarName}
-                            </Typography>
-                            <Chip
-                              label={pillar.impactLevel || 'High'}
-                              size="small"
-                              color={
-                                pillar.impactLevel?.toLowerCase().includes('high')
-                                  ? 'warning'
-                                  : pillar.impactLevel?.toLowerCase().includes('strat')
-                                  ? 'primary'
-                                  : 'default'
-                              }
-                              variant="outlined"
-                              sx={{ fontWeight: 700 }}
-                            />
-                          </Box>
-
-                          <Typography variant="caption" sx={{ lineHeight: 1.45, color: 'text.secondary' }}>
-                            {pillar.diagnostic}
-                          </Typography>
-
-                          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.25 }}>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              color="primary"
-                              startIcon={<BoltRoundedIcon sx={{ fontSize: '14px !important' }} />}
-                              onClick={() => handleOpenAction(pillar.recommendationForMasterData || pillar.diagnostic, pillar.pillarName)}
-                              sx={{
-                                textTransform: 'none',
-                                fontWeight: 700,
-                                fontSize: '0.74rem',
-                                py: 0.35,
-                                px: 1.5,
-                              }}
-                            >
-                              {getActionButtonLabel(pillar.recommendationForMasterData || pillar.pillarName)}
-                            </Button>
-                          </Box>
-                        </Paper>
-                      ))}
-                    </Box>
-                  </Box>
-                )}
+                <AuditScoreHero score={auditScore} />
+                <AuditPillarsBreakdown
+                  auditReport={auditReport}
+                  onOpenAction={handleOpenAction}
+                  getActionButtonLabel={getActionButtonLabel}
+                />
               </>
             )}
 
             {/* TAB 2: GAP STRATEGY */}
             {activeTab === 'gap' && (
-              <>
-                {/* Match Score Banner */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                  <Box
-                    sx={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: '12px',
-                      bgcolor: alpha(theme.palette.primary.main, 0.15),
-                      border: `1.5px solid ${theme.palette.primary.main}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ fontWeight: 900, color: theme.palette.primary.main }}>
-                      {matchScore}%
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
-                      {t('gap:matchScore', 'Role Match')}: {companyName ? `${companyName}` : t('target:fields.company', 'Target Job')}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {targetRole || t('gap:subtitle', 'Synthesized against required employer qualifications')}
-                    </Typography>
-                  </Box>
-                </Box>
-
-                {/* Keyword Alignment (Matched vs Missing) */}
-                <Box>
-                  <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 1 }}>
-                    {t('gap:integratedKeywords', 'Aligned Keywords & Competencies')}:
-                  </Typography>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 1.5 }}>
-                    {matchedKeywords.map((kw: string) => (
-                      <Chip
-                        key={kw}
-                        icon={<CheckCircleRoundedIcon sx={{ fontSize: '13px !important' }} />}
-                        label={kw}
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        sx={{ fontWeight: 600 }}
-                      />
-                    ))}
-                    {missingKeywords.map((kw: string) => (
-                      <Chip
-                        key={kw}
-                        icon={<WarningAmberRoundedIcon sx={{ fontSize: '13px !important' }} />}
-                        label={kw}
-                        size="small"
-                        color="warning"
-                        variant="outlined"
-                        sx={{ fontWeight: 600 }}
-                      />
-                    ))}
-                  </Box>
-                </Box>
-
-                {/* Strategic Highlights */}
-                <Paper
-                  variant="outlined"
-                  sx={{
-                    p: 1.75,
-                    borderRadius: '12px',
-                    bgcolor: isDark ? alpha(theme.palette.primary.main, 0.05) : '#f8fafc',
-                    borderColor: alpha(theme.palette.primary.main, 0.2),
-                  }}
-                >
-                  <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 0.75 }}>
-                    {t('gap:title', 'Strategic Positioning')}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.55 }}>
-                    {t('gap:subtitle', 'Your experience highlights core requirements and architecture impact requested in the job description.')}
-                  </Typography>
-                </Paper>
-
-                {/* Progressive Disclosure Link / Button */}
-                {gapMarkdown && (
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    startIcon={<ArticleRoundedIcon />}
-                    endIcon={<OpenInNewRoundedIcon sx={{ fontSize: '14px !important' }} />}
-                    onClick={() => setFullReportModalOpen(true)}
-                    sx={{
-                      textTransform: 'none',
-                      fontWeight: 700,
-                      py: 0.8,
-                      fontSize: '0.8rem',
-                    }}
-                  >
-                    {t('gap:downloadReport', 'View Full Gap Strategy Report')}
-                  </Button>
-                )}
-              </>
+              <AuditGapTabContent
+                matchScore={matchScore}
+                companyName={companyName}
+                targetRole={targetRole}
+                matchedKeywords={matchedKeywords}
+                missingKeywords={missingKeywords}
+                hasGapMarkdown={Boolean(gapMarkdown)}
+                onViewFullReport={() => setFullReportModalOpen(true)}
+              />
             )}
 
-            {/* TAB 3: INTERVIEW PREPARATION (GAP SIMULATOR) */}
+            {/* TAB 3: INTERVIEW PREPARATION */}
             {activeTab === 'interview' && (
               <InterviewPrepTab
                 gapKeywords={missingKeywords}
@@ -774,4 +437,4 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
       />
     </>
   );
-};
+});

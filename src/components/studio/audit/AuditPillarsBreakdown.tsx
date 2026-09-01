@@ -1,0 +1,209 @@
+import React from 'react';
+import {
+  Box,
+  Paper,
+  Typography,
+  Chip,
+  Button,
+  useTheme,
+  alpha,
+} from '@mui/material';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
+import { useTranslation } from 'react-i18next';
+import { QualityAuditReport, StrategicGrowthPillar } from '../../../types/audit';
+
+export interface AuditPillarsBreakdownProps {
+  auditReport: QualityAuditReport;
+  onOpenAction: (actionText: string, sectionName: string) => void;
+  getActionButtonLabel: (pillarName: string) => string;
+}
+
+
+export const AuditPillarsBreakdown: React.FC<AuditPillarsBreakdownProps> = React.memo(({
+  auditReport,
+  onOpenAction,
+  getActionButtonLabel,
+}) => {
+  const { t } = useTranslation(['audit', 'common']);
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      {/* Section-by-Section Real Content Quality */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+        {/* Summary */}
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 1.5,
+            borderRadius: '12px',
+            bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0.75,
+            boxSizing: 'border-box',
+            transition: 'border-color 0.2s ease',
+            '&:hover': { borderColor: 'success.main' },
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'gap', gap: 0.75 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
+              {t('audit:sections.summary', 'Professional Summary')}
+            </Typography>
+            <Chip
+              label={t('audit:drawerCards.summaryOptimal', 'Optimal')}
+              size="small"
+              color="success"
+              variant="outlined"
+              sx={{ fontWeight: 700 }}
+            />
+          </Box>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
+            {t('audit:drawerCards.summaryDesc', 'Concise 3-line hook balancing candidate scope, technical seniority, and target role relevance.')}
+          </Typography>
+        </Paper>
+
+        {/* Experience */}
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 1.5,
+            borderRadius: '12px',
+            bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0.75,
+            boxSizing: 'border-box',
+            transition: 'border-color 0.2s ease',
+            '&:hover': { borderColor: 'success.main' },
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'gap', gap: 0.75 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
+              {t('audit:sections.experience', 'Work Experience')}
+            </Typography>
+            <Chip
+              label={t('audit:drawerCards.experienceXyz', '9/10 XYZ')}
+              size="small"
+              color="success"
+              variant="outlined"
+              sx={{ fontWeight: 700 }}
+            />
+          </Box>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
+            {t('audit:drawerCards.experienceDesc', 'Strong Google XYZ formula use: Accomplished [X], as measured by [Y], by doing [Z] with quantified business impact.')}
+          </Typography>
+        </Paper>
+
+        {/* Skills & ATS Density */}
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 1.5,
+            borderRadius: '12px',
+            bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0.75,
+            boxSizing: 'border-box',
+            transition: 'border-color 0.2s ease',
+            '&:hover': { borderColor: 'success.main' },
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'gap', gap: 0.75 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.85rem' }}>
+              {t('audit:sections.skills', 'Technical Skills & ATS')}
+            </Typography>
+            <Chip
+              label={t('audit:drawerCards.skillsPass', '95% Pass')}
+              size="small"
+              color="success"
+              variant="outlined"
+              sx={{ fontWeight: 700 }}
+            />
+          </Box>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
+            {t('audit:drawerCards.skillsDesc', 'High density of exact keywords matching requirements without stuffing.')}
+          </Typography>
+        </Paper>
+      </Box>
+
+      {/* Key Actionable Recommendations */}
+      {auditReport.strategicPillars && auditReport.strategicPillars.length > 0 && (
+        <Box>
+          <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+            {t('audit:subtitle', 'Strategic Improvements')}
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
+            {auditReport.strategicPillars.slice(0, 3).map((pillar: StrategicGrowthPillar, idx: number) => (
+              <Paper
+
+                key={idx}
+                variant="outlined"
+                sx={{
+                  p: 1.5,
+                  borderRadius: '12px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                  bgcolor: isDark ? alpha(theme.palette.background.default, 0.3) : '#ffffff',
+                  boxSizing: 'border-box',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
+                  },
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
+                  <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.primary', flex: 1, lineHeight: 1.35 }}>
+                    {pillar.pillarName}
+                  </Typography>
+                  <Chip
+                    label={pillar.impactLevel || 'High'}
+                    size="small"
+                    color={
+                      pillar.impactLevel?.toLowerCase().includes('high')
+                        ? 'warning'
+                        : pillar.impactLevel?.toLowerCase().includes('strat')
+                        ? 'primary'
+                        : 'default'
+                    }
+                    variant="outlined"
+                    sx={{ fontWeight: 700 }}
+                  />
+                </Box>
+
+                <Typography variant="caption" sx={{ lineHeight: 1.45, color: 'text.secondary' }}>
+                  {pillar.diagnostic}
+                </Typography>
+
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.25 }}>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="primary"
+                    startIcon={<BoltRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                    onClick={() => onOpenAction(pillar.recommendationForMasterData || pillar.diagnostic, pillar.pillarName)}
+                    sx={{
+                      textTransform: 'none',
+                      fontWeight: 700,
+                      fontSize: '0.74rem',
+                      py: 0.35,
+                      px: 1.5,
+                    }}
+                  >
+                    {getActionButtonLabel(pillar.recommendationForMasterData || pillar.pillarName)}
+                  </Button>
+                </Box>
+              </Paper>
+            ))}
+          </Box>
+        </Box>
+      )}
+    </Box>
+  );
+});
