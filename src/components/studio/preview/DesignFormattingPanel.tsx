@@ -406,7 +406,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
         {t('preview:panels.design.fontFamily', 'Font Family')}
       </Typography>
       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.2, lineHeight: 1.4 }}>
-        ATS-safe typography calibrated for executive clarity.
+        {t('preview:panels.design.fontFamilyDesc', 'ATS-safe typography calibrated for executive clarity.')}
       </Typography>
 
       <ToggleButtonGroup
@@ -438,7 +438,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
         {t('preview:panels.design.sectionSpacing', 'Section Spacing')}
       </Typography>
       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.2, lineHeight: 1.4 }}>
-        Adjust padding and line height to guarantee optimal fit.
+        {t('preview:panels.design.sectionSpacingDesc', 'Adjust padding and line height to guarantee optimal fit.')}
       </Typography>
 
       <ToggleButtonGroup
@@ -450,13 +450,13 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
         sx={{ mb: 2.5 }}
       >
         <ToggleButton value="compact" sx={{ fontSize: '0.72rem', fontWeight: 700, py: 0.6 }}>
-          Compact (1 Page)
+          {t('preview:panels.design.sizeCompact', 'Compact')}
         </ToggleButton>
         <ToggleButton value="standard" sx={{ fontSize: '0.72rem', fontWeight: 600, py: 0.6 }}>
-          Standard
+          {t('preview:panels.design.sizeStandard', 'Standard')}
         </ToggleButton>
         <ToggleButton value="spacious" sx={{ fontSize: '0.72rem', fontWeight: 600, py: 0.6 }}>
-          Spacious
+          {t('preview:panels.design.sizeLarge', 'Spacious')}
         </ToggleButton>
       </ToggleButtonGroup>
 
@@ -467,7 +467,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
         {t('preview:panels.design.pageFormat', 'Paper Format')}
       </Typography>
       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.2, lineHeight: 1.4 }}>
-        Select standard international A4 or North American Letter/Legal.
+        {t('preview:panels.design.pageFormatDesc', 'Select standard international A4 or North American Letter/Legal.')}
       </Typography>
 
       <ToggleButtonGroup
@@ -479,13 +479,13 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
         sx={{ mb: 2.5 }}
       >
         <ToggleButton value="a4" sx={{ fontSize: '0.72rem', fontWeight: 700, py: 0.6 }}>
-          A4 (210×297)
+          {t('preview:panels.design.pageFormatA4', 'A4 (Europe / Global)')}
         </ToggleButton>
         <ToggleButton value="letter" sx={{ fontSize: '0.72rem', fontWeight: 700, py: 0.6 }}>
-          Letter (8.5×11")
+          {t('preview:panels.design.pageFormatLetter', 'US Letter')}
         </ToggleButton>
         <ToggleButton value="legal" sx={{ fontSize: '0.72rem', fontWeight: 700, py: 0.6 }}>
-          Legal (8.5×14")
+          {t('preview:panels.design.pageFormatLegal', 'US Legal')}
         </ToggleButton>
       </ToggleButtonGroup>
 
@@ -510,7 +510,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
       <Paper variant="outlined" sx={{ p: 1.5, borderRadius: '8px' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-            Paper Standard:
+            {t('preview:panels.design.paperStandard', 'Paper Standard')}:
           </Typography>
           <Typography variant="caption" sx={{ fontWeight: 700 }}>
             {pageFormat.toUpperCase()} ({a4PagePx}px)
@@ -518,7 +518,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-            Rendered Height:
+            {t('preview:panels.design.renderedHeight', 'Rendered Height')}:
           </Typography>
           <Typography variant="caption" sx={{ fontWeight: 700 }}>
             {sheetHeight}px / {a4PagePx}px
@@ -526,10 +526,12 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
           <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-            Page Status:
+            {t('preview:panels.design.pageStatus', 'Page Status')}:
           </Typography>
           <Typography variant="caption" sx={{ fontWeight: 800, color: estimatedPages === 1 ? '#10b981' : '#f59e0b' }}>
-            {estimatedPages === 1 ? 'Perfect 1 Page ✓' : `${estimatedPages} Pages`}
+            {estimatedPages === 1
+              ? t('preview:panels.design.perfectOnePage', 'Perfect 1 Page ✓')
+              : t('preview:panels.design.pagesCount', { count: estimatedPages, defaultValue: `${estimatedPages} Pages` })}
           </Typography>
         </Box>
 
@@ -543,7 +545,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           variant="caption"
           sx={{ color: 'text.secondary', fontSize: '0.66rem', mt: 0.5, display: 'block', textAlign: 'right' }}
         >
-          {Math.round((sheetHeight / a4PagePx) * 100)}% of 1 {pageFormat.toUpperCase()} Page
+          {Math.round((sheetHeight / a4PagePx) * 100)}% ({pageFormat.toUpperCase()})
         </Typography>
       </Paper>
 
