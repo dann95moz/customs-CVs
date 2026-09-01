@@ -32,6 +32,7 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     description: 'Official European Commission CV structure with CEFR language assessment grid and EU Blue branding',
     layout: 'single-column',
     defaultMaxPages: 1,
+    supportsPhoto: true,
     icon: '🇪🇺'
   },
   'euro-modern': {
@@ -42,6 +43,7 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     description: 'Contemporary European corporate style with photo support, personal metadata, and CEFR language indicators',
     layout: 'two-column',
     defaultMaxPages: 1,
+    supportsPhoto: true,
     icon: '🌍'
   },
   'executive': {
@@ -52,6 +54,7 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     description: 'Full-width colored banner with initials monogram box and 2-column executive flow',
     layout: 'two-column',
     defaultMaxPages: 1,
+    supportsPhoto: true,
     icon: '🏛️'
   },
   'two-column': {
@@ -62,6 +65,7 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     description: 'Solid colored right sidebar with geometric emblem card and bold modern display',
     layout: 'two-column',
     defaultMaxPages: 1,
+    supportsPhoto: true,
     icon: '📐'
   },
   'designer-uiux': {
@@ -72,6 +76,7 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     description: 'Soft pastel tinted card header with clean editorial asymmetric columns',
     layout: 'two-column',
     defaultMaxPages: 1,
+    supportsPhoto: true,
     icon: '🎨'
   },
   'academic-research': {
@@ -82,6 +87,7 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     description: 'Dark charcoal left sidebar with monogram avatar and right soft accent header',
     layout: 'two-column',
     defaultMaxPages: 1,
+    supportsPhoto: true,
     icon: '👔'
   },
   'modern-tech': {
@@ -92,6 +98,7 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     description: 'Stripe/Linear aesthetic with monospace badges and high-density tech stack',
     layout: 'single-column',
     defaultMaxPages: 1,
+    supportsPhoto: false,
     icon: '💻'
   },
   'minimal-ats': {
@@ -102,6 +109,7 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     description: 'Zero-distraction linear monochrome for guaranteed 100% ATS parser extraction',
     layout: 'ats-linear',
     defaultMaxPages: 1,
+    supportsPhoto: false,
     icon: '🛡️'
   },
   'formal-legal': {
@@ -112,9 +120,29 @@ const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
     description: 'Classical prestigious serif styling, formal header rule, case volume and bar admissions',
     layout: 'single-column',
     defaultMaxPages: 1,
+    supportsPhoto: false,
     icon: '⚖️'
   },
 };
+
+/**
+ * List of theme identifiers that support user profile headshot / photo rendering
+ */
+export const PHOTO_SUPPORTED_THEMES: readonly ThemeId[] = [
+  'europass',
+  'euro-modern',
+  'executive',
+  'two-column',
+  'designer-uiux',
+  'academic-research',
+];
+
+/**
+ * Check if a given theme supports profile photos
+ */
+export function themeSupportsPhoto(themeId: ThemeId = 'modern-tech'): boolean {
+  return PHOTO_SUPPORTED_THEMES.includes(themeId);
+}
 
 /**
  * Resolves the corresponding Template Component by Theme ID
@@ -136,3 +164,4 @@ export function getTemplateMetadata(themeId: ThemeId = 'modern-tech'): TemplateM
 export function getAllTemplates(): TemplateMetadata[] {
   return Object.values(TEMPLATE_METADATA);
 }
+

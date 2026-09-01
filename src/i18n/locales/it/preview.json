@@ -110,8 +110,10 @@
       "sizeLarge": "Grande",
       "sizeHero": "In Evidenza",
       "photoChangeAction": "Cambia Immagine",
-      "photoDeleteAction": "Rimuovi"
+      "photoDeleteAction": "Rimuovi",
+      "photoNotSupported": "Le foto sono supportate nei modelli Executive, Two-Column, Designer, Academic, Europass ed Euro Modern. I layout ATS a colonna singola (Modern Tech, Minimal ATS, Formal Legal) omettono le foto per una conformità del 100% con i sistemi ATS."
     },
+
     "comparison": {
       "title": "Profilo Base vs CV Personalizzato",
       "subtitle": "Confronto affiancato tra la tua base di dati originaria e il curriculum sintetizzato",

@@ -110,8 +110,10 @@
       "sizeLarge": "Groß",
       "sizeHero": "Prominent",
       "photoChangeAction": "Bild ändern",
-      "photoDeleteAction": "Entfernen"
+      "photoDeleteAction": "Entfernen",
+      "photoNotSupported": "Fotos werden in den Vorlagen Executive, Two-Column, Designer, Academic, Europass und Euro Modern unterstützt. Einspaltige ATS-Designs (Modern Tech, Minimal ATS, Formal Legal) verzichten auf Fotos für eine 100%ige ATS-Kompatibilität."
     },
+
     "comparison": {
       "title": "Basis-Profil vs. Angepasster CV",
       "subtitle": "Direkter Vergleich zwischen Ihren Originaldaten und dem optimierten Lebenslauf",

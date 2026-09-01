@@ -35,6 +35,7 @@ import {
   DesignFormattingPanelProps,
 } from '../../../types';
 import { getAllPalettes } from '../../../constants/palettes';
+import { themeSupportsPhoto } from '../../../templates';
 import { ProfilePhotoDisplay } from '../photo/ProfilePhotoDisplay';
 import { PhotoCropperModal } from '../photo/PhotoCropperModal';
 
@@ -43,32 +44,31 @@ export type { DesignFormattingPanelProps };
 export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
   customColor,
   onCustomColorChange,
-  palette,
+  palette = 'corporate-blue',
   onSelectPalette,
-  fontFamily,
+  fontFamily = 'inter',
   onFontFamilyChange,
-  spacingDensity,
+  spacingDensity = 'standard',
   onSpacingDensityChange,
   pageFormat = 'a4',
   onPageFormatChange,
   onAutoFit,
-  sheetHeight,
-  a4PagePx,
-  estimatedPages,
+  sheetHeight = 0,
+  a4PagePx = 1123,
+  estimatedPages = 1,
   photo,
   onPhotoChange,
   onPhotoToggle,
   activeTheme = 'modern-tech',
   onClose,
 }) => {
+
   const { t } = useTranslation(['preview', 'common']);
   const muiTheme = useTheme();
   const palettes = getAllPalettes();
   const [cropperOpen, setCropperOpen] = useState<boolean>(false);
 
-  const isTwoColumnTheme = ['executive', 'two-column', 'designer-uiux', 'academic-research'].includes(
-    activeTheme
-  );
+  const isPhotoSupported = themeSupportsPhoto(activeTheme);
 
   const handlePhotoUploadFromFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -245,7 +245,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
             {t('preview:panels.design.photoTitle', 'Profile Photo')}
           </Typography>
-          {isTwoColumnTheme && photo && (
+          {isPhotoSupported && photo && (
             <FormControlLabel
               control={
                 <Switch
@@ -271,8 +271,8 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
           )}
         </Typography>
 
-        {/* Two-Column vs Single-Column State */}
-        {!isTwoColumnTheme ? (
+        {/* Photo-Supported vs Text-Only ATS State */}
+        {!isPhotoSupported ? (
           <Alert
             severity="info"
             icon={<InfoOutlinedIcon fontSize="inherit" />}
@@ -282,9 +282,13 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
               bgcolor: alpha(muiTheme.palette.info.main, 0.08),
             }}
           >
-            Photos are active on two-column designs (Corporate Banner, Contrast Sidebar, Pastel Card, Dual-Tone). Single-column ATS designs omit photos for 100% parser compliance.
+            {t(
+              'preview:panels.design.photoNotSupported',
+              'Photos are supported on Executive, Two-Column, Designer, Academic, Europass, and Euro Modern templates. Single-column ATS designs (Modern Tech, Minimal ATS, Formal Legal) omit photos for 100% parser compliance.'
+            )}
           </Alert>
         ) : photo && photo.url ? (
+
           <>
             <Paper
               variant="outlined"

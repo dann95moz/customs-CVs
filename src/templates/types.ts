@@ -66,8 +66,10 @@ export interface TemplateMetadata {
   description: string;
   layout: 'single-column' | 'two-column' | 'ats-linear';
   defaultMaxPages: number;
+  supportsPhoto?: boolean;
   icon?: string;
 }
+
 
 export interface HeaderSlotProps {
   data: HeaderSlotData;

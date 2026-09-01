@@ -36,31 +36,37 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
         }}
       >
         {/* Profile Photo */}
-        {photo?.enabled && photo.url && (
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
-            <div
-              style={{
-                width: '96px',
-                height: '96px',
-                borderRadius: '50%',
-                border: '3px solid var(--cv-primary, #0284c7)',
-                overflow: 'hidden',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-              }}
-            >
-              <img
-                src={photo.url}
-                alt={header.name}
+        {(() => {
+          const activePhoto = photo || slots.header.photo;
+          if (!activePhoto?.enabled || !activePhoto.url) return null;
+          const photoSize = activePhoto.size || 96;
+          return (
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
+              <div
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  transform: `scale(${photo.crop.zoom}) translate(${photo.crop.x}px, ${photo.crop.y}px)`,
+                  width: `${photoSize}px`,
+                  height: `${photoSize}px`,
+                  borderRadius: '50%',
+                  border: '3px solid var(--cv-primary, #0284c7)',
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                 }}
-              />
+              >
+                <img
+                  src={activePhoto.url}
+                  alt={header.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transform: `scale(${activePhoto.crop.zoom}) translate(${activePhoto.crop.x}px, ${activePhoto.crop.y}px)`,
+                  }}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
+
 
         {/* Contact & Personal Metadata Block */}
         <section>

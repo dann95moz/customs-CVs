@@ -21,6 +21,7 @@ import { safeMarkdown, safeMarkdownInline } from '../../../utils/sanitize';
 import { CVData } from '../../../types/cv';
 import { ThemeId } from '../../../types/theme';
 import { extractCandidateInitials } from '../../../core/parser';
+import { themeSupportsPhoto } from '../../../templates';
 import { useCvLiveEdit } from './CvLiveEditContext';
 import { AiRegeneratePopover } from './AiRegeneratePopover';
 import { ProfilePhotoDisplay } from '../photo/ProfilePhotoDisplay';
@@ -29,6 +30,7 @@ export interface StepPreviewMobileEditProps {
   parsedCv: CVData;
   activeTheme?: ThemeId;
 }
+
 
 
 interface ActiveEditItem {
@@ -110,14 +112,14 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
   };
 
   const initials = extractCandidateInitials(parsedCv.name || 'Candidate');
-  const isTwoColumnTheme = ['executive', 'two-column', 'designer-uiux', 'academic-research'].includes(activeTheme);
-
+  const isPhotoSupported = themeSupportsPhoto(activeTheme);
 
   return (
     <Box sx={{ px: 2, py: 2, pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 72px)', sm: 8 }, display: 'flex', flexDirection: 'column', gap: 2.5, boxSizing: 'border-box' }}>
-      {/* 0. Header & Profile Photo Card (Two-Column Themes) */}
-      {isTwoColumnTheme && (
+      {/* 0. Header & Profile Photo Card (Photo-Supported Themes) */}
+      {isPhotoSupported && (
         <Box>
+
           <Typography
             variant="overline"
             sx={{

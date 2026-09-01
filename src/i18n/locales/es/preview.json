@@ -110,8 +110,10 @@
       "sizeLarge": "Grande",
       "sizeHero": "Prominente",
       "photoChangeAction": "Cambiar Imagen",
-      "photoDeleteAction": "Eliminar"
+      "photoDeleteAction": "Eliminar",
+      "photoNotSupported": "Las fotos son compatibles con las plantillas Executive, Two-Column, Designer, Academic, Europass y Euro Modern. Los diseños ATS de una columna (Modern Tech, Minimal ATS, Formal Legal) omiten fotos para un 100% de compatibilidad con filtros ATS."
     },
+
     "comparison": {
       "title": "Perfil Base vs CV Adaptado",
       "subtitle": "Comparación lado a lado entre tu información original y el currículum sintetizado",

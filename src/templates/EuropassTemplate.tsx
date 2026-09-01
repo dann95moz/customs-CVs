@@ -125,31 +125,36 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
         </div>
 
         {/* Right: Optional Photo */}
-        {photo?.enabled && photo.url && (
-          <div
-            style={{
-              width: '84px',
-              height: '105px',
-              borderRadius: '4px',
-              border: `2px solid ${euBorder}`,
-              overflow: 'hidden',
-              flexShrink: 0,
-              backgroundColor: '#e2e8f0',
-            }}
-          >
-            <img
-              src={photo.url}
-              alt={header.name}
+        {(() => {
+          const activePhoto = photo || slots.header.photo;
+          if (!activePhoto?.enabled || !activePhoto.url) return null;
+          return (
+            <div
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                transform: `scale(${photo.crop.zoom}) translate(${photo.crop.x}px, ${photo.crop.y}px)`,
+                width: '84px',
+                height: '105px',
+                borderRadius: '4px',
+                border: `2px solid ${euBorder}`,
+                overflow: 'hidden',
+                flexShrink: 0,
+                backgroundColor: '#e2e8f0',
               }}
-            />
-          </div>
-        )}
+            >
+              <img
+                src={activePhoto.url}
+                alt={header.name}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  transform: `scale(${activePhoto.crop.zoom}) translate(${activePhoto.crop.x}px, ${activePhoto.crop.y}px)`,
+                }}
+              />
+            </div>
+          );
+        })()}
       </header>
+
 
       {/* BODY SECTIONS */}
       <main style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
