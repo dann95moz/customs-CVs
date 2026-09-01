@@ -43,19 +43,27 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     parts.push(contactStrings.join(' • '));
   }
 
+  // Helper to get formatted section title preserving user's edit or emoji prefix
+  const getSectionTitle = (type: string, defaultTitle: string, defaultEmoji = '') => {
+    const custom = data.sectionTitles?.[type] || data.sections?.find(s => s.type === type)?.title;
+    if (custom && custom.trim()) {
+      return custom.trim();
+    }
+    return defaultEmoji ? `${defaultEmoji} ${defaultTitle}` : defaultTitle;
+  };
+
   // Summary
   if (data.summary && data.summary.trim()) {
     parts.push('\n---\n');
-    parts.push('## 🎯 PROFESSIONAL SUMMARY & PITCH');
+    parts.push(`## ${getSectionTitle('summary', 'PROFESSIONAL SUMMARY & PITCH', '🎯')}`);
     parts.push(data.summary.trim());
   }
 
   // Skills
   if (data.skillGroups && data.skillGroups.length > 0) {
     parts.push('\n---\n');
-    parts.push('## 🛠️ CORE SKILLS & COMPETENCIES');
+    parts.push(`## ${getSectionTitle('skills', 'CORE SKILLS & COMPETENCIES', '🛠️')}`);
     for (const group of data.skillGroups) {
-
       const cat = group.category ? group.category.trim() : '';
       const skl = group.skills && group.skills.length > 0 ? group.skills.join(', ') : '';
       parts.push(`- **${cat}:** ${skl}`);
@@ -65,7 +73,7 @@ export function serializeCvDataToMarkdown(data: CVData): string {
   // Experience
   if (data.experience && data.experience.length > 0) {
     parts.push('\n---\n');
-    parts.push('## 💼 CAREER HISTORY & KEY ACHIEVEMENTS\n');
+    parts.push(`## ${getSectionTitle('experience', 'CAREER HISTORY & KEY ACHIEVEMENTS', '💼')}\n`);
     const expItemsFormatted = data.experience.map(exp => {
       const company = exp.company || '';
       const role = exp.role || '';
@@ -80,7 +88,7 @@ export function serializeCvDataToMarkdown(data: CVData): string {
   // Projects & Extras
   if (data.projects && data.projects.length > 0) {
     parts.push('\n---\n');
-    parts.push('## 🚀 PROJECTS & EXTRAS\n');
+    parts.push(`## ${getSectionTitle('projects', 'PROJECTS & EXTRAS', '🚀')}\n`);
     const projItemsFormatted = data.projects.map(proj => {
       const company = proj.company || '';
       const role = proj.role || '';
@@ -98,7 +106,7 @@ export function serializeCvDataToMarkdown(data: CVData): string {
   // Education
   if (data.education && data.education.length > 0) {
     parts.push('\n---\n');
-    parts.push('## 🎓 EDUCATION & CERTIFICATIONS');
+    parts.push(`## ${getSectionTitle('education', 'EDUCATION & CERTIFICATIONS', '🎓')}`);
     for (const edu of data.education) {
       let cleanEdu = edu.replace(/^(?:[-•]\s*|\*\s+)/, '');
       if (/^\*?[^*]+\*\*/.test(cleanEdu)) {
@@ -111,7 +119,7 @@ export function serializeCvDataToMarkdown(data: CVData): string {
   // Languages
   if (data.languages && data.languages.length > 0) {
     parts.push('\n---\n');
-    parts.push('## 🌐 LANGUAGES');
+    parts.push(`## ${getSectionTitle('languages', 'LANGUAGES', '🌐')}`);
     for (const lang of data.languages) {
       let cleanLang = lang.replace(/^(?:[-•]\s*|\*\s+)/, '');
       if (/^\*?[^*]+\*\*/.test(cleanLang)) {
@@ -120,6 +128,7 @@ export function serializeCvDataToMarkdown(data: CVData): string {
       parts.push(`- ${cleanLang}`);
     }
   }
+
 
   // Dynamic Custom Sections (Certifications, Awards, Publications, Volunteering, etc.)
   if (data.customSections && data.customSections.length > 0) {

@@ -16,8 +16,15 @@ export const EducationSlot: React.FC<EducationSlotProps> = ({
 
   return (
     <section className={`cv-section section-${data.type} section-block ${className}`}>
-      <h2 className="cv-section-title">{data.title}</h2>
+      <EditableText
+        tagName="h2"
+        className="cv-section-title"
+        value={data.title}
+        onSave={(newTitle) => liveEdit?.updateSectionTitle('education', newTitle)}
+        placeholder="Education & Certifications"
+      />
       <ul className={`${data.type}-list section-block`}>
+
         {displayItems.map((rawItem, idx) => {
           let item = (rawItem || '').trim();
           // Auto-repair missing leading bold like "Degree** – Institution" or "*Degree** – Institution"

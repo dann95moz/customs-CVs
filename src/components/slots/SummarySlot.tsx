@@ -11,8 +11,15 @@ export const SummarySlot: React.FC<SummarySlotProps> = ({ data, className = '' }
 
   return (
     <section className={`cv-section section-summary section-block ${className}`}>
-      <h2 className="cv-section-title">{data.title}</h2>
       <EditableText
+        tagName="h2"
+        className="cv-section-title"
+        value={data.title}
+        onSave={(newTitle) => liveEdit?.updateSectionTitle('summary', newTitle)}
+        placeholder="Professional Summary"
+      />
+      <EditableText
+
         tagName="div"
         className="cv-summary"
         value={data.rawContent}

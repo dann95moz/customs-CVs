@@ -11,8 +11,15 @@ export const LanguagesSlot: React.FC<LanguagesSlotProps> = ({ data, className = 
 
   return (
     <section className={`cv-section section-languages section-block ${className}`}>
-      <h2 className="cv-section-title">{data.title}</h2>
+      <EditableText
+        tagName="h2"
+        className="cv-section-title"
+        value={data.title}
+        onSave={(newTitle) => liveEdit?.updateSectionTitle('languages', newTitle)}
+        placeholder="Languages"
+      />
       <ul className="languages-list section-block">
+
         {data.items.map((rawItem, idx) => {
           let item = (rawItem || '').trim();
           // Auto-repair "Spanish:** Level" or "*Spanish:** Level"

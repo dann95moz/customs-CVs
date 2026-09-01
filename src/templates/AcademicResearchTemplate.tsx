@@ -88,8 +88,15 @@ export const AcademicResearchTemplate: React.FC<CVTemplateProps> = ({ slots, the
           {/* Education in Dark Sidebar */}
           {slots.education && (
             <div className="dualtone-side-block">
-              <h3 className="dualtone-side-title">Education</h3>
+              <EditableText
+                tagName="h3"
+                className="dualtone-side-title"
+                value={slots.education.title || 'Education'}
+                onSave={(newTitle) => liveEdit?.updateSectionTitle('education', newTitle)}
+                placeholder="Education"
+              />
               <ul className="dualtone-edu-list">
+
                 {slots.education.items.map((item, eIdx) => (
                   <li 
                     key={eIdx}

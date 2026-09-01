@@ -97,7 +97,9 @@ export interface CVData {
   languages?: string[];
   languageItems?: LanguageItem[];
   customSections?: CustomSection[];
+  sectionTitles?: Partial<Record<SectionType | string, string>>;
   photo?: ProfilePhotoConfig | null;
+
   nationality?: string;
   dateOfBirth?: string;
   drivingLicense?: string;

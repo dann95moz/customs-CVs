@@ -127,7 +127,11 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
         {/* Languages (CEFR Grid) */}
         {languages && (
           <section>
-            <h3
+            <EditableText
+              tagName="h3"
+              value={languages.title || 'Languages'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('languages', newTitle)}
+              placeholder="Languages"
               style={{
                 fontSize: '11px',
                 fontWeight: 800,
@@ -138,9 +142,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                 paddingBottom: '4px',
                 marginBottom: '8px',
               }}
-            >
-              {languages.title || 'Languages'}
-            </h3>
+            />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {languages.languageItems && languages.languageItems.length > 0 ? (
@@ -191,7 +193,11 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
         {/* Skills */}
         {skills && (
           <section>
-            <h3
+            <EditableText
+              tagName="h3"
+              value={skills.title || 'Competences'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('skills', newTitle)}
+              placeholder="Competences"
               style={{
                 fontSize: '11px',
                 fontWeight: 800,
@@ -202,9 +208,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                 paddingBottom: '4px',
                 marginBottom: '8px',
               }}
-            >
-              {skills.title || 'Competences'}
-            </h3>
+            />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {skills.skillGroups.map((group, gIdx) => (
@@ -220,7 +224,11 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
         {/* Education */}
         {education && (
           <section>
-            <h3
+            <EditableText
+              tagName="h3"
+              value={education.title || 'Education'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('education', newTitle)}
+              placeholder="Education"
               style={{
                 fontSize: '11px',
                 fontWeight: 800,
@@ -231,9 +239,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                 paddingBottom: '4px',
                 marginBottom: '8px',
               }}
-            >
-              {education.title || 'Education'}
-            </h3>
+            />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {education.items.map((edu, eIdx) => (
@@ -295,7 +301,11 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
         {/* Summary / Profile */}
         {summary && (
           <section>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={summary.title || 'Profile'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('summary', newTitle)}
+              placeholder="Profile"
               style={{
                 fontSize: '12px',
                 fontWeight: 800,
@@ -306,9 +316,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                 paddingBottom: '2px',
                 marginBottom: '6px',
               }}
-            >
-              {summary.title || 'Profile'}
-            </h2>
+            />
             <EditableText
               tagName="div"
               value={summary.rawContent}
@@ -328,7 +336,11 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
         {/* Work Experience */}
         {experience && (
           <section>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={experience.title || 'Work Experience'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('experience', newTitle)}
+              placeholder="Work Experience"
               style={{
                 fontSize: '12px',
                 fontWeight: 800,
@@ -339,9 +351,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                 paddingBottom: '2px',
                 marginBottom: '8px',
               }}
-            >
-              {experience.title || 'Work Experience'}
-            </h2>
+            />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {experience.items.map((exp, expIdx) => (
@@ -401,7 +411,11 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
         {/* Projects / Publications / Generic */}
         {projects && (
           <section>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={projects.title || 'Projects'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('projects', newTitle)}
+              placeholder="Projects"
               style={{
                 fontSize: '12px',
                 fontWeight: 800,
@@ -412,9 +426,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                 paddingBottom: '2px',
                 marginBottom: '6px',
               }}
-            >
-              {projects.title || 'Projects'}
-            </h2>
+            />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {projects.items.map((proj, pIdx) => (
                 <div key={pIdx}>
@@ -436,7 +448,11 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
 
         {genericSections.map((sec) => (
           <section key={sec.id}>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={sec.title}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle(sec.id, newTitle)}
+              placeholder="Section Title"
               style={{
                 fontSize: '12px',
                 fontWeight: 800,
@@ -447,11 +463,9 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                 paddingBottom: '2px',
                 marginBottom: '6px',
               }}
-            >
-              {sec.title}
-            </h2>
+            />
             <div
-              style={{ fontSize: '11px', color: '#334155', lineHeight: 1.4 }}
+              style={{ fontSize: '11px', color: '#334155', lineHeight: 1.45 }}
               dangerouslySetInnerHTML={{ __html: safeMarkdown(sec.rawContent) }}
             />
           </section>

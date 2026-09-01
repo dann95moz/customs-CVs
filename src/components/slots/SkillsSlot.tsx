@@ -14,8 +14,15 @@ export const SkillsSlot: React.FC<SkillsSlotProps> = ({
 
   return (
     <section className={`cv-section section-skills section-block ${className} variant-${variant}`}>
-      <h2 className="cv-section-title">{data.title}</h2>
+      <EditableText
+        tagName="h2"
+        className="cv-section-title"
+        value={data.title}
+        onSave={(newTitle) => liveEdit?.updateSectionTitle('skills', newTitle)}
+        placeholder="Skills & Competencies"
+      />
       <div className="skills-container">
+
         {data.skillGroups.map((group, idx) => (
           <div key={idx} className="skills-group">
             <EditableText

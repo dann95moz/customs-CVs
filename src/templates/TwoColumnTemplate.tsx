@@ -141,7 +141,13 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
           {/* Skills List in White */}
           {slots.skills && (
             <div className="contrast-side-block">
-              <h3 className="contrast-side-title">Skills</h3>
+              <EditableText
+                tagName="h3"
+                className="contrast-side-title"
+                value={slots.skills.title || 'Skills'}
+                onSave={(newTitle) => liveEdit?.updateSectionTitle('skills', newTitle)}
+                placeholder="Skills"
+              />
               <div className="contrast-skills-list">
                 {slots.skills.skillGroups.map((group, gIdx) => (
                   <div key={gIdx} className="contrast-skill-group">
@@ -163,8 +169,15 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
           {/* Languages in White */}
           {slots.languages && (
             <div className="contrast-side-block">
-              <h3 className="contrast-side-title">Languages</h3>
+              <EditableText
+                tagName="h3"
+                className="contrast-side-title"
+                value={slots.languages.title || 'Languages'}
+                onSave={(newTitle) => liveEdit?.updateSectionTitle('languages', newTitle)}
+                placeholder="Languages"
+              />
               <ul className="contrast-skill-bullets">
+
                 {slots.languages.items.map((item, lIdx) => (
                   <li 
                     key={lIdx}

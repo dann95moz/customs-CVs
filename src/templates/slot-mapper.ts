@@ -56,10 +56,11 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
   const genericSections: GenericSlotData[] = [];
 
   for (const section of data.sections) {
+    const sectionTitle = data.sectionTitles?.[section.type] || data.sectionTitles?.[section.id] || section.title;
     switch (section.type) {
       case 'summary':
         summary = {
-          title: section.title,
+          title: sectionTitle,
           rawContent: data.summary || section.rawContent
         };
         break;
@@ -67,7 +68,7 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
       case 'skills':
         if (data.skillGroups && data.skillGroups.length > 0 && !skills) {
           skills = {
-            title: section.title,
+            title: sectionTitle,
             skillGroups: data.skillGroups
           };
         }
@@ -76,14 +77,14 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
       case 'experience':
         if (data.experience && data.experience.length > 0) {
           experience = {
-            title: section.title,
+            title: sectionTitle,
             items: data.experience,
             type: 'experience'
           };
         } else if (section.rawContent) {
           genericSections.push({
             id: section.id,
-            title: section.title,
+            title: sectionTitle,
             rawContent: section.rawContent
           });
         }
@@ -92,14 +93,14 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
       case 'projects':
         if (data.projects && data.projects.length > 0) {
           projects = {
-            title: section.title,
+            title: sectionTitle,
             items: data.projects,
             type: 'projects'
           };
         } else if (section.rawContent) {
           genericSections.push({
             id: section.id,
-            title: section.title,
+            title: sectionTitle,
             rawContent: section.rawContent
           });
         }
@@ -109,7 +110,7 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
         if (data.education && data.education.length > 0) {
           if (!education) {
             education = {
-              title: section.title,
+              title: sectionTitle,
               items: data.education,
               type: 'education'
             };
@@ -117,7 +118,7 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
         } else if (section.rawContent) {
           genericSections.push({
             id: section.id,
-            title: section.title,
+            title: sectionTitle,
             rawContent: section.rawContent
           });
         }
@@ -126,7 +127,7 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
       case 'languages':
         if ((data.languageItems && data.languageItems.length > 0) || (data.languages && data.languages.length > 0)) {
           languages = {
-            title: section.title,
+            title: sectionTitle,
             items: data.languages || [],
             languageItems: data.languageItems,
             type: 'languages'
@@ -134,7 +135,7 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
         } else if (section.rawContent) {
           genericSections.push({
             id: section.id,
-            title: section.title,
+            title: sectionTitle,
             rawContent: section.rawContent
           });
         }
@@ -143,12 +144,13 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
       default:
         genericSections.push({
           id: section.id,
-          title: section.title,
+          title: sectionTitle,
           rawContent: section.rawContent
         });
         break;
     }
   }
+
 
   // Ensure live-edited customSections are mapped to genericSections
   if (data.customSections && data.customSections.length > 0) {

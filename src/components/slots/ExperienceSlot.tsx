@@ -17,8 +17,15 @@ export const ExperienceSlot: React.FC<ExperienceSlotProps> = ({
 
   return (
     <section className={`cv-section section-${data.type} section-block ${className}`}>
-      <h2 className="cv-section-title">{data.title}</h2>
+      <EditableText
+        tagName="h2"
+        className="cv-section-title"
+        value={data.title}
+        onSave={(newTitle) => liveEdit?.updateSectionTitle(sectionType, newTitle)}
+        placeholder={sectionType === 'projects' ? 'Projects & Extras' : 'Work Experience'}
+      />
       <div className="experience-list">
+
         {displayItems.map((item, idx) => (
           <div key={idx} className="experience-item section-block">
             <div className="item-header">

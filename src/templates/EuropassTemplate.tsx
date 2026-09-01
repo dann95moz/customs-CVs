@@ -166,7 +166,11 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
         {/* 1. PROFESSIONAL SUMMARY / PROFILE */}
         {summary && (
           <section>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={summary.title || 'Work Profile'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('summary', newTitle)}
+              placeholder="Work Profile"
               style={{
                 fontSize: '13px',
                 fontWeight: 800,
@@ -177,9 +181,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                 marginBottom: '8px',
                 letterSpacing: '0.5px',
               }}
-            >
-              {summary.title || 'Work Profile'}
-            </h2>
+            />
             <EditableText
               tagName="div"
               value={summary.rawContent}
@@ -199,7 +201,11 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
         {/* 2. WORK EXPERIENCE */}
         {experience && (
           <section>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={experience.title || 'Work Experience'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('experience', newTitle)}
+              placeholder="Work Experience"
               style={{
                 fontSize: '13px',
                 fontWeight: 800,
@@ -210,9 +216,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                 marginBottom: '10px',
                 letterSpacing: '0.5px',
               }}
-            >
-              {experience.title || 'Work Experience'}
-            </h2>
+            />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {experience.items.map((exp, expIdx) => (
@@ -276,7 +280,11 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
         {/* 3. EDUCATION AND TRAINING */}
         {education && (
           <section>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={education.title || 'Education and Training'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('education', newTitle)}
+              placeholder="Education and Training"
               style={{
                 fontSize: '13px',
                 fontWeight: 800,
@@ -287,9 +295,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                 marginBottom: '8px',
                 letterSpacing: '0.5px',
               }}
-            >
-              {education.title || 'Education and Training'}
-            </h2>
+            />
 
             <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {education.items.map((rawEdu, eduIdx) => {
@@ -318,7 +324,11 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
         {/* 4. LANGUAGE SKILLS (CEFR SELF-ASSESSMENT GRID) */}
         {languages && (
           <section>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={languages.title || 'Language Skills'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('languages', newTitle)}
+              placeholder="Language Skills"
               style={{
                 fontSize: '13px',
                 fontWeight: 800,
@@ -329,9 +339,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                 marginBottom: '8px',
                 letterSpacing: '0.5px',
               }}
-            >
-              {languages.title || 'Language Skills'}
-            </h2>
+            />
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {languages.languageItems && languages.languageItems.length > 0 ? (
@@ -395,7 +403,11 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
         {/* 5. DIGITAL SKILLS & COMPETENCES */}
         {skills && (
           <section>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={skills.title || 'Digital Skills & Competencies'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('skills', newTitle)}
+              placeholder="Digital Skills & Competencies"
               style={{
                 fontSize: '13px',
                 fontWeight: 800,
@@ -406,9 +418,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                 marginBottom: '8px',
                 letterSpacing: '0.5px',
               }}
-            >
-              {skills.title || 'Digital Skills & Competencies'}
-            </h2>
+            />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {skills.skillGroups.map((group, gIdx) => (
@@ -424,7 +434,11 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
         {/* 6. PROJECTS & GENERIC SECTIONS */}
         {projects && (
           <section>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={projects.title || 'Key Projects & Initiatives'}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle('projects', newTitle)}
+              placeholder="Key Projects & Initiatives"
               style={{
                 fontSize: '13px',
                 fontWeight: 800,
@@ -435,9 +449,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                 marginBottom: '8px',
                 letterSpacing: '0.5px',
               }}
-            >
-              {projects.title || 'Key Projects & Initiatives'}
-            </h2>
+            />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {projects.items.map((proj, pIdx) => (
@@ -460,7 +472,11 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
 
         {genericSections.map((sec) => (
           <section key={sec.id}>
-            <h2
+            <EditableText
+              tagName="h2"
+              value={sec.title}
+              onSave={(newTitle) => liveEdit?.updateSectionTitle(sec.id, newTitle)}
+              placeholder="Section Title"
               style={{
                 fontSize: '13px',
                 fontWeight: 800,
@@ -471,9 +487,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                 marginBottom: '8px',
                 letterSpacing: '0.5px',
               }}
-            >
-              {sec.title}
-            </h2>
+            />
             <div
               style={{ fontSize: '11.5px', color: '#334155', lineHeight: 1.45 }}
               dangerouslySetInnerHTML={{ __html: safeMarkdown(sec.rawContent) }}
@@ -481,6 +495,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
           </section>
         ))}
       </main>
+
     </div>
   );
 };

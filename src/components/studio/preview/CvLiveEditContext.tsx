@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useCallback, useMemo, useState } from 'react';
-import { CVData, ExperienceItem } from '../../../types/cv';
+import { CVData, ExperienceItem, SectionType } from '../../../types/cv';
 import { useResumeStore } from '../../../store';
+
 import { serializeCvDataToMarkdown } from '../../../core/parser';
 import { regenerateCvBullet, regenerateCvSummary } from '../../../core/ai/bullet-regenerator';
 
@@ -52,9 +53,11 @@ export interface CvLiveEditContextValue {
   ) => void;
   updateEducationItem: (itemIndex: number, value: string) => void;
   updateLanguageItem: (itemIndex: number, value: string) => void;
+  updateSectionTitle: (type: SectionType | string, newTitle: string) => void;
 }
 
 const CvLiveEditContext = createContext<CvLiveEditContextValue | null>(null);
+
 
 export interface CvLiveEditProviderProps {
   children: React.ReactNode;
@@ -218,7 +221,31 @@ export const CvLiveEditProvider: React.FC<CvLiveEditProviderProps> = ({
     });
   }, [applyCvUpdate]);
 
+  const updateSectionTitle = useCallback((type: SectionType | string, newTitle: string) => {
+    applyCvUpdate((prev) => {
+      const trimmedTitle = newTitle.trim();
+      const updatedSections = (prev.sections || []).map((sec) => {
+        if (sec.type === type || sec.id === type) {
+          return { ...sec, title: trimmedTitle };
+        }
+        return sec;
+      });
+
+      const updatedSectionTitles = {
+        ...(prev.sectionTitles || {}),
+        [type]: trimmedTitle,
+      };
+
+      return {
+        ...prev,
+        sections: updatedSections,
+        sectionTitles: updatedSectionTitles,
+      };
+    });
+  }, [applyCvUpdate]);
+
   const undoItem = useCallback((fieldKey: string, onRevert: (previousValue: string) => void) => {
+
     const previousValue = undoMap[fieldKey];
     if (previousValue !== undefined) {
       onRevert(previousValue);
@@ -309,6 +336,7 @@ export const CvLiveEditProvider: React.FC<CvLiveEditProviderProps> = ({
     updateExperienceBullet,
     updateEducationItem,
     updateLanguageItem,
+    updateSectionTitle,
   }), [
     isLiveEditing,
     setLiveEditing,
@@ -330,7 +358,9 @@ export const CvLiveEditProvider: React.FC<CvLiveEditProviderProps> = ({
     updateExperienceBullet,
     updateEducationItem,
     updateLanguageItem,
+    updateSectionTitle,
   ]);
+
 
   return (
     <CvLiveEditContext.Provider value={value}>
