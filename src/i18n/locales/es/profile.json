@@ -18,15 +18,18 @@
     "confirm": "Importar y Reemplazar",
     "confirmClearTitle": "¿Comenzar de cero?",
     "confirmClearDesc": "¿Estás seguro de que deseas limpiar todos los datos del perfil? Esta acción no se puede deshacer.",
-    "confirmClear": "Limpiar Todos los Datos",
+    "confirmClear": "Aceptar",
     "cancel": "Cancelar"
   },
   "modes": {
     "guidedAssistant": "Formulario Guiado",
+    "guidedShort": "Guiado",
     "markdownEditor": "Modo Manual",
+    "markdownShort": "Manual",
     "guidedTitle": "Formulario Guiado de Perfil",
     "markdownTitle": "Modo Manual / Texto Libre"
   },
+
   "status": {
     "ready": "Perfil profesional listo para adaptar",
 
@@ -138,12 +141,16 @@
   },
   "stepper": {
     "profileLabel": "Perfil del Candidato",
+    "profileShortLabel": "Perfil",
     "profileSubtitle": "Trayectoria y habilidades",
     "targetLabel": "Vacante Objetivo",
+    "targetShortLabel": "Vacante",
     "targetSubtitle": "Oferta laboral y adaptación",
     "previewLabel": "CV en Vivo y Exportación",
+    "previewShortLabel": "CV y PDF",
     "previewSubtitle": "Previsualizar y descargar PDF"
   },
+
   "customSections": {
     "addSectionBtn": "Agregar Sección",
     "addSectionBtnShort": "Sección +",

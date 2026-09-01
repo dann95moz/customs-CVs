@@ -18,12 +18,14 @@
     "confirm": "Importa e sostituisci",
     "confirmClearTitle": "Iniziare da capo?",
     "confirmClearDesc": "Sei sicuro di voler cancellare tutti i dati del profilo? Questa azione non può essere annullata.",
-    "confirmClear": "Cancella tutti i dati",
+    "confirmClear": "Conferma",
     "cancel": "Annulla"
   },
   "modes": {
     "guidedAssistant": "Modulo Guidato",
+    "guidedShort": "Guidato",
     "markdownEditor": "Modalità Manuale",
+    "markdownShort": "Manuale",
     "guidedTitle": "Modulo di Profilo Guidato",
     "markdownTitle": "Modalità Manuale / Testo Libero"
   },
@@ -137,12 +139,15 @@
     }
   },
   "stepper": {
-    "profileLabel": "Profilo Candidato",
-    "profileSubtitle": "Esperienza & competenze",
+    "profileLabel": "Profilo del Candidato",
+    "profileShortLabel": "Profilo",
+    "profileSubtitle": "Percorso e competenze",
     "targetLabel": "Posizione Obiettivo",
-    "targetSubtitle": "Offerta di lavoro & adattamento",
-    "previewLabel": "CV dal Vivo & Esportazione",
-    "previewSubtitle": "Anteprima & scarica PDF"
+    "targetShortLabel": "Offerta",
+    "targetSubtitle": "Offerta di lavoro e adattamento",
+    "previewLabel": "CV dal Vivo ed Esportazione",
+    "previewShortLabel": "CV e PDF",
+    "previewSubtitle": "Anteprima e download PDF"
   },
   "customSections": {
     "addSectionBtn": "Aggiungi Sezione",

@@ -18,15 +18,18 @@
     "confirm": "Importieren & Ersetzen",
     "confirmClearTitle": "Von Grund auf neu beginnen?",
     "confirmClearDesc": "Möchten Sie wirklich alle Profildaten löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
-    "confirmClear": "Alle Daten löschen",
+    "confirmClear": "Bestätigen",
     "cancel": "Abbrechen"
   },
   "modes": {
     "guidedAssistant": "Geführtes Formular",
+    "guidedShort": "Geführt",
     "markdownEditor": "Manueller Modus",
+    "markdownShort": "Manuell",
     "guidedTitle": "Geführtes Profilformular",
     "markdownTitle": "Manueller Modus / Freitext"
   },
+
   "status": {
     "ready": "Karriereprofil bereit für die Anpassung",
 
@@ -138,12 +141,16 @@
   },
   "stepper": {
     "profileLabel": "Kandidatenprofil",
+    "profileShortLabel": "Profil",
     "profileSubtitle": "Werdegang & Fähigkeiten",
     "targetLabel": "Zielstelle",
+    "targetShortLabel": "Zielstelle",
     "targetSubtitle": "Stellenanzeige & Anpassung",
     "previewLabel": "Live-CV & PDF-Export",
+    "previewShortLabel": "CV & PDF",
     "previewSubtitle": "Vorschau & PDF herunterladen"
   },
+
   "customSections": {
     "addSectionBtn": "Abschnitt hinzufügen",
     "addSectionBtnShort": "Abschnitt +",

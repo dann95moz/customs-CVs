@@ -18,15 +18,18 @@
     "confirm": "Import & Replace",
     "confirmClearTitle": "Start from scratch?",
     "confirmClearDesc": "Are you sure you want to clear all profile data? This action cannot be undone.",
-    "confirmClear": "Clear All Data",
+    "confirmClear": "Confirm",
     "cancel": "Cancel"
   },
   "modes": {
     "guidedAssistant": "Guided Form",
+    "guidedShort": "Guided",
     "markdownEditor": "Manual Mode",
+    "markdownShort": "Manual",
     "guidedTitle": "Guided Profile Form",
     "markdownTitle": "Freeform Text / Manual Mode"
   },
+
   "status": {
     "ready": "Career profile ready for tailoring",
 
@@ -138,12 +141,16 @@
   },
   "stepper": {
     "profileLabel": "Candidate Profile",
+    "profileShortLabel": "Profile",
     "profileSubtitle": "Career history & skills",
     "targetLabel": "Target Vacancy",
+    "targetShortLabel": "Target Job",
     "targetSubtitle": "Job posting & tailoring",
     "previewLabel": "Live CV & PDF Export",
+    "previewShortLabel": "CV & PDF",
     "previewSubtitle": "Preview & download PDF"
   },
+
   "customSections": {
     "addSectionBtn": "Add Custom Section",
     "addSectionBtnShort": "Section +",
