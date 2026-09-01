@@ -1,10 +1,13 @@
-import { CVData, ThemeId, ContactItem, SkillCategory, ExperienceItem, ProfilePhotoConfig } from '../types/cv';
+import { CVData, ThemeId, ContactItem, SkillCategory, ExperienceItem, ProfilePhotoConfig, LanguageItem } from '../types/cv';
 
 export interface HeaderSlotData {
   name: string;
   title?: string;
   contacts: ContactItem[];
   photo?: ProfilePhotoConfig | null;
+  nationality?: string;
+  dateOfBirth?: string;
+  drivingLicense?: string;
 }
 
 export interface SummarySlotData {
@@ -27,6 +30,7 @@ export interface ListSlotData {
   title: string;
   items: string[];
   type: 'education' | 'languages' | 'generic';
+  languageItems?: LanguageItem[];
 }
 
 export interface GenericSlotData {
@@ -57,7 +61,7 @@ export interface CVTemplateProps {
 export interface TemplateMetadata {
   id: ThemeId;
   name: string;
-  category: 'Tech & Engineering' | 'Design & Creative' | 'Legal & Finance' | 'Executive & Leadership' | 'Academic & Research' | 'General & Operations';
+  category: 'Tech & Engineering' | 'Design & Creative' | 'Legal & Finance' | 'Executive & Leadership' | 'Academic & Research' | 'General & Operations' | 'European & International';
   recommendedFor: string;
   description: string;
   layout: 'single-column' | 'two-column' | 'ats-linear';

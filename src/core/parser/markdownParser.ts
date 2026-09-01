@@ -5,7 +5,9 @@ import {
   CVSection,
   SectionType,
   SkillCategory,
-  ExperienceItem
+  ExperienceItem,
+  LanguageItem,
+  CEFRLevel
 } from '../../types/cv';
 
 /**
@@ -422,6 +424,120 @@ function parseListItems(rawContent: string): string[] {
 }
 
 /**
+ * Calibrates natural language descriptions into standard CEFR levels (A1 -> C2, Native).
+ */
+export function calibrateCEFRLevel(text: string): { level: CEFRLevel; displayLevel: string } {
+  const lower = text.toLowerCase().trim();
+
+  // 1. Native Checks
+  if (
+    lower.includes('native') ||
+    lower.includes('nativo') ||
+    lower.includes('nativa') ||
+    lower.includes('muttersprache') ||
+    lower.includes('maternelle') ||
+    lower.includes('madrelingua') ||
+    lower.includes('mother tongue')
+  ) {
+    return { level: 'Native', displayLevel: 'Native' };
+  }
+
+  // 2. Explicit CEFR Tags (C2, C1, B2, B1, A2, A1)
+  if (/\bc2\b/i.test(lower)) {
+    return { level: 'C2', displayLevel: 'C2 • Mastery' };
+  }
+  if (/\bc1\b/i.test(lower)) {
+    return { level: 'C1', displayLevel: 'C1 • Advanced' };
+  }
+  if (/\bb2\b/i.test(lower)) {
+    return { level: 'B2', displayLevel: 'B2 • Upper Intermediate' };
+  }
+  if (/\bb1\b/i.test(lower)) {
+    return { level: 'B1', displayLevel: 'B1 • Intermediate' };
+  }
+  if (/\ba2\b/i.test(lower)) {
+    return { level: 'A2', displayLevel: 'A2 • Elementary' };
+  }
+  if (/\ba1\b/i.test(lower)) {
+    return { level: 'A1', displayLevel: 'A1 • Beginner' };
+  }
+
+  // 3. Descriptive / Qualitative Level Mappings
+  if (lower.includes('bilingual') || lower.includes('bilingüe') || lower.includes('proficient') || lower.includes('mastery') || lower.includes('verhandlungssicher')) {
+    return { level: 'C2', displayLevel: 'C2 • Mastery / Bilingual' };
+  }
+  if (lower.includes('advanced') || lower.includes('avanzado') || lower.includes('fluent') || lower.includes('fluido') || lower.includes('fließend') || lower.includes('courant') || lower.includes('full professional')) {
+    return { level: 'C1', displayLevel: 'C1 • Advanced' };
+  }
+  if (lower.includes('upper intermediate') || lower.includes('intermedio alto') || lower.includes('intermedio-alto') || lower.includes('professional working') || lower.includes('competente')) {
+    return { level: 'B2', displayLevel: 'B2 • Upper Intermediate' };
+  }
+  if (lower.includes('intermediate') || lower.includes('intermedio') || lower.includes('intermédiaire') || lower.includes('mittelstufe') || lower.includes('working proficiency') || lower.includes('conversacional') || lower.includes('conversational')) {
+    return { level: 'B1', displayLevel: 'B1 • Intermediate' };
+  }
+  if (lower.includes('elementary') || lower.includes('básico') || lower.includes('basico') || lower.includes('grundkenntnisse') || lower.includes('élémentaire') || lower.includes('limited')) {
+    return { level: 'A2', displayLevel: 'A2 • Elementary' };
+  }
+  if (lower.includes('beginner') || lower.includes('principiante') || lower.includes('anfänger') || lower.includes('débutant') || lower.includes('basic')) {
+    return { level: 'A1', displayLevel: 'A1 • Beginner' };
+  }
+
+  // Default fallback
+  return { level: 'B2', displayLevel: 'B2 • Professional Working' };
+}
+
+/**
+ * Parses raw language section markdown into structured LanguageItem array with calibrated CEFR levels.
+ */
+export function parseLanguageItems(rawContent: string): LanguageItem[] {
+  const lines = rawContent.split(/\r?\n/);
+  const items: LanguageItem[] = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+
+    // Remove leading bullet marker (- , * , •)
+    const cleanLine = trimmed.replace(/^[-*•]\s*/, '').trim();
+
+    let langName = '';
+    let rawLevel = '';
+
+    const colonMatch = cleanLine.match(/^\*{0,2}([^:*–—(]+)\*{0,2}\s*[:*–—]\s*(.+)$/);
+    const parenMatch = cleanLine.match(/^\*{0,2}([^:(]+)\*{0,2}\s*\(([^)]+)\)$/);
+
+    if (colonMatch) {
+      langName = cleanMarkdownFormatting(colonMatch[1]);
+      rawLevel = cleanMarkdownFormatting(colonMatch[2]);
+    } else if (parenMatch) {
+      langName = cleanMarkdownFormatting(parenMatch[1]);
+      rawLevel = cleanMarkdownFormatting(parenMatch[2]);
+    } else {
+      const parts = cleanLine.split(/\s*[-–—|]\s*/);
+      if (parts.length >= 2) {
+        langName = cleanMarkdownFormatting(parts[0]);
+        rawLevel = cleanMarkdownFormatting(parts.slice(1).join(' '));
+      } else {
+        langName = cleanMarkdownFormatting(cleanLine);
+        rawLevel = 'Professional Working';
+      }
+    }
+
+    if (langName) {
+      const { level, displayLevel } = calibrateCEFRLevel(rawLevel || langName);
+      items.push({
+        name: langName,
+        level,
+        displayLevel: level === 'Native' ? 'Native' : displayLevel,
+        raw: cleanLine
+      });
+    }
+  }
+
+  return items;
+}
+
+/**
  * Main parser: transforms Markdown string to structured CVData object
  */
 export function parseCvMarkdownToData(rawMarkdown: string): CVData {
@@ -435,6 +551,7 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
       education: [],
       skillGroups: [],
       languages: [],
+      languageItems: [],
       projects: [],
       sections: []
     };
@@ -612,12 +729,29 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
     }
   }
 
+  // Extract optional European personal metadata
+  let nationality: string | undefined;
+  const natMatch = rawMarkdown.match(/(?:Nationality|Nacionalidad|Nationalität|Nationalité|Nazionalità):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+  if (natMatch) nationality = cleanMarkdownFormatting(natMatch[1]);
+
+  let dateOfBirth: string | undefined;
+  const dobMatch = rawMarkdown.match(/(?:Date of Birth|Fecha de Nacimiento|Geburtsdatum|Date de naissance|Data di nascita|DOB):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+  if (dobMatch) dateOfBirth = cleanMarkdownFormatting(dobMatch[1]);
+
+  let drivingLicense: string | undefined;
+  const dlMatch = rawMarkdown.match(/(?:Driving License|Driving Licence|Permiso de Conducir|Führerschein|Permis de conduire|Patente de guida):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+  if (dlMatch) drivingLicense = cleanMarkdownFormatting(dlMatch[1]);
+
   // Populate structured helper properties
   const cvData: CVData = {
     name: name || 'Candidate',
     title: title || 'Professional Specialist',
     contacts,
-    sections
+    sections,
+    nationality,
+    dateOfBirth,
+    drivingLicense,
+    languageItems: []
   };
 
   for (const s of sections) {
@@ -626,7 +760,10 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
     if (s.type === 'experience') cvData.experience = parseExperienceItems(s.rawContent);
     if (s.type === 'projects') cvData.projects = parseExperienceItems(s.rawContent);
     if (s.type === 'education') cvData.education = parseListItems(s.rawContent);
-    if (s.type === 'languages') cvData.languages = parseListItems(s.rawContent);
+    if (s.type === 'languages') {
+      cvData.languages = parseListItems(s.rawContent);
+      cvData.languageItems = parseLanguageItems(s.rawContent);
+    }
   }
 
   return cvData;

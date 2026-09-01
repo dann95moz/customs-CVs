@@ -12,7 +12,9 @@ export type ThemeId =
   | 'two-column'
   | 'designer-uiux'
   | 'formal-legal'
-  | 'academic-research';
+  | 'academic-research'
+  | 'europass'
+  | 'euro-modern';
 
 export type PaletteId = 
   | 'corporate-blue' 

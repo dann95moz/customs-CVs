@@ -60,6 +60,15 @@ export interface CVSection {
 
 import { ProfilePhotoConfig } from './theme';
 
+export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | 'Native';
+
+export interface LanguageItem {
+  name: string;
+  level: CEFRLevel;
+  displayLevel?: string;
+  raw?: string;
+}
+
 export interface CVData {
   name: string;
   title: string;
@@ -71,7 +80,11 @@ export interface CVData {
   projects?: ExperienceItem[];
   education?: string[];
   languages?: string[];
+  languageItems?: LanguageItem[];
   photo?: ProfilePhotoConfig | null;
+  nationality?: string;
+  dateOfBirth?: string;
+  drivingLicense?: string;
 }
 
 // Re-export domain-specific types for seamless backward compatibility

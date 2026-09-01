@@ -18,6 +18,9 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
     title: data.title,
     contacts: data.contacts || [],
     photo: data.photo,
+    nationality: data.nationality,
+    dateOfBirth: data.dateOfBirth,
+    drivingLicense: data.drivingLicense,
   };
 
   let summary: SummarySlotData | undefined;
@@ -95,10 +98,11 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
         break;
 
       case 'languages':
-        if (data.languages && data.languages.length > 0) {
+        if ((data.languageItems && data.languageItems.length > 0) || (data.languages && data.languages.length > 0)) {
           languages = {
             title: section.title,
-            items: data.languages,
+            items: data.languages || [],
+            languageItems: data.languageItems,
             type: 'languages'
           };
         } else if (section.rawContent) {
