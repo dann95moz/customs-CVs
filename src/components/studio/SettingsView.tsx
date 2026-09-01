@@ -43,14 +43,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           gap: 2,
           width: '100%',
           boxSizing: 'border-box',
-          borderRadius: '16px',
+          borderRadius: 2,
         }}
       >
         <Box
           sx={{
             width: 46,
             height: 46,
-            borderRadius: '12px',
+            borderRadius: 1,
             bgcolor: alpha(muiTheme.palette.primary.main, 0.12),
             color: muiTheme.palette.primary.main,
             display: 'flex',
@@ -81,12 +81,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       <Paper
         sx={{
           p: { xs: 1.75, sm: 2.5 },
-          border: '1px solid var(--glass-border)',
-          bgcolor: 'var(--glass-bg)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          borderRadius: '20px',
-          boxShadow: 'var(--glass-shadow)',
+          border: `1px solid ${muiTheme.palette.divider}`,
+          bgcolor: 'background.paper',
+          borderRadius: 2,
+          boxShadow: 1,
           display: 'flex',
           flexDirection: { xs: 'column', sm: 'row' },
           alignItems: { xs: 'flex-start', sm: 'center' },
@@ -102,16 +100,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               width: 42,
               height: 42,
               borderRadius: '50%',
-              background: 'var(--gradient-badge)',
-              color: '#ffffff',
+              bgcolor: 'primary.main',
+              color: 'primary.contrastText',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
-              boxShadow: 'var(--pill-shadow)',
             }}
           >
-            <StarRoundedIcon sx={{ fontSize: 24, color: '#ffffff' }} />
+            <StarRoundedIcon sx={{ fontSize: 24, color: 'inherit' }} />
           </Box>
           <Box sx={{ minWidth: 0, flex: 1 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'text.primary', fontSize: { xs: '0.9rem', sm: '1rem' } }}>
@@ -142,9 +139,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       <Paper
         sx={{
           p: { xs: 1.5, sm: 2 },
-          border: '1px solid var(--border)',
-          bgcolor: isDark ? 'rgba(16, 22, 35, 0.4)' : 'rgba(255, 255, 255, 0.6)',
-          borderRadius: '16px',
+          border: `1px solid ${muiTheme.palette.divider}`,
+          bgcolor: alpha(muiTheme.palette.text.primary, 0.02),
+          borderRadius: 2,
           display: 'flex',
           flexDirection: { xs: 'column', sm: 'row' },
           alignItems: { xs: 'flex-start', sm: 'center' },
@@ -159,7 +156,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             sx={{
               width: 36,
               height: 36,
-              borderRadius: '10px',
+              borderRadius: 1,
               bgcolor: alpha(muiTheme.palette.primary.main, 0.1),
               color: 'primary.main',
               display: 'flex',
@@ -195,7 +192,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       <Paper
         sx={{
           p: { xs: 1.75, sm: 2.25 },
-          borderRadius: '16px',
+          borderRadius: 2,
           border: `1px solid ${alpha(muiTheme.palette.error.main, 0.3)}`,
           bgcolor: alpha(muiTheme.palette.error.main, isDark ? 0.04 : 0.02),
           display: 'flex',
@@ -207,6 +204,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           boxSizing: 'border-box',
         }}
       >
+
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'error.main' }}>
             {t('settings:general.resetWorkspace', 'Reset Entire Workspace')}

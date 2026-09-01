@@ -96,13 +96,13 @@ export const StudioNavbar: React.FC = () => {
               sx={{
                 width: { xs: 28, sm: 32 },
                 height: { xs: 28, sm: 32 },
-                borderRadius: '8px',
-                background: 'linear-gradient(135deg, #0284c7 0%, #6366f1 100%)',
+                borderRadius: 1,
+                bgcolor: 'primary.main',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#ffffff',
-                boxShadow: '0 2px 8px rgba(56, 189, 248, 0.3)',
+                color: 'primary.contrastText',
+                boxShadow: 1,
               }}
             >
               <AutoAwesomeRoundedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
@@ -112,9 +112,7 @@ export const StudioNavbar: React.FC = () => {
               sx={{
                 fontWeight: 800,
                 letterSpacing: '-0.02em',
-                background: 'linear-gradient(135deg, #38bdf8 0%, #a5b4fc 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
+                color: 'text.primary',
                 display: { xs: 'none', md: 'block' },
               }}
             >
@@ -122,6 +120,7 @@ export const StudioNavbar: React.FC = () => {
             </Typography>
           </Box>
         </Tooltip>
+
 
         {/* Primary Navigation Tabs with Smooth Horizontal Touch Slide */}
         <Tabs
@@ -240,10 +239,10 @@ export const StudioNavbar: React.FC = () => {
                 p: { xs: 0.5, sm: 0.75 },
                 border: `1px solid ${muiTheme.palette.divider}`,
                 color: 'text.secondary',
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+                bgcolor: alpha(muiTheme.palette.text.primary, 0.04),
                 transition: 'all 0.2s ease',
                 '&:hover': {
-                  bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                  bgcolor: alpha(muiTheme.palette.text.primary, 0.08),
                   color: 'primary.main',
                   borderColor: alpha(muiTheme.palette.primary.main, 0.5),
                 },
@@ -261,11 +260,11 @@ export const StudioNavbar: React.FC = () => {
               sx={{
                 p: { xs: 0.5, sm: 0.75 },
                 border: `1px solid ${muiTheme.palette.divider}`,
-                color: mode === 'dark' ? '#fbbf24' : '#0284c7',
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+                color: mode === 'dark' ? 'warning.main' : 'primary.main',
+                bgcolor: alpha(muiTheme.palette.text.primary, 0.04),
                 transition: 'all 0.2s ease',
                 '&:hover': {
-                  bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                  bgcolor: alpha(muiTheme.palette.text.primary, 0.08),
                 },
               }}
             >
@@ -277,6 +276,7 @@ export const StudioNavbar: React.FC = () => {
             </IconButton>
           </Tooltip>
         </Box>
+
       </Toolbar>
     </AppBar>
   );

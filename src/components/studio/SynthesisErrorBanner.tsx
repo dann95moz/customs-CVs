@@ -48,14 +48,10 @@ export const SynthesisErrorBanner: React.FC<SynthesisErrorBannerProps> = React.m
         elevation={6}
         sx={{
           p: 2.25,
-          borderRadius: '20px',
-          bgcolor: isDark ? 'rgba(16, 22, 35, 0.94)' : 'rgba(255, 255, 255, 0.96)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: `1px solid ${isDark ? 'rgba(239, 68, 68, 0.28)' : 'rgba(239, 68, 68, 0.22)'}`,
-          boxShadow: isDark
-            ? '0 16px 36px -4px rgba(0, 0, 0, 0.65), 0 0 20px rgba(239, 68, 68, 0.1)'
-            : '0 12px 32px -4px rgba(15, 23, 42, 0.12), 0 0 20px rgba(239, 68, 68, 0.08)',
+          borderRadius: 2,
+          bgcolor: 'background.paper',
+          border: `1px solid ${alpha(muiTheme.palette.error.main, 0.3)}`,
+          boxShadow: 8,
           display: 'flex',
           flexDirection: 'column',
           gap: 1.5,
@@ -75,14 +71,12 @@ export const SynthesisErrorBanner: React.FC<SynthesisErrorBannerProps> = React.m
                 width: 34,
                 height: 34,
                 borderRadius: '50%',
-                background: isDark
-                  ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(185, 28, 28, 0.35) 100%)'
-                  : 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)',
-                border: `1px solid ${isDark ? 'rgba(239, 68, 68, 0.4)' : 'rgba(239, 68, 68, 0.3)'}`,
+                bgcolor: alpha(muiTheme.palette.error.main, isDark ? 0.2 : 0.1),
+                border: `1px solid ${alpha(muiTheme.palette.error.main, 0.3)}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: isDark ? '#f87171' : '#dc2626',
+                color: 'error.main',
                 flexShrink: 0,
               }}
             >
@@ -161,6 +155,7 @@ export const SynthesisErrorBanner: React.FC<SynthesisErrorBannerProps> = React.m
           {onOpenSettings && (
             <Button
               variant="contained"
+              color="primary"
               size="small"
               startIcon={<SettingsRoundedIcon sx={{ fontSize: 15 }} />}
               onClick={onOpenSettings}
@@ -170,21 +165,6 @@ export const SynthesisErrorBanner: React.FC<SynthesisErrorBannerProps> = React.m
                 textTransform: 'none',
                 px: 1.75,
                 py: 0.6,
-                background: isDark
-                  ? 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)'
-                  : 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
-                color: '#ffffff',
-                boxShadow: isDark
-                  ? '0 2px 10px rgba(2, 132, 199, 0.4)'
-                  : '0 2px 8px rgba(2, 132, 199, 0.25)',
-                '&:hover': {
-                  background: isDark
-                    ? 'linear-gradient(135deg, #0369a1 0%, #1e40af 100%)'
-                    : 'linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%)',
-                  boxShadow: isDark
-                    ? '0 4px 14px rgba(2, 132, 199, 0.5)'
-                    : '0 4px 14px rgba(2, 132, 199, 0.35)',
-                },
               }}
             >
               {t('common:nav.settings', 'Open AI Settings')}
@@ -192,6 +172,7 @@ export const SynthesisErrorBanner: React.FC<SynthesisErrorBannerProps> = React.m
           )}
         </Box>
       </Paper>
+
     </Snackbar>
   );
 });

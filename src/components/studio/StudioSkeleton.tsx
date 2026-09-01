@@ -70,12 +70,12 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
         gap: 1,
         px: 2,
         py: 0.75,
-        borderRadius: '999px',
-        bgcolor: isDark ? alpha(theme.palette.primary.main, 0.12) : alpha(theme.palette.primary.main, 0.08),
+        borderRadius: 9999,
+        bgcolor: alpha(theme.palette.primary.main, isDark ? 0.12 : 0.08),
         border: `1px solid ${alpha(theme.palette.primary.main, isDark ? 0.3 : 0.2)}`,
         backdropFilter: 'blur(8px)',
         mb: 2.5,
-        boxShadow: `0 4px 16px ${alpha(theme.palette.primary.main, 0.15)}`,
+        boxShadow: 2,
         animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
       }}
     >
@@ -118,7 +118,7 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             border: `1px solid ${theme.palette.divider}`,
-            borderRadius: '12px',
+            borderRadius: 2,
             bgcolor: 'background.paper'
           }}
         >
@@ -142,7 +142,7 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
               maxWidth: 794,
               minHeight: 650,
               p: { xs: 2.5, sm: 4.5 },
-              borderRadius: '8px',
+              borderRadius: 1,
               border: `1px solid ${theme.palette.divider}`,
               bgcolor: 'background.paper',
               display: 'flex',
@@ -152,12 +152,13 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
           >
             {/* CV Header */}
             <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-              <Skeleton variant="rounded" width={56} height={56} sx={{ borderRadius: '12px' }} />
+              <Skeleton variant="rounded" width={56} height={56} sx={{ borderRadius: 1 }} />
               <Box sx={{ flex: 1 }}>
                 <Skeleton variant="text" width="55%" height={38} />
                 <Skeleton variant="text" width="35%" height={22} />
                 <Skeleton variant="text" width="70%" height={18} sx={{ mt: 0.5 }} />
               </Box>
+
             </Box>
 
             {/* Summary Block */}
@@ -202,7 +203,7 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
           sx={{
             p: 3,
             mb: 3,
-            borderRadius: '16px',
+            borderRadius: 2,
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
             display: 'flex',
@@ -215,7 +216,7 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
           <Box sx={{ flex: 1, minWidth: 200 }}>
             <Skeleton variant="text" width="40%" height={32} />
             <Skeleton variant="text" width="70%" height={20} />
-            <Skeleton variant="rounded" width="100%" height={12} sx={{ mt: 1.5, borderRadius: '6px' }} />
+            <Skeleton variant="rounded" width="100%" height={12} sx={{ mt: 1.5, borderRadius: 1 }} />
           </Box>
         </Paper>
 
@@ -234,12 +235,12 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
               elevation={0}
               sx={{
                 p: 2,
-                borderRadius: '12px',
+                borderRadius: 1.5,
                 border: `1px solid ${theme.palette.divider}`,
                 bgcolor: 'background.paper'
               }}
             >
-              <Skeleton variant="rounded" width={36} height={36} sx={{ mb: 1.5, borderRadius: '8px' }} />
+              <Skeleton variant="rounded" width={36} height={36} sx={{ mb: 1.5, borderRadius: 1 }} />
               <Skeleton variant="text" width="60%" height={22} />
               <Skeleton variant="text" width="40%" height={28} sx={{ my: 0.5 }} />
               <Skeleton variant="text" width="90%" height={16} />
@@ -250,7 +251,7 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
         {/* Section Accordions */}
         <Stack spacing={1.5}>
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} variant="rounded" width="100%" height={64} sx={{ borderRadius: '10px' }} />
+            <Skeleton key={i} variant="rounded" width="100%" height={64} sx={{ borderRadius: 1.5 }} />
           ))}
         </Stack>
       </Box>
@@ -268,7 +269,7 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
           elevation={0}
           sx={{
             p: { xs: 2, sm: 3.5 },
-            borderRadius: '16px',
+            borderRadius: 2,
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper'
           }}
@@ -277,15 +278,15 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
           <Skeleton variant="text" width="60%" height={20} sx={{ mb: 3 }} />
           
           <Stack direction="row" spacing={1.5} sx={{ mb: 3 }}>
-            <Skeleton variant="rounded" width={140} height={40} sx={{ borderRadius: '8px' }} />
-            <Skeleton variant="rounded" width={140} height={40} sx={{ borderRadius: '8px' }} />
-            <Skeleton variant="rounded" width={140} height={40} sx={{ borderRadius: '8px' }} />
+            <Skeleton variant="rounded" width={140} height={40} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rounded" width={140} height={40} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rounded" width={140} height={40} sx={{ borderRadius: 1 }} />
           </Stack>
 
           <Stack spacing={2.5}>
-            <Skeleton variant="rounded" width="100%" height={60} sx={{ borderRadius: '10px' }} />
-            <Skeleton variant="rounded" width="100%" height={60} sx={{ borderRadius: '10px' }} />
-            <Skeleton variant="rounded" width="100%" height={120} sx={{ borderRadius: '10px' }} />
+            <Skeleton variant="rounded" width="100%" height={60} sx={{ borderRadius: 1.5 }} />
+            <Skeleton variant="rounded" width="100%" height={60} sx={{ borderRadius: 1.5 }} />
+            <Skeleton variant="rounded" width="100%" height={120} sx={{ borderRadius: 1.5 }} />
           </Stack>
         </Paper>
       </Box>
@@ -300,7 +301,7 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
         <Skeleton variant="text" width="85%" height={18} sx={{ mb: 1 }} />
         <Stack spacing={1.5}>
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} variant="rounded" width="100%" height={70} sx={{ borderRadius: '10px' }} />
+            <Skeleton key={i} variant="rounded" width="100%" height={70} sx={{ borderRadius: 1.5 }} />
           ))}
         </Stack>
       </Box>
@@ -317,7 +318,7 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
         elevation={0}
         sx={{
           p: { xs: 2, sm: 3.5 },
-          borderRadius: '16px',
+          borderRadius: 2,
           border: `1px solid ${theme.palette.divider}`,
           bgcolor: 'background.paper',
           display: 'flex',
@@ -331,22 +332,23 @@ export const StudioSkeleton: React.FC<StudioSkeletonProps> = ({
             <Skeleton variant="text" width="65%" height={20} sx={{ mt: 0.5 }} />
           </Box>
           <Stack direction="row" spacing={1}>
-            <Skeleton variant="rounded" width={90} height={36} sx={{ borderRadius: '8px' }} />
-            <Skeleton variant="rounded" width={110} height={36} sx={{ borderRadius: '8px' }} />
+            <Skeleton variant="rounded" width={90} height={36} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rounded" width={110} height={36} sx={{ borderRadius: 1 }} />
           </Stack>
         </Box>
 
         <Stack spacing={2} sx={{ my: 1 }}>
-          <Skeleton variant="rounded" width="100%" height={56} sx={{ borderRadius: '8px' }} />
-          <Skeleton variant="rounded" width="100%" height={56} sx={{ borderRadius: '8px' }} />
-          <Skeleton variant="rounded" width="100%" height={220} sx={{ borderRadius: '10px' }} />
+          <Skeleton variant="rounded" width="100%" height={56} sx={{ borderRadius: 1 }} />
+          <Skeleton variant="rounded" width="100%" height={56} sx={{ borderRadius: 1 }} />
+          <Skeleton variant="rounded" width="100%" height={220} sx={{ borderRadius: 1.5 }} />
         </Stack>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 1, borderTop: `1px solid ${theme.palette.divider}` }}>
-          <Skeleton variant="rounded" width={100} height={38} sx={{ borderRadius: '8px' }} />
-          <Skeleton variant="rounded" width={160} height={38} sx={{ borderRadius: '8px' }} />
+          <Skeleton variant="rounded" width={100} height={38} sx={{ borderRadius: 1 }} />
+          <Skeleton variant="rounded" width={160} height={38} sx={{ borderRadius: 1 }} />
         </Box>
       </Paper>
     </Box>
   );
 };
+

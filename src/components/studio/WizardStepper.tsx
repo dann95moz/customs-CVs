@@ -188,8 +188,9 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                   minWidth: { xs: 'auto', sm: 160, md: 200 },
                   p: { xs: 0.6, sm: 1 },
                   px: { xs: 1, sm: 1.75 },
-                  borderRadius: '9999px',
+                  borderRadius: 9999,
                   display: 'flex',
+
                   alignItems: 'center',
                   gap: { xs: 0.75, sm: 1.25 },
                   textAlign: 'left',
@@ -198,7 +199,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                     ? theme.palette.primary.main
                     : isCompleted
                     ? alpha(theme.palette.success.main, 0.4)
-                    : isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+                    : theme.palette.divider,
                   bgcolor: isActive
                     ? alpha(theme.palette.primary.main, isDark ? 0.14 : 0.08)
                     : isCompleted
@@ -229,12 +230,12 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                       ? theme.palette.primary.main
                       : isCompleted
                       ? theme.palette.success.main
-                      : isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
+                      : alpha(theme.palette.text.primary, 0.06),
                     color: isActive || isCompleted
-                      ? '#ffffff'
+                      ? 'common.white'
                       : theme.palette.text.secondary,
                     boxShadow: isActive
-                      ? `0 2px 8px ${alpha(theme.palette.primary.main, 0.4)}`
+                      ? 2
                       : 'none',
                     transition: 'all 0.2s ease',
                     '& svg': {
@@ -242,6 +243,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                     },
                   }}
                 >
+
                   {isCompleted ? (
                     <CheckCircleRoundedIcon />
                   ) : (

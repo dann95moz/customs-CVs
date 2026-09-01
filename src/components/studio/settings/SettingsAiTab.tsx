@@ -60,10 +60,11 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
           gap: 1.5,
           border: `1px solid ${muiTheme.palette.divider}`,
           bgcolor: 'background.paper',
-          borderRadius: '16px',
+          borderRadius: 2,
           width: '100%',
           boxSizing: 'border-box',
         }}
+
       >
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', mb: 0.5 }}>
