@@ -169,7 +169,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
   const [auditGapTab, setAuditGapTab] = useState<'audit' | 'gap' | 'interview'>('audit');
 
   // Mobile mode toggle: 'edit' (card-based touch list) vs 'preview' (scaled PDF sheet)
-  const [mobileViewMode, setMobileViewMode] = useState<'edit' | 'preview'>('edit');
+  const [mobileViewMode, setMobileViewMode] = useState<'edit' | 'preview'>('preview');
 
   const activeTemplateMeta = getTemplateMetadata(theme);
 
@@ -489,11 +489,15 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               {/* Mobile 'Edit' Mode: Vertical List of Cards with Large Touch Buttons */}
               {mobileViewMode === 'edit' && (
                 <Box
+                  className="no-print preview-mobile-edit"
                   sx={{
                     display: { xs: 'block', md: 'none' },
                     flex: 1,
                     overflowY: 'auto',
                     bgcolor: 'background.default',
+                    '@media print': {
+                      display: 'none !important',
+                    },
                   }}
                 >
                   <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
@@ -509,7 +513,10 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
             className="preview-pane-canvas"
             sx={{
               position: 'relative',
-              display: mobileViewMode === 'edit' ? { xs: 'none', md: 'flex' } : 'flex',
+              display: {
+                xs: mobileViewMode === 'edit' ? 'none' : 'flex',
+                md: 'flex',
+              },
               flexDirection: 'column',
               alignItems: canvasScale < 1 && mobileZoomMode === 'fit' ? 'center' : 'flex-start',
               justifyContent: 'flex-start',
@@ -520,6 +527,13 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
               p: { xs: 1.5, sm: 2, md: 3.5 },
               pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 64px)', sm: 5, md: 6 },
               boxSizing: 'border-box',
+              '@media print': {
+                display: 'block !important',
+                visibility: 'visible !important',
+                overflow: 'visible !important',
+                p: '0 !important',
+                m: '0 !important',
+              },
             }}
           >
             {/* Scaled Wrapper Container with strict visual pixel footprint */}

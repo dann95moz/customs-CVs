@@ -16,8 +16,22 @@
 
   :root,
   html,
-  body {
+  body,
+  .paper-sheet,
+  .paper-sheet * {
     color-scheme: light !important;
+    --cv-paper-bg: #ffffff !important;
+    --cv-text-primary: #1e293b !important;
+    --cv-text-heading: #0f172a !important;
+    --cv-text-secondary: #475569 !important;
+    --cv-text-muted: #64748b !important;
+    --cv-border-light: #e2e8f0 !important;
+    --cv-border-color: #cbd5e1 !important;
+  }
+
+  :root,
+  html,
+  body {
     background: #ffffff !important;
     background-color: #ffffff !important;
     color: #1e293b !important;
@@ -36,9 +50,7 @@
   .studio-app,
   .studio-body,
   .preview-workspace-layout,
-  .preview-canvas-wrapper,
-  .preview-pane-canvas,
-  .paper-sheet-wrapper {
+  .preview-canvas-wrapper {
     background: #ffffff !important;
     background-color: #ffffff !important;
     color: #1e293b !important;
@@ -51,10 +63,49 @@
     overflow: visible !important;
     box-shadow: none !important;
     border: none !important;
+    display: block !important;
   }
 
-  /* Hide all Studio application UI elements, wizard, stepper, rails, drawers and sidebars */
+  /* Force preview canvas and sheet wrapper to render cleanly without transforms */
+  .preview-pane-canvas {
+    display: block !important;
+    visibility: visible !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .paper-scale-container,
+  .paper-sheet-wrapper {
+    display: block !important;
+    visibility: visible !important;
+    background: #ffffff !important;
+    transform: none !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Hide all Studio application UI elements, wizard, stepper, rails, drawers, mobile edit cards, and sidebars */
   .no-print,
+  .preview-mobile-edit,
+  [class*="StepPreviewMobileEdit"],
+  [class*="mobile-edit"],
+  .cv-ai-hover-actions,
+  .cv-selection-bubble,
+  .cv-ai-sparkle-btn,
+  .cv-undo-button,
   .studio-navbar,
   .wizard-stepper,
   .MuiAppBar-root,
@@ -103,10 +154,13 @@
 
   /* The printable sheet: full-width extraction with NO drop shadow and edge-to-edge layout */
   .paper-sheet {
+    display: block !important;
+    visibility: visible !important;
     transform: none !important;
     transform-origin: initial !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
+    color: #1e293b !important;
     box-shadow: none !important;
     border: none !important;
     border-radius: 0 !important;

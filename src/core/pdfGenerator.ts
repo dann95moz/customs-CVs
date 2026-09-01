@@ -67,6 +67,26 @@ export async function generateDirectPdf(
       logging: false,
       windowWidth: formatConfig.widthPx,
       onclone: (clonedDoc) => {
+        // Ensure cloned document is in light mode with crisp styling
+        clonedDoc.documentElement.setAttribute('data-theme', 'light');
+        clonedDoc.documentElement.style.colorScheme = 'light';
+        clonedDoc.documentElement.style.setProperty('--cv-paper-bg', '#ffffff');
+        clonedDoc.documentElement.style.setProperty('--cv-text-primary', '#1e293b');
+        clonedDoc.documentElement.style.setProperty('--cv-text-heading', '#0f172a');
+        clonedDoc.documentElement.style.setProperty('--cv-text-secondary', '#475569');
+        clonedDoc.documentElement.style.setProperty('--cv-text-muted', '#64748b');
+        clonedDoc.documentElement.style.setProperty('--cv-border-light', '#e2e8f0');
+        clonedDoc.documentElement.style.setProperty('--cv-border-color', '#cbd5e1');
+
+        if (clonedDoc.body) {
+          clonedDoc.body.style.backgroundColor = '#ffffff';
+        }
+
+        // Hide all hover actions, bubbles, and interactive toolbars
+        clonedDoc.querySelectorAll('.no-print, .preview-mobile-edit, .cv-ai-hover-actions, .cv-selection-bubble, .cv-ai-sparkle-btn, .cv-undo-button, .photo-upload-placeholder').forEach((el) => {
+          (el as HTMLElement).style.display = 'none';
+        });
+
         // Ensure cloned printable sheet and containers have clean unscaled styling
         const clonedScaleContainer = clonedDoc.querySelector('.paper-scale-container') as HTMLElement;
         if (clonedScaleContainer) {
@@ -87,6 +107,7 @@ export async function generateDirectPdf(
           clonedSheet.style.margin = '0 auto';
           clonedSheet.style.boxShadow = 'none';
           clonedSheet.style.border = 'none';
+          clonedSheet.style.backgroundColor = '#ffffff';
         }
       }
     });
