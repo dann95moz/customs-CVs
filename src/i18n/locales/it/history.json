@@ -147,7 +147,7 @@
     "title": "Comparatore Visivo delle Versioni (Diff)",
     "subtitle": "Confronta le varianti personalizzate affiancate o in modalità unificata",
     "compareButton": "Confronta Versioni (Diff)",
-    "masterCv": "Profilo Master (SSOT)",
+    "masterCv": "Profilo Base (Originale)",
     "currentTailored": "CV Personalizzato Attuale (Editor)",
     "baseVersion": "Versione di Base (Originale):",
     "targetVersion": "Versione di Confronto (Personalizzata):",

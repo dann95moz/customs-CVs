@@ -511,7 +511,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             {hasData ? (
               <Chip
                 icon={<CheckCircleRoundedIcon />}
-                label={t('profile:status.ready', 'Master profile ready for tailoring')}
+                label={t('profile:status.ready', 'Career profile ready for tailoring')}
                 color="success"
                 variant="outlined"
                 size="small"
@@ -530,7 +530,8 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
 
             {/* Contextual Backup Export only when there is actual profile data */}
             {hasData && (
-              <Tooltip title={t('profile:actions.exportBackupTip', 'Download your master profile as Markdown (.md)')}>
+              <Tooltip title={t('profile:actions.exportBackupTip', 'Download your career profile as Markdown (.md)')}>
+
                 <Button
                   size="small"
                   variant="text"

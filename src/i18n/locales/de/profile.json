@@ -9,7 +9,7 @@
     "clearProfile": "Von Grund auf neu",
     "clearProfileTip": "Alle Profilfelder leeren und mit einer leeren Vorlage beginnen",
     "exportBackup": "Sicherung exportieren (.md)",
-    "exportBackupTip": "Laden Sie Ihr Master-Profil als Markdown (.md) herunter",
+    "exportBackupTip": "Laden Sie Ihr Karriereprofil als Markdown (.md) herunter",
     "continueToTarget": "Weiter zur Zielstelle"
   },
   "dialog": {
@@ -28,7 +28,8 @@
     "markdownTitle": "Manueller Modus / Freitext"
   },
   "status": {
-    "ready": "Master-Profil bereit für die Anpassung",
+    "ready": "Karriereprofil bereit für die Anpassung",
+
     "tipLoadSample": "Tipp: Klicken Sie auf 'Beispielprofil laden', um direkt zu testen",
     "importingPdf": "PDF-Lebenslauf wird gelesen und strukturiert...",
     "pdfSuccess": "Karriereprofil erfolgreich aus {{fileName}} importiert",

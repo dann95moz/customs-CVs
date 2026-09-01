@@ -69,8 +69,9 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
   // Helper to resolve markdown content by ID
   const getVersionText = (id: string): { label: string; text: string } => {
     if (id === 'master') {
-      return { label: t('history:diff.masterCv', 'Master Profile (SSOT)'), text: masterData };
+      return { label: t('history:diff.masterCv', 'Original Career Profile'), text: masterData };
     }
+
     if (id === 'current') {
       return { label: t('history:diff.currentTailored', 'Current Tailored CV (Editor)'), text: cvMarkdown };
     }
@@ -196,7 +197,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
               onChange={(e) => setVersionAId(e.target.value)}
               sx={{ fontSize: '0.82rem', fontWeight: 600, bgcolor: 'background.paper', borderRadius: '8px' }}
             >
-              <MenuItem value="master">{t('history:diff.masterCv', 'Master Profile (SSOT)')}</MenuItem>
+              <MenuItem value="master">{t('history:diff.masterCv', 'Original Career Profile')}</MenuItem>
               <MenuItem value="current">{t('history:diff.currentTailored', 'Current Tailored CV')}</MenuItem>
               {savedVersions.map((v) => (
                 <MenuItem key={v.id} value={v.id}>
@@ -219,7 +220,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
               sx={{ fontSize: '0.82rem', fontWeight: 600, bgcolor: 'background.paper', borderRadius: '8px' }}
             >
               <MenuItem value="current">{t('history:diff.currentTailored', 'Current Tailored CV')}</MenuItem>
-              <MenuItem value="master">{t('history:diff.masterCv', 'Master Profile (SSOT)')}</MenuItem>
+              <MenuItem value="master">{t('history:diff.masterCv', 'Original Career Profile')}</MenuItem>
               {savedVersions.map((v) => (
                 <MenuItem key={v.id} value={v.id}>
                   {v.companyName || 'General'} {v.targetRole ? `(${v.targetRole})` : ''} - {formatLocalizedDate(v.createdAt, i18n.language || 'en')}
@@ -227,6 +228,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
               ))}
             </Select>
           </Box>
+
 
         </Box>
 

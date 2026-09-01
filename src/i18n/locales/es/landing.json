@@ -8,9 +8,10 @@
   "steps": {
     "step1": {
       "number": "PASO 01",
-      "title": "Bóveda Maestra de Carrera",
-      "desc": "Almacena tu historial laboral completo, stack tecnológico, proyectos y logros en Markdown estructurado o mediante formularios guiados."
+      "title": "Perfil Profesional Completo",
+      "desc": "Almacena tu historial laboral completo, habilidades, proyectos y logros mediante un formulario guiado e intuitivo."
     },
+
     "step2": {
       "number": "PASO 02",
       "title": "Oferta Objetivo y Adaptación",

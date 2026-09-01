@@ -9,7 +9,7 @@
     "clearProfile": "Inizia da capo",
     "clearProfileTip": "Cancella tutti i campi del profilo e riparti da zero",
     "exportBackup": "Esporta Backup (.md)",
-    "exportBackupTip": "Scarica il tuo profilo master in formato Markdown (.md)",
+    "exportBackupTip": "Scarica il tuo profilo professionale in formato Markdown (.md)",
     "continueToTarget": "Continua alla Posizione Obiettivo"
   },
   "dialog": {
@@ -28,7 +28,8 @@
     "markdownTitle": "Modalità Manuale / Testo Libero"
   },
   "status": {
-    "ready": "Profilo master pronto per l'adattamento",
+    "ready": "Profilo professionale pronto per l'adattamento",
+
     "tipLoadSample": "Suggerimento: Clicca su 'Carica Profilo di Esempio' per testare subito",
     "importingPdf": "Lettura e strutturazione del tuo CV in PDF...",
     "pdfSuccess": "Profilo professionale importato con successo da {{fileName}}",

@@ -113,11 +113,12 @@
       "photoDeleteAction": "Rimuovi"
     },
     "comparison": {
-      "title": "Profilo Master vs CV Adattato",
+      "title": "Profilo Base vs CV Personalizzato",
       "subtitle": "Confronto affiancato tra la tua base di dati originaria e il curriculum sintetizzato",
-      "masterProfile": "Profilo Master Originale",
+      "masterProfile": "Profilo Base Originale",
       "tailoredCv": "Curriculum Personalizzato"
     }
+
   },
   "drawer": {
     "title": "Analisi di Qualità & Corrispondenza",

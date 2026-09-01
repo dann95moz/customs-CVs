@@ -113,9 +113,9 @@
       "photoDeleteAction": "Remove"
     },
     "comparison": {
-      "title": "Master Profile vs Tailored CV",
-      "subtitle": "Side-by-side comparison of original knowledge base and synthesized resume",
-      "masterProfile": "Original Master Profile",
+      "title": "Base Profile vs Tailored CV",
+      "subtitle": "Side-by-side comparison between your original information and synthesized CV",
+      "masterProfile": "Original Full Profile",
       "tailoredCv": "Tailored Resume"
     }
   },

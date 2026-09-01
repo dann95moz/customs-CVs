@@ -113,9 +113,9 @@
       "photoDeleteAction": "Entfernen"
     },
     "comparison": {
-      "title": "Master-Profil vs. Angepasster CV",
-      "subtitle": "Direkter Vergleich zwischen Originalprofil und synthetisiertem Lebenslauf",
-      "masterProfile": "Original Master-Profil",
+      "title": "Basis-Profil vs. Angepasster CV",
+      "subtitle": "Direkter Vergleich zwischen Ihren Originaldaten und dem optimierten Lebenslauf",
+      "masterProfile": "Originales Basis-Profil",
       "tailoredCv": "Angepasster Lebenslauf"
     }
   },

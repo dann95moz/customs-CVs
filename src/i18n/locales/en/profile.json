@@ -9,7 +9,7 @@
     "clearProfile": "Start from Scratch",
     "clearProfileTip": "Clear all profile fields and start from a blank slate",
     "exportBackup": "Export Backup (.md)",
-    "exportBackupTip": "Download your master career profile as Markdown (.md)",
+    "exportBackupTip": "Download your career profile as Markdown (.md)",
     "continueToTarget": "Continue to Target Vacancy"
   },
   "dialog": {
@@ -28,7 +28,8 @@
     "markdownTitle": "Freeform Text / Manual Mode"
   },
   "status": {
-    "ready": "Master profile ready for tailoring",
+    "ready": "Career profile ready for tailoring",
+
     "tipLoadSample": "Tip: Click 'Load Sample Profile' to test right away",
     "importingPdf": "Reading and structuring your PDF resume...",
     "pdfSuccess": "Successfully imported career profile from {{fileName}}",

@@ -147,7 +147,7 @@
     "title": "Visual Version Diff Comparator",
     "subtitle": "Compare tailored variants side-by-side or unified",
     "compareButton": "Compare Versions (Diff)",
-    "masterCv": "Master Profile (SSOT)",
+    "masterCv": "Original Career Profile",
     "currentTailored": "Current Tailored CV (Editor)",
     "baseVersion": "Base Version (Original):",
     "targetVersion": "Compare Target (Tailored):",

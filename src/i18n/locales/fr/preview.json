@@ -113,11 +113,12 @@
       "photoDeleteAction": "Supprimer"
     },
     "comparison": {
-      "title": "Profil Maître vs CV Adapté",
+      "title": "Profil de Base vs CV Adapté",
       "subtitle": "Comparaison côte à côte entre votre profil source et le CV généré",
-      "masterProfile": "Profil Maître Original",
+      "masterProfile": "Profil de Base Original",
       "tailoredCv": "CV Sur Mesure"
     }
+
   },
   "drawer": {
     "title": "Intelligence d'Audit & Écarts",

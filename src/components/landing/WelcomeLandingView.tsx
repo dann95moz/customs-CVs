@@ -105,14 +105,15 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
               </div>
             </div>
             <Typography variant="h6" className="welcome-step-title">
-              {t('landing:steps.step1.title', 'Master Career Vault')}
+              {t('landing:steps.step1.title', 'Complete Career Profile')}
             </Typography>
             <Typography variant="body2" className="welcome-step-desc">
               {t(
                 'landing:steps.step1.desc',
-                'Store your complete career history, technical stack, projects, and achievements in structured Markdown or guided forms.'
+                'Store your complete career history, skills, projects, and achievements in an intuitive guided visual form.'
               )}
             </Typography>
+
           </div>
 
           {/* Step 2 */}

@@ -53,8 +53,9 @@ export function serializeCvDataToMarkdown(data: CVData): string {
   // Skills
   if (data.skillGroups && data.skillGroups.length > 0) {
     parts.push('\n---\n');
-    parts.push('## 🛠️ MASTER TECH STACK & COMPETENCIES');
+    parts.push('## 🛠️ CORE SKILLS & COMPETENCIES');
     for (const group of data.skillGroups) {
+
       const cat = group.category ? group.category.trim() : '';
       const skl = group.skills && group.skills.length > 0 ? group.skills.join(', ') : '';
       parts.push(`- **${cat}:** ${skl}`);

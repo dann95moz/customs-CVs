@@ -113,11 +113,12 @@
       "photoDeleteAction": "Eliminar"
     },
     "comparison": {
-      "title": "Perfil Maestro vs CV Adaptado",
+      "title": "Perfil Base vs CV Adaptado",
       "subtitle": "Comparación lado a lado entre tu información original y el currículum sintetizado",
-      "masterProfile": "Perfil Maestro Original",
+      "masterProfile": "Perfil Original Completo",
       "tailoredCv": "Currículum Adaptado"
     }
+
   },
   "drawer": {
     "title": "Inteligencia de Auditoría y Brechas",

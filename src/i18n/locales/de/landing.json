@@ -8,9 +8,10 @@
   "steps": {
     "step1": {
       "number": "SCHRITT 01",
-      "title": "Karriere-Master-Tresor",
-      "desc": "Speichern Sie Ihren gesamten beruflichen Werdegang, Tech-Stack, Projekte und Erfolge in strukturiertem Markdown oder über geführte Formulare."
+      "title": "Vollständiges Karriereprofil",
+      "desc": "Erfassen Sie Ihren gesamten beruflichen Werdegang, Ihre Fähigkeiten, Projekte und Erfolge über ein intuitives Formular."
     },
+
     "step2": {
       "number": "SCHRITT 02",
       "title": "Ziel-Stellenanzeige & Anpassung",

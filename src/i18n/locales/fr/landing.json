@@ -8,9 +8,10 @@
   "steps": {
     "step1": {
       "number": "ÉTAPE 01",
-      "title": "Coffre-fort de Carrière",
-      "desc": "Stockez votre historique professionnel complet, votre stack technique et vos réalisations en Markdown structuré ou via des formulaires guidés."
+      "title": "Profil Professionnel Complet",
+      "desc": "Renseignez votre parcours professionnel complet, vos compétences, projets et réalisations via un formulaire visuel guidé."
     },
+
     "step2": {
       "number": "ÉTAPE 02",
       "title": "Offre Cible & Adaptation",

@@ -147,7 +147,7 @@
     "title": "Comparador Visual de Versiones (Diff)",
     "subtitle": "Compara variantes adaptadas en paralelo o de forma unificada",
     "compareButton": "Comparar Versiones (Diff)",
-    "masterCv": "Perfil Maestro (SSOT)",
+    "masterCv": "Perfil Principal (Original)",
     "currentTailored": "CV Adaptado Actual (Editor)",
     "baseVersion": "Versión Base (Original):",
     "targetVersion": "Versión de Comparación (Adaptada):",
