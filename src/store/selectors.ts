@@ -3,22 +3,9 @@ import { useResumeStore } from './useResumeStore';
 import { parseCvMarkdownToData } from '../core/parser';
 import { auditCvContent } from '../core/audit-engine';
 import { CVData, QualityAuditReport } from '../types/cv';
+import { extractGapInfo } from '../utils/sanitize';
 
-export const extractGapInfo = (gapMarkdown: string): { matchScore: number; keywords: string[] } => {
-  let matchScore = 92;
-  const scoreMatch = gapMarkdown.match(/Estimated Match Score:\*{0,2}\s*(\d{1,3})/i);
-  if (scoreMatch) {
-    matchScore = parseInt(scoreMatch[1], 10);
-  }
-
-  let keywords = ['TypeScript', 'React', 'Microfrontends', 'Module Federation', 'Zustand', 'CI/CD', 'Jest'];
-  const kwMatch = gapMarkdown.match(/Critical Integrated Keywords:\*{0,2}\s*\[?([^\]\r\n]+)\]?/i);
-  if (kwMatch) {
-    keywords = kwMatch[1].split(/[,|•]/).map((k) => k.trim()).filter(Boolean);
-  }
-
-  return { matchScore, keywords };
-};
+export { extractGapInfo };
 
 export const checkHasTargetJob = (targetJob: string): boolean => {
   return Boolean(targetJob && targetJob.trim().length > 20);
@@ -63,7 +50,8 @@ export const useAuditReport = (): QualityAuditReport => {
  */
 export const useGapInfo = (): { matchScore: number; keywords: string[] } => {
   const gapMarkdown = useResumeStore((s) => s.gapMarkdown);
-  return useMemo(() => extractGapInfo(gapMarkdown), [gapMarkdown]);
+  const targetJob = useResumeStore((s) => s.targetJob);
+  return useMemo(() => extractGapInfo(gapMarkdown, targetJob), [gapMarkdown, targetJob]);
 };
 
 /**

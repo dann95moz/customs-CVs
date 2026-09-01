@@ -7,6 +7,7 @@ import {
   extractTargetRole,
 } from '../../core/parser';
 import { auditCvContent } from '../../core/audit-engine';
+import { extractGapInfo } from '../../utils/sanitize';
 
 export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice> = (set, get) => ({
   savedVersions: [],
@@ -47,11 +48,7 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
       return existingDuplicate.id;
     }
 
-    let matchScore = 92;
-    const scoreMatch = gapMarkdown.match(/Estimated Match Score:\*{0,2}\s*(\d{1,3})/i);
-    if (scoreMatch) {
-      matchScore = parseInt(scoreMatch[1], 10);
-    }
+    const { matchScore } = extractGapInfo(gapMarkdown, targetJob);
 
     const audit = auditCvContent(cvMarkdown, targetJob, masterData);
     const newVersionId = `cv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
