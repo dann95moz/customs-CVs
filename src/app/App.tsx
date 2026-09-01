@@ -67,8 +67,11 @@ export const App: React.FC = () => {
   const setCvMarkdown = useResumeStore((s) => s.setCvMarkdown);
   const isGenerating = useResumeStore((s) => s.isGenerating);
   const generationStep = useResumeStore((s) => s.generationStep);
+  const generationError = useResumeStore((s) => s.generationError);
+  const setGenerationError = useResumeStore((s) => s.setGenerationError);
   const handleGenerate = useResumeStore((s) => s.handleGenerate);
   const handleResetWorkspace = useResumeStore((s) => s.handleResetWorkspace);
+
 
   // Derived state via optimized memoized hooks
   const { hasTargetJob, hasGeneratedCv, hasGapReport } = useDerivedFlags();
@@ -241,7 +244,15 @@ export const App: React.FC = () => {
       </div>
 
       {/* Synthesis Error Floating Banner */}
-      <SynthesisErrorBanner />
+      <SynthesisErrorBanner
+        error={generationError}
+        onDismiss={() => setGenerationError(null)}
+        onOpenSettings={() => {
+          setGenerationError(null);
+          setActiveTab('settings');
+        }}
+      />
+
 
       {/* Full-Screen Blocking AI Synthesis Screen */}
       <AiGeneratingOverlay />

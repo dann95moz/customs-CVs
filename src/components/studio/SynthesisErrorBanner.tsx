@@ -14,21 +14,27 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { useTranslation } from 'react-i18next';
-import { useResumeStore } from '../../store';
 
-export const SynthesisErrorBanner: React.FC = () => {
+export interface SynthesisErrorBannerProps {
+  error: string | null;
+  onDismiss: () => void;
+  onOpenSettings?: () => void;
+}
+
+export const SynthesisErrorBanner: React.FC<SynthesisErrorBannerProps> = React.memo(({
+  error,
+  onDismiss,
+  onOpenSettings,
+}) => {
   const { t } = useTranslation(['common', 'settings']);
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
-  const generationError = useResumeStore((s) => s.generationError);
-  const setGenerationError = useResumeStore((s) => s.setGenerationError);
-  const setActiveTab = useResumeStore((s) => s.setActiveTab);
 
-  if (!generationError) return null;
+  if (!error) return null;
 
   return (
     <Snackbar
-      open={Boolean(generationError)}
+      open={Boolean(error)}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       sx={{
         bottom: { xs: 16, sm: 24 },
@@ -99,7 +105,7 @@ export const SynthesisErrorBanner: React.FC = () => {
           <Tooltip title={t('common:actions.close', 'Dismiss')}>
             <IconButton
               size="small"
-              onClick={() => setGenerationError(null)}
+              onClick={onDismiss}
               sx={{
                 color: 'text.secondary',
                 p: 0.5,
@@ -127,7 +133,7 @@ export const SynthesisErrorBanner: React.FC = () => {
             overflowY: 'auto',
           }}
         >
-          {generationError}
+          {error}
         </Typography>
 
         {/* Action Row */}
@@ -135,7 +141,7 @@ export const SynthesisErrorBanner: React.FC = () => {
           <Button
             variant="text"
             size="small"
-            onClick={() => setGenerationError(null)}
+            onClick={onDismiss}
             sx={{
               fontWeight: 600,
               fontSize: '0.78rem',
@@ -152,41 +158,40 @@ export const SynthesisErrorBanner: React.FC = () => {
             {t('common:actions.cancel', 'Dismiss')}
           </Button>
 
-          <Button
-            variant="contained"
-            size="small"
-            startIcon={<SettingsRoundedIcon sx={{ fontSize: 15 }} />}
-            onClick={() => {
-              setGenerationError(null);
-              setActiveTab('settings');
-            }}
-            sx={{
-              fontWeight: 700,
-              fontSize: '0.8rem',
-              textTransform: 'none',
-              px: 1.75,
-              py: 0.6,
-              background: isDark
-                ? 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)'
-                : 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
-              color: '#ffffff',
-              boxShadow: isDark
-                ? '0 2px 10px rgba(2, 132, 199, 0.4)'
-                : '0 2px 8px rgba(2, 132, 199, 0.25)',
-              '&:hover': {
+          {onOpenSettings && (
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<SettingsRoundedIcon sx={{ fontSize: 15 }} />}
+              onClick={onOpenSettings}
+              sx={{
+                fontWeight: 700,
+                fontSize: '0.8rem',
+                textTransform: 'none',
+                px: 1.75,
+                py: 0.6,
                 background: isDark
-                  ? 'linear-gradient(135deg, #0369a1 0%, #1e40af 100%)'
-                  : 'linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%)',
+                  ? 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)'
+                  : 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+                color: '#ffffff',
                 boxShadow: isDark
-                  ? '0 4px 14px rgba(2, 132, 199, 0.5)'
-                  : '0 4px 14px rgba(2, 132, 199, 0.35)',
-              },
-            }}
-          >
-            {t('common:nav.settings', 'Open AI Settings')}
-          </Button>
+                  ? '0 2px 10px rgba(2, 132, 199, 0.4)'
+                  : '0 2px 8px rgba(2, 132, 199, 0.25)',
+                '&:hover': {
+                  background: isDark
+                    ? 'linear-gradient(135deg, #0369a1 0%, #1e40af 100%)'
+                    : 'linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%)',
+                  boxShadow: isDark
+                    ? '0 4px 14px rgba(2, 132, 199, 0.5)'
+                    : '0 4px 14px rgba(2, 132, 199, 0.35)',
+                },
+              }}
+            >
+              {t('common:nav.settings', 'Open AI Settings')}
+            </Button>
+          )}
         </Box>
       </Paper>
     </Snackbar>
   );
-};
+});

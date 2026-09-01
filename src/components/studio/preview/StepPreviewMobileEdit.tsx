@@ -19,7 +19,7 @@ import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import { useTranslation } from 'react-i18next';
 import { safeMarkdown, safeMarkdownInline } from '../../../utils/sanitize';
 import { CVData } from '../../../types/cv';
-import { useResumeStore } from '../../../store';
+import { ThemeId } from '../../../types/theme';
 import { extractCandidateInitials } from '../../../core/parser';
 import { useCvLiveEdit } from './CvLiveEditContext';
 import { AiRegeneratePopover } from './AiRegeneratePopover';
@@ -27,7 +27,9 @@ import { ProfilePhotoDisplay } from '../photo/ProfilePhotoDisplay';
 
 export interface StepPreviewMobileEditProps {
   parsedCv: CVData;
+  activeTheme?: ThemeId;
 }
+
 
 interface ActiveEditItem {
   type: 'bullet' | 'summary';
@@ -40,7 +42,8 @@ interface ActiveEditItem {
   initialText: string;
 }
 
-export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ parsedCv }) => {
+export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ parsedCv, activeTheme = 'modern-tech' }) => {
+
   const { t } = useTranslation(['preview', 'common']);
   const liveEdit = useCvLiveEdit();
   const theme = useTheme();
@@ -106,9 +109,9 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
     liveEdit.undoItem(fieldKey, onRevert);
   };
 
-  const activeTheme = useResumeStore((s) => s.theme);
   const initials = extractCandidateInitials(parsedCv.name || 'Candidate');
   const isTwoColumnTheme = ['executive', 'two-column', 'designer-uiux', 'academic-research'].includes(activeTheme);
+
 
   return (
     <Box sx={{ px: 2, py: 2, pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 72px)', sm: 8 }, display: 'flex', flexDirection: 'column', gap: 2.5, boxSizing: 'border-box' }}>

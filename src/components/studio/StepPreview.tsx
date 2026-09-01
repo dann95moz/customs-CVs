@@ -92,12 +92,15 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
 
   const companyName = useResumeStore((s) => s.companyName);
   const targetRole = useResumeStore((s) => s.targetRole);
+  const targetJob = useResumeStore((s) => s.targetJob);
+  const providerSettings = useResumeStore((s) => s.providerSettings);
   const masterData = useResumeStore((s) => s.masterData);
   const applications = useResumeStore((s) => s.applications);
   const kanbanColumns = useResumeStore((s) => s.kanbanColumns);
   const handleAddApplication = useResumeStore((s) => s.handleAddApplication);
   const savedVersions = useResumeStore((s) => s.savedVersions);
   const gapMarkdown = useResumeStore((s) => s.gapMarkdown);
+
 
   const parsedCv = useParsedCv();
   const auditReport = useAuditReport();
@@ -368,9 +371,12 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   cvData={parsedCv}
                   companyName={companyName}
                   targetRole={targetRole}
+                  targetJob={targetJob}
+                  providerSettings={providerSettings}
                   onClose={() => setActiveSidePanel(null)}
                 />
               )}
+
             </React.Suspense>
           </Box>
         )}
@@ -501,8 +507,9 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
                   }}
                 >
                   <CvLiveEditProvider parsedCv={parsedCv} isEditable={true}>
-                    <StepPreviewMobileEdit parsedCv={parsedCv} />
+                    <StepPreviewMobileEdit parsedCv={parsedCv} activeTheme={theme} />
                   </CvLiveEditProvider>
+
                 </Box>
               )}
 

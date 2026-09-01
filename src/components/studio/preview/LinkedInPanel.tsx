@@ -18,32 +18,42 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import { useTranslation } from 'react-i18next';
 import { CVData } from '../../../types/cv';
 import { LinkedInProfileResult, LinkedInHeadline } from '../../../types/linkedin';
+import { AIProviderSettings } from '../../../types/ai';
 import { generateLinkedInProfile } from '../../../core/ai-service';
-import { useResumeStore } from '../../../store';
+import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 
 export interface LinkedInPanelProps {
   cvData: CVData;
   companyName: string;
   targetRole: string;
+  targetJob?: string;
+  providerSettings?: AIProviderSettings;
   onClose: () => void;
 }
+
+const DEFAULT_SETTINGS_FALLBACK: AIProviderSettings = {
+  provider: 'gemini',
+  apiKey: '',
+  model: 'gemini-1.5-flash',
+  temperature: 0.2,
+};
+
 
 export const LinkedInPanel: React.FC<LinkedInPanelProps> = ({
   cvData,
   companyName,
   targetRole,
+  targetJob = '',
+  providerSettings,
   onClose,
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-
-  const providerSettings = useResumeStore((s) => s.providerSettings);
-  const targetJob = useResumeStore((s) => s.targetJob);
+  const { copy } = useCopyToClipboard();
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<LinkedInProfileResult | null>(null);
@@ -65,7 +75,7 @@ export const LinkedInPanel: React.FC<LinkedInPanelProps> = ({
         targetJob,
         companyName,
         targetRole,
-        providerSettings
+        providerSettings || DEFAULT_SETTINGS_FALLBACK
       );
       setData(res);
       setAboutText(res.about.text);
@@ -76,8 +86,8 @@ export const LinkedInPanel: React.FC<LinkedInPanelProps> = ({
     }
   };
 
-  const handleCopy = (text: string, id: string, label: string) => {
-    navigator.clipboard.writeText(text);
+  const handleCopy = async (text: string, id: string, label: string) => {
+    await copy(text);
     setCopiedId(id);
     setSnackbar(t('preview:linkedin.copiedToast', '{{label}} copied to clipboard!', { label }));
     setTimeout(() => setCopiedId(null), 2000);
@@ -139,180 +149,155 @@ export const LinkedInPanel: React.FC<LinkedInPanelProps> = ({
           </Box>
         ) : data ? (
           <>
-            {/* SECTION 1: HEADLINES */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.86rem' }}>
-                  {t('preview:linkedin.headlinesTitle', '1. Optimized Headlines (Max 220 Chars)')}
+            {/* Headlines */}
+            <Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+                  {t('preview:linkedin.headlinesTitle', 'High-Impact Headlines')}
                 </Typography>
-                <Chip
-                  size="small"
-                  label={t('preview:linkedin.recruiterReady', 'Recruiter Ready')}
-                  color="primary"
-                  variant="outlined"
-                  sx={{ fontSize: '0.68rem', fontWeight: 700 }}
-                />
+                <Chip size="small" label={`${data.headlines.length} variants`} variant="outlined" sx={{ fontSize: '0.7rem' }} />
               </Box>
 
-              {data.headlines.map((hl) => {
-                const isOver = hl.charCount > 220;
-                const isCopied = copiedId === hl.id;
-
-                return (
-                  <Paper
-                    key={hl.id}
-                    variant="outlined"
-                    sx={{
-                      p: 1.75,
-                      borderRadius: '12px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 1.25,
-                      transition: 'all 0.2s ease',
-                      '&:hover': {
-                        borderColor: 'primary.main',
-                        bgcolor: isDark ? alpha(theme.palette.primary.main, 0.04) : '#f8fafc',
-                      },
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                        {hl.title}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                {data.headlines.map((hl: LinkedInHeadline, idx: number) => {
+                  const id = `headline-${idx}`;
+                  const isCopied = copiedId === id;
+                  return (
+                    <Paper
+                      key={idx}
+                      variant="outlined"
+                      sx={{
+                        p: 1.75,
+                        borderRadius: '12px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1,
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          borderColor: 'primary.main',
+                          boxShadow: isDark ? '0 4px 12px rgba(0,0,0,0.3)' : '0 4px 12px rgba(0,0,0,0.05)',
+                        },
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Chip
+                          size="small"
+                          label={hl.style}
+                          color={idx === 0 ? 'primary' : 'default'}
+                          sx={{ fontWeight: 700, fontSize: '0.72rem' }}
+                        />
+                        <Tooltip title={isCopied ? t('common:actions.copied', 'Copied!') : t('common:actions.copy', 'Copy Headline')}>
+                          <IconButton
+                            size="small"
+                            onClick={() => handleCopy(hl.text, id, `Headline (${hl.style})`)}
+                            color={isCopied ? 'success' : 'default'}
+                          >
+                            {isCopied ? <CheckCircleRoundedIcon fontSize="small" /> : <ContentCopyRoundedIcon fontSize="small" />}
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                      <Typography variant="body2" sx={{ fontWeight: 600, lineHeight: 1.4 }}>
+                        {hl.text}
                       </Typography>
-                      <Chip
-                        size="small"
-                        label={`${hl.charCount}/220`}
-                        color={isOver ? 'error' : 'success'}
-                        variant="filled"
-                        sx={{ height: 20, fontSize: '0.66rem', fontWeight: 800 }}
-                      />
-                    </Box>
-
-                    <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary', lineHeight: 1.5 }}>
-                      {hl.text}
-                    </Typography>
-
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <Button
-                        size="small"
-                        variant={isCopied ? 'contained' : 'outlined'}
-                        color={isCopied ? 'success' : 'primary'}
-                        startIcon={isCopied ? <CheckCircleRoundedIcon /> : <ContentCopyRoundedIcon />}
-                        onClick={() => handleCopy(hl.text, hl.id, hl.title)}
-                        sx={{ fontSize: '0.74rem', textTransform: 'none', py: 0.4, px: 1.25 }}
-                      >
-                        {isCopied ? t('common:actions.copied', 'Copied!') : t('common:actions.copy', 'Copy Headline')}
-                      </Button>
-                    </Box>
-                  </Paper>
-                );
-              })}
+                    </Paper>
+                  );
+                })}
+              </Box>
             </Box>
 
-            {/* SECTION 2: ABOUT SUMMARY */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.86rem' }}>
-                  {t('preview:linkedin.aboutTitle', "2. Storytelling 'About' Section (Max 2,600 Chars)")}
+            {/* Storytelling About */}
+            <Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+                  {t('preview:linkedin.aboutTitle', 'Storytelling "About" Section')}
                 </Typography>
-                <Chip
-                  size="small"
-                  label={`${aboutText.length}/2600`}
-                  color={aboutText.length > 2600 ? 'error' : 'success'}
-                  variant="outlined"
-                  sx={{ fontSize: '0.68rem', fontWeight: 800 }}
-                />
-              </Box>
-
-              <Paper
-                variant="outlined"
-                sx={{
-                  p: 2,
-                  borderRadius: '12px',
-                  bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#ffffff',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 1.5,
-                }}
-              >
-                {isEditingAbout ? (
-                  <textarea
-                    value={aboutText}
-                    onChange={(e) => setAboutText(e.target.value)}
-                    style={{
-                      width: '100%',
-                      minHeight: 280,
-                      borderRadius: '8px',
-                      border: `1px solid ${theme.palette.divider}`,
-                      padding: '12px',
-                      fontFamily: 'inherit',
-                      fontSize: '0.86rem',
-                      lineHeight: 1.6,
-                      color: theme.palette.text.primary,
-                      backgroundColor: 'transparent',
-                      outline: 'none',
-                      resize: 'vertical',
-                      boxSizing: 'border-box',
-                    }}
-                  />
-                ) : (
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      whiteSpace: 'pre-line',
-                      color: 'text.primary',
-                      lineHeight: 1.65,
-                      fontSize: '0.86rem',
-                    }}
-                  >
-                    {aboutText}
-                  </Typography>
-                )}
-
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 1, borderTop: `1px solid ${theme.palette.divider}` }}>
+                <Box sx={{ display: 'flex', gap: 1 }}>
                   <Button
                     size="small"
                     variant="text"
                     startIcon={<EditRoundedIcon />}
-                    onClick={() => setIsEditingAbout((prev) => !prev)}
-                    sx={{ fontSize: '0.74rem', textTransform: 'none' }}
+                    onClick={() => setIsEditingAbout(!isEditingAbout)}
+                    sx={{ fontSize: '0.75rem', textTransform: 'none' }}
                   >
-                    {isEditingAbout ? t('common:actions.save', 'Save Edits') : t('common:actions.edit', 'Edit Text')}
+                    {isEditingAbout ? t('common:actions.preview', 'Preview') : t('common:actions.edit', 'Edit')}
                   </Button>
-
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    startIcon={copiedId === 'about' ? <CheckCircleRoundedIcon /> : <ContentCopyRoundedIcon />}
-                    color={copiedId === 'about' ? 'success' : 'primary'}
-                    onClick={() => handleCopy(aboutText, 'about', "LinkedIn 'About' section")}
-                    sx={{ fontSize: '0.74rem', textTransform: 'none' }}
-                  >
-                    {copiedId === 'about' ? t('common:actions.copied', 'Copied!') : t('preview:linkedin.copyAbout', "Copy 'About' Text")}
-                  </Button>
+                  <Tooltip title={copiedId === 'about' ? t('common:actions.copied', 'Copied!') : t('common:actions.copy', 'Copy About')}>
+                    <IconButton
+                      size="small"
+                      color={copiedId === 'about' ? 'success' : 'default'}
+                      onClick={() => handleCopy(aboutText, 'about', 'About Section')}
+                    >
+                      {copiedId === 'about' ? <CheckCircleRoundedIcon fontSize="small" /> : <ContentCopyRoundedIcon fontSize="small" />}
+                    </IconButton>
+                  </Tooltip>
                 </Box>
-              </Paper>
-            </Box>
+              </Box>
 
-            {/* Bottom Regeneration Action */}
-            <Button
-              fullWidth
-              variant="outlined"
-              color="primary"
-              startIcon={<RefreshRoundedIcon />}
-              onClick={handleGenerate}
-              sx={{ textTransform: 'none', fontWeight: 700, py: 1 }}
-            >
-              {t('preview:linkedin.regenerate', 'Regenerate LinkedIn Package')}
-            </Button>
+              {isEditingAbout ? (
+                <textarea
+                  value={aboutText}
+                  onChange={(e) => setAboutText(e.target.value)}
+                  style={{
+                    width: '100%',
+                    minHeight: 220,
+                    padding: '12px',
+                    borderRadius: '12px',
+                    border: `1px solid ${theme.palette.divider}`,
+                    backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : '#ffffff',
+                    color: 'inherit',
+                    fontFamily: 'inherit',
+                    fontSize: '0.85rem',
+                    lineHeight: 1.6,
+                    resize: 'vertical',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              ) : (
+                <Paper
+                  variant="outlined"
+                  sx={{
+                    p: 2,
+                    borderRadius: '12px',
+                    bgcolor: isDark ? 'rgba(255,255,255,0.02)' : '#fafafa',
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      whiteSpace: 'pre-line',
+                      lineHeight: 1.65,
+                      color: 'text.secondary',
+                      fontSize: '0.85rem',
+                    }}
+                  >
+                    {aboutText}
+                  </Typography>
+                </Paper>
+              )}
+            </Box>
           </>
         ) : null}
       </Box>
 
-      {/* Snackbar Feedback */}
+      {/* Footer Regenerate lever */}
+      <Box sx={{ p: 2, borderTop: `1px solid ${theme.palette.divider}`, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          startIcon={<RefreshRoundedIcon />}
+          onClick={handleGenerate}
+          disabled={loading}
+          sx={{ fontWeight: 700, fontSize: '0.78rem' }}
+        >
+          {t('preview:linkedin.regenerate', 'Regenerate LinkedIn Package')}
+        </Button>
+      </Box>
+
+      {/* Snackbar notification */}
       <Snackbar
         open={Boolean(snackbar)}
-        autoHideDuration={2500}
+        autoHideDuration={3000}
         onClose={() => setSnackbar(null)}
         message={snackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
