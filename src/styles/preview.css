@@ -135,11 +135,12 @@
   overflow: hidden;
 }
 
-/* Single column templates have standard 10mm 12mm A4 margins */
+/* Single column templates have clean inner padding managed by .cv-container */
 .paper-sheet .template-modern-tech,
 .paper-sheet .template-minimal-ats,
 .paper-sheet .template-formal-legal {
-  padding: 10mm 12mm;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .paper-sheet .cv-container {

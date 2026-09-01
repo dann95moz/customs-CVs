@@ -125,17 +125,18 @@
   .paper-sheet .template-modern-tech,
   .paper-sheet .template-minimal-ats,
   .paper-sheet .template-formal-legal {
-    padding: 10mm 12mm !important;
+    padding: 0 !important;
   }
 
   .paper-sheet .cv-container {
     box-shadow: none !important;
     border: none !important;
     border-radius: 0 !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
+    margin: 0 !important;
+    padding: 24px 28px !important;
     width: 100% !important;
     max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .paper-sheet [class*="theme-"] {

@@ -14,18 +14,19 @@
 }
 
 .theme-minimal-ats .cv-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 30px 35px;
+  max-width: 100%;
+  margin: 0;
+  padding: 24px 28px;
   background: var(--cv-paper-bg);
+  box-sizing: border-box;
 }
 
 /* Header */
 .theme-minimal-ats .cv-header {
   text-align: left;
   border-bottom: 1.5px solid var(--cv-accent-color, var(--cv-border-color));
-  padding-bottom: 10px;
-  margin-bottom: 14px;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .theme-minimal-ats .cv-name {
