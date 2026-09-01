@@ -483,8 +483,8 @@ export const EditableText: React.FC<EditableTextProps> = ({
                 gap: 0.6,
                 bgcolor: 'background.paper',
                 border: `1px solid ${theme.palette.divider}`,
-                boxShadow: 3,
-                p: 0.35,
+                borderRadius: '64px',
+                boxShadow: 2,
               }}
             >
               {undoValue !== undefined && (
@@ -501,7 +501,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
                     px: 0.8,
                     minHeight: 22,
                     height: 22,
-                    borderRadius: '9999px',
+                    borderRadius: '64px',
                     borderColor: 'divider',
                     color: 'text.primary',
                     whiteSpace: 'nowrap',
@@ -614,8 +614,9 @@ export const EditableText: React.FC<EditableTextProps> = ({
               gap: 0.6,
               bgcolor: 'background.paper',
               border: `1px solid ${theme.palette.divider}`,
-              boxShadow: 3,
-              p: 0.35,
+              borderRadius: '64px',
+              boxShadow: 2,
+
             }}
           >
             {undoValue !== undefined && (
@@ -632,7 +633,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
                   px: 0.8,
                   minHeight: 22,
                   height: 22,
-                  borderRadius: '9999px',
+                  borderRadius: '64px',
                   borderColor: 'divider',
                   color: 'text.primary',
                   whiteSpace: 'nowrap',
