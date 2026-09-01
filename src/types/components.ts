@@ -224,8 +224,8 @@ export interface GuidedProfileFormProps {
 }
 
 export interface PersonalInfoSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
+  isExpanded?: boolean;
+  onToggle?: (event: React.SyntheticEvent, isExpanded: boolean) => void;
   name: string;
   title: string;
   contacts: ContactItem[];
@@ -236,16 +236,16 @@ export interface PersonalInfoSectionProps {
 }
 
 export interface SummarySectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
+  isExpanded?: boolean;
+  onToggle?: (event: React.SyntheticEvent, isExpanded: boolean) => void;
   summary: string;
   onSummaryChange: (val: string) => void;
   onChange?: (summary: string) => void;
 }
 
 export interface SkillsSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
+  isExpanded?: boolean;
+  onToggle?: (event: React.SyntheticEvent, isExpanded: boolean) => void;
   skillGroups: SkillCategory[];
   skillsTextMap: Record<number, string>;
   onCategoryChange: (index: number, newCategory: string) => void;
@@ -256,8 +256,8 @@ export interface SkillsSectionProps {
 }
 
 export interface ExperienceSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
+  isExpanded?: boolean;
+  onToggle?: (event: React.SyntheticEvent, isExpanded: boolean) => void;
   experience: ExperienceItem[];
   onFieldChange: (index: number, field: keyof ExperienceItem, value: string | string[]) => void;
   onAddExperience: () => void;
@@ -269,8 +269,8 @@ export interface ExperienceSectionProps {
 }
 
 export interface EducationSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
+  isExpanded?: boolean;
+  onToggle?: (event: React.SyntheticEvent, isExpanded: boolean) => void;
   education: string[];
   onUpdateEducation: (index: number, val: string) => void;
   onAddEducation: () => void;
@@ -279,8 +279,8 @@ export interface EducationSectionProps {
 }
 
 export interface LanguagesSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
+  isExpanded?: boolean;
+  onToggle?: (event: React.SyntheticEvent, isExpanded: boolean) => void;
   languages: string[];
   onUpdateLanguage: (index: number, val: string) => void;
   onAddLanguage: () => void;
@@ -289,8 +289,8 @@ export interface LanguagesSectionProps {
 }
 
 export interface ProjectsSectionProps {
-  isExpanded: boolean;
-  onToggle: (event: React.SyntheticEvent, isExpanded: boolean) => void;
+  isExpanded?: boolean;
+  onToggle?: (event: React.SyntheticEvent, isExpanded: boolean) => void;
   projects: ExperienceItem[];
   onFieldChange: (index: number, field: keyof ExperienceItem, value: string | string[]) => void;
   onAddProject: () => void;

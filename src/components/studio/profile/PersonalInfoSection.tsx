@@ -3,13 +3,8 @@ import {
   Box,
   Typography,
   TextField,
-  Chip,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  useTheme,
+  useTheme
 } from '@mui/material';
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { useTranslation } from 'react-i18next';
 import { ContactItem, ContactType, PersonalInfoSectionProps } from '../../../types';
@@ -17,26 +12,25 @@ import { ContactItem, ContactType, PersonalInfoSectionProps } from '../../../typ
 export type { PersonalInfoSectionProps };
 
 export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.memo(({
-  isExpanded,
-  onToggle,
   name,
   title,
   contacts,
   onNameChange,
   onTitleChange,
-  onContactChange,
+  onContactChange
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
 
   const contactValues = React.useMemo(() => {
     const map: Partial<Record<ContactType, string>> = {};
-    (contacts || []).forEach(c => {
-      const raw = c.type === 'email'
-        ? c.label || c.url || ''
-        : (c.type === 'location' || c.type === 'phone' || c.type === 'text')
-        ? c.label || ''
-        : c.url || c.label || '';
+    (contacts || []).forEach((c) => {
+      const raw =
+        c.type === 'email'
+          ? c.label || c.url || ''
+          : c.type === 'location' || c.type === 'phone' || c.type === 'text'
+          ? c.label || ''
+          : c.url || c.label || '';
       map[c.type] = raw
         .replace(/^mailto:/i, '')
         .replace(/\*\*([^*]+)\*\*/g, '$1')
@@ -46,106 +40,154 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
   }, [contacts]);
 
   return (
-    <Accordion
-      expanded={isExpanded}
-      onChange={onToggle}
-      slotProps={{ transition: { unmountOnExit: true } }}
-      sx={{
-        borderRadius: '12px !important',
-        border: `1px solid ${theme.palette.divider}`,
-        overflow: 'hidden',
-        '&:before': { display: 'none' },
-      }}
-    >
-      <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <PersonRoundedIcon color="primary" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {t('profile:sections.personalInfo.title', '1. Personal Info & Contact')}
-          </Typography>
-          {Boolean(name && name.trim()) ? (
-            <Chip label={t('common:badge.added', 'Added')} size="small" color="success" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
-          ) : (
-            <Chip label={t('common:badge.essential', 'Essential')} size="small" color="primary" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
-          )}
-        </Box>
-      </AccordionSummary>
-      <AccordionDetails sx={{ pt: 1, pb: 3 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, p: { xs: 1.5, sm: 2.5 } }}>
+      {/* Header Info */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <PersonRoundedIcon color="primary" sx={{ fontSize: 20 }} />
+        <Typography variant="subtitle1" sx={{ fontWeight: 800, fontSize: '0.98rem' }}>
+          {t('profile:sections.personalInfo.title', 'Información Personal y Contacto')}
+        </Typography>
+      </Box>
+
+      {/* Inputs Form */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {/* Full Name */}
+        <TextField
+          label={t('profile:sections.personalInfo.fullName', 'Nombre completo')}
+          variant="outlined"
+          size="small"
+          value={name || ''}
+          onChange={(e) => onNameChange(e.target.value)}
+          placeholder="e.g. Daniel Corredor Acosta"
+          fullWidth
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '8px',
+              bgcolor: 'background.paper'
+            }
+          }}
+        />
+
+        {/* Location & Email (Grid 2 cols) */}
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
           <TextField
-            label={t('profile:sections.personalInfo.fullName', 'Full Name')}
-            variant="outlined"
-            size="small"
-            value={name || ''}
-            onChange={(e) => onNameChange(e.target.value)}
-            placeholder="e.g. Alex Morgan"
-            fullWidth
-          />
-          <TextField
-            label={t('profile:sections.personalInfo.jobTitle', 'Primary Professional Role / Specialization')}
-            variant="outlined"
-            size="small"
-            value={title || ''}
-            onChange={(e) => onTitleChange(e.target.value)}
-            placeholder="e.g. Staff Frontend Engineer | Distributed Systems"
-            fullWidth
-          />
-          <TextField
-            label={t('profile:sections.personalInfo.location', 'Location')}
+            label={t('profile:sections.personalInfo.location', 'Ubicación')}
             variant="outlined"
             size="small"
             value={contactValues.location || ''}
             onChange={(e) => onContactChange('location', e.target.value)}
-            placeholder="e.g. San Francisco, CA (or Remote)"
+            placeholder="e.g. Bogotá, Colombia"
             fullWidth
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                bgcolor: 'background.paper'
+              }
+            }}
           />
+
           <TextField
-            label={t('profile:sections.personalInfo.email', 'Email Address')}
+            label={t('profile:sections.personalInfo.email', 'Email')}
             variant="outlined"
             size="small"
+            type="email"
             value={contactValues.email || ''}
             onChange={(e) => onContactChange('email', e.target.value)}
-            placeholder="alex.morgan@example.com"
+            placeholder="e.g. name@example.com"
             fullWidth
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                bgcolor: 'background.paper'
+              }
+            }}
           />
+        </Box>
+
+        {/* Professional Title / Specialization */}
+        <TextField
+          label={t('profile:sections.personalInfo.jobTitle', 'Título Profesional / Especialización')}
+          variant="outlined"
+          size="small"
+          value={title || ''}
+          onChange={(e) => onTitleChange(e.target.value)}
+          placeholder="e.g. Staff Frontend Architect | TypeScript & Distributed Systems"
+          fullWidth
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '8px',
+              bgcolor: 'background.paper'
+            }
+          }}
+        />
+
+        {/* Phone, LinkedIn, GitHub & Portfolio (Grid 2 cols) */}
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
           <TextField
-            label={t('profile:sections.personalInfo.phone', 'Phone Number')}
+            label={t('profile:sections.personalInfo.phone', 'Teléfono')}
             variant="outlined"
             size="small"
             value={contactValues.phone || ''}
             onChange={(e) => onContactChange('phone', e.target.value)}
-            placeholder="+1 (555) 019-2834"
+            placeholder="e.g. +57 300 123 4567"
             fullWidth
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                bgcolor: 'background.paper'
+              }
+            }}
           />
+
           <TextField
-            label={t('profile:sections.personalInfo.linkedin', 'LinkedIn URL')}
+            label={t('profile:sections.personalInfo.linkedin', 'LinkedIn')}
             variant="outlined"
             size="small"
             value={contactValues.linkedin || ''}
-            onChange={(e) => onContactChange('linkedin', e.target.value, e.target.value)}
-            placeholder="https://linkedin.com/in/username"
+            onChange={(e) => onContactChange('linkedin', e.target.value)}
+            placeholder="linkedin.com/in/username"
             fullWidth
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                bgcolor: 'background.paper'
+              }
+            }}
           />
+
           <TextField
-            label={t('profile:sections.personalInfo.github', 'GitHub URL (Optional)')}
+            label={t('profile:sections.personalInfo.github', 'GitHub')}
             variant="outlined"
             size="small"
             value={contactValues.github || ''}
-            onChange={(e) => onContactChange('github', e.target.value, e.target.value)}
-            placeholder="https://github.com/username"
+            onChange={(e) => onContactChange('github', e.target.value)}
+            placeholder="github.com/username"
             fullWidth
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                bgcolor: 'background.paper'
+              }
+            }}
           />
+
           <TextField
-            label={t('profile:sections.personalInfo.portfolio', 'Portfolio / Personal Website (Optional)')}
+            label={t('profile:sections.personalInfo.portfolio', 'Portafolio / Web')}
             variant="outlined"
             size="small"
             value={contactValues.globe || ''}
-            onChange={(e) => onContactChange('globe', e.target.value, e.target.value)}
-            placeholder="https://alexmorgan.dev"
+            onChange={(e) => onContactChange('globe', e.target.value)}
+            placeholder="myportfolio.dev"
             fullWidth
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                bgcolor: 'background.paper'
+              }
+            }}
           />
         </Box>
-      </AccordionDetails>
-    </Accordion>
+      </Box>
+    </Box>
   );
 });

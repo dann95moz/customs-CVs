@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Box } from '@mui/material';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { Box, useTheme } from '@mui/material';
 import { parseCvMarkdownToData, serializeCvDataToMarkdown } from '../../core/parser';
 import { CVData, ContactItem, ContactType, ExperienceItem, SkillCategory } from '../../types/cv';
+import { ProfileNavRail, ProfileSectionKey } from './profile/ProfileNavRail';
 import { PersonalInfoSection } from './profile/PersonalInfoSection';
 import { SummarySection } from './profile/SummarySection';
-import { SkillsSection } from './profile/SkillsSection';
+import { SkillsCategorizedPanel } from './profile/SkillsCategorizedPanel';
 import { ExperienceSection } from './profile/ExperienceSection';
 import { EducationSection } from './profile/EducationSection';
 import { LanguagesSection } from './profile/LanguagesSection';
 import { ProjectsSection } from './profile/ProjectsSection';
+import { useTranslation } from 'react-i18next';
 import { GuidedProfileFormProps } from '../../types';
 
 export type { GuidedProfileFormProps };
@@ -20,16 +22,18 @@ const EMPTY_LANGUAGES: string[] = [];
 const EMPTY_PROJECTS: ExperienceItem[] = [];
 
 /**
- * Step 1: Guided visual profile editor orchestrating structured CV sections.
- * Highly optimized with stable callbacks, section isolation, and debounced Markdown serialization.
+ * Step 1: Master-Detail Guided Visual Profile Form.
+ * Features a high-conversion vertical navigation rail (horizontal on mobile)
+ * with instant section switching, live item counts, and completion checkmarks.
  */
 export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   markdownContent,
   onChange,
 }) => {
+  const { t } = useTranslation(['profile', 'common']);
+  const theme = useTheme();
   const [formData, setFormData] = useState<CVData>(() => parseCvMarkdownToData(markdownContent));
-  const [expandedSection, setExpandedSection] = useState<string | false>('personal');
-  const [skillsTextMap, setSkillsTextMap] = useState<Record<number, string>>({});
+  const [activeSection, setActiveSection] = useState<ProfileSectionKey>('personal');
   
   const lastEmittedMarkdownRef = useRef<string>(markdownContent);
   const formDataRef = useRef<CVData>(formData);
@@ -74,7 +78,6 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     const parsed = parseCvMarkdownToData(markdownContent);
     setFormData(parsed);
     formDataRef.current = parsed;
-    setSkillsTextMap({});
   }, [markdownContent]);
 
   const scheduleEmit = useCallback(() => {
@@ -152,7 +155,6 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   }, [updateData]);
 
   const handleSkillGroupSkillsChange = useCallback((index: number, skillsStr: string) => {
-    setSkillsTextMap(prev => ({ ...prev, [index]: skillsStr }));
     updateData(prev => {
       const groups = [...(prev.skillGroups || [])];
       if (!groups[index]) return prev;
@@ -169,35 +171,25 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
       const current = prev.skillGroups ? [...prev.skillGroups] : [];
       const newIdx = current.length;
       const defaultCategory = newIdx === 0
-        ? 'Languages & Fundamentals'
+        ? t('profile:sections.skills.defaultCore', 'Core & Languages')
         : newIdx === 1
-        ? 'Frameworks & Architecture'
+        ? t('profile:sections.skills.defaultArchitecture', 'Architecture & Frameworks')
         : newIdx === 2
-        ? 'Tooling, CI/CD & Cloud'
-        : `Competency Group ${newIdx + 1}`;
+        ? t('profile:sections.skills.defaultTooling', 'Tooling, Cloud & CI/CD')
+        : `${t('profile:sections.skills.groupName', 'Categoría')} ${newIdx + 1}`;
 
       const newGroup: SkillCategory = {
         category: defaultCategory,
-        skills: ['Technology 1', 'Technology 2']
+        skills: ['TypeScript', 'JavaScript']
       };
-      setSkillsTextMap(prevMap => ({ ...prevMap, [newIdx]: 'Technology 1, Technology 2' }));
       return {
         ...prev,
         skillGroups: [...current, newGroup]
       };
     });
-  }, [updateData]);
+  }, [updateData, t]);
 
   const handleRemoveSkillGroup = useCallback((index: number) => {
-    setSkillsTextMap(prevMap => {
-      const newMap: Record<number, string> = {};
-      Object.keys(prevMap).forEach(keyStr => {
-        const k = Number(keyStr);
-        if (k < index) newMap[k] = prevMap[k];
-        else if (k > index) newMap[k - 1] = prevMap[k];
-      });
-      return newMap;
-    });
     updateData(prev => ({
       ...prev,
       skillGroups: (prev.skillGroups || []).filter((_, i) => i !== index)
@@ -215,12 +207,12 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
 
   const handleAddExperience = useCallback(() => {
     const newExp: ExperienceItem = {
-      company: 'Company Name',
-      role: 'Job Title / Specialization',
-      location: 'City, Country (or Remote)',
-      date: 'Mon YYYY – Present',
+      company: 'Nueva Empresa',
+      role: 'Cargo / Especialización',
+      location: 'Ubicación / Remoto',
+      date: 'Ene 2023 – Presente',
       bullets: [
-        'Spearheaded key architectural initiatives cutting build times by 45% through modern CI/CD automation.'
+        'Lideró la arquitectura de módulos frontend logrando una reducción del 35% en tiempos de carga.'
       ]
     };
     updateData(prev => ({
@@ -240,7 +232,7 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     updateData(prev => {
       const expList = [...(prev.experience || [])];
       const targetExp = expList[expIndex];
-      const newBullets = [...targetExp.bullets, 'Accomplished [X] as measured by [Y%] by designing and deploying [Z].'];
+      const newBullets = [...targetExp.bullets, 'Logro clave medido por métricas cuantificables implementando soluciones escalables.'];
       expList[expIndex] = { ...targetExp, bullets: newBullets };
       return { ...prev, experience: expList };
     });
@@ -250,9 +242,9 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     updateData(prev => {
       const expList = [...(prev.experience || [])];
       const targetExp = expList[expIndex];
-      const newBullets = [...targetExp.bullets];
-      newBullets[bulletIndex] = text;
-      expList[expIndex] = { ...targetExp, bullets: newBullets };
+      const nextBullets = [...targetExp.bullets];
+      nextBullets[bulletIndex] = text;
+      expList[expIndex] = { ...targetExp, bullets: nextBullets };
       return { ...prev, experience: expList };
     });
   }, [updateData]);
@@ -261,26 +253,26 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     updateData(prev => {
       const expList = [...(prev.experience || [])];
       const targetExp = expList[expIndex];
-      const newBullets = targetExp.bullets.filter((_, i) => i !== bulletIndex);
-      expList[expIndex] = { ...targetExp, bullets: newBullets };
+      const nextBullets = targetExp.bullets.filter((_, i) => i !== bulletIndex);
+      expList[expIndex] = { ...targetExp, bullets: nextBullets };
       return { ...prev, experience: expList };
     });
   }, [updateData]);
 
   // Education helpers
+  const handleUpdateEducation = useCallback((index: number, text: string) => {
+    updateData(prev => {
+      const eduList = [...(prev.education || [])];
+      eduList[index] = text;
+      return { ...prev, education: eduList };
+    });
+  }, [updateData]);
+
   const handleAddEducation = useCallback(() => {
     updateData(prev => ({
       ...prev,
-      education: [...(prev.education || []), '**B.S. in Computer Science** – University Name, 2022']
+      education: ['**Ingeniería / Licenciatura** — Universidad / Plataforma, 2024', ...(prev.education || [])]
     }));
-  }, [updateData]);
-
-  const handleUpdateEducation = useCallback((index: number, text: string) => {
-    updateData(prev => {
-      const list = [...(prev.education || [])];
-      list[index] = text;
-      return { ...prev, education: list };
-    });
   }, [updateData]);
 
   const handleRemoveEducation = useCallback((index: number) => {
@@ -291,19 +283,19 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   }, [updateData]);
 
   // Languages helpers
+  const handleUpdateLanguage = useCallback((index: number, text: string) => {
+    updateData(prev => {
+      const langList = [...(prev.languages || [])];
+      langList[index] = text;
+      return { ...prev, languages: langList };
+    });
+  }, [updateData]);
+
   const handleAddLanguage = useCallback(() => {
     updateData(prev => ({
       ...prev,
-      languages: [...(prev.languages || []), '**English:** Native / Full Professional Proficiency']
+      languages: [...(prev.languages || []), '**Inglés:** Profesional (C1)']
     }));
-  }, [updateData]);
-
-  const handleUpdateLanguage = useCallback((index: number, text: string) => {
-    updateData(prev => {
-      const list = [...(prev.languages || [])];
-      list[index] = text;
-      return { ...prev, languages: list };
-    });
   }, [updateData]);
 
   const handleRemoveLanguage = useCallback((index: number) => {
@@ -313,18 +305,20 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     }));
   }, [updateData]);
 
-  // Projects & Extras helpers
+  // Projects helpers
   const handleAddProject = useCallback(() => {
-    const newProject: ExperienceItem = {
-      company: '',
+    const newProj: ExperienceItem = {
+      company: 'Nuevo Proyecto',
       role: 'Personal Project',
-      location: '',
-      date: '',
-      bullets: []
+      location: 'github.com/usuario/proyecto',
+      date: '2024',
+      bullets: [
+        'Desarrolló una plataforma escalable con TypeScript y arquitectura limpia.'
+      ]
     };
     updateData(prev => ({
       ...prev,
-      projects: [...(prev.projects || []), newProject]
+      projects: [...(prev.projects || []), newProj]
     }));
   }, [updateData]);
 
@@ -343,111 +337,136 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     }));
   }, [updateData]);
 
-  // Dedicated stable toggle callbacks to prevent unnecessary child re-renders
-  const handleTogglePersonal = useCallback((_e: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpandedSection(isExpanded ? 'personal' : false);
-  }, []);
+  // Compute section counts & completion status
+  const sectionCounts = useMemo(() => {
+    const personalComplete = Boolean(
+      formData.name &&
+      formData.name.trim().length > 2 &&
+      formData.contacts?.some(c => c.type === 'email' || c.type === 'location')
+    );
+    const summaryComplete = Boolean(formData.summary && formData.summary.trim().length > 25);
+    const skillsCount = (formData.skillGroups || []).reduce((acc, g) => acc + (g.skills?.length || 0), 0);
+    const experienceCount = (formData.experience || []).length;
+    const educationCount = (formData.education || []).length;
+    const languagesCount = (formData.languages || []).length;
+    const projectsCount = (formData.projects || []).length;
 
-  const handleToggleSummary = useCallback((_e: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpandedSection(isExpanded ? 'summary' : false);
-  }, []);
+    return {
+      personalComplete,
+      summaryComplete,
+      skillsCount,
+      experienceCount,
+      educationCount,
+      languagesCount,
+      projectsCount
+    };
+  }, [formData]);
 
-  const handleToggleSkills = useCallback((_e: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpandedSection(isExpanded ? 'skills' : false);
-  }, []);
-
-  const handleToggleExperience = useCallback((_e: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpandedSection(isExpanded ? 'experience' : false);
-  }, []);
-
-  const handleToggleEducation = useCallback((_e: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpandedSection(isExpanded ? 'education' : false);
-  }, []);
-
-  const handleToggleLanguages = useCallback((_e: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpandedSection(isExpanded ? 'languages' : false);
-  }, []);
-
-  const handleToggleProjects = useCallback((_e: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpandedSection(isExpanded ? 'projects' : false);
-  }, []);
+  // Ensure default skill groups if none exist
+  const skillGroups = useMemo(() => {
+    if (formData.skillGroups && formData.skillGroups.length > 0) {
+      return formData.skillGroups;
+    }
+    return [
+      { category: t('profile:sections.skills.defaultCore', 'Core & Languages'), skills: ['TypeScript', 'JavaScript ES6+', 'HTML5', 'CSS3'] },
+      { category: t('profile:sections.skills.defaultArchitecture', 'Architecture & Frameworks'), skills: ['State Management', 'Clean Architecture', 'REST APIs'] },
+      { category: t('profile:sections.skills.defaultTooling', 'Tooling, Cloud & CI/CD'), skills: ['Git', 'Vite', 'CI/CD'] }
+    ];
+  }, [formData.skillGroups, t]);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: { xs: 1, sm: 2 }, pb: { xs: 3, sm: 4 }, boxSizing: 'border-box' }}>
-      {/* 1. Identity & Contact Links */}
-      <PersonalInfoSection
-        isExpanded={expandedSection === 'personal'}
-        onToggle={handleTogglePersonal}
-        name={formData.name || ''}
-        title={formData.title || ''}
-        contacts={formData.contacts}
-        onNameChange={handleNameChange}
-        onTitleChange={handleTitleChange}
-        onContactChange={handleContactChange}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        minHeight: 520,
+        boxSizing: 'border-box'
+      }}
+    >
+      {/* 1. Left Navigation Rail (Desktop) / Top Tabs (Mobile) */}
+      <ProfileNavRail
+        activeSection={activeSection}
+        onSectionChange={setActiveSection}
+        sectionCounts={sectionCounts}
       />
 
-      {/* 2. Professional Summary & Pitch */}
-      <SummarySection
-        isExpanded={expandedSection === 'summary'}
-        onToggle={handleToggleSummary}
-        summary={formData.summary || ''}
-        onSummaryChange={handleSummaryChange}
-      />
+      {/* 2. Right Content Active Workspace Panel */}
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minWidth: 0,
+          overflowY: 'auto'
+        }}
+      >
+        {activeSection === 'personal' && (
+          <PersonalInfoSection
+            name={formData.name || ''}
+            title={formData.title || ''}
+            contacts={formData.contacts}
+            onNameChange={handleNameChange}
+            onTitleChange={handleTitleChange}
+            onContactChange={handleContactChange}
+          />
+        )}
 
-      {/* 3. Tech Stack & Competencies */}
-      <SkillsSection
-        isExpanded={expandedSection === 'skills'}
-        onToggle={handleToggleSkills}
-        skillGroups={formData.skillGroups || EMPTY_SKILL_GROUPS}
-        skillsTextMap={skillsTextMap}
-        onCategoryChange={handleSkillGroupCategoryChange}
-        onSkillsChange={handleSkillGroupSkillsChange}
-        onAddCategory={handleAddSkillGroup}
-        onRemoveCategory={handleRemoveSkillGroup}
-      />
+        {activeSection === 'summary' && (
+          <SummarySection
+            summary={formData.summary || ''}
+            onSummaryChange={handleSummaryChange}
+          />
+        )}
 
-      {/* 4. Work History & Achievements */}
-      <ExperienceSection
-        isExpanded={expandedSection === 'experience'}
-        onToggle={handleToggleExperience}
-        experience={formData.experience || EMPTY_EXPERIENCE}
-        onFieldChange={handleExperienceChange}
-        onAddExperience={handleAddExperience}
-        onRemoveExperience={handleRemoveExperience}
-        onAddBullet={handleAddBullet}
-        onUpdateBullet={handleUpdateBullet}
-        onRemoveBullet={handleRemoveBullet}
-      />
+        {activeSection === 'skills' && (
+          <SkillsCategorizedPanel
+            skillGroups={skillGroups}
+            onCategoryChange={handleSkillGroupCategoryChange}
+            onSkillsChange={handleSkillGroupSkillsChange}
+            onAddCategory={handleAddSkillGroup}
+            onRemoveCategory={handleRemoveSkillGroup}
+          />
+        )}
 
-      {/* 5. Education & Certifications */}
-      <EducationSection
-        isExpanded={expandedSection === 'education'}
-        onToggle={handleToggleEducation}
-        education={formData.education || EMPTY_EDUCATION}
-        onUpdateEducation={handleUpdateEducation}
-        onAddEducation={handleAddEducation}
-        onRemoveEducation={handleRemoveEducation}
-      />
+        {activeSection === 'experience' && (
+          <ExperienceSection
+            experience={formData.experience || EMPTY_EXPERIENCE}
+            onFieldChange={handleExperienceChange}
+            onAddExperience={handleAddExperience}
+            onRemoveExperience={handleRemoveExperience}
+            onAddBullet={handleAddBullet}
+            onUpdateBullet={handleUpdateBullet}
+            onRemoveBullet={handleRemoveBullet}
+          />
+        )}
 
-      {/* 6. Languages */}
-      <LanguagesSection
-        isExpanded={expandedSection === 'languages'}
-        onToggle={handleToggleLanguages}
-        languages={formData.languages || EMPTY_LANGUAGES}
-        onUpdateLanguage={handleUpdateLanguage}
-        onAddLanguage={handleAddLanguage}
-        onRemoveLanguage={handleRemoveLanguage}
-      />
+        {activeSection === 'education' && (
+          <EducationSection
+            education={formData.education || EMPTY_EDUCATION}
+            onUpdateEducation={handleUpdateEducation}
+            onAddEducation={handleAddEducation}
+            onRemoveEducation={handleRemoveEducation}
+          />
+        )}
 
-      {/* 7. Projects & Extras */}
-      <ProjectsSection
-        isExpanded={expandedSection === 'projects'}
-        onToggle={handleToggleProjects}
-        projects={formData.projects || EMPTY_PROJECTS}
-        onFieldChange={handleProjectFieldChange}
-        onAddProject={handleAddProject}
-        onRemoveProject={handleRemoveProject}
-      />
+        {activeSection === 'languages' && (
+          <LanguagesSection
+            languages={formData.languages || EMPTY_LANGUAGES}
+            onUpdateLanguage={handleUpdateLanguage}
+            onAddLanguage={handleAddLanguage}
+            onRemoveLanguage={handleRemoveLanguage}
+          />
+        )}
+
+        {activeSection === 'projects' && (
+          <ProjectsSection
+            projects={formData.projects || EMPTY_PROJECTS}
+            onFieldChange={handleProjectFieldChange}
+            onAddProject={handleAddProject}
+            onRemoveProject={handleRemoveProject}
+          />
+        )}
+      </Box>
     </Box>
   );
 };

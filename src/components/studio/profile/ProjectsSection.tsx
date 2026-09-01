@@ -3,21 +3,18 @@ import {
   Box,
   Typography,
   TextField,
-  Chip,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Card,
   CardContent,
   Stack,
   Button,
   IconButton,
   Autocomplete,
+  Tooltip,
+  Paper,
   useTheme,
-  alpha,
+  alpha
 } from '@mui/material';
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import RocketLaunchRoundedIcon from '@mui/icons-material/RocketLaunchRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { useTranslation } from 'react-i18next';
@@ -32,194 +29,186 @@ const CATEGORY_SUGGESTIONS: string[] = [
   'Publication',
   'Volunteering',
   'Award / Recognition',
-  'Certification',
   'Side Venture',
-  'Research Paper',
-  'Community Leadership',
+  'Research Paper'
 ];
 
-interface ProjectItemCardProps {
+interface ProjectCardProps {
   proj: ExperienceItem;
   projIdx: number;
   onFieldChange: (index: number, field: keyof ExperienceItem, value: string | string[]) => void;
   onRemoveProject: (index: number) => void;
 }
 
-const ProjectItemCard: React.FC<ProjectItemCardProps> = React.memo(({
+const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
   proj,
   projIdx,
   onFieldChange,
-  onRemoveProject,
+  onRemoveProject
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const descriptionText = (proj.bullets || []).join('\n');
 
   return (
-    <Card variant="outlined" sx={{ borderRadius: '10px' }}>
-      <CardContent sx={{ p: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
-            {t('profile:sections.projects.projectName', 'Item')} #{projIdx + 1}: {proj.company || 'New Entry'}
-          </Typography>
+    <Paper
+      variant="outlined"
+      sx={{
+        p: 2,
+        borderRadius: '10px',
+        borderColor: theme.palette.divider,
+        bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.012)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 1.5
+      }}
+    >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 800, color: 'primary.main', fontSize: '0.92rem' }}>
+          {proj.company || `${t('profile:sections.projects.projectName', 'Proyecto')} #${projIdx + 1}`}
+        </Typography>
+        <Tooltip title={t('profile:sections.projects.remove', 'Eliminar proyecto')}>
           <IconButton
             size="small"
             color="error"
             onClick={() => onRemoveProject(projIdx)}
-            title={t('profile:sections.projects.remove', 'Remove this item')}
+            sx={{ p: 0.5 }}
           >
-            <DeleteOutlineRoundedIcon fontSize="small" />
+            <DeleteOutlineRoundedIcon sx={{ fontSize: 17 }} />
           </IconButton>
-        </Box>
+        </Tooltip>
+      </Box>
 
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1.5fr 1fr' }, gap: 1.5, mb: 1.5 }}>
-          <TextField
-            label={t('profile:sections.projects.projectName', 'Title / Name')}
-            size="small"
-            value={proj.company || ''}
-            onChange={(e) => onFieldChange(projIdx, 'company', e.target.value)}
-            placeholder="e.g. CV Studio Pro"
-            fullWidth
-          />
-          <Autocomplete
-            freeSolo
-            options={CATEGORY_SUGGESTIONS}
-            value={proj.role || ''}
-            onInputChange={(_event, newInputValue) => {
-              onFieldChange(projIdx, 'role', newInputValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={t('profile:sections.projects.role', 'Category')}
-                size="small"
-                placeholder="e.g. Personal Project"
-              />
-            )}
-          />
-        </Box>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1.5fr 1fr' }, gap: 1.5 }}>
+        <TextField
+          label={t('profile:sections.projects.projectName', 'Título / Nombre del Proyecto')}
+          size="small"
+          value={proj.company || ''}
+          onChange={(e) => onFieldChange(projIdx, 'company', e.target.value)}
+          placeholder="e.g. CV Studio Pro"
+          fullWidth
+          sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
+        />
+        <Autocomplete
+          freeSolo
+          options={CATEGORY_SUGGESTIONS}
+          value={proj.role || ''}
+          onInputChange={(_event, newInputValue) => {
+            onFieldChange(projIdx, 'role', newInputValue);
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={t('profile:sections.projects.role', 'Categoría / Rol')}
+              size="small"
+              placeholder="e.g. Personal Project"
+              sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
+            />
+          )}
+        />
+      </Box>
 
-        <Box sx={{ mb: 1.5 }}>
-          <TextField
-            label={t('profile:sections.projects.bullets', 'Description / Key Highlights')}
-            size="small"
-            multiline
-            rows={2}
-            fullWidth
-            value={descriptionText}
-            onChange={(e) => {
-              const lines = e.target.value
-                .split('\n')
-                .map((l) => l.trim())
-                .filter(Boolean);
-              onFieldChange(projIdx, 'bullets', lines.length > 0 ? lines : [e.target.value]);
-            }}
-            placeholder="e.g. AI tool to generate tailored CVs per vacancy using TypeScript and React."
-          />
-        </Box>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
+        <TextField
+          label={t('profile:sections.projects.link', 'Enlace / Repositorio URL')}
+          size="small"
+          value={proj.location || ''}
+          onChange={(e) => onFieldChange(projIdx, 'location', e.target.value)}
+          placeholder="e.g. github.com/user/project"
+          fullWidth
+          sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
+        />
+        <TextField
+          label={t('profile:sections.projects.date', 'Año / Fecha')}
+          size="small"
+          value={proj.date || ''}
+          onChange={(e) => onFieldChange(projIdx, 'date', e.target.value)}
+          placeholder="e.g. 2024"
+          fullWidth
+          sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
+        />
+      </Box>
 
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
-          <TextField
-            label={t('profile:sections.projects.link', 'Link / URL (Optional)')}
-            size="small"
-            value={proj.location || ''}
-            onChange={(e) => onFieldChange(projIdx, 'location', e.target.value)}
-            placeholder="e.g. https://github.com/username/project"
-          />
-          <TextField
-            label={t('profile:sections.projects.date', 'Date / Period (Optional)')}
-            size="small"
-            value={proj.date || ''}
-            onChange={(e) => onFieldChange(projIdx, 'date', e.target.value)}
-            placeholder="e.g. 2024 or Jan 2023 – Present"
-          />
-        </Box>
-      </CardContent>
-    </Card>
+      <TextField
+        label={t('profile:sections.projects.bullets', 'Descripción y Logros Clave')}
+        size="small"
+        multiline
+        minRows={2}
+        maxRows={5}
+        value={descriptionText}
+        onChange={(e) => {
+          const lines = e.target.value.split('\n').filter((l) => l.trim().length > 0);
+          onFieldChange(projIdx, 'bullets', lines);
+        }}
+        placeholder="Breve descripción del proyecto, impacto técnico y métricas conseguidas..."
+        fullWidth
+        sx={{ '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: '8px' } }}
+      />
+    </Paper>
   );
 });
 
 export const ProjectsSection: React.FC<ProjectsSectionProps> = React.memo(({
-  isExpanded,
-  onToggle,
   projects,
   onFieldChange,
   onAddProject,
-  onRemoveProject,
+  onRemoveProject
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
   return (
-    <Accordion
-      expanded={isExpanded}
-      onChange={onToggle}
-      slotProps={{ transition: { unmountOnExit: true } }}
-      sx={{
-        borderRadius: '12px !important',
-        border: `1px solid ${theme.palette.divider}`,
-        overflow: 'hidden',
-        '&:before': { display: 'none' },
-      }}
-    >
-      <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <AutoAwesomeRoundedIcon color="primary" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {t('profile:sections.projects.title', '7. Featured Projects')}
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: { xs: 1.5, sm: 2.5 } }}>
+      {/* Header Info & Add */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RocketLaunchRoundedIcon color="primary" sx={{ fontSize: 20 }} />
+          <Typography variant="subtitle1" sx={{ fontWeight: 800, fontSize: '0.98rem' }}>
+            {t('profile:sections.projects.title', 'Proyectos Destacados')}
           </Typography>
-          <Chip
-            label={t('common:badge.optional', 'Optional')}
-            size="small"
-            sx={{
-              height: 20,
-              fontSize: '0.7rem',
-              fontWeight: 600,
-              bgcolor: isDark ? alpha(theme.palette.success.main, 0.16) : '#e6f7ec',
-              color: isDark ? theme.palette.success.light : '#1b8042',
-              border: `1px solid ${isDark ? alpha(theme.palette.success.main, 0.3) : '#bbf0cb'}`,
-            }}
-          />
-          {projects.length > 0 && (
-            <Chip
-              label={`${projects.length} ${projects.length === 1 ? 'Entry' : 'Entries'}`}
-              size="small"
-              variant="outlined"
-              color="primary"
-              sx={{ height: 20, fontSize: '0.7rem' }}
-            />
-          )}
         </Box>
-      </AccordionSummary>
 
-      <AccordionDetails sx={{ pt: 1, pb: 3 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          {t('profile:sections.projects.desc', 'Add personal projects, open-source work, or side ventures. We\'ll prioritize what to show based on each job vacancy.')}
-        </Typography>
+        <Button
+          size="small"
+          variant="contained"
+          color="primary"
+          startIcon={<AddRoundedIcon sx={{ fontSize: 16 }} />}
+          onClick={onAddProject}
+        >
+          {t('profile:sections.projects.addProject', 'Agregar Proyecto')}
+        </Button>
+      </Box>
 
-        <Stack spacing={2.5}>
-          {projects.map((proj, projIdx) => (
-            <ProjectItemCard
-              key={projIdx}
+      {projects.length === 0 ? (
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 3,
+            textAlign: 'center',
+            borderRadius: '10px',
+            borderColor: theme.palette.divider,
+            bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.015)'
+          }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            {t('profile:sections.projects.empty', 'No hay proyectos agregados aún. Agrega proyectos personales, open-source o iniciativas.')}
+          </Typography>
+        </Paper>
+      ) : (
+        <Stack spacing={1.5}>
+          {projects.map((proj, idx) => (
+            <ProjectCard
+              key={idx}
               proj={proj}
-              projIdx={projIdx}
+              projIdx={idx}
               onFieldChange={onFieldChange}
               onRemoveProject={onRemoveProject}
             />
           ))}
-
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<AddRoundedIcon />}
-            onClick={onAddProject}
-            sx={{ alignSelf: 'flex-start' }}
-          >
-            {t('profile:sections.projects.addProject', 'Add Project / Extra')}
-          </Button>
         </Stack>
-      </AccordionDetails>
-    </Accordion>
+      )}
+    </Box>
   );
 });
