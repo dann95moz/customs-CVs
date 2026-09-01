@@ -213,8 +213,9 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
         )}
 
         {/* Live Document Text Formatting Tools */}
-        <ButtonGroup size="small" variant="outlined" sx={{ bgcolor: 'background.paper', flexShrink: 0 }}>
+        <ButtonGroup size="small" variant="outlined" sx={{ bgcolor: 'background.paper', flexShrink: 0, display: { xs: 'none', md: 'inline-flex' } }}>
           <Tooltip title={t('preview:toolbar.formatBold', 'Bold Selected Text (Ctrl+B)')}>
+
             <IconButton
               size="small"
               onClick={() => liveEdit?.formatSelection('bold')}

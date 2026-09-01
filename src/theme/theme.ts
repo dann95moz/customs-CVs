@@ -41,9 +41,10 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
       divider: tokens.border.default,
     },
     shape: {
-      borderRadius: parseInt(RADIUS_TOKENS.xl, 10),
+      borderRadius: parseInt(RADIUS_TOKENS.sm, 10),
     },
     typography: {
+
       fontFamily: bodyFont,
       h1: {
         fontFamily: displayFont,
@@ -302,9 +303,10 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
       MuiCard: {
         styleOverrides: {
           root: {
-            borderRadius: parseInt(RADIUS_TOKENS.xl, 10),
+            borderRadius: parseInt(RADIUS_TOKENS.md, 10),
             backgroundImage: 'none',
             border: `1px solid ${tokens.border.default}`,
+            backgroundColor: tokens.background.paper,
             boxShadow: tokens.shadow.box,
           },
         },
@@ -315,7 +317,23 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
             backgroundImage: 'none',
           },
           rounded: {
-            borderRadius: parseInt(RADIUS_TOKENS.lg, 10),
+            borderRadius: parseInt(RADIUS_TOKENS.md, 10),
+          },
+          outlined: {
+            border: `1px solid ${tokens.border.default}`,
+          },
+        },
+      },
+      MuiAccordion: {
+        styleOverrides: {
+          root: {
+            borderRadius: `${RADIUS_TOKENS.md} !important`,
+            border: `1px solid ${tokens.border.default}`,
+            backgroundColor: tokens.background.paper,
+            backgroundImage: 'none',
+            overflow: 'hidden',
+            '&:before': { display: 'none' },
+            '&.Mui-expanded': { margin: '8px 0' },
           },
         },
       },
@@ -364,7 +382,7 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            borderRadius: parseInt(RADIUS_TOKENS.md, 10),
+            borderRadius: parseInt(RADIUS_TOKENS.sm, 10),
             backgroundColor: tokens.background.input,
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: tokens.border.default,
@@ -378,6 +396,7 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
           },
         },
       },
+
       MuiTab: {
         styleOverrides: {
           root: {

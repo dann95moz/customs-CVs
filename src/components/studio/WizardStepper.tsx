@@ -121,16 +121,20 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
       sx={{
         borderBottom: `1px solid ${theme.palette.divider}`,
         bgcolor: 'background.paper',
-        py: 0.75,
-        px: { xs: 0.5, md: 3 },
+        py: 0.5,
+        px: { xs: 0.25, sm: 1, md: 3 },
         position: 'sticky',
         top: 0,
         zIndex: 20,
         display: 'flex',
         justifyContent: 'center',
+        overflow: 'hidden',
+        width: '100%',
+        maxWidth: '100vw',
+        boxSizing: 'border-box',
       }}
     >
-      <Box sx={{ position: 'relative', width: '100%', maxWidth: 1200, mx: 'auto', display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ position: 'relative', width: '100%', maxWidth: 1200, mx: 'auto', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         {/* Left Fade & Arrow Indicator */}
         {canScrollLeft && (
           <Box
@@ -141,16 +145,16 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
               left: 0,
               top: 0,
               bottom: 0,
-              width: { xs: 32, sm: 44 },
+              width: { xs: 28, sm: 40 },
               alignItems: 'center',
               justifyContent: 'flex-start',
-              pl: 0.5,
-              background: `linear-gradient(to right, ${theme.palette.background.paper} 60%, transparent)`,
+              pl: 0.25,
+              background: `linear-gradient(to right, ${theme.palette.background.paper} 70%, transparent)`,
               zIndex: 10,
               cursor: 'pointer',
             }}
           >
-            <ArrowBackIosRoundedIcon sx={{ fontSize: 13, color: 'primary.main', ml: 0.25 }} />
+            <ArrowBackIosRoundedIcon sx={{ fontSize: 12, color: 'primary.main', ml: 0.25 }} />
           </Box>
         )}
 
@@ -163,10 +167,10 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
             alignItems: 'center',
             justifyContent: { xs: 'flex-start', sm: 'center' },
             width: '100%',
-            gap: { xs: 0.75, sm: 1.5, md: 2 },
+            gap: { xs: 0.5, sm: 1.25, md: 2 },
             overflowX: 'auto',
             py: 0.5,
-            px: { xs: 1.5, sm: 0 },
+            px: { xs: 1, sm: 0 },
             '&::-webkit-scrollbar': { display: 'none' },
             scrollbarWidth: 'none',
             scrollBehavior: 'smooth',
@@ -184,15 +188,15 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
                 onClick={() => onSelectStep(step.id)}
                 sx={{
                   flex: { xs: '0 0 auto', sm: 1 },
-                  maxWidth: { sm: 270 },
-                  minWidth: { xs: 'auto', sm: 160, md: 200 },
-                  p: { xs: 0.6, sm: 1 },
-                  px: { xs: 1, sm: 1.75 },
+                  maxWidth: { xs: 180, sm: 270 },
+                  minWidth: { xs: 'auto', sm: 140, md: 200 },
+                  p: { xs: 0.4, sm: 0.75 },
+                  px: { xs: 0.75, sm: 1.5 },
                   borderRadius: 9999,
                   display: 'flex',
-
                   alignItems: 'center',
-                  gap: { xs: 0.75, sm: 1.25 },
+                  gap: { xs: 0.5, sm: 1 },
+
                   textAlign: 'left',
                   border: '1px solid',
                   borderColor: isActive

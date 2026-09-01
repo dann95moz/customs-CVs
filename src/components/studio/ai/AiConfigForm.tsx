@@ -229,7 +229,7 @@ export const AiConfigForm: React.FC<AiConfigFormProps> = ({
         p: { xs: 1.75, sm: 2.5 },
         border: `1px solid ${muiTheme.palette.divider}`,
         bgcolor: 'background.paper',
-        borderRadius: '16px',
+        borderRadius: 2,
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
@@ -261,13 +261,14 @@ export const AiConfigForm: React.FC<AiConfigFormProps> = ({
               variant="outlined"
               sx={{
                 p: { xs: 1.25, sm: 1.5 },
-                borderRadius: '14px',
+                borderRadius: 1.5,
                 borderColor: isSelected ? activeColor : muiTheme.palette.divider,
                 bgcolor: isSelected ? alpha(activeColor, isDark ? 0.08 : 0.04) : 'transparent',
                 transition: 'all 0.15s ease',
                 overflow: 'hidden',
               }}
             >
+
               <FormControlLabel
                 value={opt.id}
                 control={

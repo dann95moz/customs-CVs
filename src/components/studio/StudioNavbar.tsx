@@ -62,17 +62,15 @@ export const StudioNavbar: React.FC = () => {
         disableGutters
         sx={{
           px: { xs: 1, sm: 2, md: 3 },
-          minHeight: { xs: 52, sm: 56 },
+          minHeight: { xs: 48, sm: 56 },
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          gap: { xs: 1, sm: 2 },
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          WebkitOverflowScrolling: 'touch',
-          scrollbarWidth: 'none',
-          '&::-webkit-scrollbar': { display: 'none' },
+          gap: { xs: 0.5, sm: 1.5 },
+          overflow: 'hidden',
           width: '100%',
+          maxWidth: '100vw',
+          boxSizing: 'border-box',
         }}
       >
         {/* Brand Logo & Name */}
@@ -122,15 +120,14 @@ export const StudioNavbar: React.FC = () => {
         </Tooltip>
 
 
-        {/* Primary Navigation Tabs with Smooth Horizontal Touch Slide */}
+        {/* Primary Navigation Tabs with Smooth Touch Slide */}
         <Tabs
           value={activeTab === 'landing' ? false : activeTab}
           onChange={(_, val: StudioTab) => setActiveTab(val)}
           variant="scrollable"
-          scrollButtons="auto"
-          allowScrollButtonsMobile
+          scrollButtons={false}
           sx={{
-            minHeight: { xs: 44, sm: 48 },
+            minHeight: { xs: 40, sm: 48 },
             flex: { xs: '1 1 auto', sm: '0 1 auto' },
             minWidth: 0,
             mx: { xs: 0.25, sm: 1 },
@@ -150,10 +147,10 @@ export const StudioNavbar: React.FC = () => {
               borderRadius: '3px 3px 0 0',
             },
             '& .MuiTab-root': {
-              minHeight: { xs: 44, sm: 48 },
-              minWidth: { xs: 52, sm: 80, md: 110 },
-              px: { xs: 0.75, sm: 1.25, md: 2 },
-              py: { xs: 0.5, sm: 1 },
+              minHeight: { xs: 40, sm: 48 },
+              minWidth: { xs: 44, sm: 70, md: 95 },
+              px: { xs: 0.6, sm: 1.25, md: 1.75 },
+              py: { xs: 0.25, sm: 0.75 },
               fontSize: { xs: '0.72rem', sm: '0.82rem' },
               fontWeight: 600,
               textTransform: 'none',
@@ -162,6 +159,7 @@ export const StudioNavbar: React.FC = () => {
             },
           }}
         >
+
           <Tab
             value="wizard"
             icon={<AutoAwesomeRoundedIcon sx={{ fontSize: { xs: 15, sm: 18 } }} />}
