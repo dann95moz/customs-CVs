@@ -69,8 +69,33 @@ Global state is organized into modular domain slices in `src/store/slices/`:
   ```
 
 ---
+## 4. Dumb Components & Single Responsibility (SRP) Workflow
 
-## 4. Performance & Memoization Guidelines
+### The 3-Tier Decomposition Model
+When authoring or refactoring complex views:
+
+1. **Domain Hook (`src/hooks/useXxx.ts`)**:
+   - Manages state, Zustand subscriptions, debounces, and side-effects.
+   - Returns a clean, minimal contract `{ data, handlers, uiStatus }`.
+2. **Container / Orchestrator (`src/components/.../XContainer.tsx`)**:
+   - Invokes the custom hook and handles high-level layout/routing.
+   - Passes specific data slices down to dumb components without business logic in JSX.
+3. **Dumb Components (`src/components/.../XCard.tsx`, `XToolbar.tsx`, `XModal.tsx`)**:
+   - Pure presentational components.
+   - Receive typed props: data to display + callbacks to trigger (`onClick`, `onSave`, `onDelete`).
+   - Zero store imports, zero API calls, zero parsing logic.
+
+### Refactoring Smells Checklist
+Decompose immediately if a component:
+- [ ] Exceeds **200 lines** of code.
+- [ ] Imports both `useResumeStore` AND renders deep nested DOM trees.
+- [ ] Performs string parsing / regex calculations inline during render.
+- [ ] Contains multiple modals, forms, and cards in the same file.
+
+---
+
+## 5. Performance & Memoization Guidelines
 
 - **Memoize with Purpose**: Apply `useMemo` and `useCallback` when passing callbacks to memoized children (`React.memo`) or when performing expensive parsing / regex AST calculations.
 - **Pure Functions**: Keep utility helpers in `src/utils/` pure and easily testable.
+

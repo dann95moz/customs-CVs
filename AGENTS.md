@@ -24,8 +24,10 @@ CV Studio is a local-first, privacy-respecting ATS resume builder, tailoring eng
 All agent operations in this repository must strictly adhere to the following rules:
 
 1. **Coding Standards**: See [coding-rules.md](file:///.agents/rules/coding-rules.md) for SOLID, DRY, KISS/YAGNI, naming conventions, and layer architecture.
-2. **Design Tokens & Styling**: See [styling-rules.md](file:///.agents/rules/styling-rules.md) for theme tokens, responsive mobile-first layouts, and A4 page dimensions.
-3. **Internationalization (i18n)**: See [i18n-rules.md](file:///.agents/rules/i18n-rules.md) for multilingual synchronization across `src/i18n/locales/`.
+2. **Component Architecture & Dumb Components**: See [component-architecture-rules.md](file:///.agents/rules/component-architecture-rules.md) for presentational/container separation, minimal components, and zero business logic in UI.
+3. **Design Tokens & Styling**: See [styling-rules.md](file:///.agents/rules/styling-rules.md) for theme tokens, responsive mobile-first layouts, and A4 page dimensions.
+4. **Internationalization (i18n)**: See [i18n-rules.md](file:///.agents/rules/i18n-rules.md) for multilingual synchronization across `src/i18n/locales/`.
+
 
 ---
 
