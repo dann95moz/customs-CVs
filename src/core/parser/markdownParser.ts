@@ -74,14 +74,14 @@ export function parseContactItem(rawText: string): ContactItem | null {
   if (/linkedin\.com\/in\/[a-zA-Z0-9_-]+/i.test(clean)) {
     const match = clean.match(/(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+/i);
     const url = match ? (match[0].startsWith('http') ? match[0] : `https://${match[0]}`) : clean;
-    return { type: 'linkedin', label: clean, url };
+    return { type: 'linkedin', label: 'LinkedIn', url };
   }
 
   // GitHub URL
   if (/github\.com\/[a-zA-Z0-9_-]+/i.test(clean)) {
     const match = clean.match(/(?:https?:\/\/)?(?:www\.)?github\.com\/[a-zA-Z0-9_-]+/i);
     const url = match ? (match[0].startsWith('http') ? match[0] : `https://${match[0]}`) : clean;
-    return { type: 'github', label: clean, url };
+    return { type: 'github', label: 'GitHub', url };
   }
 
   // Phone
@@ -97,7 +97,7 @@ export function parseContactItem(rawText: string): ContactItem | null {
   // Website / Portfolio
   if (/^https?:\/\//i.test(clean) || /\.[a-z]{2,3}(?:\/|$)/i.test(clean)) {
     const url = clean.startsWith('http') ? clean : `https://${clean}`;
-    return { type: 'globe', label: clean, url };
+    return { type: 'globe', label: 'Portfolio', url };
   }
 
   return { type: 'text', label: clean };
@@ -133,15 +133,15 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
         addedTypes.add('location');
       } else if (key.includes('linkedin')) {
         const url = val.startsWith('http') ? val : `https://${val}`;
-        results.push({ type: 'linkedin', label: val, url });
+        results.push({ type: 'linkedin', label: 'LinkedIn', url });
         addedTypes.add('linkedin');
       } else if (key.includes('github')) {
         const url = val.startsWith('http') ? val : `https://${val}`;
-        results.push({ type: 'github', label: val, url });
+        results.push({ type: 'github', label: 'GitHub', url });
         addedTypes.add('github');
       } else if (key.includes('portfol') || key.includes('web')) {
         const url = val.startsWith('http') ? val : `https://${val}`;
-        results.push({ type: 'globe', label: val, url });
+        results.push({ type: 'globe', label: 'Portfolio', url });
         addedTypes.add('globe');
       }
     }
@@ -167,12 +167,12 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
     }
     if (linkedinMatch && !addedTypes.has('linkedin')) {
       const url = linkedinMatch[0].startsWith('http') ? linkedinMatch[0] : `https://${linkedinMatch[0]}`;
-      results.push({ type: 'linkedin', label: linkedinMatch[0], url });
+      results.push({ type: 'linkedin', label: 'LinkedIn', url });
       addedTypes.add('linkedin');
     }
     if (githubMatch && !addedTypes.has('github')) {
       const url = githubMatch[0].startsWith('http') ? githubMatch[0] : `https://${githubMatch[0]}`;
-      results.push({ type: 'github', label: githubMatch[0], url });
+      results.push({ type: 'github', label: 'GitHub', url });
       addedTypes.add('github');
     }
     if (phoneMatch && !emailMatch && !addedTypes.has('phone') && phoneMatch[0].replace(/\D/g, '').length >= 7) {

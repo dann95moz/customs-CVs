@@ -1,10 +1,24 @@
 import React from 'react';
 import { HeaderSlotProps } from '../../templates/types';
+import { ContactItem } from '../../types';
 import { Icon } from '../Icons';
 import { EditableText } from '../studio/preview/EditableText';
 import { useCvLiveEdit } from '../studio/preview/CvLiveEditContext';
 
 export type { HeaderSlotProps };
+
+function getCleanContactLabel(contact: ContactItem): string {
+  if (contact.type === 'linkedin' && (contact.label.startsWith('http') || contact.label.includes('linkedin.com'))) {
+    return 'LinkedIn';
+  }
+  if (contact.type === 'github' && (contact.label.startsWith('http') || contact.label.includes('github.com'))) {
+    return 'GitHub';
+  }
+  if (contact.type === 'globe' && contact.label.startsWith('http')) {
+    return 'Portfolio';
+  }
+  return contact.label;
+}
 
 export const HeaderSlot: React.FC<HeaderSlotProps> = ({ 
   data, 
@@ -34,23 +48,26 @@ export const HeaderSlot: React.FC<HeaderSlotProps> = ({
       
       {showContactsInHeader && data.contacts.length > 0 && (
         <div className="cv-contact-list">
-          {data.contacts.map((c, i) => (
-            <span key={i} className="cv-contact-item">
-              <Icon type={c.type} />
-              {c.url && !liveEdit?.isLiveEditing ? (
-                <a href={c.url} target="_blank" rel="noopener noreferrer">
-                  {c.label}
-                </a>
-              ) : (
-                <EditableText
-                  tagName="span"
-                  value={c.label}
-                  onSave={(newLabel) => liveEdit?.updateContact(i, newLabel)}
-                  placeholder="Contact Info"
-                />
-              )}
-            </span>
-          ))}
+          {data.contacts.map((c, i) => {
+            const displayLabel = getCleanContactLabel(c);
+            return (
+              <span key={i} className="cv-contact-item">
+                <Icon type={c.type} />
+                {c.url && !liveEdit?.isLiveEditing ? (
+                  <a href={c.url} target="_blank" rel="noopener noreferrer">
+                    {displayLabel}
+                  </a>
+                ) : (
+                  <EditableText
+                    tagName="span"
+                    value={c.label}
+                    onSave={(newLabel) => liveEdit?.updateContact(i, newLabel)}
+                    placeholder="Contact Info"
+                  />
+                )}
+              </span>
+            );
+          })}
         </div>
       )}
     </header>

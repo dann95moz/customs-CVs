@@ -1,4 +1,4 @@
-import { CVData, SectionType } from '../types/cv';
+import { CVData, SectionType, ContactItem } from '../types/cv';
 import { 
   CVSlotMap, 
   HeaderSlotData, 
@@ -10,13 +10,37 @@ import {
 } from './types';
 
 /**
+ * Normalizes contact item labels to clean human-friendly badges (LinkedIn, GitHub, Portfolio)
+ */
+function cleanContactDisplayLabel(c: ContactItem): ContactItem {
+  let label = c.label;
+  if (c.type === 'linkedin') {
+    if (label.startsWith('http') || label.includes('linkedin.com') || label.includes('/in/')) {
+      label = 'LinkedIn';
+    }
+  } else if (c.type === 'github') {
+    if (label.startsWith('http') || label.includes('github.com')) {
+      label = 'GitHub';
+    }
+  } else if (c.type === 'globe') {
+    if (label.startsWith('http') || label.includes('http://') || label.includes('https://') || label.includes('www.')) {
+      label = 'Portfolio';
+    }
+  }
+  return {
+    ...c,
+    label
+  };
+}
+
+/**
  * Maps raw CVData into a strongly-typed, structured Slot Map
  */
 export function mapDataToSlots(data: CVData): CVSlotMap {
   const header: HeaderSlotData = {
     name: data.name || 'Candidate',
     title: data.title,
-    contacts: data.contacts || [],
+    contacts: (data.contacts || []).map(cleanContactDisplayLabel),
     photo: data.photo,
     nationality: data.nationality,
     dateOfBirth: data.dateOfBirth,
