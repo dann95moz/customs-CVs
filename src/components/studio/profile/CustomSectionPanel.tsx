@@ -36,22 +36,24 @@ export interface CustomSectionPanelProps {
   onRemoveSection: () => void;
 }
 
-export const getPresetIcon = (presetType?: CustomSectionPresetType, fontSize = 20) => {
+export const getPresetIcon = (presetType?: CustomSectionPresetType, fontSize = 20, color?: string) => {
+  const sx = { fontSize, ...(color ? { color } : {}) };
   switch (presetType) {
     case 'certifications':
-      return <WorkspacePremiumRoundedIcon sx={{ fontSize, color: '#0284c7' }} />;
+      return <WorkspacePremiumRoundedIcon sx={sx} />;
     case 'awards':
-      return <EmojiEventsRoundedIcon sx={{ fontSize, color: '#eab308' }} />;
+      return <EmojiEventsRoundedIcon sx={sx} />;
     case 'publications':
-      return <MenuBookRoundedIcon sx={{ fontSize, color: '#8b5cf6' }} />;
+      return <MenuBookRoundedIcon sx={sx} />;
     case 'volunteering':
-      return <VolunteerActivismRoundedIcon sx={{ fontSize, color: '#10b981' }} />;
+      return <VolunteerActivismRoundedIcon sx={sx} />;
     case 'conferences':
-      return <RecordVoiceOverRoundedIcon sx={{ fontSize, color: '#f97316' }} />;
+      return <RecordVoiceOverRoundedIcon sx={sx} />;
     default:
-      return <PushPinRoundedIcon sx={{ fontSize, color: 'primary.main' }} />;
+      return <PushPinRoundedIcon sx={sx} />;
   }
 };
+
 
 export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
   section,
@@ -136,7 +138,8 @@ export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
             sx={{
               p: 1,
               borderRadius: '8px',
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
+              bgcolor: isDark ? alpha(theme.palette.primary.main, 0.12) : alpha(theme.palette.primary.main, 0.08),
+              color: 'primary.main',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -144,6 +147,7 @@ export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
           >
             {getPresetIcon(section.presetType, 22)}
           </Box>
+
 
           {editingTitle ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1, maxWidth: 400 }}>
