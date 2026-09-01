@@ -329,10 +329,11 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             spacing={1}
             sx={{
               width: { xs: '100%', sm: 'auto' },
-              gap: 1,
+              alignItems: { xs: 'stretch', sm: 'center' },
               flexShrink: 0,
             }}
           >
+
             <Button
               variant="contained"
               color="primary"
@@ -340,7 +341,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               startIcon={<CloudUploadRoundedIcon />}
               onClick={openFileDialog}
               disabled={isProcessing}
-              fullWidth
               sx={{
                 fontWeight: 700,
                 whiteSpace: 'nowrap',
@@ -350,48 +350,47 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               {t('profile:actions.importResume', 'Import Resume (PDF, .md)')}
             </Button>
 
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<RefreshRoundedIcon />}
-              onClick={onLoadSample}
-              disabled={isProcessing}
-              fullWidth
-              sx={{
-                fontWeight: 700,
-                whiteSpace: 'nowrap',
-                width: { xs: '100%', sm: 'auto' },
-              }}
-            >
-              {t('profile:actions.loadSample', 'Load Sample Profile')}
-            </Button>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: { xs: '100%', sm: 'auto' } }}>
+              <Button
+                variant="outlined"
+                size="small"
+                startIcon={<RefreshRoundedIcon />}
+                onClick={onLoadSample}
+                disabled={isProcessing}
+                sx={{
+                  fontWeight: 700,
+                  whiteSpace: 'nowrap',
+                  flex: { xs: 1, sm: 'initial' },
+                  width: { xs: '100%', sm: 'auto' },
+                }}
+              >
+                {t('profile:actions.loadSample', 'Load Sample Profile')}
+              </Button>
 
-            {hasData && (
-              <Tooltip title={t('profile:actions.clearProfileTip', 'Clear all profile fields and start from a blank slate')}>
-                <Button
-                  variant="outlined"
-                  color="inherit"
-                  size="small"
-                  startIcon={<DeleteOutlineRoundedIcon sx={{ fontSize: '15px !important' }} />}
-                  onClick={() => setShowClearConfirmDialog(true)}
-                  disabled={isProcessing}
-                  sx={{
-                    fontWeight: 600,
-                    color: 'text.secondary',
-                    borderColor: theme.palette.divider,
-                    whiteSpace: 'nowrap',
-                    width: { xs: '100%', sm: 'auto' },
-                    '&:hover': {
-                      borderColor: theme.palette.error.main,
-                      color: theme.palette.error.main,
-                      bgcolor: alpha(theme.palette.error.main, 0.04),
-                    },
-                  }}
-                >
-                  {t('profile:actions.clearProfile', 'Start from Scratch')}
-                </Button>
-              </Tooltip>
-            )}
+              {hasData && (
+                <Tooltip title={t('profile:actions.clearProfileTip', 'Clear all profile fields and start from a blank slate')}>
+                  <IconButton
+                    size="small"
+                    onClick={() => setShowClearConfirmDialog(true)}
+                    disabled={isProcessing}
+                    aria-label={t('profile:actions.clearProfile', 'Start from Scratch')}
+                    sx={{
+                      color: 'text.secondary',
+                      border: `1px solid ${theme.palette.divider}`,
+                      p: 0.75,
+                      flexShrink: 0,
+                      '&:hover': {
+                        borderColor: theme.palette.error.main,
+                        color: theme.palette.error.main,
+                        bgcolor: alpha(theme.palette.error.main, 0.08),
+                      },
+                    }}
+                  >
+                    <DeleteOutlineRoundedIcon sx={{ fontSize: 18 }} />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Box>
           </Stack>
         </Paper>
 
