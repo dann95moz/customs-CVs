@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Box,
   Typography,
   TextField,
-  Chip,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Stack,
   Button,
   IconButton,
-  useTheme,
+  Tooltip,
+  Paper,
+  Stack,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Autocomplete,
+  useTheme
 } from '@mui/material';
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
@@ -21,79 +23,238 @@ import { LanguagesSectionProps } from '../../../types';
 
 export type { LanguagesSectionProps };
 
+export interface StructuredLanguageEntry {
+  name: string;
+  level: string;
+}
+
+const COMMON_LANGUAGES = [
+  'Español',
+  'English',
+  'Français',
+  'Deutsch',
+  'Italiano',
+  'Português',
+  '中文 (Chinese)',
+  '日本語 (Japanese)'
+];
+
+/**
+ * Parses raw markdown language line into structured name & level
+ */
+export function parseLanguageEntry(raw: string): StructuredLanguageEntry {
+  const clean = (raw || '').trim().replace(/^(?:[-•·]|\*(?!\*))\s*/, '').trim();
+
+  // 1. Format: **Language:** Level or Language: Level
+  const colonMatch = clean.match(/^\*{0,2}([^:*–—(]+)\*{0,2}\s*[:*–—]\s*(.+)$/);
+  if (colonMatch) {
+    return {
+      name: colonMatch[1].replace(/\*\*/g, '').trim(),
+      level: colonMatch[2].replace(/\*\*/g, '').trim()
+    };
+  }
+
+  // 2. Format: Language (Level)
+  const parenMatch = clean.match(/^\*{0,2}([^:(]+)\*{0,2}\s*\(([^)]+)\)$/);
+  if (parenMatch) {
+    return {
+      name: parenMatch[1].replace(/\*\*/g, '').trim(),
+      level: parenMatch[2].replace(/\*\*/g, '').trim()
+    };
+  }
+
+  // 3. Format: Language - Level or Language | Level
+  const parts = clean.split(/\s*[-–—|]\s*/);
+  if (parts.length >= 2) {
+    return {
+      name: parts[0].replace(/\*\*/g, '').trim(),
+      level: parts.slice(1).join(' ').replace(/\*\*/g, '').trim()
+    };
+  }
+
+  return {
+    name: clean.replace(/\*\*/g, '').trim(),
+    level: 'Professional Working Proficiency'
+  };
+}
+
+/**
+ * Serializes name and level back into standardized Markdown
+ */
+export function formatLanguageEntry(name: string, level: string): string {
+  const cleanName = (name || '').trim().replace(/\*\*/g, '');
+  const cleanLevel = (level || '').trim().replace(/\*\*/g, '');
+  if (!cleanName && !cleanLevel) return '';
+  if (!cleanLevel) return cleanName;
+  return `**${cleanName}:** ${cleanLevel}`;
+}
+
 export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
-  isExpanded,
-  onToggle,
   languages,
   onUpdateLanguage,
   onAddLanguage,
-  onRemoveLanguage,
+  onRemoveLanguage
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
+  const levelOptions = useMemo(() => [
+    { value: 'Native', label: t('profile:sections.languages.levelNative', 'Nativo / Bilingüe') },
+    { value: 'C2 • Full Professional / Mastery', label: t('profile:sections.languages.levelC2', 'C2 • Maestría / Dominio Completo') },
+    { value: 'C1 • Advanced', label: t('profile:sections.languages.levelC1', 'C1 • Avanzado / Fluido Profesional') },
+    { value: 'B2 • Upper Intermediate', label: t('profile:sections.languages.levelB2', 'B2 • Intermedio Alto / Profesional') },
+    { value: 'B1 • Intermediate', label: t('profile:sections.languages.levelB1', 'B1 • Intermedio') },
+    { value: 'A2 • Elementary', label: t('profile:sections.languages.levelA2', 'A2 • Elemental / Básico') },
+    { value: 'A1 • Beginner', label: t('profile:sections.languages.levelA1', 'A1 • Principiante') }
+  ], [t]);
+
+  const handleFieldChange = (index: number, field: 'name' | 'level', value: string) => {
+    const current = parseLanguageEntry(languages[index]);
+    const updated = {
+      ...current,
+      [field]: value
+    };
+    onUpdateLanguage(index, formatLanguageEntry(updated.name, updated.level));
+  };
+
+  const handleAddNewLanguage = () => {
+    onAddLanguage();
+  };
 
   return (
-    <Accordion
-      expanded={isExpanded}
-      onChange={onToggle}
-      slotProps={{ transition: { unmountOnExit: true } }}
-      sx={{
-        borderRadius: '12px !important',
-        border: `1px solid ${theme.palette.divider}`,
-        overflow: 'hidden',
-        '&:before': { display: 'none' },
-      }}
-    >
-      <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <TranslateRoundedIcon color="primary" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {t('profile:sections.languages.title', '6. Languages & Proficiency')}
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: { xs: 1.5, sm: 2.5 } }}>
+      {/* Header Info & Add Language Button */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <TranslateRoundedIcon color="primary" sx={{ fontSize: 20 }} />
+          <Typography variant="subtitle1" sx={{ fontWeight: 800, fontSize: '0.98rem' }}>
+            {t('profile:sections.languages.title', 'Idiomas')}
           </Typography>
-          {languages.length > 0 && (
-            <Chip
-              label={`${languages.length} ${languages.length === 1 ? 'Language' : 'Languages'}`}
-              size="small"
-              color="success"
-              variant="outlined"
-              sx={{ height: 20, fontSize: '0.7rem' }}
-            />
-          )}
         </Box>
-      </AccordionSummary>
-      <AccordionDetails sx={{ pt: 1, pb: 3 }}>
-        <Stack spacing={1.5}>
-          {languages.map((lang, idx) => (
-            <Box key={idx} sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              <TextField
-                size="small"
-                fullWidth
-                value={lang}
-                onChange={(e) => onUpdateLanguage(idx, e.target.value)}
-                placeholder={t('profile:sections.languages.proficiency', '**English:** Native / Professional Working Proficiency')}
-              />
-              <IconButton
-                size="small"
-                color="error"
-                onClick={() => onRemoveLanguage(idx)}
-                title={t('profile:sections.languages.remove', 'Remove language')}
-              >
-                <DeleteOutlineRoundedIcon fontSize="small" />
-              </IconButton>
-            </Box>
-          ))}
 
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<AddRoundedIcon />}
-            onClick={onAddLanguage}
-            sx={{ alignSelf: 'flex-start' }}
-          >
-            {t('profile:sections.languages.addLanguage', 'Add Language')}
-          </Button>
+        <Button
+          size="small"
+          variant="contained"
+          color="primary"
+          startIcon={<AddRoundedIcon sx={{ fontSize: 16 }} />}
+          onClick={handleAddNewLanguage}
+        >
+          {t('profile:sections.languages.addLanguage', 'Agregar Idioma')}
+        </Button>
+      </Box>
+
+      {/* Languages Rows */}
+      {languages.length === 0 ? (
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 3,
+            textAlign: 'center',
+            borderRadius: '10px',
+            borderColor: theme.palette.divider,
+            bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.015)'
+          }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            {t('profile:sections.languages.empty', 'No hay idiomas agregados aún.')}
+          </Typography>
+        </Paper>
+      ) : (
+        <Stack spacing={1.5}>
+          {languages.map((lang, idx) => {
+            const parsed = parseLanguageEntry(lang);
+
+            // Find matching level value or fallback to custom/first
+            const matchedLevel = levelOptions.find(opt => 
+              opt.value.toLowerCase() === parsed.level.toLowerCase() ||
+              opt.label.toLowerCase() === parsed.level.toLowerCase() ||
+              parsed.level.toLowerCase().startsWith(opt.value.toLowerCase().split(' ')[0])
+            )?.value || (parsed.level || 'B2 • Upper Intermediate');
+
+            return (
+              <Box
+                key={idx}
+                sx={{
+                  display: 'flex',
+                  gap: 1.5,
+                  alignItems: 'center',
+                  p: 1.5,
+                  borderRadius: '10px',
+                  border: `1px solid ${theme.palette.divider}`,
+                  bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.015)',
+                  '&:hover': {
+                    bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)'
+                  },
+                  transition: 'background-color 0.15s ease-in-out'
+                }}
+              >
+                {/* Left: Language Selector / Input */}
+                <Box sx={{ flex: { xs: 1, sm: 1.2 } }}>
+                  <Autocomplete
+                    freeSolo
+                    size="small"
+                    options={COMMON_LANGUAGES}
+                    value={parsed.name}
+                    onInputChange={(_e, newInputValue) => {
+                      handleFieldChange(idx, 'name', newInputValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={t('profile:sections.languages.language', 'Idioma')}
+                        placeholder={t('profile:sections.languages.languagePlaceholder', 'ej. Español, Inglés...')}
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            bgcolor: 'background.paper',
+                            borderRadius: '8px'
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                </Box>
+
+                {/* Right: Proficiency Level Selector */}
+                <Box sx={{ flex: { xs: 1, sm: 1.5 } }}>
+                  <FormControl size="small" fullWidth>
+                    <InputLabel id={`lang-level-label-${idx}`}>
+                      {t('profile:sections.languages.proficiency', 'Nivel de Dominio')}
+                    </InputLabel>
+                    <Select
+                      labelId={`lang-level-label-${idx}`}
+                      label={t('profile:sections.languages.proficiency', 'Nivel de Dominio')}
+                      value={matchedLevel}
+                      onChange={(e) => handleFieldChange(idx, 'level', e.target.value)}
+                      sx={{
+                        borderRadius: '8px',
+                        bgcolor: 'background.paper'
+                      }}
+                    >
+                      {levelOptions.map((opt) => (
+                        <MenuItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+
+                {/* Delete button */}
+                <Tooltip title={t('profile:sections.languages.remove', 'Eliminar idioma')}>
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={() => onRemoveLanguage(idx)}
+                  >
+                    <DeleteOutlineRoundedIcon sx={{ fontSize: 18 }} />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            );
+          })}
         </Stack>
-      </AccordionDetails>
-    </Accordion>
+      )}
+    </Box>
   );
 });

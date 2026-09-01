@@ -38,6 +38,15 @@
   "dropzone": {
     "dropToImport": "Suelta tu archivo PDF, .md o .txt aquí para importar"
   },
+  "nav": {
+    "personal": "Info personal",
+    "summary": "Resumen",
+    "skills": "Habilidades",
+    "experience": "Experiencia",
+    "education": "Educación",
+    "languages": "Idiomas",
+    "projects": "Proyectos"
+  },
   "sections": {
     "personalInfo": {
       "title": "Información Personal y Contacto",
@@ -63,6 +72,7 @@
       "dates": "Fechas (ej. 2021 – Presente)",
       "location": "Ubicación",
       "bullets": "Logros y Responsabilidades (Fórmula XYZ)",
+      "logros": "Logros principales",
       "addBullet": "Agregar Viñeta de Logro",
       "removeRole": "Eliminar Puesto"
     },
@@ -70,27 +80,47 @@
       "title": "Habilidades Técnicas y Competencias",
       "desc": "Organiza tus competencias técnicas en categorías claras. Escribe una habilidad y presiona Enter, o haz clic en sugerencias.",
       "empty": "No hay habilidades agregadas en este grupo. Escribe abajo o elige una sugerencia.",
-      "addPlaceholder": "Añadir habilidad (Enter o coma)...",
-      "quickSuggestions": "Añadir rápido:",
-      "addGroup": "Agregar Grupo de Competencia",
-      "groupName": "Nombre de Categoría (ej. Lenguajes y Frameworks)",
+      "addPlaceholder": "Escribe y presiona Enter...",
+      "inputPlaceholder": "Escribe y presiona Enter",
+      "quickSuggestions": "Sugeridas:",
+      "addGroup": "Agregar Categoría de Habilidades",
+      "groupName": "Nombre de Categoría",
+      "defaultCore": "Fundamentales y Lenguajes",
+      "defaultArchitecture": "Arquitectura y Frameworks",
+      "defaultTooling": "Herramientas, Cloud y CI/CD",
       "skillsList": "Habilidades (separadas por comas)",
       "removeGroup": "Eliminar Categoría"
     },
     "education": {
       "title": "Educación y Certificaciones",
       "addEducation": "Agregar Título / Certificación",
-      "degree": "Título / Certificación",
-      "institution": "Institución / Emisor",
-      "year": "Año / Graduación",
+      "degree": "Título / Grado / Certificación",
+      "institution": "Institución / Universidad / Emisor",
+      "year": "Año o Periodo (ej. 2018 – 2022)",
+      "degreePlaceholder": "ej. Ingeniería de Sistemas",
+      "institutionPlaceholder": "ej. Universidad Nacional / Udemy",
+      "yearPlaceholder": "ej. 2018 – 2022",
       "location": "Ubicación (opcional)",
+      "edit": "Editar",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "moreEntries": "+ {{count}} entradas más",
       "remove": "Eliminar"
     },
     "languages": {
       "title": "Idiomas",
       "addLanguage": "Agregar Idioma",
       "language": "Idioma",
-      "proficiency": "Nivel de Dominio (ej. Nativo, Fluido, Profesional)",
+      "proficiency": "Nivel de Dominio",
+      "languagePlaceholder": "ej. Español, Inglés, Francés...",
+      "levelNative": "Nativo / Bilingüe",
+      "levelC2": "C2 • Maestría / Dominio Completo",
+      "levelC1": "C1 • Avanzado / Fluido Profesional",
+      "levelB2": "B2 • Intermedio Alto / Profesional",
+      "levelB1": "B1 • Intermedio",
+      "levelA2": "A2 • Elemental / Básico",
+      "levelA1": "A1 • Principiante",
+      "empty": "No hay idiomas agregados aún.",
       "remove": "Eliminar"
     },
     "projects": {
@@ -100,17 +130,17 @@
       "projectName": "Título del Proyecto",
       "role": "Rol / Tecnología",
       "date": "Fecha / Año",
-      "link": "Enlace / Repositorio",
-      "bullets": "Logros y Métricas",
+      "link": "Enlace al Proyecto / Repositorio",
+      "bullets": "Aspectos Destacados y Métricas",
       "remove": "Eliminar Proyecto"
     }
   },
   "stepper": {
     "profileLabel": "Perfil del Candidato",
-    "profileSubtitle": "Historial y habilidades",
-    "targetLabel": "Oferta Objetivo",
-    "targetSubtitle": "Puesto y personalización",
-    "previewLabel": "CV en Vivo y Exportación PDF",
-    "previewSubtitle": "Vista previa y descarga PDF"
+    "profileSubtitle": "Trayectoria y habilidades",
+    "targetLabel": "Vacante Objetivo",
+    "targetSubtitle": "Oferta laboral y adaptación",
+    "previewLabel": "CV en Vivo y Exportación",
+    "previewSubtitle": "Previsualizar y descargar PDF"
   }
 }

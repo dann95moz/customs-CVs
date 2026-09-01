@@ -38,6 +38,15 @@
   "dropzone": {
     "dropToImport": "Déposez votre fichier PDF, .md ou .txt ici pour l'importer"
   },
+  "nav": {
+    "personal": "Infos personnelles",
+    "summary": "Résumé",
+    "skills": "Compétences",
+    "experience": "Expérience",
+    "education": "Formation",
+    "languages": "Langues",
+    "projects": "Projets"
+  },
   "sections": {
     "personalInfo": {
       "title": "Informations Personnelles & Contact",
@@ -59,48 +68,69 @@
       "title": "Expérience Professionnelle",
       "addRole": "Ajouter une Expérience",
       "company": "Entreprise / Organisation",
-      "role": "Poste / Rôle",
-      "dates": "Période (ex. 2021 – Présent)",
-      "location": "Lieu",
+      "role": "Poste / Titre",
+      "dates": "Dates (ex. 2021 – Présent)",
+      "location": "Localisation",
       "bullets": "Réalisations & Responsabilités (Formule XYZ)",
-      "addBullet": "Ajouter une Puce de Réalisation",
-      "removeRole": "Supprimer le Poste"
+      "logros": "Réalisations principales",
+      "addBullet": "Ajouter un Point de Réalisation",
+      "removeRole": "Supprimer l'Expérience"
     },
     "skills": {
       "title": "Compétences Techniques",
-      "desc": "Organisez vos compétences en catégories claires. Saisissez une compétence et appuyez sur Entrée, ou cliquez sur des suggestions.",
-      "empty": "Aucune compétence ajoutée dans ce groupe. Tapez ci-dessous ou choisissez une suggestion.",
-      "addPlaceholder": "Ajouter une compétence (Entrée ou virgule)...",
-      "quickSuggestions": "Ajout rapide :",
-      "addGroup": "Ajouter un groupe de compétences",
-      "groupName": "Nom de Catégorie (ex. Langages & Frameworks)",
+      "desc": "Organisez vos compétences en catégories claires. Tapez une compétence et appuyez sur Entrée.",
+      "empty": "Aucune compétence ajoutée. Tapez ci-dessous ou choisissez une suggestion.",
+      "addPlaceholder": "Tapez et appuyez sur Entrée...",
+      "inputPlaceholder": "Tapez et appuyez sur Entrée",
+      "quickSuggestions": "Suggéré :",
+      "addGroup": "Ajouter une Catégorie",
+      "groupName": "Nom de la Catégorie",
+      "defaultCore": "Fondamentaux & Langages",
+      "defaultArchitecture": "Architecture & Frameworks",
+      "defaultTooling": "Outils, Cloud & CI/CD",
       "skillsList": "Compétences (séparées par des virgules)",
       "removeGroup": "Supprimer la Catégorie"
     },
     "education": {
       "title": "Formation & Certifications",
-      "addEducation": "Ajouter un Diplôme / Certification",
-      "degree": "Diplôme / Titre de la Certification",
-      "institution": "Établissement / Organisme",
-      "year": "Année / Obtention",
-      "location": "Lieu (facultatif)",
+      "addEducation": "Ajouter Diplôme / Certification",
+      "degree": "Intitulé du Diplôme / Certification",
+      "institution": "Établissement / Université / Organisme",
+      "year": "Année ou Période (ex. 2018 – 2022)",
+      "degreePlaceholder": "ex. Master en Informatique",
+      "institutionPlaceholder": "ex. Sorbonne Université / Udemy",
+      "yearPlaceholder": "ex. 2018 – 2022",
+      "location": "Lieu (optionnel)",
+      "edit": "Modifier",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "moreEntries": "+ {{count}} entrées de plus",
       "remove": "Supprimer"
     },
     "languages": {
       "title": "Langues",
       "addLanguage": "Ajouter une Langue",
       "language": "Langue",
-      "proficiency": "Niveau (ex. Natif, Bilingue, Professionnel)",
+      "proficiency": "Niveau de Maîtrise",
+      "languagePlaceholder": "ex. Français, Anglais, Espagnol...",
+      "levelNative": "Langue maternelle / Bilingue",
+      "levelC2": "C2 • Bilingue / Maîtrise complète",
+      "levelC1": "C1 • Avancé / Courant professionnel",
+      "levelB2": "B2 • Intermédiaire supérieur / Professionnel",
+      "levelB1": "B1 • Intermédiaire",
+      "levelA2": "A2 • Élémentaire",
+      "levelA1": "A1 • Débutant",
+      "empty": "Aucune langue ajoutée pour le moment.",
       "remove": "Supprimer"
     },
     "projects": {
       "title": "Projets Notables",
-      "desc": "Ajoutez des projets personnels, du code open source ou des initiatives. Nous sélectionnerons les plus pertinents selon l'offre.",
+      "desc": "Ajoutez vos projets personnels, open-source ou réalisations majeures.",
       "addProject": "Ajouter un Projet",
       "projectName": "Titre du Projet",
-      "role": "Rôle / Technologies",
+      "role": "Rôle / Technologie",
       "date": "Date / Année",
-      "link": "Lien / Dépôt GitHub",
+      "link": "URL du Projet / Répertoire",
       "bullets": "Points Clés & Métriques",
       "remove": "Supprimer le Projet"
     }
@@ -109,8 +139,8 @@
     "profileLabel": "Profil du Candidat",
     "profileSubtitle": "Parcours & compétences",
     "targetLabel": "Offre Cible",
-    "targetSubtitle": "Offre & adaptation",
-    "previewLabel": "CV en Direct & PDF",
+    "targetSubtitle": "Offre d'emploi & adaptation",
+    "previewLabel": "CV en Direct & Export",
     "previewSubtitle": "Aperçu & téléchargement PDF"
   }
 }

@@ -406,7 +406,7 @@ function parseListItems(rawContent: string): string[] {
       const subParts = trimmed.split(/\s*[•;]\s*/).filter(Boolean);
       if (subParts.length > 1) {
         for (const part of subParts) {
-          const cleanPart = part.replace(/^[-*•·]\s*/, '').trim();
+          const cleanPart = part.replace(/^(?:[-•·]|\*(?!\*))\s*/, '').trim();
           if (cleanPart) {
             items.push(cleanPart);
           }
@@ -415,7 +415,7 @@ function parseListItems(rawContent: string): string[] {
       }
     }
 
-    const cleanLine = trimmed.replace(/^[-*•·]\s*/, '').trim();
+    const cleanLine = trimmed.replace(/^(?:[-•·]|\*(?!\*))\s*/, '').trim();
     if (cleanLine) {
       items.push(cleanLine);
     }
@@ -498,8 +498,8 @@ export function parseLanguageItems(rawContent: string): LanguageItem[] {
     const trimmed = line.trim();
     if (!trimmed) continue;
 
-    // Remove leading bullet marker (- , * , •)
-    const cleanLine = trimmed.replace(/^[-*•]\s*/, '').trim();
+    // Remove leading bullet marker (- , * , •) without stripping first asterisk of **bold**
+    const cleanLine = trimmed.replace(/^(?:[-•·]|\*(?!\*))\s*/, '').trim();
 
     let langName = '';
     let rawLevel = '';
@@ -731,7 +731,31 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
 
   for (const s of sections) {
     if (s.type === 'summary') cvData.summary = s.rawContent;
-    if (s.type === 'skills') cvData.skillGroups = parseSkillGroups(s.rawContent);
+    if (s.type === 'skills') {
+      const parsedGroups = parseSkillGroups(s.rawContent);
+      if (!cvData.skillGroups || cvData.skillGroups.length === 0) {
+        cvData.skillGroups = parsedGroups;
+      } else {
+        const existingCategoryMap = new Map<string, SkillCategory>();
+        cvData.skillGroups.forEach(g => existingCategoryMap.set(g.category.toLowerCase().trim(), g));
+        for (const pg of parsedGroups) {
+          const key = pg.category.toLowerCase().trim();
+          if (existingCategoryMap.has(key)) {
+            const existing = existingCategoryMap.get(key)!;
+            const skillSet = new Set(existing.skills.map(sk => sk.toLowerCase().trim()));
+            for (const sk of pg.skills) {
+              if (!skillSet.has(sk.toLowerCase().trim())) {
+                existing.skills.push(sk);
+                skillSet.add(sk.toLowerCase().trim());
+              }
+            }
+          } else {
+            cvData.skillGroups.push(pg);
+            existingCategoryMap.set(key, pg);
+          }
+        }
+      }
+    }
     if (s.type === 'experience') cvData.experience = parseExperienceItems(s.rawContent);
     if (s.type === 'projects') cvData.projects = parseExperienceItems(s.rawContent);
     if (s.type === 'education') {

@@ -38,6 +38,15 @@
   "dropzone": {
     "dropToImport": "Ziehen Sie Ihre PDF-, .md- oder .txt-Datei hierher, um sie zu importieren"
   },
+  "nav": {
+    "personal": "Persönliche Daten",
+    "summary": "Zusammenfassung",
+    "skills": "Fähigkeiten",
+    "experience": "Erfahrung",
+    "education": "Ausbildung",
+    "languages": "Sprachen",
+    "projects": "Projekte"
+  },
   "sections": {
     "personalInfo": {
       "title": "Persönliche Daten & Kontakt",
@@ -60,47 +69,68 @@
       "addRole": "Position hinzufügen",
       "company": "Unternehmen / Organisation",
       "role": "Position / Titel",
-      "dates": "Zeitraum (z. B. 2021 – Heute)",
+      "dates": "Zeitraum (z.B. 2021 – Heute)",
       "location": "Standort",
       "bullets": "Erfolge & Aufgaben (XYZ-Formel)",
+      "logros": "Wichtigste Erfolge",
       "addBullet": "Erfolgspunkt hinzufügen",
       "removeRole": "Position entfernen"
     },
     "skills": {
       "title": "Technische Fähigkeiten & Kompetenzen",
-      "desc": "Organisieren Sie Ihre Kompetenzen in klare Kategorien. Geben Sie eine Fähigkeit ein und drücken Sie Enter, oder wählen Sie Vorschläge.",
+      "desc": "Organisieren Sie Ihre Kompetenzen in Kategorien. Tippen Sie eine Fähigkeit ein und drücken Sie Enter.",
       "empty": "Noch keine Fähigkeiten hinzugefügt. Tippen Sie unten oder wählen Sie einen Vorschlag.",
-      "addPlaceholder": "Fähigkeit hinzufügen (Enter oder Komma)...",
-      "quickSuggestions": "Schnell hinzufügen:",
-      "addGroup": "Fähigkeitengruppe hinzufügen",
-      "groupName": "Kategoriename (z. B. Sprachen & Frameworks)",
-      "skillsList": "Fähigkeiten (durch Kommas getrennt)",
+      "addPlaceholder": "Eingeben und Enter drücken...",
+      "inputPlaceholder": "Eingeben und Enter drücken",
+      "quickSuggestions": "Vorschläge:",
+      "addGroup": "Kategorie hinzufügen",
+      "groupName": "Kategoriename",
+      "defaultCore": "Kernkompetenzen & Sprachen",
+      "defaultArchitecture": "Architektur & Frameworks",
+      "defaultTooling": "Werkzeuge, Cloud & CI/CD",
+      "skillsList": "Fähigkeiten (kommagetrennt)",
       "removeGroup": "Kategorie entfernen"
     },
     "education": {
       "title": "Ausbildung & Zertifikate",
       "addEducation": "Abschluss / Zertifikat hinzufügen",
-      "degree": "Abschluss / Zertifikatstitel",
-      "institution": "Einrichtung / Aussteller",
-      "year": "Jahr / Abschlussjahr",
+      "degree": "Abschluss- / Zertifikatstitel",
+      "institution": "Institution / Universität / Aussteller",
+      "year": "Jahr oder Zeitraum (z.B. 2018 – 2022)",
+      "degreePlaceholder": "z.B. B.Sc. Informatik",
+      "institutionPlaceholder": "z.B. TU München / Udemy",
+      "yearPlaceholder": "z.B. 2018 – 2022",
       "location": "Ort (optional)",
+      "edit": "Bearbeiten",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "moreEntries": "+ {{count}} weitere Einträge",
       "remove": "Entfernen"
     },
     "languages": {
       "title": "Sprachen",
       "addLanguage": "Sprache hinzufügen",
       "language": "Sprache",
-      "proficiency": "Sprachniveau (z. B. Muttersprache, Verhandlungssicher)",
+      "proficiency": "Sprachniveau",
+      "languagePlaceholder": "z.B. Deutsch, Englisch, Spanisch...",
+      "levelNative": "Muttersprache / Zweisprachig",
+      "levelC2": "C2 • Exzellente Kenntnisse",
+      "levelC1": "C1 • Fließend / Verhandlungssicher",
+      "levelB2": "B2 • Fließend im Berufsalltag",
+      "levelB1": "B1 • Gute Mittelstufe",
+      "levelA2": "A2 • Grundkenntnisse",
+      "levelA1": "A1 • Anfänger",
+      "empty": "Noch keine Sprachen hinzugefügt.",
       "remove": "Entfernen"
     },
     "projects": {
-      "title": "Hervorgehobene Projekte",
-      "desc": "Fügen Sie persönliche Projekte, Open-Source-Beiträge oder Initiativen hinzu. Wir wählen passende Inhalte je nach Stelle aus.",
+      "title": "Ausgewählte Projekte",
+      "desc": "Fügen Sie persönliche Projekte, Open-Source-Beiträge oder Initiativen hinzu.",
       "addProject": "Projekt hinzufügen",
       "projectName": "Projekttitel",
       "role": "Rolle / Technologie",
       "date": "Datum / Jahr",
-      "link": "Projekt-Link / Repository",
+      "link": "Projekt-URL / Repository",
       "bullets": "Highlights & Kennzahlen",
       "remove": "Projekt entfernen"
     }
@@ -108,9 +138,9 @@
   "stepper": {
     "profileLabel": "Kandidatenprofil",
     "profileSubtitle": "Werdegang & Fähigkeiten",
-    "targetLabel": "Ziel-Stellenanzeige",
-    "targetSubtitle": "Anzeige & Anpassung",
+    "targetLabel": "Zielstelle",
+    "targetSubtitle": "Stellenanzeige & Anpassung",
     "previewLabel": "Live-CV & PDF-Export",
-    "previewSubtitle": "Vorschau & PDF-Download"
+    "previewSubtitle": "Vorschau & PDF herunterladen"
   }
 }

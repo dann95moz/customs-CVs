@@ -65,7 +65,7 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
         break;
 
       case 'skills':
-        if (data.skillGroups && data.skillGroups.length > 0) {
+        if (data.skillGroups && data.skillGroups.length > 0 && !skills) {
           skills = {
             title: section.title,
             skillGroups: data.skillGroups
