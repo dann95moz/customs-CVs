@@ -61,13 +61,14 @@
   "panels": {
     "templates": {
       "title": "Seleziona Modello di CV",
-      "subtitle": "Scegli tra 7 modelli professionali ottimizzati per ATS",
+      "subtitle": "Scegli tra 9 modelli professionali ottimizzati per ATS",
       "palette": "Tavolozza Colori",
       "all": "Tutti",
       "ats": "Compatibile ATS",
       "executive": "Executive / Dirigenziale",
       "tech": "Tech / Moderno",
-      "creative": "Design / UI"
+      "creative": "Design / UI",
+      "european": "Europeo (UE)"
     },
     "design": {
       "title": "Design & Formattazione",

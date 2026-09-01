@@ -61,13 +61,14 @@
   "panels": {
     "templates": {
       "title": "Select Resume Theme",
-      "subtitle": "Choose from 7 engineered ATS-ready themes",
+      "subtitle": "Choose from 9 engineered ATS-ready themes",
       "palette": "Color Palette",
       "all": "All",
       "ats": "ATS Friendly",
       "executive": "Executive",
       "tech": "Tech / Modern",
-      "creative": "Design / UI"
+      "creative": "Design / UI",
+      "european": "European (EU)"
     },
     "design": {
       "title": "Design & Formatting",

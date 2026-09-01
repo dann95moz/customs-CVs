@@ -106,6 +106,6 @@ Deliver your response in clearly delimited Markdown sections:
 ---
 
 ## LANGUAGES
-- **[Language 1]:** [Level]
-- **[Language 2]:** [Level]
+- **[Language 1]:** Native
+- **[Language 2]:** [Estimated CEFR Level, e.g. B2 – Upper Intermediate, C1 – Advanced]
 ```

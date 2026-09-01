@@ -8,5 +8,7 @@ export * from './TwoColumnTemplate';
 export * from './DesignerUiuxTemplate';
 export * from './FormalLegalTemplate';
 export * from './AcademicResearchTemplate';
+export * from './EuropassTemplate';
+export * from './EuroModernTemplate';
 export * from './SingleColumnLayout';
 

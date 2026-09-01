@@ -593,6 +593,135 @@ export const TemplateThumbnailMiniature: React.FC<TemplateThumbnailMiniatureProp
             </Box>
           </Box>
         );
+
+      case 'europass':
+        return (
+          <Box
+            sx={{
+              p: '5px 7px',
+              height: '100%',
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '2px',
+              boxSizing: 'border-box',
+              fontFamily: "'Inter', sans-serif",
+              bgcolor: '#ffffff',
+              userSelect: 'none',
+              pointerEvents: 'none',
+            }}
+          >
+            {/* Europass Header */}
+            <Box sx={{ borderBottom: '1.5px solid #0e4194', pb: '3px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box>
+                <Typography sx={{ fontSize: '2.5px', fontWeight: 800, color: '#0e4194', letterSpacing: '0.4px', textTransform: 'uppercase' }}>
+                  CURRICULUM VITAE · EUROPASS
+                </Typography>
+                <Typography sx={{ fontSize: '4.8px', fontWeight: 800, color: '#0e4194', lineHeight: 1.1 }}>
+                  MARCO ROSSI
+                </Typography>
+                <Typography sx={{ fontSize: '3px', fontWeight: 600, color: '#475569' }}>
+                  SENIOR SOFTWARE ENGINEER
+                </Typography>
+              </Box>
+              <Box sx={{ width: '16px', height: '20px', borderRadius: '2px', bgcolor: '#e2e8f0', border: '1px solid #0e4194' }} />
+            </Box>
+
+            {/* Experience */}
+            <Box sx={{ mt: '1px' }}>
+              <Typography sx={{ fontSize: '3.2px', fontWeight: 800, color: '#0e4194', textTransform: 'uppercase', borderBottom: '0.5px solid #d4e2f4', pb: '0.5px' }}>
+                WORK EXPERIENCE
+              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', mt: '0.5px' }}>
+                <Typography sx={{ fontSize: '2.8px', fontWeight: 700, color: '#0f172a' }}>
+                  Staff Engineer · Siemens AG
+                </Typography>
+                <Typography sx={{ fontSize: '2.4px', color: '#64748b' }}>
+                  2021 – Present
+                </Typography>
+              </Box>
+              <Typography sx={{ fontSize: '2.5px', color: '#334155', lineHeight: 1.2 }}>
+                • Architected IoT cloud gateway serving 1.2M devices with 99.99% uptime.
+              </Typography>
+            </Box>
+
+            {/* Languages CEFR Grid */}
+            <Box sx={{ mt: '1px' }}>
+              <Typography sx={{ fontSize: '3.2px', fontWeight: 800, color: '#0e4194', textTransform: 'uppercase', borderBottom: '0.5px solid #d4e2f4', pb: '0.5px' }}>
+                LANGUAGE SKILLS (CEFR)
+              </Typography>
+              <Box sx={{ display: 'flex', gap: '3px', mt: '1px' }}>
+                <Box sx={{ bgcolor: '#e5effa', px: '3px', py: '0.5px', borderRadius: '2px', fontSize: '2.4px', fontWeight: 700, color: '#0e4194' }}>
+                  Italian: Native
+                </Box>
+                <Box sx={{ bgcolor: '#e5effa', px: '3px', py: '0.5px', borderRadius: '2px', fontSize: '2.4px', fontWeight: 700, color: '#0e4194' }}>
+                  English: C1
+                </Box>
+                <Box sx={{ bgcolor: '#e5effa', px: '3px', py: '0.5px', borderRadius: '2px', fontSize: '2.4px', fontWeight: 700, color: '#0e4194' }}>
+                  German: B2
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        );
+
+      case 'euro-modern':
+        return (
+          <Box
+            sx={{
+              height: '100%',
+              width: '100%',
+              display: 'grid',
+              gridTemplateColumns: '32% 68%',
+              boxSizing: 'border-box',
+              fontFamily: "'Inter', sans-serif",
+              bgcolor: '#ffffff',
+              userSelect: 'none',
+              pointerEvents: 'none',
+            }}
+          >
+            {/* Sidebar */}
+            <Box sx={{ bgcolor: '#f1f5f9', p: '5px 4px', borderRight: '0.5px solid #cbd5e1', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', mb: '1px' }}>
+                <Box sx={{ width: '16px', height: '16px', borderRadius: '50%', bgcolor: '#cbd5e1', border: `1.5px solid ${pal.accentColor}` }} />
+              </Box>
+              <Typography sx={{ fontSize: '2.6px', fontWeight: 800, color: pal.accentColor, textTransform: 'uppercase', borderBottom: '0.5px solid #cbd5e1', pb: '0.5px' }}>
+                DETAILS
+              </Typography>
+              <Typography sx={{ fontSize: '2.3px', color: '#475569' }}>
+                Berlin, Germany
+              </Typography>
+              <Typography sx={{ fontSize: '2.6px', fontWeight: 800, color: pal.accentColor, textTransform: 'uppercase', borderBottom: '0.5px solid #cbd5e1', pb: '0.5px', mt: '1px' }}>
+                LANGUAGES
+              </Typography>
+              <Typography sx={{ fontSize: '2.3px', color: '#1e293b', fontWeight: 600 }}>
+                German · Native
+              </Typography>
+              <Typography sx={{ fontSize: '2.3px', color: '#1e293b', fontWeight: 600 }}>
+                English · C1
+              </Typography>
+            </Box>
+
+            {/* Main */}
+            <Box sx={{ p: '5px 6px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <Typography sx={{ fontSize: '4.8px', fontWeight: 800, color: '#0f172a', lineHeight: 1.1 }}>
+                LUKAS SCHMIDT
+              </Typography>
+              <Typography sx={{ fontSize: '2.8px', fontWeight: 700, color: pal.accentColor }}>
+                LEAD SYSTEMS ARCHITECT
+              </Typography>
+              <Typography sx={{ fontSize: '2.8px', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', borderBottom: '0.5px solid #e2e8f0', pb: '0.5px', mt: '1px' }}>
+                EXPERIENCE
+              </Typography>
+              <Typography sx={{ fontSize: '2.6px', fontWeight: 700, color: '#0f172a' }}>
+                SAP SE — Lead Engineer (2020 – Present)
+              </Typography>
+              <Typography sx={{ fontSize: '2.3px', color: '#475569', lineHeight: 1.2 }}>
+                • Built distributed microservices handling 250M daily API events.
+              </Typography>
+            </Box>
+          </Box>
+        );
     }
   };
 
@@ -612,6 +741,10 @@ export const TemplateThumbnailMiniature: React.FC<TemplateThumbnailMiniatureProp
         return 'Editorial · Card';
       case 'academic-research':
         return 'Dual-Tone · 2 Col';
+      case 'europass':
+        return 'Europass · EU';
+      case 'euro-modern':
+        return 'DACH · 2 Col';
       default:
         return '1 Col';
     }

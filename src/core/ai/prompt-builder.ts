@@ -44,6 +44,12 @@ This document defines the strict styling, formatting, content, and ATS optimizat
    - If MASTER-DATA.MD includes personal projects, open-source work, publications, talks, or volunteering in "PROJECTS & EXTRAS":
    - Selectively include 1–2 most relevant entries under "## FEATURED PROJECTS" if they strengthen alignment with the target vacancy.
    - If not relevant or empty, omit the section to keep the CV concise and high-density.
+
+9. LANGUAGES (STANDARDIZED CEFR SCALE):
+   - If languages are present in MASTER-DATA.MD, calibrate each language to its standard CEFR scale (Native, C2, C1, B2, B1, A2, A1).
+   - Format:
+     - **[Language 1]:** Native
+     - **[Language 2]:** [CEFR Level] (e.g. B2 – Upper Intermediate, C1 – Advanced)
 `;
 
 export interface PromptBundle {

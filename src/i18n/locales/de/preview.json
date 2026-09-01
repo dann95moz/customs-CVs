@@ -61,13 +61,14 @@
   "panels": {
     "templates": {
       "title": "Lebenslauf-Vorlage auswählen",
-      "subtitle": "Wählen Sie aus 7 professionellen, ATS-optimierten Vorlagen",
+      "subtitle": "Wählen Sie aus 9 professionellen, ATS-optimierten Vorlagen",
       "palette": "Farbpalette",
       "all": "Alle",
       "ats": "ATS-Freundlich",
       "executive": "Executive / Führung",
       "tech": "Tech / Modern",
-      "creative": "Design / UI"
+      "creative": "Design / UI",
+      "european": "Europäisch (EU)"
     },
     "design": {
       "title": "Design & Formatierung",

@@ -8,6 +8,8 @@ import { TwoColumnTemplate } from './TwoColumnTemplate';
 import { DesignerUiuxTemplate } from './DesignerUiuxTemplate';
 import { FormalLegalTemplate } from './FormalLegalTemplate';
 import { AcademicResearchTemplate } from './AcademicResearchTemplate';
+import { EuropassTemplate } from './EuropassTemplate';
+import { EuroModernTemplate } from './EuroModernTemplate';
 
 const TEMPLATE_REGISTRY: Record<ThemeId, React.FC<CVTemplateProps>> = {
   'modern-tech': ModernTechTemplate,
@@ -17,9 +19,31 @@ const TEMPLATE_REGISTRY: Record<ThemeId, React.FC<CVTemplateProps>> = {
   'designer-uiux': DesignerUiuxTemplate,
   'formal-legal': FormalLegalTemplate,
   'academic-research': AcademicResearchTemplate,
+  'europass': EuropassTemplate,
+  'euro-modern': EuroModernTemplate,
 };
 
 const TEMPLATE_METADATA: Record<ThemeId, TemplateMetadata> = {
+  'europass': {
+    id: 'europass',
+    name: 'Europass Official (EU)',
+    category: 'European & International',
+    recommendedFor: 'European Public Sector, EU Institutions, Academic Programs, Government & NGO Applications',
+    description: 'Official European Commission CV structure with CEFR language assessment grid and EU Blue branding',
+    layout: 'single-column',
+    defaultMaxPages: 1,
+    icon: '🇪🇺'
+  },
+  'euro-modern': {
+    id: 'euro-modern',
+    name: 'Euro Modern (DACH / EU)',
+    category: 'European & International',
+    recommendedFor: 'European Tech Companies, Germany (DACH), France, Nordics, International Roles',
+    description: 'Contemporary European corporate style with photo support, personal metadata, and CEFR language indicators',
+    layout: 'two-column',
+    defaultMaxPages: 1,
+    icon: '🌍'
+  },
   'executive': {
     id: 'executive',
     name: 'Corporate Top Banner',

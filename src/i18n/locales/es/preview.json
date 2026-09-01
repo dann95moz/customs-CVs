@@ -61,13 +61,14 @@
   "panels": {
     "templates": {
       "title": "Seleccionar Plantilla de CV",
-      "subtitle": "Elige entre 7 plantillas profesionales optimizadas para ATS",
+      "subtitle": "Elige entre 9 plantillas profesionales optimizadas para ATS",
       "palette": "Paleta de Colores",
       "all": "Todas",
       "ats": "ATS Friendly",
       "executive": "Ejecutivo",
       "tech": "Tecnología / Moderno",
-      "creative": "Diseño / UI"
+      "creative": "Diseño / UI",
+      "european": "Europeo (UE)"
     },
     "design": {
       "title": "Diseño y Formato",

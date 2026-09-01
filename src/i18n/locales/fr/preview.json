@@ -61,13 +61,14 @@
   "panels": {
     "templates": {
       "title": "Choisir un Modèle de CV",
-      "subtitle": "Sélectionnez parmi 7 modèles conçus pour passer les filtres ATS",
+      "subtitle": "Sélectionnez parmi 9 modèles conçus pour passer les filtres ATS",
       "palette": "Palette de Couleurs",
       "all": "Tous",
       "ats": "Compatible ATS",
       "executive": "Exécutif / Cadre",
       "tech": "Tech / Moderne",
-      "creative": "Design / UI"
+      "creative": "Design / UI",
+      "european": "Européen (UE)"
     },
     "design": {
       "title": "Design & Mise en Page",
