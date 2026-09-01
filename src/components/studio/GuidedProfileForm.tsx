@@ -466,8 +466,8 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
         flexDirection: { xs: 'column', md: 'row' },
         flex: 1,
         width: '100%',
-        height: '100%',
-        minHeight: 520,
+        height: { xs: 'auto', md: '100%' },
+        minHeight: { xs: 'auto', md: 520 },
         alignItems: 'stretch',
         boxSizing: 'border-box'
       }}
@@ -489,9 +489,10 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
           display: 'flex',
           flexDirection: 'column',
           minWidth: 0,
-          overflowY: 'auto'
+          overflowY: { xs: 'visible', md: 'auto' }
         }}
       >
+
         {activeSection === 'personal' && (
           <PersonalInfoSection
             name={formData.name || ''}

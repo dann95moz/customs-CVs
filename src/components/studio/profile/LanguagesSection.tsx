@@ -177,8 +177,9 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
                 key={idx}
                 sx={{
                   display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
                   gap: 1.5,
-                  alignItems: 'center',
+                  alignItems: { xs: 'stretch', sm: 'center' },
                   p: 1.5,
                   borderRadius: '10px',
                   border: `1px solid ${theme.palette.divider}`,
@@ -189,8 +190,9 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
                   transition: 'background-color 0.15s ease-in-out'
                 }}
               >
-                {/* Left: Language Selector / Input */}
-                <Box sx={{ flex: { xs: 1, sm: 1.2 } }}>
+                {/* Inputs responsive layout */}
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1.2fr 1.5fr' }, gap: 1.5, flex: 1 }}>
+                  {/* Left: Language Selector / Input */}
                   <Autocomplete
                     freeSolo
                     size="small"
@@ -213,10 +215,8 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
                       />
                     )}
                   />
-                </Box>
 
-                {/* Right: Proficiency Level Selector */}
-                <Box sx={{ flex: { xs: 1, sm: 1.5 } }}>
+                  {/* Right: Proficiency Level Selector */}
                   <FormControl size="small" fullWidth>
                     <InputLabel id={`lang-level-label-${idx}`}>
                       {t('profile:sections.languages.proficiency', 'Nivel de Dominio')}
@@ -241,16 +241,19 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
                 </Box>
 
                 {/* Delete button */}
-                <Tooltip title={t('profile:sections.languages.remove', 'Eliminar idioma')}>
-                  <IconButton
-                    size="small"
-                    color="error"
-                    onClick={() => onRemoveLanguage(idx)}
-                  >
-                    <DeleteOutlineRoundedIcon sx={{ fontSize: 18 }} />
-                  </IconButton>
-                </Tooltip>
+                <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-end', sm: 'center' }, flexShrink: 0 }}>
+                  <Tooltip title={t('profile:sections.languages.remove', 'Eliminar idioma')}>
+                    <IconButton
+                      size="small"
+                      color="error"
+                      onClick={() => onRemoveLanguage(idx)}
+                    >
+                      <DeleteOutlineRoundedIcon sx={{ fontSize: 18 }} />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </Box>
+
             );
           })}
         </Stack>

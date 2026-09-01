@@ -294,7 +294,7 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
       )}
 
       {/* Horizontal Tabs for Mobile View */}
-      <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 0.5, width: '100%' }}>
+      <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 0.5, width: '100%', minWidth: 0 }}>
         <Tabs
           orientation="horizontal"
           value={activeSection}
@@ -304,10 +304,16 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
           allowScrollButtonsMobile
           sx={{
             flex: 1,
+            minWidth: 0,
             minHeight: 40,
             '& .MuiTabs-indicator': {
               borderRadius: '3px',
               height: 3
+            },
+            '& .MuiTab-root': {
+              minWidth: 'auto',
+              whiteSpace: 'nowrap',
+              px: 1.25,
             }
           }}
         >
@@ -321,7 +327,7 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
                 icon={sec.icon}
                 iconPosition="start"
                 label={
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, whiteSpace: 'nowrap' }}>
                     <span>{displayLabel}</span>
                     {sec.isComplete ? (
                       <CheckRoundedIcon sx={{ fontSize: 14, color: 'success.main' }} />
@@ -350,7 +356,7 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
 
         {/* Add Section Action Button (Mobile) */}
         {onAddSectionClick && (
-          <Box sx={{ px: 0.5 }}>
+          <Box sx={{ px: 0.5, flexShrink: 0 }}>
             <Tooltip title={t('profile:customSections.addSectionBtn', 'Agregar Sección')}>
               <Button
                 size="small"
@@ -376,6 +382,7 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
           </Box>
         )}
       </Box>
+
     </Box>
   );
 };

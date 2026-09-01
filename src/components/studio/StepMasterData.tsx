@@ -40,6 +40,8 @@ import { downloadTextFile } from '../../utils/fileUtils';
 import { StepMasterDataProps } from '../../types';
 import { StudioSkeleton } from './StudioSkeleton';
 import { PdfImportResult } from '../../core/pdf-extractor';
+import { ConfirmDeleteDialog } from './common/ConfirmDeleteDialog';
+
 
 const GuidedProfileForm = React.lazy(() =>
   import('./GuidedProfileForm').then((m) => ({ default: m.GuidedProfileForm }))
@@ -212,6 +214,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         flex: 1,
         height: '100%',
         overflowY: 'auto',
+        WebkitOverflowScrolling: 'touch',
         p: { xs: 1.5, sm: 2, md: 3 },
         pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 48px)', sm: 5, md: 6 },
         display: 'flex',
@@ -219,6 +222,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         position: 'relative',
         boxSizing: 'border-box',
       }}
+
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -400,8 +404,8 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            minHeight: 450,
-            overflow: 'hidden',
+            minHeight: { xs: 'auto', md: 450 },
+            overflow: { xs: 'visible', md: 'hidden' },
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
             borderRadius: '12px',
@@ -434,28 +438,39 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 variant={editMode === 'guided' ? 'contained' : 'outlined'}
                 startIcon={<FormatListBulletedRoundedIcon />}
                 onClick={() => setEditMode('guided')}
-                sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' } }}
+                sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' }, whiteSpace: 'nowrap' }}
               >
-                {t('profile:modes.guidedAssistant', 'Guided Form')}
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                  {t('profile:modes.guidedAssistant', 'Guided Form')}
+                </Box>
+                <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                  {t('profile:modes.guidedShort', 'Guided')}
+                </Box>
               </Button>
               <Button
                 variant={editMode === 'markdown' ? 'contained' : 'outlined'}
                 startIcon={<CodeRoundedIcon />}
                 onClick={() => setEditMode('markdown')}
-                sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' } }}
+                sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' }, whiteSpace: 'nowrap' }}
               >
-                {t('profile:modes.markdownEditor', 'Manual Mode')}
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                  {t('profile:modes.markdownEditor', 'Manual Mode')}
+                </Box>
+                <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                  {t('profile:modes.markdownShort', 'Manual')}
+                </Box>
               </Button>
             </ButtonGroup>
           </Box>
 
           {editMode === 'guided' ? (
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 520, overflow: 'hidden' }}>
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: { xs: 'auto', md: 520 }, overflow: { xs: 'visible', md: 'hidden' } }}>
               <React.Suspense fallback={<StudioSkeleton variant="guidedForm" />}>
                 <GuidedProfileForm markdownContent={content} onChange={onChange} />
               </React.Suspense>
             </Box>
           ) : (
+
 
             <Box
               sx={{
@@ -572,8 +587,9 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         </Paper>
 
         {/* Dedicated End-of-Scroll Safe Spacer (Ensures card ending is 100% visible on mobile) */}
-        <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 1px)', sm: 20 }, flexShrink: 0 }} />
+        <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 40px)', sm: 20 }, flexShrink: 0 }} />
       </Box>
+
 
       {/* Confirmation Dialog Before Overwriting Existing Profile */}
       <Dialog
@@ -641,41 +657,22 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
       </Dialog>
 
       {/* Confirmation Dialog Before Starting From Scratch / Clearing Data */}
-      <Dialog
+      <ConfirmDeleteDialog
         open={showClearConfirmDialog}
-        onClose={() => setShowClearConfirmDialog(false)}
-        slotProps={{
-          paper: {
-            sx: { borderRadius: '16px', p: 1, maxWidth: 440 }
-          }
+        onCancel={() => setShowClearConfirmDialog(false)}
+        onConfirm={() => {
+          setShowClearConfirmDialog(false);
+          handleConfirmClear();
         }}
-      >
-        <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 800 }}>
-          <WarningAmberRoundedIcon color="warning" />
-          {t('profile:dialog.confirmClearTitle', 'Start from scratch?')}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{ color: 'text.secondary', fontSize: '0.92rem' }}>
-            {t(
-              'profile:dialog.confirmClearDesc',
-              'Are you sure you want to clear all profile data? This action cannot be undone.'
-            )}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={() => setShowClearConfirmDialog(false)} color="inherit" sx={{ fontWeight: 600 }}>
-            {t('profile:dialog.cancel', 'Cancel')}
-          </Button>
-          <Button
-            onClick={handleConfirmClear}
-            variant="contained"
-            color="error"
-            sx={{ fontWeight: 700 }}
-          >
-            {t('profile:dialog.confirmClear', 'Clear All Data')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        title={t('profile:dialog.confirmClearTitle', 'Start from scratch?')}
+        message={t(
+          'profile:dialog.confirmClearDesc',
+          'Are you sure you want to clear all profile data? This action cannot be undone.'
+        )}
+        confirmLabel={t('profile:dialog.confirmClear', 'Confirm')}
+        cancelLabel={t('profile:dialog.cancel', 'Cancel')}
+      />
+
 
       {/* Success / Error Snackbar */}
       <Snackbar

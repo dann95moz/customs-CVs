@@ -70,7 +70,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
       id: 'profile',
       number: 1,
       label: t('profile:stepper.profileLabel', 'Candidate Profile'),
-      shortLabel: t('profile:stepper.profileLabel', 'Profile'),
+      shortLabel: t('profile:stepper.profileShortLabel', 'Profile'),
       subtitle: t('profile:stepper.profileSubtitle', 'Career history & skills'),
       icon: <PersonRoundedIcon fontSize="small" />
     },
@@ -78,7 +78,7 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
       id: 'target',
       number: 2,
       label: t('profile:stepper.targetLabel', 'Target Vacancy'),
-      shortLabel: t('profile:stepper.targetLabel', 'Target Job'),
+      shortLabel: t('profile:stepper.targetShortLabel', 'Target Job'),
       subtitle: t('profile:stepper.targetSubtitle', 'Job posting & tailoring'),
       icon: <WorkRoundedIcon fontSize="small" />
     },
@@ -86,11 +86,12 @@ export const WizardStepper: React.FC<WizardStepperProps> = ({
       id: 'preview',
       number: 3,
       label: t('profile:stepper.previewLabel', 'Live CV & PDF Export'),
-      shortLabel: t('profile:stepper.previewLabel', 'CV & PDF'),
+      shortLabel: t('profile:stepper.previewShortLabel', 'CV & PDF'),
       subtitle: t('profile:stepper.previewSubtitle', 'Preview & download PDF'),
       icon: <PictureAsPdfRoundedIcon fontSize="small" />
     }
   ];
+
 
   const isStepComplete = (stepId: WizardStep): boolean => {
     switch (stepId) {
