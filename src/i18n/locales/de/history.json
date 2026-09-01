@@ -65,10 +65,14 @@
     "lastModified": "Angepasst",
     "downloadPdfTip": "Direkter PDF-Download (1-Klick)",
     "downloadMdTip": "Markdown (.md) herunterladen",
-    "trackVersion": "Bewerbung verfolgen",
+    "downloadOptions": "Download-Optionen",
+    "downloadPdf": "PDF herunterladen",
+    "downloadMd": "Markdown (.md) herunterladen",
+    "trackVersion": "Im Kanban verfolgen",
     "linkedToApp": "Kanban-Aktiv",
     "linkedTooltip": "Mit einer aktiven Bewerbungskarte in Ihrem Kanban-Board verknüpft"
   },
+
   "deleteDialog": {
     "title": "CV-Version löschen?",
     "message": "Möchten Sie diese angepasste CV-Version für {{company}} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",

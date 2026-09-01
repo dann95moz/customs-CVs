@@ -14,6 +14,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Checkbox,
+  CircularProgress,
+  Alert,
   useTheme,
   alpha
 } from '@mui/material';
@@ -23,20 +29,17 @@ import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
+import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { useTranslation } from 'react-i18next';
-import { GeneratedCvVersion, ApplicationCardProps } from '../../../types';
+import { ApplicationCardProps } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
 import { extractSummaryExcerpt } from '../../../core/parser';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
-
-import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
-import Checkbox from '@mui/material/Checkbox';
-import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
-import Alert from '@mui/material/Alert';
-import CircularProgress from '@mui/material/CircularProgress';
-import Tooltip from '@mui/material/Tooltip';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 
 export type { ApplicationCardProps };
 
@@ -59,6 +62,9 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   const isDark = theme.palette.mode === 'dark';
   const palConfig = getPaletteConfig(version.palette);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [downloadMenuAnchor, setDownloadMenuAnchor] = useState<null | HTMLElement>(null);
+  const [moreMenuAnchor, setMoreMenuAnchor] = useState<null | HTMLElement>(null);
+  const { copy } = useCopyToClipboard();
 
   const formattedDate = formatLocalizedDate(version.createdAt, i18n.language || 'en', {
     day: '2-digit',
@@ -67,7 +73,6 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
     hour: '2-digit',
     minute: '2-digit',
   });
-
 
   const summaryExcerpt = extractSummaryExcerpt(version.cvMarkdown);
 
@@ -133,7 +138,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
               </Box>
             </Box>
 
-            {/* Selection Checkbox (In Selection Mode) OR Standard Action Levers (In Normal Mode) */}
+            {/* Selection Checkbox (In Selection Mode) OR More Options Menu (In Normal Mode) */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0, ml: 1 }}>
               {selectionMode ? (
                 <Checkbox
@@ -149,37 +154,67 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
                 />
               ) : (
                 <>
-                  {onTrack && (
-                    <Tooltip title={t('history:card.trackVersion', 'Track Application')}>
-                      <IconButton
-                        size="small"
-                        color="primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onTrack(version);
-                        }}
-                        sx={{
-                          bgcolor: alpha(theme.palette.primary.main, 0.08),
-                          '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.16) },
-                        }}
-                      >
-                        <AddRoundedIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  <Tooltip title={t('history:card.delete', 'Delete Version')}>
+                  <Tooltip title={t('common:actions.options', 'Opciones')}>
                     <IconButton
                       size="small"
-                      color="error"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setIsDeleteDialogOpen(true);
+                        setMoreMenuAnchor(e.currentTarget);
                       }}
-                      sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}
+                      sx={{
+                        color: 'text.secondary',
+                        p: 0.5,
+                        '&:hover': {
+                          color: 'text.primary',
+                          bgcolor: alpha(theme.palette.text.primary, 0.06),
+                        },
+                      }}
                     >
-                      <DeleteOutlineRoundedIcon fontSize="small" />
+                      <MoreVertRoundedIcon sx={{ fontSize: 18 }} />
                     </IconButton>
                   </Tooltip>
+
+                  {/* Header More Options Menu */}
+                  <Menu
+                    anchorEl={moreMenuAnchor}
+                    open={Boolean(moreMenuAnchor)}
+                    onClose={() => setMoreMenuAnchor(null)}
+                    slotProps={{
+                      paper: {
+                        sx: {
+                          borderRadius: '12px',
+                          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                          minWidth: 190,
+                          py: 0.5,
+                        },
+                      },
+                    }}
+                  >
+                    {onTrack && (
+                      <MenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMoreMenuAnchor(null);
+                          onTrack(version);
+                        }}
+                        sx={{ fontSize: '0.82rem', fontWeight: 600, gap: 1.25, py: 1 }}
+                      >
+                        <AddRoundedIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+                        <span>{t('history:card.trackVersion', 'Rastrear en Kanban')}</span>
+                      </MenuItem>
+                    )}
+                    <MenuItem
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setMoreMenuAnchor(null);
+                        setIsDeleteDialogOpen(true);
+                      }}
+                      sx={{ fontSize: '0.82rem', fontWeight: 600, gap: 1.25, py: 1, color: 'error.main' }}
+                    >
+                      <DeleteOutlineRoundedIcon sx={{ fontSize: 18, color: 'error.main' }} />
+                      <span>{t('common:actions.delete', 'Eliminar')}</span>
+                    </MenuItem>
+                  </Menu>
                 </>
               )}
             </Box>
@@ -253,70 +288,128 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
 
         <Divider />
 
-        <CardActions sx={{ p: 1.5, px: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+        <CardActions
+          sx={{
+            p: 1.5,
+            px: 2,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 1,
+            flexWrap: 'nowrap',
+          }}
+        >
+          {/* Primary Action */}
           <Button
             size="small"
             variant="contained"
             color="primary"
-            startIcon={<LaunchRoundedIcon />}
+            startIcon={<LaunchRoundedIcon sx={{ fontSize: 16 }} />}
             onClick={(e) => {
               e.stopPropagation();
               onLoad(version.id);
             }}
-            sx={{ fontWeight: 700, fontSize: '0.76rem', flex: { xs: '1 1 auto', sm: '0 0 auto' } }}
+            sx={{
+              fontWeight: 700,
+              fontSize: '0.78rem',
+              py: 0.6,
+              px: 1.75,
+              whiteSpace: 'nowrap',
+              flex: { xs: '1 1 auto', sm: '0 0 auto' },
+            }}
           >
             {t('history:card.openInStudio', 'View & Edit in Studio')}
           </Button>
 
-          <ButtonGroup size="small" variant="outlined" color="inherit" sx={{ flexShrink: 0 }}>
-            {onDownloadPdf && (
-              <Tooltip title={t('history:card.downloadPdfTip', 'Direct PDF Download (1-Click)')}>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDownloadPdf(version);
-                  }}
-                  disabled={isDownloadingPdf}
-                  startIcon={
-                    isDownloadingPdf ? (
-                      <CircularProgress size={13} color="inherit" />
-                    ) : (
-                      <PictureAsPdfRoundedIcon sx={{ fontSize: '15px !important' }} />
-                    )
-                  }
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: '0.73rem',
-                    px: 1,
-                    bgcolor: alpha(theme.palette.primary.main, 0.05),
-                    borderColor: theme.palette.divider,
-                    '&:hover': {
-                      bgcolor: alpha(theme.palette.primary.main, 0.12),
-                      borderColor: 'primary.main',
-                      color: 'primary.main'
-                    }
-                  }}
-                >
-                  PDF
-                </Button>
-              </Tooltip>
-            )}
+          {/* Single Download Icon Button with Tooltip and Arrow */}
+          <Tooltip title={t('history:card.downloadOptions', 'Descargar / Exportar')}>
+            <Button
+              size="small"
+              variant="outlined"
+              color="inherit"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDownloadMenuAnchor(e.currentTarget);
+              }}
+              endIcon={<KeyboardArrowDownRoundedIcon sx={{ fontSize: 15, ml: -0.25 }} />}
+              sx={{
+                minWidth: 'auto',
+                px: 1.25,
+                py: 0.6,
+                borderColor: theme.palette.divider,
+                color: 'text.secondary',
+                flexShrink: 0,
+                '&:hover': {
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  bgcolor: alpha(theme.palette.primary.main, 0.08),
+                },
+              }}
+            >
+              {isDownloadingPdf ? (
+                <CircularProgress size={16} color="inherit" />
+              ) : (
+                <FileDownloadRoundedIcon sx={{ fontSize: 17 }} />
+              )}
+            </Button>
+          </Tooltip>
 
-            <Tooltip title={t('history:card.downloadMdTip', 'Download Raw Markdown (.md)')}>
-              <Button
-                startIcon={<FileDownloadRoundedIcon sx={{ fontSize: '15px !important' }} />}
+          {/* Download Dropdown Menu */}
+          <Menu
+            anchorEl={downloadMenuAnchor}
+            open={Boolean(downloadMenuAnchor)}
+            onClose={() => setDownloadMenuAnchor(null)}
+            slotProps={{
+              paper: {
+                sx: {
+                  borderRadius: '12px',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                  minWidth: 180,
+                  py: 0.5,
+                },
+              },
+            }}
+          >
+            {onDownloadPdf && (
+              <MenuItem
+                disabled={isDownloadingPdf}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDownload(version);
+                  setDownloadMenuAnchor(null);
+                  onDownloadPdf(version);
                 }}
-                sx={{ fontSize: '0.73rem', px: 0.9 }}
+                sx={{ fontSize: '0.82rem', fontWeight: 600, gap: 1.25, py: 1 }}
               >
-                .MD
-              </Button>
-            </Tooltip>
-          </ButtonGroup>
+                <PictureAsPdfRoundedIcon sx={{ fontSize: 18, color: 'error.main' }} />
+                <span>{t('history:card.downloadPdf', 'Descargar PDF')}</span>
+              </MenuItem>
+            )}
+            <MenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                setDownloadMenuAnchor(null);
+                onDownload(version);
+              }}
+              sx={{ fontSize: '0.82rem', fontWeight: 600, gap: 1.25, py: 1 }}
+            >
+              <FileDownloadRoundedIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+              <span>{t('history:card.downloadMd', 'Descargar Markdown (.md)')}</span>
+            </MenuItem>
+            <MenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                setDownloadMenuAnchor(null);
+                copy(version.cvMarkdown);
+              }}
+              sx={{ fontSize: '0.82rem', fontWeight: 600, gap: 1.25, py: 1 }}
+            >
+              <ContentCopyRoundedIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
+              <span>{t('common:actions.copy', 'Copiar Contenido')}</span>
+            </MenuItem>
+          </Menu>
         </CardActions>
       </Card>
+
 
       {/* Delete Confirmation Dialog */}
       <Dialog

@@ -65,10 +65,14 @@
     "lastModified": "Tailored",
     "downloadPdfTip": "Direct PDF Download (1-Click)",
     "downloadMdTip": "Download Raw Markdown (.md)",
+    "downloadOptions": "Download / Export Options",
+    "downloadPdf": "Download PDF",
+    "downloadMd": "Download Markdown (.md)",
     "trackVersion": "Track Application",
     "linkedToApp": "Kanban Active",
     "linkedTooltip": "Linked to an active application card in your Kanban pipeline"
   },
+
   "deleteDialog": {
     "title": "Delete CV Version?",
     "message": "Are you sure you want to delete this tailored CV for {{company}}? This action is permanent and cannot be undone.",

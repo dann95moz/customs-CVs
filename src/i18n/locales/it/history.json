@@ -65,10 +65,14 @@
     "lastModified": "Adattato",
     "downloadPdfTip": "Download Diretto PDF (1-Click)",
     "downloadMdTip": "Scarica Markdown (.md)",
-    "trackVersion": "Traccia Candidatura",
+    "downloadOptions": "Opzioni di download",
+    "downloadPdf": "Scarica PDF",
+    "downloadMd": "Scarica Markdown (.md)",
+    "trackVersion": "Traccia nel Kanban",
     "linkedToApp": "Candidatura Attiva",
     "linkedTooltip": "Collegata a una scheda attiva nella tua pipeline Kanban"
   },
+
   "deleteDialog": {
     "title": "Eliminare versione CV?",
     "message": "Sei sicuro di voler eliminare questa versione di CV per {{company}}? Questa azione è irreversibile.",
