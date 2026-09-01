@@ -5,31 +5,22 @@ import {
   Typography,
   Button,
   Chip,
-  TextField,
-  InputAdornment,
-  CircularProgress,
-  LinearProgress,
   Tooltip,
   useTheme,
   alpha
 } from '@mui/material';
 import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
-import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
-import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
-import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
 import { useResumeStore } from '../../store';
 import { StepTargetJobProps } from '../../types';
+import { TargetJobProgressBanner } from './target/TargetJobProgressBanner';
+import { TargetJobMetadataBar } from './target/TargetJobMetadataBar';
+import { TargetJobFooterActions } from './target/TargetJobFooterActions';
 
 const ContextualAiModal = React.lazy(() =>
   import('./ai/ContextualAiModal').then((m) => ({ default: m.ContextualAiModal }))
@@ -108,43 +99,43 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
 
   const handleContentChange = (val: string) => {
     setLocalContent(val);
+    if (!localCompany) {
+      const extracted = extractTargetCompany(val);
+      if (extracted) {
+        setLocalCompany(extracted);
+        onCompanyChange(extracted);
+      }
+    }
     if (contentTimerRef.current) clearTimeout(contentTimerRef.current);
     contentTimerRef.current = setTimeout(() => {
-      contentTimerRef.current = null;
       onChange(val);
-    }, 250);
+    }, 400);
   };
 
   const handleCompanyChange = (val: string) => {
     setLocalCompany(val);
     if (companyTimerRef.current) clearTimeout(companyTimerRef.current);
     companyTimerRef.current = setTimeout(() => {
-      companyTimerRef.current = null;
       onCompanyChange(val);
-    }, 250);
+    }, 400);
   };
 
   const handleRoleChange = (val: string) => {
     setLocalRole(val);
     if (roleTimerRef.current) clearTimeout(roleTimerRef.current);
     roleTimerRef.current = setTimeout(() => {
-      roleTimerRef.current = null;
       onRoleChange(val);
-    }, 250);
+    }, 400);
   };
 
-  const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
-    onFileLoaded: (text) => {
-      setLocalContent(text);
-      onChange(text);
-      const inferred = extractTargetCompany(text);
-      if (inferred && !companyName) {
-        const cleanComp = inferred.replace(/_/g, ' ');
-        setLocalCompany(cleanComp);
-        onCompanyChange(cleanComp);
-      }
-    }
+  // Upload handler for .txt / .md files
+  const { fileInputRef, handleFileUpload, handleDragOver, handleDrop } = useFileUploader({
+    onFileLoaded: (text: string) => {
+      handleContentChange(text);
+    },
   });
+
+
 
   const handleTailorAndProceed = () => {
     if (isGenerating) return;
@@ -152,7 +143,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
 
     const now = Date.now();
     if (now - lastClickRef.current < 1000) {
-      return; // Debounce rapid double clicks
+      return;
     }
     lastClickRef.current = now;
 
@@ -214,56 +205,17 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           onChange={handleFileUpload}
         />
 
-        {/* Active AI Synthesis Progress Banner */}
-        {isGenerating && (
-          <Paper
-            sx={{
-              p: { xs: 2, sm: 2.5 },
-              borderRadius: '16px',
-              border: `1.5px solid ${theme.palette.primary.main}`,
-              bgcolor: isDark ? alpha(theme.palette.primary.main, 0.12) : alpha(theme.palette.primary.main, 0.05),
-              boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.2)}`,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 1.5,
-            }}
-          >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CircularProgress size={28} thickness={4} color="primary" />
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'text.primary' }}>
-                  {t('target:progress.title', 'Synthesizing Tailored Resume with AI...')}
-                </Typography>
-                <Typography variant="body2" sx={{ color: theme.palette.primary.main, fontWeight: 600 }}>
-                  {generationStep || t('target:progress.defaultStep', 'Highlighting your real competencies and XYZ achievements...')}
-                </Typography>
-              </Box>
-              <Chip
-                icon={<AutoAwesomeRoundedIcon sx={{ fontSize: '14px !important' }} />}
-                label={t('common:status.inProgress', 'In Progress')}
-                color="primary"
-                size="small"
-                sx={{ fontWeight: 700 }}
-              />
-            </Box>
-            <LinearProgress
-              variant="indeterminate"
-              sx={{
-                borderRadius: 4,
-                height: 5,
-                bgcolor: alpha(theme.palette.primary.main, 0.2),
-              }}
-            />
-            <Typography variant="caption" color="text.secondary">
-              {t('target:progress.note', '⚡ Highlighting your real achievements with the Google XYZ impact formula. You will be automatically redirected to your live CV as soon as generation completes.')}
-            </Typography>
-          </Paper>
-        )}
+        {/* 1. Active AI Synthesis Progress Banner */}
+        <TargetJobProgressBanner
+          isGenerating={isGenerating}
+          generationStep={generationStep}
+        />
 
-        {/* Guiding Hero Banner with Clear Primary Action */}
+        {/* 2. Top Header Hero Panel */}
         <Paper
           sx={{
-            p: { xs: 2, md: 2.5 },
+            p: { xs: 2, sm: 2.5 },
+            borderRadius: '16px',
             display: 'flex',
             flexDirection: { xs: 'column', sm: 'row' },
             alignItems: { xs: 'flex-start', sm: 'center' },
@@ -308,78 +260,18 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           </Button>
         </Paper>
 
-        {/* Target Metadata & Metric Inputs */}
-        <Paper
-          sx={{
-            p: 2,
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: '1fr 1fr 200px' },
-            gap: 2,
-            alignItems: 'center',
-            bgcolor: 'background.paper',
-            border: `1px solid ${theme.palette.divider}`,
-          }}
-        >
-          <TextField
-            label={t('target:fields.company', 'Target Company / Employer')}
-            placeholder={t('target:fields.companyPlaceholder', 'e.g. Stripe, Airbnb, Google')}
-            value={localCompany}
-            onChange={(e) => handleCompanyChange(e.target.value)}
-            onBlur={() => onCompanyChange(localCompany)}
-            size="small"
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <BusinessRoundedIcon fontSize="small" color="primary" />
-                  </InputAdornment>
-                ),
-              },
-            }}
-          />
+        {/* 3. Target Metadata & Metric Inputs Bar */}
+        <TargetJobMetadataBar
+          companyName={localCompany}
+          onCompanyChange={handleCompanyChange}
+          onCompanyBlur={() => onCompanyChange(localCompany)}
+          targetRole={localRole}
+          onRoleChange={handleRoleChange}
+          onRoleBlur={() => onRoleChange(localRole)}
+          wordCount={wordCount}
+        />
 
-          <TextField
-            label={t('target:fields.role', 'Target Role / Job Title')}
-            placeholder={t('target:fields.rolePlaceholder', 'e.g. Senior Frontend Engineer')}
-            value={localRole}
-            onChange={(e) => handleRoleChange(e.target.value)}
-            onBlur={() => onRoleChange(localRole)}
-            size="small"
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <BadgeRoundedIcon fontSize="small" color="secondary" />
-                  </InputAdornment>
-                ),
-              },
-            }}
-          />
-
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-              p: 1,
-              borderRadius: '10px',
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
-              border: `1px solid ${theme.palette.divider}`,
-            }}
-          >
-            <DescriptionRoundedIcon fontSize="small" color="action" />
-            <Box>
-              <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                {t('target:fields.vacancyLength', 'Vacancy Length')}
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                {wordCount} {t('target:fields.words', 'words')}
-              </Typography>
-            </Box>
-          </Box>
-        </Paper>
-
-        {/* Spacious Direct Job Description Editor Area */}
+        {/* 4. Spacious Direct Job Description Editor Area */}
         <Paper
           sx={{
             flex: 1,
@@ -393,7 +285,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             overflow: 'hidden',
           }}
         >
-          {/* Editor Header Toolbar with Subtle Attachment Action */}
+          {/* Editor Header Toolbar with Attachment Action */}
           <Box
             sx={{
               py: 1,
@@ -454,7 +346,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               value={localContent}
               onChange={(e) => handleContentChange(e.target.value)}
               onBlur={() => onChange(localContent)}
-              placeholder={t('target:editor.placeholder', 'Paste the job description here...')}
+              placeholder="# Job Title / Target Role&#10;Company Name • Location / Remote&#10;&#10;## About the Role&#10;Paste the full vacancy responsibilities, requirements, and tech stack here..."
               spellCheck={false}
               style={{
                 width: '100%',
@@ -462,168 +354,40 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                 minHeight: '280px',
                 border: 'none',
                 outline: 'none',
-                padding: '18px',
-                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                fontSize: '0.9rem',
+                padding: '16px',
+                fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
+                fontSize: '0.88rem',
                 lineHeight: 1.65,
-                resize: 'none',
+                resize: 'vertical',
                 backgroundColor: 'transparent',
                 color: isDark ? '#f8fafc' : '#0f172a',
-                boxSizing: 'border-box',
               }}
             />
           </Box>
-
-          {/* Understated Helper Link below the textarea */}
-          <Box
-            sx={{
-              px: { xs: 1.5, sm: 2 },
-              py: { xs: 1.5, sm: 1 },
-              borderTop: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              alignItems: { xs: 'flex-start', sm: 'center' },
-              justifyContent: 'space-between',
-              gap: 1,
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.015)',
-              boxSizing: 'border-box',
-              flexShrink: 0,
-            }}
-          >
-            <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.5, display: 'inline', width: { xs: '100%', sm: 'auto' } }}>
-              {t('target:editor.uploadHint', 'Have a job posting file instead of text?')}{' '}
-              <Box
-                component="button"
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                sx={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'primary.main',
-                  cursor: 'pointer',
-                  fontWeight: 700,
-                  p: 0,
-                  m: 0,
-                  display: 'inline',
-                  fontFamily: 'inherit',
-                  fontSize: 'inherit',
-                  textDecoration: 'underline',
-                  verticalAlign: 'baseline',
-                  '&:hover': { opacity: 0.8 }
-                }}
-              >
-                {t('target:editor.uploadAction', 'Upload it here')}
-              </Box>
-            </Typography>
-
-            <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.5, flexShrink: 0, alignSelf: { xs: 'flex-end', sm: 'center' } }}>
-              {wordCount} {t('target:fields.words', 'words')}
-            </Typography>
-          </Box>
         </Paper>
 
-        {/* Navigation & Direct Action Footer */}
-        <Paper
-          sx={{
-            p: { xs: 2, sm: 2 },
-            px: { xs: 2, sm: 2.5 },
-            pb: { xs: 2.5, sm: 2 },
-            display: 'flex',
-            flexDirection: { xs: 'column-reverse', sm: 'row' },
-            alignItems: { xs: 'stretch', sm: 'center' },
-            justifyContent: 'space-between',
-            border: `1px solid ${theme.palette.divider}`,
-            bgcolor: 'background.paper',
-            borderRadius: '16px',
-            gap: { xs: 1.5, sm: 2 },
-            boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+        {/* 5. Navigation & Direct Action Footer */}
+        <TargetJobFooterActions
+          onBack={() => {
+            flushAll();
+            if (onPrevStep) onPrevStep();
           }}
-        >
-          <Button
-            variant="outlined"
-            startIcon={<ArrowBackRoundedIcon />}
-            onClick={() => {
-              flushAll();
-              onPrevStep();
-            }}
-            disabled={isGenerating}
-            sx={{
-              fontWeight: 600,
-              width: { xs: '100%', sm: 'auto' },
-            }}
-          >
-            {t('target:actions.backToProfile', 'Back to Profile')}
-          </Button>
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              alignItems: { xs: 'stretch', sm: 'center' },
-              gap: 1.5,
-              width: { xs: '100%', sm: 'auto' },
-            }}
-          >
-            <Box sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-start' } }}>
-              {hasJob ? (
-                <Chip
-                  icon={<CheckCircleRoundedIcon />}
-                  label={isGenerating ? (generationStep || t('target:actions.tailoring', 'Tailoring Resume...')) : t('target:status.ready', 'Job details ready')}
-                  color={isGenerating ? 'info' : 'success'}
-                  variant="outlined"
-                  size="small"
-                  sx={{ fontWeight: 600 }}
-                />
-              ) : (
-                <Chip
-                  icon={<InfoRoundedIcon />}
-                  label={t('target:status.missing', 'Paste a job description to tailor')}
-                  color="warning"
-                  variant="outlined"
-                  size="small"
-                  sx={{ fontWeight: 600 }}
-                />
-              )}
-            </Box>
-
-            {hasGeneratedCv && !isGenerating && (
-              <Button
-                variant="outlined"
-                color="inherit"
-                onClick={() => {
+          onViewExisting={
+            onNextStep
+              ? () => {
                   flushAll();
                   onNextStep();
-                }}
-                sx={{
-                  fontWeight: 600,
-                  width: { xs: '100%', sm: 'auto' },
-                }}
-              >
-                {t('target:actions.viewExisting', 'View Existing CV')}
-              </Button>
-            )}
+                }
+              : undefined
+          }
+          onTailorNow={handleTailorAndProceed}
+          isGenerating={isGenerating}
+          generationStep={generationStep}
+          hasJob={hasJob}
+          hasGeneratedCv={hasGeneratedCv}
+        />
 
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              startIcon={isGenerating ? <CircularProgress size={18} color="inherit" /> : <BoltRoundedIcon />}
-              onClick={handleTailorAndProceed}
-              disabled={isGenerating}
-              sx={{
-                fontWeight: 700,
-                px: 3.5,
-                py: 1.2,
-                width: { xs: '100%', sm: 'auto' },
-                boxShadow: isDark ? '0 4px 14px rgba(2, 132, 199, 0.4)' : '0 4px 14px rgba(2, 132, 199, 0.25)',
-              }}
-            >
-              {isGenerating ? t('target:actions.tailoring', 'Tailoring Resume...') : t('target:actions.tailorNow', 'Tailor Resume Now')}
-            </Button>
-          </Box>
-        </Paper>
-
-        {/* Dedicated End-of-Scroll Safe Spacer (Ensures card ending is 100% visible on mobile) */}
+        {/* Dedicated End-of-Scroll Safe Spacer */}
         <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 36px)', sm: 20 }, flexShrink: 0 }} />
       </Box>
 

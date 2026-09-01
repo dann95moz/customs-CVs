@@ -1,0 +1,134 @@
+import React from 'react';
+import {
+  Box,
+  Paper,
+  Button,
+  Chip,
+  CircularProgress,
+  useTheme,
+} from '@mui/material';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
+import { useTranslation } from 'react-i18next';
+
+export interface TargetJobFooterActionsProps {
+  onBack: () => void;
+  onViewExisting?: () => void;
+  onTailorNow: () => void;
+  isGenerating?: boolean;
+  generationStep?: string;
+  hasJob: boolean;
+  hasGeneratedCv?: boolean;
+}
+
+export const TargetJobFooterActions: React.FC<TargetJobFooterActionsProps> = React.memo(({
+  onBack,
+  onViewExisting,
+  onTailorNow,
+  isGenerating = false,
+  generationStep,
+  hasJob,
+  hasGeneratedCv = false,
+}) => {
+  const { t } = useTranslation(['target', 'common']);
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
+  return (
+    <Paper
+      sx={{
+        p: { xs: 2, sm: 2 },
+        px: { xs: 2, sm: 2.5 },
+        pb: { xs: 2.5, sm: 2 },
+        display: 'flex',
+        flexDirection: { xs: 'column-reverse', sm: 'row' },
+        alignItems: { xs: 'stretch', sm: 'center' },
+        justifyContent: 'space-between',
+        border: `1px solid ${theme.palette.divider}`,
+        bgcolor: 'background.paper',
+        borderRadius: '16px',
+        gap: { xs: 1.5, sm: 2 },
+        boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+      }}
+    >
+      <Button
+        variant="outlined"
+        startIcon={<ArrowBackRoundedIcon />}
+        onClick={onBack}
+        disabled={isGenerating}
+        sx={{
+          fontWeight: 600,
+          width: { xs: '100%', sm: 'auto' },
+        }}
+      >
+        {t('target:actions.backToProfile', 'Back to Profile')}
+      </Button>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { xs: 'stretch', sm: 'center' },
+          gap: 1.5,
+          width: { xs: '100%', sm: 'auto' },
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-start' } }}>
+          {hasJob ? (
+            <Chip
+              icon={<CheckCircleRoundedIcon />}
+              label={isGenerating ? (generationStep || t('target:actions.tailoring', 'Tailoring Resume...')) : t('target:status.ready', 'Job details ready')}
+              color={isGenerating ? 'info' : 'success'}
+              variant="outlined"
+              size="small"
+              sx={{ fontWeight: 600 }}
+            />
+          ) : (
+            <Chip
+              icon={<InfoRoundedIcon />}
+              label={t('target:status.missing', 'Paste a job description to tailor')}
+              color="warning"
+              variant="outlined"
+              size="small"
+              sx={{ fontWeight: 600 }}
+            />
+          )}
+        </Box>
+
+        {hasGeneratedCv && !isGenerating && onViewExisting && (
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={onViewExisting}
+            sx={{
+              fontWeight: 600,
+              width: { xs: '100%', sm: 'auto' },
+            }}
+          >
+            {t('target:actions.viewExisting', 'View Existing CV')}
+          </Button>
+        )}
+
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={isGenerating ? <CircularProgress size={18} color="inherit" /> : <BoltRoundedIcon />}
+          onClick={onTailorNow}
+          disabled={isGenerating}
+          sx={{
+            fontWeight: 700,
+            px: 3.5,
+            py: 1.2,
+            width: { xs: '100%', sm: 'auto' },
+            boxShadow: isDark ? '0 4px 14px rgba(2, 132, 199, 0.4)' : '0 4px 14px rgba(2, 132, 199, 0.25)',
+          }}
+        >
+          {isGenerating ? t('target:actions.tailoring', 'Tailoring Resume...') : t('target:actions.tailorNow', 'Tailor Resume Now')}
+        </Button>
+      </Box>
+    </Paper>
+  );
+});
