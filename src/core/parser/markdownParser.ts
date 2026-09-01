@@ -397,15 +397,15 @@ function parseListItems(rawContent: string): string[] {
 
   for (const line of lines) {
     const trimmed = line.trim();
-    if (!trimmed) continue;
+    if (!trimmed || trimmed.startsWith('#') || trimmed.startsWith('---')) continue;
 
     // Check if multiple items are joined on a single line with bullets (• or · or ;)
     // e.g. 'API Development Apigee · 2024 • API Documentation · 2024 • Leadership & Team Mgmt · 2023'
-    if (trimmed.includes('•') || trimmed.includes('·') || trimmed.includes(';')) {
+    if (trimmed.includes('•') || trimmed.includes('·') || (trimmed.includes(';') && !trimmed.includes('&'))) {
       const subParts = trimmed.split(/\s*[•;]\s*/).filter(Boolean);
       if (subParts.length > 1) {
         for (const part of subParts) {
-          const cleanPart = cleanMarkdownFormatting(part);
+          const cleanPart = part.replace(/^[-*•·]\s*/, '').trim();
           if (cleanPart) {
             items.push(cleanPart);
           }
@@ -414,7 +414,7 @@ function parseListItems(rawContent: string): string[] {
       }
     }
 
-    const cleanLine = cleanMarkdownFormatting(trimmed);
+    const cleanLine = trimmed.replace(/^[-*•·]\s*/, '').trim();
     if (cleanLine) {
       items.push(cleanLine);
     }
@@ -759,7 +759,10 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
     if (s.type === 'skills') cvData.skillGroups = parseSkillGroups(s.rawContent);
     if (s.type === 'experience') cvData.experience = parseExperienceItems(s.rawContent);
     if (s.type === 'projects') cvData.projects = parseExperienceItems(s.rawContent);
-    if (s.type === 'education') cvData.education = parseListItems(s.rawContent);
+    if (s.type === 'education') {
+      const items = parseListItems(s.rawContent);
+      cvData.education = cvData.education && cvData.education.length > 0 ? [...cvData.education, ...items] : items;
+    }
     if (s.type === 'languages') {
       cvData.languages = parseListItems(s.rawContent);
       cvData.languageItems = parseLanguageItems(s.rawContent);

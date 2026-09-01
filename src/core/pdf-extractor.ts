@@ -247,12 +247,12 @@ export function parsePdfToMasterMarkdownLocal(rawText: string, fallbackName = 'C
   }
 
   // 3. Section partitioner
-  const experienceKeywords = /^(?:work\s+experience|experience|employment\s+history|career\s+history|professional\s+experience)/i;
-  const educationKeywords = /^(?:education|academic\s+background|academic\s+history|qualifications)/i;
-  const skillsKeywords = /^(?:skills|technical\s+skills|core\s+competencies|technologies|tools)/i;
-  const summaryKeywords = /^(?:summary|profile|professional\s+summary|about\s+me|overview)/i;
-  const certKeywords = /^(?:certifications|certificates|courses|licenses)/i;
-  const languagesKeywords = /^(?:languages|idiomas|langues)/i;
+  const experienceKeywords = /^(?:work\s+experience|experience|employment\s+history|career\s+history|professional\s+experience|experiencia\s+laboral|experiencia\s+profesional|experiencia|berufserfahrung|expérience\s+professionnelle|esperienza\s+lavorativa)/i;
+  const educationKeywords = /^(?:education|academic\s+background|academic\s+history|qualifications|educaci[oó]n|formaci[oó]n\s+acad[eé]mica|formaci[oó]n|estudios|t[ií]tulos|ausbildung|formation|istruzione|studi)/i;
+  const skillsKeywords = /^(?:skills|technical\s+skills|core\s+competencies|technologies|tools|habilidades|competencias|tecnolog[ií]as|kenntnisse|compétences|competenze)/i;
+  const summaryKeywords = /^(?:summary|profile|professional\s+summary|about\s+me|overview|resumen|perfil\s+profesional|perfil|acerca\s+de\s+m[ií]|profil|résumé)/i;
+  const certKeywords = /^(?:certifications|certificates|courses|licenses|certificaciones|certificados|cursos|diplomados|zertifikate|certificazioni)/i;
+  const languagesKeywords = /^(?:languages|idiomas|langues|sprachen|lingue)/i;
 
   const sections: {
     summary: string[];

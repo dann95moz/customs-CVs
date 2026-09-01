@@ -107,11 +107,13 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
 
       case 'education':
         if (data.education && data.education.length > 0) {
-          education = {
-            title: section.title,
-            items: data.education,
-            type: 'education'
-          };
+          if (!education) {
+            education = {
+              title: section.title,
+              items: data.education,
+              type: 'education'
+            };
+          }
         } else if (section.rawContent) {
           genericSections.push({
             id: section.id,
