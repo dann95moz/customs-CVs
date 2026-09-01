@@ -6,7 +6,9 @@ import {
   TextField,
   InputAdornment,
   useTheme,
+  alpha,
 } from '@mui/material';
+
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
@@ -45,8 +47,8 @@ export const TargetJobMetadataBar: React.FC<TargetJobMetadataBarProps> = React.m
         alignItems: 'center',
         border: `1px solid ${theme.palette.divider}`,
         bgcolor: 'background.paper',
-        borderRadius: '16px',
-        boxShadow: '0 2px 12px rgba(0,0,0,0.03)',
+        borderRadius: 2,
+        boxShadow: 1,
       }}
     >
       <TextField
@@ -91,11 +93,12 @@ export const TargetJobMetadataBar: React.FC<TargetJobMetadataBarProps> = React.m
           alignItems: 'center',
           gap: 1.5,
           p: 1,
-          borderRadius: '10px',
-          bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+          borderRadius: 1,
+          bgcolor: alpha(theme.palette.text.primary, 0.03),
           border: `1px solid ${theme.palette.divider}`,
         }}
       >
+
         <DescriptionRoundedIcon fontSize="small" color="action" />
         <Box>
           <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>

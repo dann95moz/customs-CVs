@@ -215,15 +215,13 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
         <Paper
           sx={{
             p: { xs: 2, sm: 2.5 },
-            borderRadius: '16px',
+            borderRadius: 2,
             display: 'flex',
             flexDirection: { xs: 'column', sm: 'row' },
             alignItems: { xs: 'flex-start', sm: 'center' },
             justifyContent: 'space-between',
             gap: 2,
-            background: isDark
-              ? 'linear-gradient(135deg, rgba(16, 22, 35, 0.8) 0%, rgba(21, 29, 46, 0.9) 100%)'
-              : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+            bgcolor: 'background.paper',
             border: `1px solid ${theme.palette.divider}`,
           }}
         >
@@ -280,8 +278,8 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             minHeight: 400,
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
-            borderRadius: '16px',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.03)',
+            borderRadius: 2,
+            boxShadow: 1,
             overflow: 'hidden',
           }}
         >
@@ -294,7 +292,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               alignItems: 'center',
               justifyContent: 'space-between',
               borderBottom: `1px solid ${theme.palette.divider}`,
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.02)',
+              bgcolor: alpha(theme.palette.text.primary, 0.02),
               flexShrink: 0,
             }}
           >
@@ -318,7 +316,6 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                   color: 'text.secondary',
                   py: 0.25,
                   px: 1,
-                  borderRadius: '6px',
                   '&:hover': {
                     color: 'primary.main',
                     bgcolor: alpha(theme.palette.primary.main, 0.08)
@@ -360,11 +357,12 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                 lineHeight: 1.65,
                 resize: 'vertical',
                 backgroundColor: 'transparent',
-                color: isDark ? '#f8fafc' : '#0f172a',
+                color: theme.palette.text.primary,
               }}
             />
           </Box>
         </Paper>
+
 
         {/* 5. Navigation & Direct Action Footer */}
         <TargetJobFooterActions

@@ -48,9 +48,9 @@ export const TargetJobFooterActions: React.FC<TargetJobFooterActionsProps> = Rea
         justifyContent: 'space-between',
         border: `1px solid ${theme.palette.divider}`,
         bgcolor: 'background.paper',
-        borderRadius: '16px',
+        borderRadius: 2,
         gap: { xs: 1.5, sm: 2 },
-        boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+        boxShadow: 2,
       }}
     >
       <Button
@@ -123,12 +123,12 @@ export const TargetJobFooterActions: React.FC<TargetJobFooterActionsProps> = Rea
             px: 3.5,
             py: 1.2,
             width: { xs: '100%', sm: 'auto' },
-            boxShadow: isDark ? '0 4px 14px rgba(2, 132, 199, 0.4)' : '0 4px 14px rgba(2, 132, 199, 0.25)',
           }}
         >
           {isGenerating ? t('target:actions.tailoring', 'Tailoring Resume...') : t('target:actions.tailorNow', 'Tailor Resume Now')}
         </Button>
       </Box>
     </Paper>
+
   );
 });

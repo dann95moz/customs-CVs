@@ -31,15 +31,16 @@ export const TargetJobProgressBanner: React.FC<TargetJobProgressBannerProps> = R
     <Paper
       sx={{
         p: { xs: 2, sm: 2.5 },
-        borderRadius: '16px',
+        borderRadius: 2,
         border: `1.5px solid ${theme.palette.primary.main}`,
         bgcolor: isDark ? alpha(theme.palette.primary.main, 0.12) : alpha(theme.palette.primary.main, 0.05),
-        boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.2)}`,
+        boxShadow: 4,
         display: 'flex',
         flexDirection: 'column',
         gap: 1.5,
       }}
     >
+
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <CircularProgress size={28} thickness={4} color="primary" />
         <Box sx={{ flex: 1 }}>
