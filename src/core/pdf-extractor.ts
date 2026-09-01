@@ -78,6 +78,132 @@ export async function extractRawTextFromPdf(fileOrBuffer: File | ArrayBuffer): P
   return fullText;
 }
 
+interface ExtractedExpBlock {
+  company: string;
+  role: string;
+  location?: string;
+  date?: string;
+  bullets: string[];
+}
+
+/**
+ * Heuristically parses raw lines extracted from a PDF into structured experience blocks:
+ * ### **Company** | Location
+ * *Role* | Date
+ * - Bullet 1
+ * - Bullet 2
+ */
+export function reconstructExperienceFromPdfLines(lines: string[]): string {
+  if (!lines || lines.length === 0) {
+    return `### **Company Name** | City, Country\n*Senior Specialist* | **2022 – Present**\n- Led cross-functional initiatives improving operational efficiency and technical delivery.`;
+  }
+
+  const blocks: ExtractedExpBlock[] = [];
+  let currentBlock: ExtractedExpBlock | null = null;
+
+  const datePattern = /(?:(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\.?\s+)?\b(?:\d{4})\b\s*(?:[–—-]|to|a|hasta)\s*(?:(?:(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\.?\s+)?\b(?:\d{4})\b|present|presente|current|actual)/i;
+  const singleYearPattern = /\b(19\d\d|20\d\d)\b/;
+  const titleKeywords = /\b(engineer|developer|architect|designer|lead|director|manager|head|consultant|analyst|specialist|officer|vp|vice president|founder|co-founder|cto|ceo|cpo|intern|fellow|administrator|coordinator|ingeniero|desarrollador|diseñador|gerente|director|consultor|analista|especialista|lider|líder)\b/i;
+
+  function flushBlock() {
+    if (currentBlock && (currentBlock.company || currentBlock.role || currentBlock.bullets.length > 0)) {
+      if (!currentBlock.company && currentBlock.role) {
+        currentBlock.company = currentBlock.role;
+        currentBlock.role = 'Specialist';
+      }
+      blocks.push(currentBlock);
+      currentBlock = null;
+    }
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i].trim();
+    if (!rawLine) continue;
+
+    const isExplicitBullet = /^[*•\-–—·]\s+/.test(rawLine);
+    const cleanLine = cleanMarkdownFormatting(rawLine);
+
+    const hasDate = datePattern.test(cleanLine) || singleYearPattern.test(cleanLine);
+    const hasPipe = cleanLine.includes('|');
+    const hasTitle = titleKeywords.test(cleanLine);
+
+    if (!isExplicitBullet && (hasPipe || (hasDate && hasTitle) || (cleanLine.length < 70 && hasTitle))) {
+      if (hasPipe) {
+        flushBlock();
+        const parts = cleanLine.split('|').map((p) => p.trim());
+        let comp = parts[0];
+        let role = parts[1] || 'Specialist';
+        let datePart = parts[2] || '';
+
+        if (datePattern.test(role) && !parts[2]) {
+          datePart = role;
+          role = 'Specialist';
+        }
+
+        currentBlock = {
+          company: comp,
+          role: role,
+          date: datePart || undefined,
+          bullets: []
+        };
+      } else if (hasDate) {
+        flushBlock();
+        const dateMatch = cleanLine.match(datePattern);
+        const extractedDate = dateMatch ? dateMatch[0] : '';
+        const titleWithoutDate = cleanLine.replace(datePattern, '').replace(/[|•–—]/g, ' ').trim();
+
+        currentBlock = {
+          company: titleWithoutDate || 'Organization',
+          role: titleWithoutDate.length < 35 ? titleWithoutDate : 'Specialist',
+          date: extractedDate || undefined,
+          bullets: []
+        };
+      } else {
+        if (!currentBlock || currentBlock.bullets.length > 0) {
+          flushBlock();
+          currentBlock = {
+            company: cleanLine,
+            role: 'Specialist',
+            bullets: []
+          };
+        } else if (!currentBlock.role || currentBlock.role === 'Specialist') {
+          currentBlock.role = cleanLine;
+        }
+      }
+    } else {
+      if (!currentBlock) {
+        currentBlock = {
+          company: 'Career Experience',
+          role: 'Professional Specialist',
+          bullets: []
+        };
+      }
+
+      if (!isExplicitBullet && currentBlock.bullets.length > 0 && cleanLine.length > 0 && /^[a-z0-9]/.test(cleanLine)) {
+        const lastIdx = currentBlock.bullets.length - 1;
+        currentBlock.bullets[lastIdx] = `${currentBlock.bullets[lastIdx]} ${cleanLine}`;
+      } else if (cleanLine.length > 0) {
+        currentBlock.bullets.push(cleanLine);
+      }
+    }
+  }
+
+  flushBlock();
+
+  if (blocks.length === 0) {
+    return lines.map((l) => (l.startsWith('-') ? l : `- ${l}`)).join('\n');
+  }
+
+  return blocks
+    .map((b) => {
+      const compHeader = b.location ? `### **${b.company}** | ${b.location}` : `### **${b.company}**`;
+      const roleLine = b.date ? `*${b.role}* | **${b.date}**` : `*${b.role}*`;
+      const bullets = b.bullets.map((bullet) => `- ${bullet}`).join('\n');
+      return `${compHeader}\n${roleLine}\n${bullets}`;
+    })
+    .join('\n\n---\n\n');
+}
+
 /**
  * Parses raw text extracted from a PDF into standard Master Profile Markdown using local heuristics.
  */
@@ -180,9 +306,7 @@ export function parsePdfToMasterMarkdownLocal(rawText: string, fallbackName = 'C
     ? sections.summary.join(' ')
     : `${headline} with a proven track record in delivering high-impact projects, solving complex engineering challenges, and collaborating effectively across multidisciplinary squads.`;
 
-  const experienceText = sections.experience.length > 0
-    ? sections.experience.map((l) => (l.startsWith('-') ? l : `- ${l}`)).join('\n')
-    : `- **Senior Specialist** | *Company Name* (2022 – Present)\n  - Led cross-functional initiatives improving operational efficiency and technical delivery.`;
+  const experienceText = reconstructExperienceFromPdfLines(sections.experience);
 
   const educationText = sections.education.length > 0
     ? sections.education.map((l) => (l.startsWith('-') ? l : `- ${l}`)).join('\n')
