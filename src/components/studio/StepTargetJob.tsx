@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   Box,
   Paper,
@@ -60,18 +60,95 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
   const lastClickRef = useRef<number>(0);
 
+  const [localContent, setLocalContent] = useState(content);
+  const [localCompany, setLocalCompany] = useState(companyName);
+  const [localRole, setLocalRole] = useState(targetRole);
+
+  const contentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const companyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const roleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setLocalContent(content);
+  }, [content]);
+
+  useEffect(() => {
+    setLocalCompany(companyName);
+  }, [companyName]);
+
+  useEffect(() => {
+    setLocalRole(targetRole);
+  }, [targetRole]);
+
+  useEffect(() => {
+    return () => {
+      if (contentTimerRef.current) clearTimeout(contentTimerRef.current);
+      if (companyTimerRef.current) clearTimeout(companyTimerRef.current);
+      if (roleTimerRef.current) clearTimeout(roleTimerRef.current);
+    };
+  }, []);
+
+  const flushAll = React.useCallback(() => {
+    if (contentTimerRef.current) {
+      clearTimeout(contentTimerRef.current);
+      contentTimerRef.current = null;
+      onChange(localContent);
+    }
+    if (companyTimerRef.current) {
+      clearTimeout(companyTimerRef.current);
+      companyTimerRef.current = null;
+      onCompanyChange(localCompany);
+    }
+    if (roleTimerRef.current) {
+      clearTimeout(roleTimerRef.current);
+      roleTimerRef.current = null;
+      onRoleChange(localRole);
+    }
+  }, [localContent, localCompany, localRole, onChange, onCompanyChange, onRoleChange]);
+
+  const handleContentChange = (val: string) => {
+    setLocalContent(val);
+    if (contentTimerRef.current) clearTimeout(contentTimerRef.current);
+    contentTimerRef.current = setTimeout(() => {
+      contentTimerRef.current = null;
+      onChange(val);
+    }, 250);
+  };
+
+  const handleCompanyChange = (val: string) => {
+    setLocalCompany(val);
+    if (companyTimerRef.current) clearTimeout(companyTimerRef.current);
+    companyTimerRef.current = setTimeout(() => {
+      companyTimerRef.current = null;
+      onCompanyChange(val);
+    }, 250);
+  };
+
+  const handleRoleChange = (val: string) => {
+    setLocalRole(val);
+    if (roleTimerRef.current) clearTimeout(roleTimerRef.current);
+    roleTimerRef.current = setTimeout(() => {
+      roleTimerRef.current = null;
+      onRoleChange(val);
+    }, 250);
+  };
+
   const { fileInputRef, handleFileUpload, handleDrop, handleDragOver } = useFileUploader({
     onFileLoaded: (text) => {
+      setLocalContent(text);
       onChange(text);
       const inferred = extractTargetCompany(text);
       if (inferred && !companyName) {
-        onCompanyChange(inferred.replace(/_/g, ' '));
+        const cleanComp = inferred.replace(/_/g, ' ');
+        setLocalCompany(cleanComp);
+        onCompanyChange(cleanComp);
       }
     }
   });
 
   const handleTailorAndProceed = () => {
     if (isGenerating) return;
+    flushAll();
 
     const now = Date.now();
     if (now - lastClickRef.current < 1000) {
@@ -103,8 +180,8 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
     }
   };
 
-  const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
-  const hasJob = content.trim().length > 40 && !content.includes('[Paste the raw job description');
+  const wordCount = localContent.trim().split(/\s+/).filter(Boolean).length;
+  const hasJob = localContent.trim().length > 40 && !localContent.includes('[Paste the raw job description');
 
   return (
     <Box
@@ -246,8 +323,9 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           <TextField
             label={t('target:fields.company', 'Target Company / Employer')}
             placeholder={t('target:fields.companyPlaceholder', 'e.g. Stripe, Airbnb, Google')}
-            value={companyName}
-            onChange={(e) => onCompanyChange(e.target.value)}
+            value={localCompany}
+            onChange={(e) => handleCompanyChange(e.target.value)}
+            onBlur={() => onCompanyChange(localCompany)}
             size="small"
             slotProps={{
               input: {
@@ -263,8 +341,9 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           <TextField
             label={t('target:fields.role', 'Target Role / Job Title')}
             placeholder={t('target:fields.rolePlaceholder', 'e.g. Senior Frontend Engineer')}
-            value={targetRole}
-            onChange={(e) => onRoleChange(e.target.value)}
+            value={localRole}
+            onChange={(e) => handleRoleChange(e.target.value)}
+            onBlur={() => onRoleChange(localRole)}
             size="small"
             slotProps={{
               input: {
@@ -372,8 +451,9 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           >
             <textarea
               className="studio-textarea"
-              value={content}
-              onChange={(e) => onChange(e.target.value)}
+              value={localContent}
+              onChange={(e) => handleContentChange(e.target.value)}
+              onBlur={() => onChange(localContent)}
               placeholder={t('target:editor.placeholder', 'Paste the job description here...')}
               spellCheck={false}
               style={{
@@ -462,7 +542,10 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           <Button
             variant="outlined"
             startIcon={<ArrowBackRoundedIcon />}
-            onClick={onPrevStep}
+            onClick={() => {
+              flushAll();
+              onPrevStep();
+            }}
             disabled={isGenerating}
             sx={{
               fontWeight: 600,
@@ -507,7 +590,10 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               <Button
                 variant="outlined"
                 color="inherit"
-                onClick={onNextStep}
+                onClick={() => {
+                  flushAll();
+                  onNextStep();
+                }}
                 sx={{
                   fontWeight: 600,
                   width: { xs: '100%', sm: 'auto' },

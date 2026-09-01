@@ -21,7 +21,7 @@ import { EducationSectionProps } from '../../../types';
 
 export type { EducationSectionProps };
 
-export const EducationSection: React.FC<EducationSectionProps> = ({
+export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
   isExpanded,
   onToggle,
   education,
@@ -36,6 +36,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
     <Accordion
       expanded={isExpanded}
       onChange={onToggle}
+      slotProps={{ transition: { unmountOnExit: true } }}
       sx={{
         borderRadius: '12px !important',
         border: `1px solid ${theme.palette.divider}`,
@@ -95,4 +96,4 @@ export const EducationSection: React.FC<EducationSectionProps> = ({
       </AccordionDetails>
     </Accordion>
   );
-};
+});

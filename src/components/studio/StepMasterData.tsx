@@ -58,6 +58,51 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   const isDark = theme.palette.mode === 'dark';
 
   const [editMode, setEditMode] = React.useState<'guided' | 'markdown'>('guided');
+  const [manualText, setManualText] = useState(content);
+  const manualTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  React.useEffect(() => {
+    setManualText(content);
+  }, [content]);
+
+  React.useEffect(() => {
+    return () => {
+      if (manualTimerRef.current) {
+        clearTimeout(manualTimerRef.current);
+        manualTimerRef.current = null;
+      }
+    };
+  }, []);
+
+  const flushManual = React.useCallback(() => {
+    if (manualTimerRef.current) {
+      clearTimeout(manualTimerRef.current);
+      manualTimerRef.current = null;
+      onChange(manualText);
+    }
+  }, [manualText, onChange]);
+
+  const handleManualTextChange = (val: string) => {
+    setManualText(val);
+    if (manualTimerRef.current) {
+      clearTimeout(manualTimerRef.current);
+    }
+    manualTimerRef.current = setTimeout(() => {
+      manualTimerRef.current = null;
+      onChange(val);
+    }, 250);
+  };
+
+  const handleManualBlur = () => {
+    if (manualTimerRef.current) {
+      clearTimeout(manualTimerRef.current);
+      manualTimerRef.current = null;
+    }
+    if (manualText !== content) {
+      onChange(manualText);
+    }
+  };
+
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showClearConfirmDialog, setShowClearConfirmDialog] = useState(false);
   const [pendingFile, setPendingFile] = useState<{
@@ -423,8 +468,9 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             >
               <textarea
                 className="studio-textarea"
-                value={content}
-                onChange={(e) => onChange(e.target.value)}
+                value={manualText}
+                onChange={(e) => handleManualTextChange(e.target.value)}
+                onBlur={handleManualBlur}
                 placeholder="# [CANDIDATE FULL NAME]&#10;**Primary Professional Role / Specialization**&#10;City, Country • candidate.email@example.com • +1 234 567 8900&#10;&#10;## CAREER HISTORY & ACHIEVEMENTS&#10;Write your companies, roles, and achievements here..."
                 spellCheck={false}
                 style={{
@@ -509,7 +555,10 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             variant="contained"
             color="primary"
             endIcon={<ArrowForwardRoundedIcon />}
-            onClick={onNextStep}
+            onClick={() => {
+              flushManual();
+              onNextStep();
+            }}
             sx={{
               fontWeight: 700,
               px: 3,

@@ -11,13 +11,16 @@ import { downloadTextFile } from '../../utils/fileUtils';
 import { AuditImprovementModal } from './audit/AuditImprovementModal';
 import { AuditSectionCard } from './audit/AuditSectionCard';
 import { useAuditActions } from '../../hooks/useAuditActions';
+import { useAuditReport } from '../../store';
 
 export type { QualityAuditViewProps };
 
 export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
-  report,
+  report: propReport,
   onRefresh
 }) => {
+  const hookReport = useAuditReport();
+  const report = propReport || hookReport;
   const { t } = useTranslation(['audit', 'common']);
   const theme = useTheme();
   const {

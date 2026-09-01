@@ -21,7 +21,7 @@ import { LanguagesSectionProps } from '../../../types';
 
 export type { LanguagesSectionProps };
 
-export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
+export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
   isExpanded,
   onToggle,
   languages,
@@ -36,6 +36,7 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
     <Accordion
       expanded={isExpanded}
       onChange={onToggle}
+      slotProps={{ transition: { unmountOnExit: true } }}
       sx={{
         borderRadius: '12px !important',
         border: `1px solid ${theme.palette.divider}`,
@@ -95,4 +96,4 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = ({
       </AccordionDetails>
     </Accordion>
   );
-};
+});

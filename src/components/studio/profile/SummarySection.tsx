@@ -16,7 +16,7 @@ import { SummarySectionProps } from '../../../types';
 
 export type { SummarySectionProps };
 
-export const SummarySection: React.FC<SummarySectionProps> = ({
+export const SummarySection: React.FC<SummarySectionProps> = React.memo(({
   isExpanded,
   onToggle,
   summary,
@@ -29,6 +29,7 @@ export const SummarySection: React.FC<SummarySectionProps> = ({
     <Accordion
       expanded={isExpanded}
       onChange={onToggle}
+      slotProps={{ transition: { unmountOnExit: true } }}
       sx={{
         borderRadius: '12px !important',
         border: `1px solid ${theme.palette.divider}`,
@@ -64,4 +65,4 @@ export const SummarySection: React.FC<SummarySectionProps> = ({
       </AccordionDetails>
     </Accordion>
   );
-};
+});

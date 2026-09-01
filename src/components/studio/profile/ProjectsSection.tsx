@@ -21,7 +21,7 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { useTranslation } from 'react-i18next';
-import { ProjectsSectionProps } from '../../../types';
+import { ExperienceItem, ProjectsSectionProps } from '../../../types';
 
 export type { ProjectsSectionProps };
 
@@ -38,7 +38,108 @@ const CATEGORY_SUGGESTIONS: string[] = [
   'Community Leadership',
 ];
 
-export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
+interface ProjectItemCardProps {
+  proj: ExperienceItem;
+  projIdx: number;
+  onFieldChange: (index: number, field: keyof ExperienceItem, value: string | string[]) => void;
+  onRemoveProject: (index: number) => void;
+}
+
+const ProjectItemCard: React.FC<ProjectItemCardProps> = React.memo(({
+  proj,
+  projIdx,
+  onFieldChange,
+  onRemoveProject,
+}) => {
+  const { t } = useTranslation(['profile', 'common']);
+  const theme = useTheme();
+  const descriptionText = (proj.bullets || []).join('\n');
+
+  return (
+    <Card variant="outlined" sx={{ borderRadius: '10px' }}>
+      <CardContent sx={{ p: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+            {t('profile:sections.projects.projectName', 'Item')} #{projIdx + 1}: {proj.company || 'New Entry'}
+          </Typography>
+          <IconButton
+            size="small"
+            color="error"
+            onClick={() => onRemoveProject(projIdx)}
+            title={t('profile:sections.projects.remove', 'Remove this item')}
+          >
+            <DeleteOutlineRoundedIcon fontSize="small" />
+          </IconButton>
+        </Box>
+
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1.5fr 1fr' }, gap: 1.5, mb: 1.5 }}>
+          <TextField
+            label={t('profile:sections.projects.projectName', 'Title / Name')}
+            size="small"
+            value={proj.company || ''}
+            onChange={(e) => onFieldChange(projIdx, 'company', e.target.value)}
+            placeholder="e.g. CV Studio Pro"
+            fullWidth
+          />
+          <Autocomplete
+            freeSolo
+            options={CATEGORY_SUGGESTIONS}
+            value={proj.role || ''}
+            onInputChange={(_event, newInputValue) => {
+              onFieldChange(projIdx, 'role', newInputValue);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={t('profile:sections.projects.role', 'Category')}
+                size="small"
+                placeholder="e.g. Personal Project"
+              />
+            )}
+          />
+        </Box>
+
+        <Box sx={{ mb: 1.5 }}>
+          <TextField
+            label={t('profile:sections.projects.bullets', 'Description / Key Highlights')}
+            size="small"
+            multiline
+            rows={2}
+            fullWidth
+            value={descriptionText}
+            onChange={(e) => {
+              const lines = e.target.value
+                .split('\n')
+                .map((l) => l.trim())
+                .filter(Boolean);
+              onFieldChange(projIdx, 'bullets', lines.length > 0 ? lines : [e.target.value]);
+            }}
+            placeholder="e.g. AI tool to generate tailored CVs per vacancy using TypeScript and React."
+          />
+        </Box>
+
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
+          <TextField
+            label={t('profile:sections.projects.link', 'Link / URL (Optional)')}
+            size="small"
+            value={proj.location || ''}
+            onChange={(e) => onFieldChange(projIdx, 'location', e.target.value)}
+            placeholder="e.g. https://github.com/username/project"
+          />
+          <TextField
+            label={t('profile:sections.projects.date', 'Date / Period (Optional)')}
+            size="small"
+            value={proj.date || ''}
+            onChange={(e) => onFieldChange(projIdx, 'date', e.target.value)}
+            placeholder="e.g. 2024 or Jan 2023 – Present"
+          />
+        </Box>
+      </CardContent>
+    </Card>
+  );
+});
+
+export const ProjectsSection: React.FC<ProjectsSectionProps> = React.memo(({
   isExpanded,
   onToggle,
   projects,
@@ -54,6 +155,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     <Accordion
       expanded={isExpanded}
       onChange={onToggle}
+      slotProps={{ transition: { unmountOnExit: true } }}
       sx={{
         borderRadius: '12px !important',
         border: `1px solid ${theme.palette.divider}`,
@@ -97,92 +199,15 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         </Typography>
 
         <Stack spacing={2.5}>
-          {projects.map((proj, projIdx) => {
-            const descriptionText = (proj.bullets || []).join('\n');
-
-            return (
-              <Card key={projIdx} variant="outlined" sx={{ borderRadius: '10px' }}>
-                <CardContent sx={{ p: 2 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
-                      {t('profile:sections.projects.projectName', 'Item')} #{projIdx + 1}: {proj.company || 'New Entry'}
-                    </Typography>
-                    <IconButton
-                      size="small"
-                      color="error"
-                      onClick={() => onRemoveProject(projIdx)}
-                      title={t('profile:sections.projects.remove', 'Remove this item')}
-                    >
-                      <DeleteOutlineRoundedIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-
-                  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1.5fr 1fr' }, gap: 1.5, mb: 1.5 }}>
-                    <TextField
-                      label={t('profile:sections.projects.projectName', 'Title / Name')}
-                      size="small"
-                      value={proj.company || ''}
-                      onChange={(e) => onFieldChange(projIdx, 'company', e.target.value)}
-                      placeholder="e.g. CV Studio Pro"
-                      fullWidth
-                    />
-                    <Autocomplete
-                      freeSolo
-                      options={CATEGORY_SUGGESTIONS}
-                      value={proj.role || ''}
-                      onInputChange={(_event, newInputValue) => {
-                        onFieldChange(projIdx, 'role', newInputValue);
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={t('profile:sections.projects.role', 'Category')}
-                          size="small"
-                          placeholder="e.g. Personal Project"
-                        />
-                      )}
-                    />
-                  </Box>
-
-                  <Box sx={{ mb: 1.5 }}>
-                    <TextField
-                      label={t('profile:sections.projects.bullets', 'Description / Key Highlights')}
-                      size="small"
-                      multiline
-                      rows={2}
-                      fullWidth
-                      value={descriptionText}
-                      onChange={(e) => {
-                        const lines = e.target.value
-                          .split('\n')
-                          .map((l) => l.trim())
-                          .filter(Boolean);
-                        onFieldChange(projIdx, 'bullets', lines.length > 0 ? lines : [e.target.value]);
-                      }}
-                      placeholder="e.g. AI tool to generate tailored CVs per vacancy using TypeScript and React."
-                    />
-                  </Box>
-
-                  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
-                    <TextField
-                      label={t('profile:sections.projects.link', 'Link / URL (Optional)')}
-                      size="small"
-                      value={proj.location || ''}
-                      onChange={(e) => onFieldChange(projIdx, 'location', e.target.value)}
-                      placeholder="e.g. https://github.com/username/project"
-                    />
-                    <TextField
-                      label={t('profile:sections.projects.date', 'Date / Period (Optional)')}
-                      size="small"
-                      value={proj.date || ''}
-                      onChange={(e) => onFieldChange(projIdx, 'date', e.target.value)}
-                      placeholder="e.g. 2024 or Jan 2023 – Present"
-                    />
-                  </Box>
-                </CardContent>
-              </Card>
-            );
-          })}
+          {projects.map((proj, projIdx) => (
+            <ProjectItemCard
+              key={projIdx}
+              proj={proj}
+              projIdx={projIdx}
+              onFieldChange={onFieldChange}
+              onRemoveProject={onRemoveProject}
+            />
+          ))}
 
           <Button
             variant="outlined"
@@ -197,4 +222,4 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
       </AccordionDetails>
     </Accordion>
   );
-};
+});

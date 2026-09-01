@@ -1,8 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import {
   useResumeStore,
-  useAuditReport,
-  useGapInfo,
   useDerivedFlags,
 } from '../store';
 import { StudioNavbar } from '../components/studio/StudioNavbar';
@@ -52,6 +50,7 @@ export const App: React.FC = () => {
   const setActiveTab = useResumeStore((s) => s.setActiveTab);
   const wizardStep = useResumeStore((s) => s.wizardStep);
   const setWizardStep = useResumeStore((s) => s.setWizardStep);
+  const hasMasterData = useResumeStore((s) => Boolean(s.masterData && s.masterData.trim().length > 10));
   const masterData = useResumeStore((s) => s.masterData);
   const setMasterData = useResumeStore((s) => s.setMasterData);
   const targetJob = useResumeStore((s) => s.targetJob);
@@ -73,10 +72,6 @@ export const App: React.FC = () => {
 
   // Derived state via optimized memoized hooks
   const { hasTargetJob, hasGeneratedCv, hasGapReport } = useDerivedFlags();
-  const auditReport = useAuditReport();
-  const gapInfo = useGapInfo();
-
-
 
   return (
     <div className="studio-app">
@@ -88,7 +83,7 @@ export const App: React.FC = () => {
         <WizardStepper
           currentStep={wizardStep}
           onSelectStep={setWizardStep}
-          hasMasterData={Boolean(masterData && masterData.trim().length > 10)}
+          hasMasterData={hasMasterData}
           hasTargetJob={hasTargetJob}
           hasGeneratedCv={hasGeneratedCv}
         />
@@ -156,7 +151,6 @@ export const App: React.FC = () => {
             {hasGeneratedCv ? (
               <Suspense fallback={<StudioSkeleton variant="audit" />}>
                 <QualityAuditView
-                  report={auditReport}
                   onRefresh={() => setCvMarkdown((prev: string) => `${prev}`)}
                 />
               </Suspense>
@@ -210,8 +204,6 @@ export const App: React.FC = () => {
               <Suspense fallback={<StudioSkeleton variant="gap" />}>
                 <GapAnalysisView
                   gapMarkdown={gapMarkdown}
-                  matchScore={gapInfo.matchScore}
-                  keywords={gapInfo.keywords}
                   companyName={companyName}
                   targetRole={targetRole}
                   onDownload={() => {

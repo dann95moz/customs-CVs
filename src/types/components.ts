@@ -417,8 +417,8 @@ export interface PreviewComparisonViewProps {
 // 4. Quality Audit, Gap Analysis & History Views
 // ---------------------------------------------------------------------------
 export interface QualityAuditViewProps {
-  report: QualityAuditReport;
-  onRefresh: () => void;
+  report?: QualityAuditReport;
+  onRefresh?: () => void;
   onBackToPreview?: () => void;
   onApplyActionItem?: (actionText: string) => void;
 }
@@ -442,8 +442,8 @@ export interface AuditImprovementModalProps {
 
 export interface GapAnalysisViewProps {
   gapMarkdown: string;
-  matchScore: number;
-  keywords: string[];
+  matchScore?: number;
+  keywords?: string[];
   companyName: string;
   targetRole: string;
   onDownload: () => void;

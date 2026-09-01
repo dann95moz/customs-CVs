@@ -16,7 +16,7 @@ import { ContactItem, ContactType, PersonalInfoSectionProps } from '../../../typ
 
 export type { PersonalInfoSectionProps };
 
-export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
+export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.memo(({
   isExpanded,
   onToggle,
   name,
@@ -29,21 +29,27 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
 
-  const getContactVal = (type: ContactType): string => {
-    const found = contacts.find(c => c.type === type);
-    if (!found) return '';
-    let raw = type === 'email' ? found.label || found.url || '' : (type === 'location' || type === 'phone' || type === 'text') ? found.label || '' : found.url || found.label || '';
-    return raw
-      .replace(/^mailto:/i, '')
-      .replace(/\*\*([^*]+)\*\*/g, '$1')
-      .replace(/[*_\[\]]/g, '')
-      .trim();
-  };
+  const contactValues = React.useMemo(() => {
+    const map: Partial<Record<ContactType, string>> = {};
+    (contacts || []).forEach(c => {
+      const raw = c.type === 'email'
+        ? c.label || c.url || ''
+        : (c.type === 'location' || c.type === 'phone' || c.type === 'text')
+        ? c.label || ''
+        : c.url || c.label || '';
+      map[c.type] = raw
+        .replace(/^mailto:/i, '')
+        .replace(/\*\*([^*]+)\*\*/g, '$1')
+        .replace(/[*_\[\]]/g, '');
+    });
+    return map;
+  }, [contacts]);
 
   return (
     <Accordion
       expanded={isExpanded}
       onChange={onToggle}
+      slotProps={{ transition: { unmountOnExit: true } }}
       sx={{
         borderRadius: '12px !important',
         border: `1px solid ${theme.palette.divider}`,
@@ -88,7 +94,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             label={t('profile:sections.personalInfo.location', 'Location')}
             variant="outlined"
             size="small"
-            value={getContactVal('location')}
+            value={contactValues.location || ''}
             onChange={(e) => onContactChange('location', e.target.value)}
             placeholder="e.g. San Francisco, CA (or Remote)"
             fullWidth
@@ -97,7 +103,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             label={t('profile:sections.personalInfo.email', 'Email Address')}
             variant="outlined"
             size="small"
-            value={getContactVal('email')}
+            value={contactValues.email || ''}
             onChange={(e) => onContactChange('email', e.target.value)}
             placeholder="alex.morgan@example.com"
             fullWidth
@@ -106,7 +112,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             label={t('profile:sections.personalInfo.phone', 'Phone Number')}
             variant="outlined"
             size="small"
-            value={getContactVal('phone')}
+            value={contactValues.phone || ''}
             onChange={(e) => onContactChange('phone', e.target.value)}
             placeholder="+1 (555) 019-2834"
             fullWidth
@@ -115,7 +121,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             label={t('profile:sections.personalInfo.linkedin', 'LinkedIn URL')}
             variant="outlined"
             size="small"
-            value={getContactVal('linkedin')}
+            value={contactValues.linkedin || ''}
             onChange={(e) => onContactChange('linkedin', e.target.value, e.target.value)}
             placeholder="https://linkedin.com/in/username"
             fullWidth
@@ -124,7 +130,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             label={t('profile:sections.personalInfo.github', 'GitHub URL (Optional)')}
             variant="outlined"
             size="small"
-            value={getContactVal('github')}
+            value={contactValues.github || ''}
             onChange={(e) => onContactChange('github', e.target.value, e.target.value)}
             placeholder="https://github.com/username"
             fullWidth
@@ -133,7 +139,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             label={t('profile:sections.personalInfo.portfolio', 'Portfolio / Personal Website (Optional)')}
             variant="outlined"
             size="small"
-            value={getContactVal('globe')}
+            value={contactValues.globe || ''}
             onChange={(e) => onContactChange('globe', e.target.value, e.target.value)}
             placeholder="https://alexmorgan.dev"
             fullWidth
@@ -142,4 +148,4 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       </AccordionDetails>
     </Accordion>
   );
-};
+});
