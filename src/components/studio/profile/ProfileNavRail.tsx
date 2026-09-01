@@ -5,9 +5,12 @@ import {
   Tab,
   Typography,
   Chip,
+  Button,
+  Tooltip,
   useTheme,
   alpha
 } from '@mui/material';
+
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
@@ -16,7 +19,10 @@ import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
 import RocketLaunchRoundedIcon from '@mui/icons-material/RocketLaunchRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { useTranslation } from 'react-i18next';
+import { CustomSection } from '../../../types/cv';
+import { getPresetIcon } from './CustomSectionPanel';
 
 export type ProfileSectionKey =
   | 'personal'
@@ -25,11 +31,12 @@ export type ProfileSectionKey =
   | 'experience'
   | 'education'
   | 'languages'
-  | 'projects';
+  | 'projects'
+  | string;
 
 export interface ProfileSectionMeta {
   key: ProfileSectionKey;
-  labelKey: string;
+  labelKey?: string;
   defaultLabel: string;
   icon: React.ReactElement;
   count?: number;
@@ -48,18 +55,23 @@ export interface ProfileNavRailProps {
     languagesCount: number;
     projectsCount: number;
   };
+  customSections?: CustomSection[];
+  onAddSectionClick?: () => void;
 }
+
 
 export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
   activeSection,
   onSectionChange,
-  sectionCounts
+  sectionCounts,
+  customSections = [],
+  onAddSectionClick,
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
-  const sections: ProfileSectionMeta[] = [
+  const standardSections: ProfileSectionMeta[] = [
     {
       key: 'personal',
       labelKey: 'profile:nav.personal',
@@ -111,6 +123,15 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
     }
   ];
 
+  const customSectionMetas: ProfileSectionMeta[] = (customSections || []).map((cs) => ({
+    key: `custom_${cs.id}`,
+    defaultLabel: cs.title,
+    icon: getPresetIcon(cs.presetType, 18),
+    count: cs.items?.length || 0,
+  }));
+
+  const allSections = [...standardSections, ...customSectionMetas];
+
   return (
     <Box
       sx={{
@@ -143,8 +164,9 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
           }
         }}
       >
-        {sections.map((sec) => {
+        {allSections.map((sec) => {
           const isActive = activeSection === sec.key;
+          const displayLabel = sec.labelKey ? t(sec.labelKey, sec.defaultLabel) : sec.defaultLabel;
           return (
             <Tab
               key={sec.key}
@@ -159,26 +181,28 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
                     gap: 1.25
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, minWidth: 0, flex: 1 }}>
                     <Box
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: isActive ? 'primary.main' : 'text.secondary'
+                        color: isActive ? 'primary.main' : 'text.secondary',
+                        flexShrink: 0
                       }}
                     >
                       {sec.icon}
                     </Box>
                     <Typography
                       variant="body2"
+                      noWrap
                       sx={{
                         fontWeight: isActive ? 700 : 500,
                         color: isActive ? 'primary.main' : 'text.primary',
                         fontSize: '0.86rem'
                       }}
                     >
-                      {t(sec.labelKey, sec.defaultLabel)}
+                      {displayLabel}
                     </Typography>
                   </Box>
 
@@ -239,58 +263,116 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
         })}
       </Tabs>
 
+      {/* Add Custom Section Action Button (Desktop) */}
+      {onAddSectionClick && (
+        <Box sx={{ display: { xs: 'none', md: 'block' }, pt: 1, px: 0.5 }}>
+          <Button
+            fullWidth
+            size="small"
+            variant="outlined"
+            color="primary"
+            startIcon={<AddCircleOutlineRoundedIcon sx={{ fontSize: 16 }} />}
+            onClick={onAddSectionClick}
+            sx={{
+              borderStyle: 'dashed',
+              textTransform: 'none',
+              fontWeight: 700,
+              fontSize: '0.8rem',
+              py: 0.8,
+              justifyContent: 'flex-start',
+              px: 1.5,
+              borderRadius: '8px',
+            }}
+          >
+            {t('profile:customSections.addSectionBtn', 'Agregar Sección')}
+          </Button>
+        </Box>
+      )}
+
       {/* Horizontal Tabs for Mobile View */}
-      <Tabs
-        orientation="horizontal"
-        value={activeSection}
-        onChange={(_e, val) => onSectionChange(val as ProfileSectionKey)}
-        variant="scrollable"
-        scrollButtons="auto"
-        allowScrollButtonsMobile
-        sx={{
-          display: { xs: 'flex', md: 'none' },
-          minHeight: 40,
-          '& .MuiTabs-indicator': {
-            borderRadius: '3px',
-            height: 3
-          }
-        }}
-      >
-        {sections.map((sec) => {
-          const isActive = activeSection === sec.key;
-          return (
-            <Tab
-              key={sec.key}
-              value={sec.key}
-              icon={sec.icon}
-              iconPosition="start"
-              label={
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                  <span>{t(sec.labelKey, sec.defaultLabel)}</span>
-                  {sec.isComplete ? (
-                    <CheckRoundedIcon sx={{ fontSize: 14, color: 'success.main' }} />
-                  ) : typeof sec.count === 'number' && sec.count > 0 ? (
-                    <Chip
-                      label={sec.count}
-                      size="small"
-                      color={isActive ? 'primary' : 'default'}
-                      sx={{ height: 18, fontSize: '0.68rem', px: 0 }}
-                    />
-                  ) : null}
-                </Box>
-              }
-              sx={{
-                minHeight: 38,
-                py: 0.5,
-                px: 1.25,
-                textTransform: 'none',
-                fontWeight: isActive ? 700 : 500,
-                fontSize: '0.8rem'
-              }}
-            />
-          );
-        })}
-      </Tabs>
+      <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 0.5, width: '100%' }}>
+        <Tabs
+          orientation="horizontal"
+          value={activeSection}
+          onChange={(_e, val) => onSectionChange(val as ProfileSectionKey)}
+          variant="scrollable"
+          scrollButtons="auto"
+          allowScrollButtonsMobile
+          sx={{
+            flex: 1,
+            minHeight: 40,
+            '& .MuiTabs-indicator': {
+              borderRadius: '3px',
+              height: 3
+            }
+          }}
+        >
+          {allSections.map((sec) => {
+            const isActive = activeSection === sec.key;
+            const displayLabel = sec.labelKey ? t(sec.labelKey, sec.defaultLabel) : sec.defaultLabel;
+            return (
+              <Tab
+                key={sec.key}
+                value={sec.key}
+                icon={sec.icon}
+                iconPosition="start"
+                label={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                    <span>{displayLabel}</span>
+                    {sec.isComplete ? (
+                      <CheckRoundedIcon sx={{ fontSize: 14, color: 'success.main' }} />
+                    ) : typeof sec.count === 'number' && sec.count > 0 ? (
+                      <Chip
+                        label={sec.count}
+                        size="small"
+                        color={isActive ? 'primary' : 'default'}
+                        sx={{ height: 18, fontSize: '0.68rem', px: 0 }}
+                      />
+                    ) : null}
+                  </Box>
+                }
+                sx={{
+                  minHeight: 38,
+                  py: 0.5,
+                  px: 1.25,
+                  textTransform: 'none',
+                  fontWeight: isActive ? 700 : 500,
+                  fontSize: '0.8rem'
+                }}
+              />
+            );
+          })}
+        </Tabs>
+
+        {/* Add Section Action Button (Mobile) */}
+        {onAddSectionClick && (
+          <Box sx={{ px: 0.5 }}>
+            <Tooltip title={t('profile:customSections.addSectionBtn', 'Agregar Sección')}>
+              <Button
+                size="small"
+                variant="outlined"
+                color="primary"
+                startIcon={<AddCircleOutlineRoundedIcon sx={{ fontSize: 15 }} />}
+                onClick={onAddSectionClick}
+                sx={{
+                  borderStyle: 'dashed',
+                  textTransform: 'none',
+                  fontWeight: 700,
+                  fontSize: '0.75rem',
+                  py: 0.4,
+                  px: 1,
+                  borderRadius: '8px',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                }}
+              >
+                {t('profile:customSections.addSectionBtnShort', 'Sección +')}
+              </Button>
+            </Tooltip>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };
+

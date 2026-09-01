@@ -10,8 +10,12 @@ import { ExperienceSection } from './profile/ExperienceSection';
 import { EducationSection } from './profile/EducationSection';
 import { LanguagesSection } from './profile/LanguagesSection';
 import { ProjectsSection } from './profile/ProjectsSection';
+import { CustomSectionPanel } from './profile/CustomSectionPanel';
+import { AddSectionModal } from './profile/AddSectionModal';
+import { CustomSectionPresetType } from '../../types/cv';
 import { useTranslation } from 'react-i18next';
 import { GuidedProfileFormProps } from '../../types';
+
 
 export type { GuidedProfileFormProps };
 
@@ -337,6 +341,87 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     }));
   }, [updateData]);
 
+  // Modal State for Adding Custom Section
+  const [isAddSectionModalOpen, setIsAddSectionModalOpen] = useState(false);
+
+  // Custom Sections Handlers
+  const handleAddCustomSection = useCallback((title: string, presetType: CustomSectionPresetType) => {
+    const newId = `sec_${Date.now()}`;
+    updateData(prev => {
+      const current = prev.customSections || [];
+      return {
+        ...prev,
+        customSections: [
+          ...current,
+          {
+            id: newId,
+            title,
+            presetType,
+            items: [],
+          }
+        ]
+      };
+    });
+    setActiveSection(`custom_${newId}`);
+  }, [updateData]);
+
+  const handleUpdateCustomSectionTitle = useCallback((sectionId: string, newTitle: string) => {
+    updateData(prev => ({
+      ...prev,
+      customSections: (prev.customSections || []).map(sec => 
+        sec.id === sectionId ? { ...sec, title: newTitle } : sec
+      )
+    }));
+  }, [updateData]);
+
+  const handleAddCustomSectionItem = useCallback((sectionId: string, itemText: string) => {
+    updateData(prev => ({
+      ...prev,
+      customSections: (prev.customSections || []).map(sec => 
+        sec.id === sectionId ? { ...sec, items: [...(sec.items || []), itemText] } : sec
+      )
+    }));
+  }, [updateData]);
+
+  const handleUpdateCustomSectionItem = useCallback((sectionId: string, index: number, newText: string) => {
+    updateData(prev => ({
+      ...prev,
+      customSections: (prev.customSections || []).map(sec => {
+        if (sec.id !== sectionId) return sec;
+        const newItems = [...(sec.items || [])];
+        newItems[index] = newText;
+        return { ...sec, items: newItems };
+      })
+    }));
+  }, [updateData]);
+
+  const handleRemoveCustomSectionItem = useCallback((sectionId: string, index: number) => {
+    updateData(prev => ({
+      ...prev,
+      customSections: (prev.customSections || []).map(sec => {
+        if (sec.id !== sectionId) return sec;
+        return { ...sec, items: (sec.items || []).filter((_, i) => i !== index) };
+      })
+    }));
+  }, [updateData]);
+
+  const handleRemoveCustomSection = useCallback((sectionId: string) => {
+    updateData(prev => ({
+      ...prev,
+      customSections: (prev.customSections || []).filter(sec => sec.id !== sectionId)
+    }));
+    setActiveSection('personal');
+  }, [updateData]);
+
+  // Active custom section resolver
+  const activeCustomSection = useMemo(() => {
+    if (activeSection.startsWith('custom_')) {
+      const secId = activeSection.replace('custom_', '');
+      return (formData.customSections || []).find(sec => sec.id === secId || `custom_${sec.id}` === activeSection);
+    }
+    return null;
+  }, [activeSection, formData.customSections]);
+
   // Compute section counts & completion status
   const sectionCounts = useMemo(() => {
     const personalComplete = Boolean(
@@ -388,6 +473,8 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
         activeSection={activeSection}
         onSectionChange={setActiveSection}
         sectionCounts={sectionCounts}
+        customSections={formData.customSections || []}
+        onAddSectionClick={() => setIsAddSectionModalOpen(true)}
       />
 
       {/* 2. Right Content Active Workspace Panel */}
@@ -466,7 +553,27 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
             onRemoveProject={handleRemoveProject}
           />
         )}
+
+        {/* Dynamic Custom Section Panel */}
+        {activeCustomSection && (
+          <CustomSectionPanel
+            section={activeCustomSection}
+            onUpdateTitle={(newTitle) => handleUpdateCustomSectionTitle(activeCustomSection.id, newTitle)}
+            onAddItem={(itemText) => handleAddCustomSectionItem(activeCustomSection.id, itemText)}
+            onUpdateItem={(index, newText) => handleUpdateCustomSectionItem(activeCustomSection.id, index, newText)}
+            onRemoveItem={(index) => handleRemoveCustomSectionItem(activeCustomSection.id, index)}
+            onRemoveSection={() => handleRemoveCustomSection(activeCustomSection.id)}
+          />
+        )}
       </Box>
+
+      {/* Add Custom Section Modal */}
+      <AddSectionModal
+        open={isAddSectionModalOpen}
+        onClose={() => setIsAddSectionModalOpen(false)}
+        onAddSection={handleAddCustomSection}
+      />
     </Box>
   );
 };
+

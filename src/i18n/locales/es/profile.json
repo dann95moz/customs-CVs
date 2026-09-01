@@ -142,5 +142,43 @@
     "targetSubtitle": "Oferta laboral y adaptación",
     "previewLabel": "CV en Vivo y Exportación",
     "previewSubtitle": "Previsualizar y descargar PDF"
+  },
+  "customSections": {
+    "addSectionBtn": "Agregar Sección",
+    "addSectionBtnShort": "Sección +",
+    "addTitle": "Agregar Sección Personalizada",
+    "addSubtitle": "Selecciona una categoría sugerida para optimizar el ATS o define tu propia sección libre.",
+    "inputLabel": "Título de la Sección",
+    "inputPlaceholder": "Ej. Certificaciones y Licencias",
+    "errorRequired": "El título es requerido",
+    "createAction": "Crear Sección",
+    "deleteSectionTip": "Eliminar esta sección completa",
+    "deleteTitle": "¿Eliminar sección?",
+    "deleteConfirm": "Esta acción eliminará \"{{title}}\" y todos sus elementos del perfil.",
+    "emptyList": "Aún no has agregado ningún elemento a esta sección.",
+    "emptyListSub": "Usa el campo superior para ingresar tus certificaciones, premios o logros.",
+    "presets": {
+      "certifications": "Certificaciones y Licencias",
+      "certificationsDesc": "AWS, Azure, CISSP, PMP, Scrum Master, acreditaciones profesionales",
+      "awards": "Premios y Reconocimientos",
+      "awardsDesc": "Hackathons, distinciones académicas, empleado del año, becas",
+      "publications": "Publicaciones y Patentes",
+      "publicationsDesc": "Artículos científicos, libros, papers técnicos, patentes registradas",
+      "volunteering": "Voluntariado e Impacto Social",
+      "volunteeringDesc": "Liderazgo comunitario, ONGs, mentorías y causas sociales",
+      "conferences": "Conferencias y Charlas",
+      "conferencesDesc": "Keynotes, ponencias en eventos de la industria, workshops dictados",
+      "custom": "Otra Sección Personalizada...",
+      "customDesc": "Define un nombre de sección completamente libre a tu gusto"
+    },
+    "placeholders": {
+      "certifications": "Ej. AWS Certified Solutions Architect – Associate (2024) • Amazon Web Services",
+      "awards": "Ej. 1er Lugar – Hackathon Nacional de Inteligencia Artificial (2023)",
+      "publications": "Ej. \"Arquitecturas Reactivas en Sistemas Distribuidos\", Conferencia IEEE (2022)",
+      "volunteering": "Ej. Mentor de Programación Web – Fundación Código Libre (2021 – Presente)",
+      "conferences": "Ej. Speaker: \"Microfrontends a Gran Escala\" – TechConf Latam (2023)",
+      "custom": "Escribe un logro, detalle o elemento para esta sección..."
+    }
   }
 }
+

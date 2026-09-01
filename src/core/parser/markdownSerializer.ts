@@ -120,5 +120,31 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     }
   }
 
+  // Dynamic Custom Sections (Certifications, Awards, Publications, Volunteering, etc.)
+  if (data.customSections && data.customSections.length > 0) {
+    for (const custom of data.customSections) {
+      if (custom.title && custom.items && custom.items.length > 0) {
+        parts.push('\n---\n');
+        let iconPrefix = '';
+        if (custom.presetType === 'certifications') iconPrefix = '🏆 ';
+        else if (custom.presetType === 'awards') iconPrefix = '🎖️ ';
+        else if (custom.presetType === 'publications') iconPrefix = '📚 ';
+        else if (custom.presetType === 'volunteering') iconPrefix = '🤝 ';
+        else if (custom.presetType === 'conferences') iconPrefix = '🎤 ';
+        else iconPrefix = '📌 ';
+
+        const cleanTitle = custom.title.replace(/^[🏆🎖️📚🤝🎤📌\s]+/, '').trim();
+        parts.push(`## ${iconPrefix}${cleanTitle.toUpperCase()}`);
+        for (const item of custom.items) {
+          let cleanItem = item.replace(/^(?:[-•]\s*|\*\s+)/, '');
+          if (cleanItem.trim()) {
+            parts.push(`- ${cleanItem}`);
+          }
+        }
+      }
+    }
+  }
+
   return parts.join('\n') + '\n';
 }
+

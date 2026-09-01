@@ -150,7 +150,31 @@ export function mapDataToSlots(data: CVData): CVSlotMap {
     }
   }
 
+  // Ensure live-edited customSections are mapped to genericSections
+  if (data.customSections && data.customSections.length > 0) {
+    const existingIds = new Set(genericSections.map(g => g.id));
+    for (const custom of data.customSections) {
+      if (!existingIds.has(custom.id) && custom.title && custom.items && custom.items.length > 0) {
+        let iconPrefix = '';
+        if (custom.presetType === 'certifications') iconPrefix = '🏆 ';
+        else if (custom.presetType === 'awards') iconPrefix = '🎖️ ';
+        else if (custom.presetType === 'publications') iconPrefix = '📚 ';
+        else if (custom.presetType === 'volunteering') iconPrefix = '🤝 ';
+        else if (custom.presetType === 'conferences') iconPrefix = '🎤 ';
+        else iconPrefix = '📌 ';
+
+        const cleanTitle = custom.title.replace(/^[🏆🎖️📚🤝🎤📌\s]+/, '').trim();
+        genericSections.push({
+          id: custom.id,
+          title: `${iconPrefix}${cleanTitle}`,
+          rawContent: custom.items.map(i => `- ${i}`).join('\n')
+        });
+      }
+    }
+  }
+
   return {
+
     header,
     summary,
     skills,

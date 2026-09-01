@@ -142,5 +142,43 @@
     "targetSubtitle": "Offerta di lavoro & adattamento",
     "previewLabel": "CV dal Vivo & Esportazione",
     "previewSubtitle": "Anteprima & scarica PDF"
+  },
+  "customSections": {
+    "addSectionBtn": "Aggiungi Sezione",
+    "addSectionBtnShort": "Sezione +",
+    "addTitle": "Aggiungi Sezione Personalizzata",
+    "addSubtitle": "Seleziona una categoria consigliata per ottimizzare l'ATS o definisci un titolo personalizzato.",
+    "inputLabel": "Titolo della Sezione",
+    "inputPlaceholder": "es. Certificazioni & Licenze",
+    "errorRequired": "Il titolo è obbligatorio",
+    "createAction": "Crea Sezione",
+    "deleteSectionTip": "Elimina questa intera sezione",
+    "deleteTitle": "Eliminare la sezione?",
+    "deleteConfirm": "Questa azione eliminerà \"{{title}}\" e tutti i suoi elementi dal tuo profilo.",
+    "emptyList": "Nessun elemento aggiunto a questa sezione per il momento.",
+    "emptyListSub": "Usa il campo sopra per inserire le tue certificazioni, premi o risultati.",
+    "presets": {
+      "certifications": "Certificazioni & Licenze",
+      "certificationsDesc": "AWS, Azure, CISSP, PMP, Scrum Master, abilitazioni professionali",
+      "awards": "Premi & Riconoscimenti",
+      "awardsDesc": "Hackathon, onorificenze accademiche, dipendente dell'anno, borse di studio",
+      "publications": "Pubblicazioni & Brevetti",
+      "publicationsDesc": "Articoli scientifici, libri, paper tecnici, brevetti registrati",
+      "volunteering": "Volontariato & Impatto Sociale",
+      "volunteeringDesc": "Leadership comunitaria, ONG, tutoraggio e cause sociali",
+      "conferences": "Conferenze & Interventi",
+      "conferencesDesc": "Keynote, interventi a convegni di settore, workshop condotti",
+      "custom": "Altra Sezione Personalizzata...",
+      "customDesc": "Definisci un titolo personalizzato adatto al tuo settore specifico"
+    },
+    "placeholders": {
+      "certifications": "es. AWS Certified Solutions Architect – Associate (2024) • Amazon Web Services",
+      "awards": "es. 1° Posto – Hackathon Nazionale di Intelligenza Artificiale (2023)",
+      "publications": "es. \"Architetture Reattive nei Sistemi Distribuiti\", Conferenza IEEE (2022)",
+      "volunteering": "es. Mentor in Sviluppo Web – Iniziativa Open Code (2021 – Presente)",
+      "conferences": "es. Speaker: \"Microfrontend su Larga Scala\" – TechConf Latam (2023)",
+      "custom": "Inserisci un risultato, un dettaglio o una voce per questa sezione..."
+    }
   }
 }
+

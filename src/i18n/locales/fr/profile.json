@@ -142,5 +142,43 @@
     "targetSubtitle": "Offre d'emploi & adaptation",
     "previewLabel": "CV en Direct & Export",
     "previewSubtitle": "Aperçu & téléchargement PDF"
+  },
+  "customSections": {
+    "addSectionBtn": "Ajouter une section",
+    "addSectionBtnShort": "Section +",
+    "addTitle": "Ajouter une section personnalisée",
+    "addSubtitle": "Choisissez une catégorie recommandée pour optimiser l'ATS ou définissez un titre libre.",
+    "inputLabel": "Titre de la section",
+    "inputPlaceholder": "ex. Certifications & Licences",
+    "errorRequired": "Le titre est requis",
+    "createAction": "Créer la section",
+    "deleteSectionTip": "Supprimer toute cette section",
+    "deleteTitle": "Supprimer la section ?",
+    "deleteConfirm": "Cette action supprimera \"{{title}}\" et tous ses éléments de votre profil.",
+    "emptyList": "Aucun élément ajouté à cette section pour le moment.",
+    "emptyListSub": "Utilisez le champ ci-dessus pour renseigner vos certifications, prix ou réalisations.",
+    "presets": {
+      "certifications": "Certifications & Licences",
+      "certificationsDesc": "AWS, Azure, CISSP, PMP, Scrum Master, qualifications professionnelles",
+      "awards": "Prix & Distinctions",
+      "awardsDesc": "Hackathons, distinctions académiques, employé de l'année, bourses",
+      "publications": "Publications & Brevets",
+      "publicationsDesc": "Articles scientifiques, livres, publications techniques, brevets déposés",
+      "volunteering": "Bénévolat & Impact Social",
+      "volunteeringDesc": "Engagement associatif, ONG, mentorat et projets d'intérêt général",
+      "conferences": "Conférences & Interventions",
+      "conferencesDesc": "Keynotes, présentations en conférences, animation d'ateliers",
+      "custom": "Autre section personnalisée...",
+      "customDesc": "Définissez un titre personnalisé adapté à votre domaine"
+    },
+    "placeholders": {
+      "certifications": "ex. AWS Certified Solutions Architect – Associate (2024) • Amazon Web Services",
+      "awards": "ex. 1ère Place – Hackathon National d'Intelligence Artificielle (2023)",
+      "publications": "ex. \"Architectures Réactives dans les Systèmes Distribués\", Conférence IEEE (2022)",
+      "volunteering": "ex. Mentor en Développement Web – Initiative Open Code (2021 – Présent)",
+      "conferences": "ex. Conférencier : \"Micro-frontends à Grande Échelle\" – TechConf (2023)",
+      "custom": "Saisissez une réalisation, un détail ou un point pour cette section..."
+    }
   }
 }
+

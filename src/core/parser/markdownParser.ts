@@ -7,9 +7,12 @@ import {
   SkillCategory,
   ExperienceItem,
   LanguageItem,
-  CEFRLevel
+  CEFRLevel,
+  CustomSection,
+  CustomSectionPresetType
 } from '../../types/cv';
 import { classifySectionType } from '../../constants/sectionKeywords';
+
 
 /**
  * Markdown-to-Structured CV AST Parser.
@@ -766,7 +769,26 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
       cvData.languages = parseListItems(s.rawContent);
       cvData.languageItems = parseLanguageItems(s.rawContent);
     }
+    if (s.type === 'generic' && s.rawContent && s.rawContent.trim()) {
+      if (!cvData.customSections) cvData.customSections = [];
+      const lower = s.title.toLowerCase();
+      let presetType: CustomSectionPresetType = 'custom';
+      if (/certif|licen/i.test(lower)) presetType = 'certifications';
+      else if (/award|premio|honor|logro|reconocim/i.test(lower)) presetType = 'awards';
+      else if (/publi|paper|art[ií]cul|patent/i.test(lower)) presetType = 'publications';
+      else if (/volunt|comunit|social/i.test(lower)) presetType = 'volunteering';
+      else if (/conferen|talk|charla|ponencia|workshop/i.test(lower)) presetType = 'conferences';
+
+      const items = parseListItems(s.rawContent);
+      cvData.customSections.push({
+        id: s.id || `custom_${Date.now()}_${cvData.customSections.length}`,
+        title: cleanMarkdownFormatting(s.title),
+        presetType,
+        items: items.length > 0 ? items : [s.rawContent.trim()]
+      });
+    }
   }
 
   return cvData;
 }
+

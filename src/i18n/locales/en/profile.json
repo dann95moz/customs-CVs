@@ -142,5 +142,43 @@
     "targetSubtitle": "Job posting & tailoring",
     "previewLabel": "Live CV & PDF Export",
     "previewSubtitle": "Preview & download PDF"
+  },
+  "customSections": {
+    "addSectionBtn": "Add Custom Section",
+    "addSectionBtnShort": "Section +",
+    "addTitle": "Add Custom Section",
+    "addSubtitle": "Choose a recommended category to optimize ATS ranking or define a custom title.",
+    "inputLabel": "Section Title",
+    "inputPlaceholder": "e.g. Certifications & Licenses",
+    "errorRequired": "Section title is required",
+    "createAction": "Create Section",
+    "deleteSectionTip": "Delete this entire section",
+    "deleteTitle": "Delete section?",
+    "deleteConfirm": "This action will delete \"{{title}}\" and all its items from your profile.",
+    "emptyList": "No items added to this section yet.",
+    "emptyListSub": "Use the input above to add your certifications, awards, or achievements.",
+    "presets": {
+      "certifications": "Certifications & Licenses",
+      "certificationsDesc": "AWS, Azure, CISSP, PMP, Scrum Master, professional credentials",
+      "awards": "Awards & Honors",
+      "awardsDesc": "Hackathons, academic distinctions, employee of the year, scholarships",
+      "publications": "Publications & Patents",
+      "publicationsDesc": "Research papers, published books, technical articles, registered patents",
+      "volunteering": "Volunteering & Social Impact",
+      "volunteeringDesc": "Community leadership, NGOs, mentoring and social causes",
+      "conferences": "Conferences & Talks",
+      "conferencesDesc": "Keynotes, industry conference talks, hosted workshops",
+      "custom": "Other Custom Section...",
+      "customDesc": "Define any custom title tailored to your specific field"
+    },
+    "placeholders": {
+      "certifications": "e.g. AWS Certified Solutions Architect – Associate (2024) • Amazon Web Services",
+      "awards": "e.g. 1st Place – National Artificial Intelligence Hackathon (2023)",
+      "publications": "e.g. \"Reactive Architectures in Distributed Systems\", IEEE Conference (2022)",
+      "volunteering": "e.g. Web Development Mentor – Open Code Initiative (2021 – Present)",
+      "conferences": "e.g. Speaker: \"Microfrontends at Scale\" – TechConf Latam (2023)",
+      "custom": "Type an achievement, item, or detail for this section..."
+    }
   }
 }
+

@@ -142,5 +142,43 @@
     "targetSubtitle": "Stellenanzeige & Anpassung",
     "previewLabel": "Live-CV & PDF-Export",
     "previewSubtitle": "Vorschau & PDF herunterladen"
+  },
+  "customSections": {
+    "addSectionBtn": "Abschnitt hinzufügen",
+    "addSectionBtnShort": "Abschnitt +",
+    "addTitle": "Benutzerdefinierten Abschnitt hinzufügen",
+    "addSubtitle": "Wählen Sie eine empfohlene Kategorie zur ATS-Optimierung oder definieren Sie einen eigenen Titel.",
+    "inputLabel": "Titel des Abschnitts",
+    "inputPlaceholder": "z. B. Zertifizierungen & Lizenzen",
+    "errorRequired": "Titel ist erforderlich",
+    "createAction": "Abschnitt erstellen",
+    "deleteSectionTip": "Diesen gesamten Abschnitt löschen",
+    "deleteTitle": "Abschnitt löschen?",
+    "deleteConfirm": "Dadurch wird \"{{title}}\" und alle zugehörigen Einträge aus Ihrem Profil entfernt.",
+    "emptyList": "In diesem Abschnitt wurden noch keine Einträge hinzugefügt.",
+    "emptyListSub": "Verwenden Sie das obige Feld, um Zertifikate, Auszeichnungen oder Erfolge einzutragen.",
+    "presets": {
+      "certifications": "Zertifizierungen & Lizenzen",
+      "certificationsDesc": "AWS, Azure, CISSP, PMP, Scrum Master, berufliche Qualifikationen",
+      "awards": "Auszeichnungen & Ehrungen",
+      "awardsDesc": "Hackathons, akademische Ehrungen, Mitarbeiter des Jahres, Stipendien",
+      "publications": "Publikationen & Patente",
+      "publicationsDesc": "Wissenschaftliche Arbeiten, Fachbücher, technische Artikel, Patente",
+      "volunteering": "Ehrenamt & Soziales Engagement",
+      "volunteeringDesc": "Gemeinschaftsarbeit, NGOs, Mentoring und soziale Projekte",
+      "conferences": "Konferenzen & Vorträge",
+      "conferencesDesc": "Keynotes, Fachvorträge, geleitete Workshops",
+      "custom": "Anderer benutzerdefinierter Abschnitt...",
+      "customDesc": "Definieren Sie einen frei wählbaren Abschnittstitel"
+    },
+    "placeholders": {
+      "certifications": "z. B. AWS Certified Solutions Architect – Associate (2024) • Amazon Web Services",
+      "awards": "z. B. 1. Platz – Nationaler KI-Hackathon (2023)",
+      "publications": "z. B. \"Reaktive Architekturen in verteilten Systemen\", IEEE-Konferenz (2022)",
+      "volunteering": "z. B. Mentor für Webentwicklung – Open Code Initiative (2021 – heute)",
+      "conferences": "z. B. Speaker: \"Microfrontends im Praxiseinsatz\" – TechConf (2023)",
+      "custom": "Tragen Sie einen Erfolg, ein Detail oder einen Punkt ein..."
+    }
   }
 }
+

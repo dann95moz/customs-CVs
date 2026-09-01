@@ -69,6 +69,21 @@ export interface LanguageItem {
   raw?: string;
 }
 
+export type CustomSectionPresetType = 
+  | 'certifications' 
+  | 'awards' 
+  | 'publications' 
+  | 'volunteering' 
+  | 'conferences' 
+  | 'custom';
+
+export interface CustomSection {
+  id: string;
+  title: string;
+  presetType?: CustomSectionPresetType;
+  items: string[];
+}
+
 export interface CVData {
   name: string;
   title: string;
@@ -81,11 +96,13 @@ export interface CVData {
   education?: string[];
   languages?: string[];
   languageItems?: LanguageItem[];
+  customSections?: CustomSection[];
   photo?: ProfilePhotoConfig | null;
   nationality?: string;
   dateOfBirth?: string;
   drivingLicense?: string;
 }
+
 
 // Re-export domain-specific types for seamless backward compatibility
 export * from './theme';
