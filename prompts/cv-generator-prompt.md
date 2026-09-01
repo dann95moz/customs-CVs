@@ -19,6 +19,7 @@ Your mission is to take my comprehensive master background database (`master-dat
   1. Identity & Seniority: `[Target Role Title] with [X]+ years of experience specialized in [Core Domain / Key Technologies].`
   2. Technical alignment focused on target job priorities.
   3. **Mandatory Closing Impact Metrics:** Must conclude with 2–3 verified quantitative metrics from `master-data.md` (e.g., cutting pipeline build times by 50%, reducing runtime errors by 40%, accelerating sprint delivery cycles by 35%).
+- **Strict Summary Bolding Rule:** Apply Markdown bolding ONLY to the final 2-3 quantitative metrics/percentages. ❌ NEVER bold technology names (Angular, React, NgRx, RxJS) in the summary; leave them in plain text.
 
 #### 2. Strategic Skill Categorization (Universal 3-Category Architecture)
 - Extract from my Master Stack only the technologies, libraries, and tools directly relevant to the target job.
@@ -26,12 +27,19 @@ Your mission is to take my comprehensive master background database (`master-dat
 
 #### 3. High-Impact Achievements with Google XYZ Formula & Leadership Verbs
 - Transform raw duties and notes into high-impact bullet points using the **Google XYZ Formula** (`"Accomplished [X] as measured by [Y] by doing [Z]"`).
+- **Strict Bullet Count Cap (Ideally 3, Maximum 4, NEVER 5+):** Every company/role must feature **ideally 3 high-impact bullets (maximum 4 only if distinct, critical, and irreplaceable quantitative metrics exist)**. ❌ NEVER generate 5 or more bullets under any single role. If `master-data.md` contains 5+ raw notes for a role, curate and consolidate down to the top 3.
+- **Preserve Relational Verbs & Technology Transitions:** When `master-data.md` describes a technology transition (e.g., *"migrated from X to Y"*, *"replaced X with Y"*, *"refactored from X to Y"*), preserve that directional relationship in the bullet. ❌ NEVER flatten it into *"using X and Y"* as if both were used simultaneously.
+- **Experience Bolding:** Bold 1-2 core technologies and bold key numerical percentages per bullet.
 - **No parenthetical breakdowns or trivial counters:** Do not write `(from 40m down to 20m)` or count minor items like `7 microfrontends`. State clean percentages and architectural scale directly.
 - **Technical leadership verbs:** Employ strong proactive action verbs (*Spearheaded, Led, Architected, Engineered, Standardized, Streamlined*).
 
 #### 4. Strict Constraints & Verification (`rules.md` & SSOT)
+- **Headline Seniority Boundary:** The headline subtitle under the candidate's name may incorporate domain/technology keywords from `target-job.md` (e.g. "Angular", "Front-End", "React") but must **NEVER copy a seniority qualifier (Senior/Lead/Staff/Principal)** from the job posting unless that exact qualifier appears in `master-data.md`'s own Primary Professional Title or held job titles. If the target role implies a higher seniority than the candidate's source data, align only on domain/technology terms — e.g., `"Frontend Engineer | Angular & TypeScript Specialist"` — never on the seniority level.
+- **Zero Dummy URLs & Short Hyperlink Labels:** Only include contact links (LinkedIn, GitHub, Portfolio) that explicitly exist in `master-data.md`. ❌ NEVER output dummy placeholder URLs (such as `https://github.com/candidate-profile` or example domains); omit if absent. Always format live demos and repositories with short descriptive labels like `[Live Demo](url)` and `[GitHub](url)` instead of raw long URLs.
+- **Strict 3–5 Certification Cap:** Select strictly between 3 and 5 (ideally 4) most relevant certifications to `target-job.md`. ❌ NEVER output 6 or more certifications under any circumstance. Omit generic or introductory courses (e.g. basic Git or generic documentation courses) when higher-signal credentials exist.
 - **Zero hallucinations:** NEVER invent companies, roles, certifications, or technologies not present in `master-data.md`.
 - **Strict Date Fidelity:** Copy exact start and end dates from `master-data.md` (e.g., `Oct 2024 – Apr 2026`). Never assume "Present" if an explicit end month/year is provided.
+- **Strict Bullet Count Limit:** Generate **strictly 3 bullets per role (maximum 4, never 5+)**.
 - ATS formatting standards: No photos, no age, no sensitive personal data.
 - Strict length: 1 page (<6 years experience) or max 2 pages (Lead/Senior).
 

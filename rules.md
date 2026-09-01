@@ -21,8 +21,20 @@ This document defines the strict styling, formatting, content, and ATS optimizat
 - **No Redundant Sections:**
   - ❌ Do NOT include *"References available upon request"*.
   - ❌ Do NOT list high schools or secondary education if higher university education exists.
-- **Zero Hallucination (Strict SSOT):**
+- **No Over-Padded Role Bullets (Strict 3–4 Limit, NEVER 5+):**
+  - ❌ NEVER generate 5 or more bullets under any single role. Outputting 5+ bullets causes visual clutter, dilutes achievement impact, and violates the single-page budget.
+  - ✅ Strictly limit every role to **ideally 3 high-impact bullets (maximum 4 only if distinct, critical, and irreplaceable quantifiable metrics exist)**.
+- **No Technology Bolding in Summary:**
+  - ❌ NEVER bold technology names, tools, or frameworks in the Professional Summary (e.g. write Angular, React, NgRx, RxJS in plain unbolded text).
+  - ✅ Bold ONLY the closing 2–3 quantitative metrics and percentages in the summary.
+- **No Dummy or Hallucinated Contact Links:**
+  - ❌ NEVER output dummy placeholder URLs (such as `https://github.com/candidate-profile` or example domains). Include GitHub, LinkedIn, or Portfolio URLs ONLY when they explicitly exist in `master-data.md`; omit if absent.
+- **No Raw Long URLs (Short Descriptive Hyperlink Labels Only):**
+  - ❌ NEVER render raw, long, or naked URLs (e.g. `https://cv-studio-olive.vercel.app/` or `https://github.com/...`) as visible text in the CV.
+  - ✅ ALWAYS format web links with short, clean, descriptive Markdown labels, exactly as done for `[LinkedIn](url)` and `[GitHub](url)` (e.g. `[Live Demo](url)`, `[GitHub](url)`, `[Repository](url)`, `[Portfolio](url)`).
+- **Zero Hallucination & Seniority Integrity (Strict SSOT):**
   - ❌ NEVER invent companies, job roles, dates, technologies, metrics, or certifications that are not present in `master-data.md`.
+  - ❌ NEVER inflate or alter the candidate's seniority level (Senior, Lead, Staff, Principal) in the header or experience entries to match a higher-level vacancy posting.
   If master-data.md contains fewer than 2 verifiable quantitative metrics for a given role, use the metrics available and rely on scope/scale qualifiers (team size, technologies owned, system criticality) instead of fabricating numbers. Never pad a bullet with an invented percentage to satisfy the format.
 
 ---
@@ -31,14 +43,15 @@ This document defines the strict styling, formatting, content, and ATS optimizat
 
 ### A. Content Budget & Visual Page Fit (A4 Full-Page Fill)
 - **1-Page Target (Junior / Mid / Senior <6 years experience):**
-  - Generate max 4 bullets per role, prioritizing bullets with quantifiable metrics. Do not alter seniority level or job title from the source data under any circumstance.
+  - Generate **ideally 3 high-impact bullets per role (maximum 4; NEVER 5 or more)**, prioritizing bullets with quantifiable metrics and direct alignment to `target-job.md`. Do not alter seniority level or job title from the source data under any circumstance.
   - Word budget: **420 to 480 total words** (filling 80% to 90% of an A4 sheet harmoniously).
   - Professional Summary: 3–4 impactful lines ending with concrete metrics.
   - Technical Skills: Exactly 3 strategic high-density categories.
-  - Professional Experience: 2–3 roles with **3 to 4 high-impact bullets per role** (Google XYZ format).
-  - Education & Certifications: University degrees and relevant verified certifications with issuer and year, formatted in a strict vertical column (one bullet per degree/certification). NEVER combine multiple certifications into a single inline line with pipes or commas. Select max 4–5 certifications most relevant to `target-job.md`, prioritizing recency and direct topical match. Omit outdated, unrelated, or lower-signal certifications rather than listing the full training history.
+  - Professional Experience: 2–3 roles with **ideally 3 bullets per role (max 4, never 5+)** (Google XYZ format).
+  - Education & Certifications: University degrees and relevant verified certifications with issuer and year, formatted in a strict vertical column (one bullet per degree/certification). NEVER combine multiple certifications into a single inline line with pipes or commas. Select **strictly 3 to 5 (ideally 4) certifications** most relevant to `target-job.md`. ❌ NEVER output 6 or more certifications under any circumstance. Prioritize high-signal technical credentials and omit introductory/generic courses (e.g. basic Git or generic documentation courses) when higher-signal credentials exist.
   - Languages: Standardized proficiency levels (CEFR: Native, B2, C1, C2).
 - **2-Page Target (Lead / Staff / Director +7 years experience):**
+  - Professional Experience: 3–4 roles with **strictly 3 to 4 bullets per role (never 5+)**.
   - Word budget: **750 to 850 total words** completing 2 full pages.
 
 ### B. High-Impact Executive Summary (Zero-Fluff Rule)
@@ -48,20 +61,9 @@ This document defines the strict styling, formatting, content, and ATS optimizat
   3. **Mandatory Closing Impact Metrics:** Must conclude with 2–3 verified quantitative metrics from `master-data.md` (e.g., *"Proven track record of cutting Jenkins CI/CD pipeline build times by 50%, reducing production runtime errors by 40% through TypeScript migrations, and accelerating feature delivery cycles by 35%."*).
   - **Summary Bolding Restriction:** Apply bold formatting only to the closing quantitative metrics in the summary — do not bold technology names or domain terms here, since they're already emphasized in the Technical Skills section below.
 
-- **No Trivial Counters, But Scale Counters Are Encouraged:**
-  - ❌ Do NOT count administrative or low-signal items: *"100 meetings"*,
-    *"50 tickets closed"*, *"7 microfrontends"*, *"12 endpoints"*. These read
-    as busywork, not impact.
-  - ✅ DO include legitimate scale/context counters that convey seniority and
-    magnitude: team size led (*"led a team of 6 engineers"*), user/traffic
-    volume (*"serving 2M+ monthly active users"*, *"handling 10K+
-    requests/second"*), or organizational reach (*"across 4 product squads"*).
-  - **Distinction rule:** if the number communicates the *scope or blast
-    radius* of the work, include it. If it only communicates *activity
-    volume* with no bearing on impact, omit it.
-
-### C. Header & Contact Information
-- **Strategic GitHub / Portfolio Curation:** Include GitHub/portfolio links only when relevant public projects exist for the target role; omit if the profile has no verifiable public work to showcase, rather than including an empty or generic profile link.
+### C. Header & Contact Information (Headline Alignment Boundary)
+- **Headline Alignment Boundary:** The headline subtitle under the candidate's name may incorporate domain/technology keywords from `target-job.md` (e.g., "Angular", "Front-End", "React") but must **NEVER copy a seniority qualifier (Senior/Lead/Staff/Principal)** from the job posting unless that exact qualifier appears in `master-data.md`'s own Primary Professional Title or held job titles. If the target role implies a higher seniority than the candidate's source data, align only on domain/technology terms — e.g., `"Frontend Engineer | Angular & TypeScript Specialist"` — never on the seniority level.
+- **Strategic GitHub / Portfolio Curation:** Include GitHub/portfolio links only when explicitly present in `master-data.md`. Never invent dummy URLs. Omit if absent.
 
 ### D. Technical Leadership & Active Ownership Verbs
 - **Replace passive phrasing:** Instead of *"mentored junior developers"*, use proactive leadership verbs:
@@ -92,13 +94,19 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
 - **Challenge / Technical Context:** The engineering problem or architectural initiative.
 - **Action / Implementation:** The modern stack, design pattern, or migration applied.
 - **Quantitative Result:** Clear percentage or business/engineering metric achieved.
+- **Preserve Relational Verbs & Technology Transitions:** When `master-data.md` describes a technology transition (e.g., *"migrated from X to Y"*, *"replaced X with Y"*, *"refactored from X to Y"*, *"shifted from X to Y"*), preserve that directional relationship in the bullet. ❌ NEVER flatten it into *"using X and Y"* as if both were used simultaneously.
+- **Strict Bullet Count Cap (Ideally 3, Maximum 4, Never 5+):** Every role must feature **ideally 3 high-impact bullets (max 4)**. If `master-data.md` contains 5+ raw notes or achievements for a role, select and synthesize only the top 3 with the strongest metrics and direct relevance to `target-job.md`. Never output 5 or more bullets under a single role.
 - **Cross-Role Redundancy Check:** Before finalizing, cross-check bullets across all included roles: if two bullets from different roles emphasize the same technical theme (e.g., both about CI/CD optimization), keep only the strongest/most quantified instance and select a different achievement angle for the other role.
 
 ### G. Strategic Keyword & Impact Bolding (The 6-Second Recruiter Hook)
 - **Recruiter Visual Anchors:** Recruiters and hiring managers spend an average of 6–8 seconds scanning a CV. To immediately seize attention and maximize reading speed:
-  - **Bold Core Matching Tech:** Strategically apply Markdown bolding (`**Keyword**`) to 1–2 primary matching technical terms per bullet (e.g., `**TypeScript**`, `**React**`, `**Webpack Module Federation**`, `**Microfrontends**`, `**Zustand**`, `**AWS**`, `**Docker**`).
-  - **Bold Quantitative Metrics & Results:** Apply Markdown bolding to all key percentages and numerical gains (e.g., `**50% reduction in CI/CD pipeline build times**`, `**40% decrease in runtime errors**`, `**35% faster cross-team feature delivery**`).
-  - **Rule of Balance:** Limit bold highlights to **1 to 3 impactful items per bullet** so the document remains clean, sophisticated, and easy to read without feeling cluttered.
+  - **In Professional Experience Bullets:**
+    - **Bold Core Matching Tech:** Strategically apply Markdown bolding (`**Keyword**`) to 1–2 primary matching technical terms per bullet (e.g., `**TypeScript**`, `**Angular**`, `**Webpack Module Federation**`, `**NgRx**`, `**Zustand**`, `**AWS**`).
+    - **Bold Quantitative Metrics & Results:** Apply Markdown bolding to all key percentages and numerical gains (e.g., `**50% reduction in CI/CD pipeline build times**`, `**40% decrease in runtime errors**`, `**35% faster cross-team feature delivery**`).
+    - **Rule of Balance:** Limit bold highlights to **1 to 3 impactful items per bullet** so the document remains clean, sophisticated, and easy to read without feeling cluttered.
+  - **In Professional Summary (Strict Bolding Restriction):**
+    - Apply Markdown bolding **exclusively to the closing 2–3 quantitative metrics/percentages**.
+    - ❌ Do NOT apply bold formatting to technologies, frameworks, or buzzwords in the summary (e.g. write Angular, React, NgRx, RxJS in normal plain text), since skills are already prominently grouped in the Technical Skills section.
 
 ---
 
@@ -134,6 +142,10 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
     section entirely rather than padding the CV with unrelated content.
   - Never fabricate or expand details beyond what the candidate provided for
     each item — the same Zero Hallucination / Strict SSOT rule applies here.
+- **Short Descriptive Hyperlink Labels for Projects & Live Demos:**
+  - For projects with live applications or repositories, format the title line using clean, concise Markdown hyperlinks with short descriptive labels:
+    `### **[Project Name]** | [Live Demo](https://...) • [GitHub](https://...)`
+  - ❌ NEVER paste full naked/raw URLs into project subheadings, company lines, or bullet text.
 ---
 
 ## 4. 📊 Quality Audit & Scoring Standard (Quality Report)
