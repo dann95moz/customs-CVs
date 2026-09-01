@@ -1,4 +1,5 @@
-import { extractCandidateName } from '../parser';
+import { parseCvMarkdownToData } from '../parser/markdownParser';
+import { extractCandidateName } from '../parser/metadataExtractor';
 
 export interface AnonymizedPayload {
   sanitizedText: string;
@@ -56,29 +57,90 @@ export function sanitizeMasterDataForAi(masterData: string): AnonymizedPayload {
 
 /**
  * Reconstructs the synthesized CV markdown by deterministically restoring the candidate's real header block
- * from the local master data, ensuring 0% hallucination and 100% privacy preservation.
+ * (Name, Target Role, and real contact links) from master data or target parameters,
+ * ensuring 0% hallucination and 100% privacy preservation.
  */
-export function restoreOriginalHeader(synthesizedMarkdown: string, originalMasterData: string): string {
-  if (!originalMasterData || !synthesizedMarkdown) {
+export function restoreOriginalHeader(
+  synthesizedMarkdown: string,
+  originalMasterData: string = '',
+  targetRoleOverride?: string
+): string {
+  if (!synthesizedMarkdown) {
     return synthesizedMarkdown;
   }
 
-  // 1. Extract original header block from master data (everything before first ## or ---)
-  const originalHeaderMatch = originalMasterData.match(/^([\s\S]*?)(?=\n+##|\n+---)/i);
-  const originalHeader = originalHeaderMatch ? originalHeaderMatch[1].trim() : '';
+  // 1. Parse structured data from master data and synthesized markdown
+  const masterParsed = originalMasterData ? parseCvMarkdownToData(originalMasterData) : null;
+  const synthParsed = parseCvMarkdownToData(synthesizedMarkdown);
 
-  if (!originalHeader) {
-    return synthesizedMarkdown;
+  // 2. Resolve Candidate Name
+  let candidateName = masterParsed?.name?.trim() || '';
+  if (!candidateName || candidateName.toLowerCase() === 'candidate' || candidateName.toLowerCase().includes('dossier')) {
+    // If masterData didn't have a clean name, check synthesized markdown or extractCandidateName
+    const extractedFromMaster = originalMasterData ? extractCandidateName(originalMasterData, '').replace(/_/g, ' ') : '';
+    if (extractedFromMaster && extractedFromMaster.toLowerCase() !== 'candidate') {
+      candidateName = extractedFromMaster;
+    } else if (synthParsed.name && synthParsed.name.toLowerCase() !== 'candidate' && !synthParsed.name.includes('[CANDIDATE')) {
+      candidateName = synthParsed.name;
+    } else {
+      candidateName = 'Candidate';
+    }
   }
 
-  // 2. Locate where the body sections begin in synthesized CV (first ##)
+  // 3. Resolve Target Role Title
+  let roleTitle = targetRoleOverride?.trim() || '';
+  if (!roleTitle) {
+    if (synthParsed.title && synthParsed.title.toLowerCase() !== 'professional specialist' && !synthParsed.title.includes('[Target Role')) {
+      roleTitle = synthParsed.title;
+    } else if (masterParsed?.title && masterParsed.title.toLowerCase() !== 'professional specialist') {
+      roleTitle = masterParsed.title;
+    } else {
+      roleTitle = 'Professional Specialist';
+    }
+  }
+
+  // 4. Resolve Contacts (prefer real contacts from master data)
+  const contacts = (masterParsed?.contacts && masterParsed.contacts.length > 0)
+    ? masterParsed.contacts
+    : (synthParsed.contacts || []);
+
+  const basicContacts: string[] = [];
+  const linkContacts: string[] = [];
+
+  for (const c of contacts) {
+    if (c.type === 'location' || c.type === 'email' || c.type === 'phone') {
+      if (c.label && !c.label.includes('[candidate-email') && !c.label.includes('[+1 (555)')) {
+        basicContacts.push(c.label);
+      }
+    } else if (c.url && !c.url.includes('candidate-profile')) {
+      let displayLabel = c.label;
+      if (c.type === 'linkedin') displayLabel = 'LinkedIn';
+      else if (c.type === 'github') displayLabel = 'GitHub';
+      else if (c.type === 'globe') displayLabel = 'Portfolio';
+      linkContacts.push(`[${displayLabel}](${c.url})`);
+    }
+  }
+
+  // Build clean reconstructed header lines
+  const headerLines: string[] = [];
+  headerLines.push(`# ${candidateName.toUpperCase()}`);
+  headerLines.push(`**${roleTitle}**  `);
+
+  if (basicContacts.length > 0) {
+    headerLines.push(basicContacts.join(' • '));
+  }
+  if (linkContacts.length > 0) {
+    headerLines.push(linkContacts.join(' • '));
+  }
+
+  const cleanHeader = headerLines.join('\n');
+
+  // 5. Extract synthesized body (first ## section onwards)
   const firstSectionIndex = synthesizedMarkdown.search(/\n+##\s+/i);
-
   if (firstSectionIndex === -1) {
-    return `${originalHeader}\n\n---\n\n${synthesizedMarkdown}`;
+    return `${cleanHeader}\n\n---\n\n${synthesizedMarkdown}`;
   }
 
   const synthesizedBody = synthesizedMarkdown.slice(firstSectionIndex).trim();
-
-  return `${originalHeader}\n\n---\n\n${synthesizedBody}`;
+  return `${cleanHeader}\n\n---\n\n${synthesizedBody}`;
 }

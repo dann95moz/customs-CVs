@@ -342,7 +342,7 @@ export async function tailorResume(req: TailorRequest): Promise<TailorResponse> 
   const strategy = getAIStrategy(req.providerSettings.provider);
 
   const result = await strategy.execute(prompts, req.providerSettings);
-  const extracted: ExtractedCvAndGap = extractCvAndGap(result.text, req.masterData, prompts.company);
+  const extracted: ExtractedCvAndGap = extractCvAndGap(result.text, req.masterData, prompts.company, req.targetRole);
 
   return {
     tailoredCvMarkdown: extracted.cvMarkdown,

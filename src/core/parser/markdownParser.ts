@@ -614,8 +614,22 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
     }
 
     // Check if line is professional title: **Frontend Engineer | React Specialist**
-    if (line.startsWith('**') && line.endsWith('**') && !title && !line.includes('@') && !line.includes('http')) {
-      title = cleanMarkdownFormatting(line);
+    if (!title && !line.includes('@') && !line.includes('http') && !line.includes('linkedin.com') && !line.includes('github.com')) {
+      const cleanCandidate = cleanMarkdownFormatting(line);
+      const isContactPattern = /(?:\+?\d{1,3}[\s.-]?)?\(?\d{2,4}\)?[\s.-]?\d{3,4}/.test(line);
+      if (
+        cleanCandidate &&
+        !isContactPattern &&
+        cleanCandidate.length <= 100 &&
+        !cleanCandidate.toLowerCase().includes('dossier') &&
+        !cleanCandidate.toLowerCase().includes('curriculum') &&
+        !cleanCandidate.toLowerCase().includes('europass') &&
+        (line.startsWith('*') || line.startsWith('**') || line.endsWith('**') || line.endsWith('*') || cleanCandidate.includes('|') || !cleanCandidate.includes(','))
+      ) {
+        title = cleanCandidate;
+        lineIdx++;
+        continue;
+      }
     } else if (line.length > 0) {
       headerContactText.push(line);
     }
@@ -720,10 +734,10 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
 
   // If title wasn't found in header, inspect personal info section
   if (!title) {
-    const titleMatch = rawMarkdown.match(/(?:Primary Professional Title|Title|Cargo|Headline):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+    const titleMatch = rawMarkdown.match(/(?:Primary Professional Title|Target Role|Target Position|Title|Cargo|Headline|Puesto):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
     if (titleMatch) {
       const clean = cleanMarkdownFormatting(titleMatch[1]);
-      if (!clean.toLowerCase().includes('specialization') && !clean.toLowerCase().includes('primary')) {
+      if (!clean.toLowerCase().includes('specialization') && !clean.toLowerCase().includes('primary') && !clean.toLowerCase().includes('target role')) {
         title = clean;
       }
     }

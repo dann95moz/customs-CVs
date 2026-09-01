@@ -11,7 +11,12 @@ export interface ExtractedCvAndGap {
 /**
  * Pure function: Extracts and separates Part 1 (Gap Analysis) and Part 2 (Tailored CV) from LLM output.
  */
-export function extractCvAndGap(rawText: string, masterData: string = '', company: string = ''): ExtractedCvAndGap {
+export function extractCvAndGap(
+  rawText: string,
+  masterData: string = '',
+  company: string = '',
+  targetRole: string = ''
+): ExtractedCvAndGap {
   let gapContent = '';
   let cvContent = rawText;
 
@@ -43,10 +48,8 @@ export function extractCvAndGap(rawText: string, masterData: string = '', compan
     .replace(/```\s*/g, '')
     .trim();
 
-  // Restore candidate real header deterministically from masterData (preserves privacy while ensuring real header)
-  if (masterData) {
-    cvContent = restoreOriginalHeader(cvContent, masterData);
-  }
+  // Restore candidate real header deterministically (name, target role, contacts)
+  cvContent = restoreOriginalHeader(cvContent, masterData, targetRole);
 
   // Extract Match Score
   let score = 90;
