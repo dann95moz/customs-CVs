@@ -9,17 +9,11 @@ import {
   Button,
   IconButton,
   Divider,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   Menu,
   MenuItem,
   Tooltip,
   Checkbox,
   CircularProgress,
-  Alert,
   useTheme,
   alpha
 } from '@mui/material';
@@ -40,6 +34,8 @@ import { getPaletteConfig } from '../../../constants/palettes';
 import { extractSummaryExcerpt } from '../../../core/parser';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
+import { ConfirmDeleteDialog } from '../common/ConfirmDeleteDialog';
+
 
 export type { ApplicationCardProps };
 
@@ -412,71 +408,31 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
 
 
       {/* Delete Confirmation Dialog */}
-      <Dialog
+      <ConfirmDeleteDialog
         open={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
-        maxWidth="xs"
-        fullWidth
-        slotProps={{
-          paper: {
-            sx: {
-              borderRadius: '16px',
-              p: 1,
-              bgcolor: 'background.paper',
-            },
-          },
+        onCancel={() => setIsDeleteDialogOpen(false)}
+        onConfirm={() => {
+          setIsDeleteDialogOpen(false);
+          onDelete(version.id);
         }}
-      >
-        <DialogTitle sx={{ fontWeight: 800, pb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
-          <DeleteOutlineRoundedIcon color="error" />
-          {t('history:deleteDialog.title', 'Delete CV Version?')}
-        </DialogTitle>
-        <DialogContent sx={{ pb: 1 }}>
-          {isLinkedToActiveApp && (
-            <Alert
-              severity="warning"
-              variant="outlined"
-              sx={{ mb: 1.5, py: 0.5, fontSize: '0.8rem', borderRadius: '8px' }}
-            >
-              {t(
+        title={t('history:deleteDialog.title', 'Delete CV Version?')}
+        message={t(
+          'history:deleteDialog.message',
+          'Are you sure you want to delete this tailored CV for {{company}}? This action is permanent and cannot be undone.',
+          { company: version.companyName || t('target:fields.company', 'Target Company') }
+        )}
+        warningMessage={
+          isLinkedToActiveApp
+            ? t(
                 'history:deleteDialog.linkedWarning',
                 'This CV version is currently attached to an active application on your Kanban board.'
-              )}
-            </Alert>
-          )}
-          <DialogContentText sx={{ fontSize: '0.88rem', color: 'text.secondary' }}>
-            {t(
-              'history:deleteDialog.message',
-              'Are you sure you want to delete this tailored CV for {{company}}? This action is permanent and cannot be undone.',
-              { company: version.companyName || t('target:fields.company', 'Target Company') }
-            )}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions sx={{ px: 2, pb: 1.5, gap: 1 }}>
-          <Button
-            onClick={() => setIsDeleteDialogOpen(false)}
-            color="inherit"
-            variant="outlined"
-            size="small"
-            sx={{ fontWeight: 700 }}
-          >
-            {t('common:actions.cancel', 'Cancel')}
-          </Button>
-          <Button
-            onClick={() => {
-              setIsDeleteDialogOpen(false);
-              onDelete(version.id);
-            }}
-            color="error"
-            variant="contained"
-            size="small"
-            startIcon={<DeleteOutlineRoundedIcon />}
-            sx={{ fontWeight: 700 }}
-          >
-            {t('common:actions.delete', 'Delete Permanently')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+              )
+            : undefined
+        }
+        confirmLabel={t('common:actions.delete', 'Delete Permanently')}
+        cancelLabel={t('common:actions.cancel', 'Cancel')}
+      />
     </>
   );
 };
+

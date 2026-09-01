@@ -7,13 +7,11 @@ import {
   TextField,
   Paper,
   Tooltip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   useTheme,
   alpha,
 } from '@mui/material';
+import { ConfirmDeleteDialog } from '../common/ConfirmDeleteDialog';
+
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -314,47 +312,23 @@ export const CustomSectionPanel: React.FC<CustomSectionPanelProps> = ({
         )}
       </Box>
 
-      {/* Delete Confirmation Dialog */}
-      <Dialog
+      {/* Delete Section Modal */}
+      <ConfirmDeleteDialog
         open={showDeleteConfirm}
-        onClose={() => setShowDeleteConfirm(false)}
-        maxWidth="xs"
-        slotProps={{
-          paper: {
-            sx: { borderRadius: '16px', p: 1 },
-          },
+        onCancel={() => setShowDeleteConfirm(false)}
+        onConfirm={() => {
+          setShowDeleteConfirm(false);
+          onRemoveSection();
         }}
-      >
-
-        <DialogTitle sx={{ fontWeight: 800, pb: 1 }}>
-          {t('profile:customSections.deleteTitle', '¿Eliminar sección?')}
-        </DialogTitle>
-        <DialogContent>
-          <Typography variant="body2" color="text.secondary">
-            {t(
-              'profile:customSections.deleteConfirm',
-              'Esta acción eliminará "{{title}}" y todos sus elementos del perfil.',
-              { title: section.title }
-            )}
-          </Typography>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2, justifyContent: 'space-between' }}>
-          <Button variant="text" color="inherit" onClick={() => setShowDeleteConfirm(false)}>
-            {t('common:actions.cancel', 'Cancelar')}
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              setShowDeleteConfirm(false);
-              onRemoveSection();
-            }}
-            sx={{ fontWeight: 700 }}
-          >
-            {t('common:actions.delete', 'Eliminar')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        title={t('profile:customSections.deleteTitle', '¿Eliminar sección?')}
+        message={t(
+          'profile:customSections.deleteConfirm',
+          'Esta acción eliminará "{{title}}" y todos sus elementos del perfil.',
+          { title: section.title }
+        )}
+        confirmLabel={t('common:actions.delete', 'Eliminar')}
+        cancelLabel={t('common:actions.cancel', 'Cancelar')}
+      />
     </Box>
   );
 };
