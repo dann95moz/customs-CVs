@@ -2,60 +2,116 @@
 trigger: always_on
 ---
 
-# Styling, Design Tokens & Responsive Guidelines
+# Styling, Design Tokens & Design System (DS) Rules
 
-## 1. Design Token Architecture
+This document establishes the strict styling and Design System (DS) compliance rules for **CV Studio**. All AI agents and developers must strictly adhere to these rules. Creating ad-hoc, rogue, or hardcoded (burned) styling is strictly forbidden.
 
-All design tokens must be centralized and reused across components:
-- **Tokens**: `src/styles/tokens.css` defines the primary design tokens (colors, borders, radiuses, shadows, transitions).
-- **Dimensions**: `src/theme/dimensions.ts` defines standard document and canvas dimensions (e.g., `DOCUMENT_DIMENSIONS.pageHeightPx`, `pageWidthPx`, A4 aspect ratios).
-- **MUI Theme**: `src/theme/theme.ts` integrates design tokens into Material UI palette, typography, and component overrides (`MuiButton`, `MuiChip`, `MuiPaper`, `MuiTab`, etc.).
+---
 
-## 2. Responsive Breakpoints & Toolbar Layout
+## 1. Centralized Design System (DS) Architecture
 
-Material-UI breakpoints are standardized:
+All design values must strictly originate from the centralized Design System tokens:
+- **Design Tokens**: `src/styles/tokens.css` defines root CSS variables (colors, surfaces, shadows, transitions).
+- **Theme Palette & Overrides**: `src/theme/theme.ts` integrates tokens into Material-UI component overrides (`MuiButton`, `MuiChip`, `MuiPaper`, `MuiPopover`, `MuiMenu`, `MuiDialog`, `MuiTooltip`, etc.).
+- **Dimensions & Radiuses**: `src/theme/dimensions.ts` defines standard radiuses (`RADIUS_TOKENS`) and layout dimensions.
+- **Color Palettes**: `src/theme/colors.ts` defines light and dark theme color tokens (`LIGHT_THEME_TOKENS`, `DARK_THEME_TOKENS`).
+
+---
+
+## 2. 🚫 Zero Tolerance: Forbidden Hardcoded (Burned) Styles
+
+### ❌ 1. Never hardcode inline `boxShadow` or `border` on Popovers, Menus, Dialogs, or Cards:
+- ❌ **Forbidden**:
+  ```tsx
+  // DON'T DO THIS:
+  slotProps={{
+    paper: {
+      sx: {
+        p: 2,
+        borderRadius: '12px',
+        border: '1px solid divider',
+        bgcolor: 'background.paper',
+        boxShadow: isDark ? '0 12px 32px rgba(0,0,0,0.6)...' : '0 12px 32px rgba(15,23,42,0.14)...',
+        zIndex: 10001,
+      },
+    },
+  }}
+  ```
+- ✅ **Standard Practice**: Let `<Popover>`, `<Menu>`, `<Dialog>`, and `<Card>` inherit default surfaces, shadows, and borders directly from `src/theme/theme.ts`. Only customize content dimensions (e.g. `width: 380, p: 2`).
+
+---
+
+### ❌ 2. Never hardcode arbitrary pixel `borderRadius`:
+- ❌ **Forbidden**: `borderRadius: '6px'`, `borderRadius: '8px'`, `borderRadius: '10px'`, `borderRadius: '12px'`, `borderRadius: '16px'`.
+- ✅ **Standard Practice**:
+  - Buttons, Chips, Tabs, Badges: Inherit `RADIUS_TOKENS.full` (`9999px` / Pill) automatically.
+  - Dialogs & Modals: Inherit `RADIUS_TOKENS.xl` (`16px`) from theme.
+  - Cards, Panels & Drawers: Inherit `RADIUS_TOKENS.lg` (`12px`) from theme.
+  - Inputs & Menus: Inherit `RADIUS_TOKENS.md` (`8px`) from theme.
+
+---
+
+### ❌ 3. Never hardcode arbitrary hex colors (`#hex`) or raw `rgba()` in component JSX:
+- ❌ **Forbidden**: `bgcolor: '#0284c7'`, `color: '#f8fafc'`, `border: '1px solid rgba(255, 255, 255, 0.08)'`.
+- ✅ **Standard Practice**: Use theme palette and alpha utilities:
+  - `bgcolor: 'background.paper'` or `bgcolor: 'background.default'`
+  - `color: 'text.primary'` or `color: 'text.secondary'`
+  - `borderColor: 'divider'` or `borderColor: alpha(theme.palette.primary.main, 0.2)`
+  - `bgcolor: alpha(theme.palette.primary.main, 0.08)`
+
+---
+
+### ❌ 4. Never hardcode rogue `zIndex` numbers:
+- ❌ **Forbidden**: `zIndex: 10001`, `zIndex: 99999`, `zIndex: 5000`.
+- ✅ **Standard Practice**: Use standard Material-UI z-indexes:
+  - `zIndex: theme.zIndex.modal` (1300)
+  - `zIndex: theme.zIndex.snackbar` (1400)
+  - `zIndex: theme.zIndex.tooltip` (1500)
+  - Layout relative layers: `zIndex: 1`, `zIndex: 10`, `zIndex: 20`.
+
+---
+
+### ❌ 5. Never override Button and Chip backgrounds or radiuses with ad-hoc styling:
+- ❌ **Forbidden**: `borderRadius: '8px'`, `background: 'linear-gradient(...)'` inside button `sx`.
+- ✅ **Standard Practice**: Use standard MUI variants and color props:
+  - `<Button variant="contained" color="primary">`
+  - `<Button variant="outlined" color="inherit">`
+  - `<Button variant="text">`
+  - `<Chip size="small" color="primary | success | warning | error" variant="filled | outlined" />`
+
+---
+
+## 3. Responsive Breakpoints & Mobile-First Rules
+
 - `xs`: 0px–599px (Mobile)
 - `sm`: 600px–899px (Tablet)
 - `md`: 900px–1199px (Small Desktop / Laptop)
 - `lg`: 1200px+ (Large Desktop)
 
-### Mobile-First Layout Rules
-- **No Unintended Wrapping**: Toolbars and action rows on mobile (`xs`) must be configured with `flexWrap: 'nowrap'` or clean multi-row alignment so buttons do not break into jagged lines.
-- **Icon Buttons**: Use compact paddings (`p: 0.6` to `p: 0.75`) and small icon sizes (`16px` to `18px`) on mobile viewports.
-- **Hidden Text on Mobile**: For action buttons on mobile, hide long labels and display short labels or tooltips via:
+### Mobile Layout Rules:
+- Toolbars and button bars on mobile must not wrap into ragged multiple lines (`flexWrap: 'nowrap'` or clean stacked rows).
+- Action buttons on mobile should hide verbose labels and display icons + tooltips:
   ```tsx
   <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{fullLabel}</Box>
   <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>{shortLabel}</Box>
   ```
 
-## 3. A4 Document Rendering & PDF Print Consistency
+---
 
-- **A4 Physical Standard**: 794px width by 1123px height per page (at 96 DPI).
-- **Overflow & Page Break Marker**: Display visual page break guides when the sheet height exceeds `A4_PAGE_PX - 30px`.
-- **Canvas Scaling on Mobile**: Use `zoomMode === 'fit'` with `autoScale = Math.min(1, Math.max(0.35, availableWidth / 794))` to fit the entire A4 width on mobile screens without horizontal scroll.
-- **Print Stylesheet**: Always ensure `.no-print` elements are hidden in `src/styles/print.css`.
+## 4. A4 Document Rendering & Print Consistency
 
-## 4. Strict Design System (DS) Component Compliance & Forbidding Ad-Hoc Overrides
+- **A4 Dimensions**: 794px width by 1123px height per page (at 96 DPI).
+- **Page Break Guides**: Show visual guide lines when height exceeds `A4_PAGE_PX - 30px`.
+- **Canvas Scaling**: Mobile canvas uses `autoScale = Math.min(1, Math.max(0.35, availableWidth / 794))` with zero horizontal scroll.
+- **Print CSS**: Ensure all non-document UI has `.no-print` class.
 
-All UI elements must strictly inherit and consume tokens defined in `src/theme/theme.ts` and `src/styles/tokens.css`. Creating ad-hoc or rogue styling is strictly forbidden.
+---
 
-### 🚫 Forbidden Practices (Zero Tolerance)
-1. **Never write inline border radiuses on Buttons or Chips**:
-   - ❌ `borderRadius: '6px'`, `borderRadius: '8px'`, `borderRadius: '10px'` on `<Button>`, `<IconButton>`, `<ToggleButton>`, or `<Chip>`.
-   - ✅ Always allow buttons and chips to inherit `RADIUS_TOKENS.full` (pill shape) from `src/theme/theme.ts`.
-2. **Never hardcode ad-hoc background colors or gradients on Buttons**:
-   - ❌ `bgcolor: '#0284c7'`, `bgcolor: 'primary.main'`, `background: 'linear-gradient(...)'` in button `sx`.
-   - ✅ Use standard MUI variant and color props: `<Button variant="contained" color="primary">`, `<Button variant="outlined">`, `<Button variant="text">`.
-3. **Never write hardcoded chip heights or arbitrary background colors**:
-   - ❌ `sx={{ height: 18, bgcolor: 'rgba(2, 132, 199, 0.15)' }}` on `<Chip>`.
-   - ✅ Use `<Chip size="small" color="primary | success | warning | error" variant="filled | outlined" />`.
-4. **Never stretch buttons across cards awkwardly without alignment**:
-   - ❌ `width: '100%'` or `width: { xs: '100%', sm: 'auto' }` on standard action levers unless designed as a bottom-sheet block CTA.
-   - ✅ Place buttons inside clean flex containers (`display: 'flex', justifyContent: 'flex-start' | 'center'`) with natural sizing.
+## 5. Verification Checklist for Design System Compliance
 
-### 📐 Standard Radius Tokens Reference
-- **Buttons, Chips, Tabs, Badges**: `RADIUS_TOKENS.full` (`9999px` / Pill)
-- **Dialogs & Large Modals**: `RADIUS_TOKENS.xl` (`16px`)
-- **Cards, Panels & Drawers**: `RADIUS_TOKENS.lg` (`12px`)
-- **Inputs & Dropdown Menus**: `RADIUS_TOKENS.md` (`8px`)
-
+Before committing any component edit:
+1. [ ] Are all colors using `theme.palette.*` or `alpha(...)` rather than raw hex/rgba strings?
+2. [ ] Are Popovers, Menus, Dialogs, and Cards inheriting default shadows and borders from theme?
+3. [ ] Are Buttons and Chips using standard variants without inline `borderRadius` overrides?
+4. [ ] Are z-indexes using standard MUI layers rather than arbitrary magic numbers?
+5. [ ] Is the layout mobile-friendly without overflowing or button wrapping on `xs` viewports?
