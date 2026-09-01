@@ -20,7 +20,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import { useTranslation } from 'react-i18next';
-import { marked } from 'marked';
+import { safeMarkdown } from '../../../utils/sanitize';
 import { CVData, ThemeId, PaletteId, FontFamilyId } from '../../../types/cv';
 import { useResumeStore } from '../../../store';
 import { generateCoverLetter } from '../../../core/ai-service';
@@ -312,7 +312,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
                 '& strong': { color: primaryColor, fontWeight: 700 },
               }}
               dangerouslySetInnerHTML={{
-                __html: marked.parse(coverLetterMarkdown || '') as string,
+                __html: safeMarkdown(coverLetterMarkdown || ''),
               }}
             />
           )}

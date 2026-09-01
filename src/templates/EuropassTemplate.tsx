@@ -1,6 +1,6 @@
 import React from 'react';
 import { CVTemplateProps } from './types';
-import { marked } from 'marked';
+import { safeMarkdown, safeMarkdownInline, getCleanContactLabel } from '../utils/sanitize';
 import { EditableText } from '../components/studio/preview/EditableText';
 import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
 import { getPaletteConfig } from '../constants/palettes';
@@ -10,19 +10,6 @@ import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
-
-function getCleanContactLabel(contact: { type: string; label: string; url?: string }): string {
-  if (contact.type === 'linkedin' && (contact.label.startsWith('http') || contact.label.includes('linkedin.com'))) {
-    return 'LinkedIn';
-  }
-  if (contact.type === 'github' && (contact.label.startsWith('http') || contact.label.includes('github.com'))) {
-    return 'GitHub';
-  }
-  if (contact.type === 'globe' && contact.label.startsWith('http')) {
-    return 'Portfolio';
-  }
-  return contact.label;
-}
 
 export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data, photo }) => {
   const liveEdit = useCvLiveEdit();
@@ -195,7 +182,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
               value={summary.rawContent}
               onSave={(val) => liveEdit?.updateSummary(val)}
               multiline
-              htmlContent={marked.parse(summary.rawContent) as string}
+              htmlContent={safeMarkdown(summary.rawContent)}
               placeholder="Professional summary..."
               aiConfig={{
                 type: 'summary',
@@ -262,7 +249,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                           tagName="li"
                           value={bullet}
                           onSave={(val) => liveEdit?.updateExperienceBullet('experience', expIdx, bIdx, val)}
-                          htmlContent={marked.parseInline(bullet) as string}
+                          htmlContent={safeMarkdownInline(bullet)}
                           aiConfig={{
                             type: 'bullet',
                             fieldKey: `europass-exp-${expIdx}-bullet-${bIdx}`,
@@ -316,7 +303,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                     tagName="li"
                     value={edu}
                     onSave={(val) => liveEdit?.updateEducationItem(eduIdx, val)}
-                    htmlContent={marked.parseInline(edu) as string}
+                    htmlContent={safeMarkdownInline(edu)}
                     style={{ fontSize: '12px', color: '#334155', lineHeight: 1.45 }}
                   />
                 );
@@ -387,7 +374,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                     tagName="div"
                     value={rawLang}
                     onSave={(val) => liveEdit?.updateLanguageItem(lIdx, val)}
-                    htmlContent={marked.parseInline(rawLang) as string}
+                    htmlContent={safeMarkdownInline(rawLang)}
                     style={{
                       backgroundColor: euSoftBg,
                       border: `1px solid ${euBorder}`,
@@ -457,7 +444,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
                     <ul style={{ margin: '2px 0 0 0', paddingLeft: '18px' }}>
                       {proj.bullets.map((b, bIdx) => (
                         <li key={bIdx} style={{ fontSize: '11.5px', color: '#334155' }}>
-                          <span dangerouslySetInnerHTML={{ __html: marked.parseInline(b) as string }} />
+                          <span dangerouslySetInnerHTML={{ __html: safeMarkdownInline(b) }} />
                         </li>
                       ))}
                     </ul>
@@ -486,7 +473,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
             </h2>
             <div
               style={{ fontSize: '11.5px', color: '#334155', lineHeight: 1.45 }}
-              dangerouslySetInnerHTML={{ __html: marked.parse(sec.rawContent) as string }}
+              dangerouslySetInnerHTML={{ __html: safeMarkdown(sec.rawContent) }}
             />
           </section>
         ))}

@@ -28,7 +28,7 @@ import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import { useTranslation } from 'react-i18next';
-import { marked } from 'marked';
+import { safeMarkdown } from '../../../utils/sanitize';
 import { PreviewAuditGapDrawerProps } from '../../../types';
 import { useAuditActions } from '../../../hooks/useAuditActions';
 import { AuditImprovementModal } from '../audit/AuditImprovementModal';
@@ -732,7 +732,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = ({
           <DialogContent dividers sx={{ p: { xs: 2, sm: 3 } }}>
             <Box
               className="gap-markdown-rendered"
-              dangerouslySetInnerHTML={{ __html: marked.parse(gapMarkdown) as string }}
+              dangerouslySetInnerHTML={{ __html: safeMarkdown(gapMarkdown) }}
             />
           </DialogContent>
           <DialogActions sx={{ px: 3, py: 2, justifyContent: 'space-between' }}>

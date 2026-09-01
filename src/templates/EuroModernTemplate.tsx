@@ -1,21 +1,8 @@
 import React from 'react';
 import { CVTemplateProps } from './types';
-import { marked } from 'marked';
+import { safeMarkdown, safeMarkdownInline, getCleanContactLabel } from '../utils/sanitize';
 import { EditableText } from '../components/studio/preview/EditableText';
 import { useCvLiveEdit } from '../components/studio/preview/CvLiveEditContext';
-
-function getCleanContactLabel(contact: { type: string; label: string; url?: string }): string {
-  if (contact.type === 'linkedin' && (contact.label.startsWith('http') || contact.label.includes('linkedin.com'))) {
-    return 'LinkedIn';
-  }
-  if (contact.type === 'github' && (contact.label.startsWith('http') || contact.label.includes('github.com'))) {
-    return 'GitHub';
-  }
-  if (contact.type === 'globe' && contact.label.startsWith('http')) {
-    return 'Portfolio';
-  }
-  return contact.label;
-}
 
 export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data, photo }) => {
   const liveEdit = useCvLiveEdit();
@@ -186,7 +173,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                     tagName="div"
                     value={rawLang}
                     onSave={(val) => liveEdit?.updateLanguageItem(lIdx, val)}
-                    htmlContent={marked.parseInline(rawLang) as string}
+                    htmlContent={safeMarkdownInline(rawLang)}
                     style={{ fontSize: '11px' }}
                   />
                 ))
@@ -249,7 +236,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                   tagName="div"
                   value={edu}
                   onSave={(val) => liveEdit?.updateEducationItem(eIdx, val)}
-                  htmlContent={marked.parseInline(edu) as string}
+                  htmlContent={safeMarkdownInline(edu)}
                   style={{ fontSize: '11px', color: '#334155' }}
                 />
               ))}
@@ -321,7 +308,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
               value={summary.rawContent}
               onSave={(val) => liveEdit?.updateSummary(val)}
               multiline
-              htmlContent={marked.parse(summary.rawContent) as string}
+              htmlContent={safeMarkdown(summary.rawContent)}
               placeholder="Summary text..."
               aiConfig={{
                 type: 'summary',
@@ -384,7 +371,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                           tagName="li"
                           value={bullet}
                           onSave={(val) => liveEdit?.updateExperienceBullet('experience', expIdx, bIdx, val)}
-                          htmlContent={marked.parseInline(bullet) as string}
+                          htmlContent={safeMarkdownInline(bullet)}
                           aiConfig={{
                             type: 'bullet',
                             fieldKey: `euromodern-exp-${expIdx}-bullet-${bIdx}`,
@@ -430,7 +417,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
                     <ul style={{ margin: '2px 0 0 0', paddingLeft: '16px' }}>
                       {proj.bullets.map((b, bIdx) => (
                         <li key={bIdx} style={{ fontSize: '11px', color: '#334155' }}>
-                          <span dangerouslySetInnerHTML={{ __html: marked.parseInline(b) as string }} />
+                          <span dangerouslySetInnerHTML={{ __html: safeMarkdownInline(b) }} />
                         </li>
                       ))}
                     </ul>
@@ -459,7 +446,7 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
             </h2>
             <div
               style={{ fontSize: '11px', color: '#334155', lineHeight: 1.4 }}
-              dangerouslySetInnerHTML={{ __html: marked.parse(sec.rawContent) as string }}
+              dangerouslySetInnerHTML={{ __html: safeMarkdown(sec.rawContent) }}
             />
           </section>
         ))}

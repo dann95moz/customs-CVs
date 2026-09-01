@@ -2,7 +2,7 @@ import React from 'react';
 import { CVTemplateProps } from './types';
 import { extractCandidateInitials } from '../core/parser';
 import { Icon } from '../components/Icons';
-import { marked } from 'marked';
+import { safeMarkdownInline } from '../utils/sanitize';
 import { 
   SummarySlot, 
   ExperienceSlot, 
@@ -150,7 +150,7 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
                       {group.skills.map((skill, sIdx) => (
                         <li 
                           key={sIdx}
-                          dangerouslySetInnerHTML={{ __html: marked.parseInline(skill) as string }}
+                          dangerouslySetInnerHTML={{ __html: safeMarkdownInline(skill) }}
                         />
                       ))}
                     </ul>
@@ -168,7 +168,7 @@ export const TwoColumnTemplate: React.FC<CVTemplateProps> = ({ slots, theme }) =
                 {slots.languages.items.map((item, lIdx) => (
                   <li 
                     key={lIdx}
-                    dangerouslySetInnerHTML={{ __html: marked.parseInline(item) as string }}
+                    dangerouslySetInnerHTML={{ __html: safeMarkdownInline(item) }}
                   />
                 ))}
               </ul>

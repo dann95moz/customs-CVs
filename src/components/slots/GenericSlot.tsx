@@ -1,6 +1,6 @@
 import React from 'react';
 import { GenericSlotData, GenericSlotProps } from '../../templates/types';
-import { marked } from 'marked';
+import { safeMarkdown } from '../../utils/sanitize';
 
 export type { GenericSlotProps };
 
@@ -10,7 +10,7 @@ export const GenericSlot: React.FC<GenericSlotProps> = ({ data, className = '' }
       <h2 className="cv-section-title">{data.title}</h2>
       <div 
         className="cv-content" 
-        dangerouslySetInnerHTML={{ __html: marked.parse(data.rawContent) as string }} 
+        dangerouslySetInnerHTML={{ __html: safeMarkdown(data.rawContent) }} 
       />
     </section>
   );

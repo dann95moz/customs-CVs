@@ -8,6 +8,7 @@ import { parseCvMarkdownToData, sanitizeFileName } from './parser';
 import { CVRenderer } from '../components/CVRenderer';
 import { ThemeId, PaletteId, FontFamilyId, SpacingDensity } from '../types/cv';
 import { getWorkspaceRoot, getOutputsDir } from './workspace';
+import { escapeHtml } from '../utils/textFormatting';
 
 export interface SystemBrowserInfo {
   name: string;
@@ -181,7 +182,7 @@ export function renderCvToHtml(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${cvData.name || 'CV'} - ${cvData.title || 'Curriculum Vitae'}</title>
+  <title>${escapeHtml(cvData.name || 'CV')} - ${escapeHtml(cvData.title || 'Curriculum Vitae')}</title>
   <!-- Google Fonts: Inter, Merriweather, Outfit, Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

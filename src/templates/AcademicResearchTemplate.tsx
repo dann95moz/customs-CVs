@@ -2,7 +2,7 @@ import React from 'react';
 import { CVTemplateProps } from './types';
 import { extractCandidateInitials } from '../core/parser';
 import { Icon } from '../components/Icons';
-import { marked } from 'marked';
+import { safeMarkdownInline } from '../utils/sanitize';
 import { 
   SummarySlot, 
   SkillsSlot, 
@@ -93,7 +93,7 @@ export const AcademicResearchTemplate: React.FC<CVTemplateProps> = ({ slots, the
                 {slots.education.items.map((item, eIdx) => (
                   <li 
                     key={eIdx}
-                    dangerouslySetInnerHTML={{ __html: marked.parseInline(item) as string }}
+                    dangerouslySetInnerHTML={{ __html: safeMarkdownInline(item) }}
                   />
                 ))}
               </ul>

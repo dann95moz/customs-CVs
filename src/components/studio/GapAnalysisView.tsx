@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, ButtonGroup } from '@mui/material';
-import { marked } from 'marked';
+import { safeMarkdown } from '../../utils/sanitize';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icons';
 import { GapAnalysisViewProps } from '../../types';
@@ -119,7 +119,7 @@ export const GapAnalysisView: React.FC<GapAnalysisViewProps> = ({
           <div 
             className="gap-markdown-rendered"
             dangerouslySetInnerHTML={{
-              __html: marked.parse(gapMarkdown || '*No gap analysis available yet. Generate a tailored CV first.*') as string
+              __html: safeMarkdown(gapMarkdown || '*No gap analysis available yet. Generate a tailored CV first.*')
             }}
           />
         ) : (

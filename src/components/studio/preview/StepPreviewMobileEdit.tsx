@@ -17,7 +17,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import { useTranslation } from 'react-i18next';
-import { marked } from 'marked';
+import { safeMarkdown, safeMarkdownInline } from '../../../utils/sanitize';
 import { CVData } from '../../../types/cv';
 import { useResumeStore } from '../../../store';
 import { extractCandidateInitials } from '../../../core/parser';
@@ -212,7 +212,7 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
                   mb: 1.75,
                   '& strong': { fontWeight: 700, color: 'text.primary' },
                 }}
-                dangerouslySetInnerHTML={{ __html: marked.parse(parsedCv.summary) as string }}
+                dangerouslySetInnerHTML={{ __html: safeMarkdown(parsedCv.summary || '') }}
               />
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flexWrap: 'wrap' }}>
@@ -314,7 +314,7 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
                           mb: 1.75,
                           '& strong': { fontWeight: 700, color: 'text.primary' },
                         }}
-                        dangerouslySetInnerHTML={{ __html: marked.parseInline(bullet) as string }}
+                        dangerouslySetInnerHTML={{ __html: safeMarkdownInline(bullet) }}
                       />
 
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flexWrap: 'wrap' }}>
@@ -431,7 +431,7 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
                           mb: 1.75,
                           '& strong': { fontWeight: 700, color: 'text.primary' },
                         }}
-                        dangerouslySetInnerHTML={{ __html: marked.parseInline(bullet) as string }}
+                        dangerouslySetInnerHTML={{ __html: safeMarkdownInline(bullet) }}
                       />
 
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flexWrap: 'wrap' }}>

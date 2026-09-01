@@ -1,24 +1,11 @@
 import React from 'react';
 import { HeaderSlotProps } from '../../templates/types';
-import { ContactItem } from '../../types';
 import { Icon } from '../Icons';
 import { EditableText } from '../studio/preview/EditableText';
 import { useCvLiveEdit } from '../studio/preview/CvLiveEditContext';
+import { getCleanContactLabel } from '../../utils/sanitize';
 
 export type { HeaderSlotProps };
-
-function getCleanContactLabel(contact: ContactItem): string {
-  if (contact.type === 'linkedin' && (contact.label.startsWith('http') || contact.label.includes('linkedin.com'))) {
-    return 'LinkedIn';
-  }
-  if (contact.type === 'github' && (contact.label.startsWith('http') || contact.label.includes('github.com'))) {
-    return 'GitHub';
-  }
-  if (contact.type === 'globe' && contact.label.startsWith('http')) {
-    return 'Portfolio';
-  }
-  return contact.label;
-}
 
 export const HeaderSlot: React.FC<HeaderSlotProps> = ({ 
   data, 
