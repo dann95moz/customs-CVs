@@ -36,7 +36,7 @@ This document defines the strict styling, formatting, content, and ATS optimizat
   - Professional Summary: 3–4 impactful lines ending with concrete metrics.
   - Technical Skills: Exactly 3 strategic high-density categories.
   - Professional Experience: 2–3 roles with **3 to 4 high-impact bullets per role** (Google XYZ format).
-  - Education & Certifications: University degrees and relevant verified certifications with issuer and year, formatted in a strict vertical column (one bullet per degree/certification). NEVER combine multiple certifications into a single inline line with pipes or commas. Select max 4–5 certifications most relevant to target-job.md, prioritizing recency and direct topical match. Omit outdated, unrelated, or lower-signal certifications rather than listing the full training history.
+  - Education & Certifications: University degrees and relevant verified certifications with issuer and year, formatted in a strict vertical column (one bullet per degree/certification). NEVER combine multiple certifications into a single inline line with pipes or commas. Select max 4–5 certifications most relevant to `target-job.md`, prioritizing recency and direct topical match. Omit outdated, unrelated, or lower-signal certifications rather than listing the full training history.
   - Languages: Standardized proficiency levels (CEFR: Native, B2, C1, C2).
 - **2-Page Target (Lead / Staff / Director +7 years experience):**
   - Word budget: **750 to 850 total words** completing 2 full pages.
@@ -46,7 +46,7 @@ This document defines the strict styling, formatting, content, and ATS optimizat
   1. **Identity & Seniority:** `[Target Role Title] with [X]+ years of experience specialized in [Core Domain / Key Technologies].`
   2. **Technical Alignment:** Direct architectural connection addressing the core requirements in `target-job.md`.
   3. **Mandatory Closing Impact Metrics:** Must conclude with 2–3 verified quantitative metrics from `master-data.md` (e.g., *"Proven track record of cutting Jenkins CI/CD pipeline build times by 50%, reducing production runtime errors by 40% through TypeScript migrations, and accelerating feature delivery cycles by 35%."*).
-  4. **Formatting:** Apply bold formatting only to the closing quantitative metrics in the summary — do not bold technology names or domain terms here, since they're already emphasized in the Technical Skills section below.
+  - **Summary Bolding Restriction:** Apply bold formatting only to the closing quantitative metrics in the summary — do not bold technology names or domain terms here, since they're already emphasized in the Technical Skills section below.
 
 - **No Trivial Counters, But Scale Counters Are Encouraged:**
   - ❌ Do NOT count administrative or low-signal items: *"100 meetings"*,
@@ -59,6 +59,9 @@ This document defines the strict styling, formatting, content, and ATS optimizat
   - **Distinction rule:** if the number communicates the *scope or blast
     radius* of the work, include it. If it only communicates *activity
     volume* with no bearing on impact, omit it.
+
+### C. Header & Contact Information
+- **Strategic GitHub / Portfolio Curation:** Include GitHub/portfolio links only when relevant public projects exist for the target role; omit if the profile has no verifiable public work to showcase, rather than including an empty or generic profile link.
 
 ### D. Technical Leadership & Active Ownership Verbs
 - **Replace passive phrasing:** Instead of *"mentored junior developers"*, use proactive leadership verbs:
@@ -89,6 +92,7 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
 - **Challenge / Technical Context:** The engineering problem or architectural initiative.
 - **Action / Implementation:** The modern stack, design pattern, or migration applied.
 - **Quantitative Result:** Clear percentage or business/engineering metric achieved.
+- **Cross-Role Redundancy Check:** Before finalizing, cross-check bullets across all included roles: if two bullets from different roles emphasize the same technical theme (e.g., both about CI/CD optimization), keep only the strongest/most quantified instance and select a different achievement angle for the other role.
 
 ### G. Strategic Keyword & Impact Bolding (The 6-Second Recruiter Hook)
 - **Recruiter Visual Anchors:** Recruiters and hiring managers spend an average of 6–8 seconds scanning a CV. To immediately seize attention and maximize reading speed:
@@ -145,7 +149,7 @@ A Markdown table evaluating each key dimension on a strict **1.0 to 10.0 scale**
 | **Professional Summary** | [Score] | Length (3–4 dense lines), zero fluff/clichés, technical alignment with target role, and mandatory closing quantitative metrics. |
 | **Technical Skills** | [Score] | Universal 3-category high-density architecture, direct relevance to target job, and zero unverified technologies (strict SSOT). |
 | **Professional Experience** | [Score] | Google XYZ achievement formula, active technical leadership verbs, verifiable impact metrics, and zero thematic redundancy across roles. |
-| **Education & Certifications** | [Score] | University degrees, analytical/transferable context lines for non-traditional degrees, and curated technical certifications. | 
+| **Education & Certifications** | [Score] | University degrees, analytical/transferable context lines for non-traditional degrees, and curated technical certifications. |
 | **Languages** | [Score] | Standardized CEFR proficiency (Native, B2, C1, C2) with professional working capability. |
 | **Overall Structure & Legibility** | [Score] | Strict 1-page A4 fit (80%–90% harmonious fill / 420–480 words), clean Markdown hierarchy, and 100% ATS parseability. |
 
@@ -159,5 +163,3 @@ To bridge the gap from a solid 8.5–9.0 narrative to a top 5% candidate profile
 1. **Verifiable Public Artifacts (Featured Projects):** Include 1–2 public projects with live demo and GitHub repository links to convert private enterprise narrative into verifiable proof.
 2. **Business & User-Facing Impact:** Complement internal engineering metrics (build times, error rates) with direct product metrics (conversion rates, transaction volume, churn reduction, customer onboarding speed).
 3. **Scale & Context Magnitude:** Anchor engineering achievements with volume context (MAU, transactions processed per month, cross-functional team size).
-
-
