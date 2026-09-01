@@ -15,6 +15,8 @@ import {
   Tooltip,
   Paper,
   Snackbar,
+  FormControl,
+  InputLabel,
   useTheme,
   alpha,
 } from '@mui/material';
@@ -65,6 +67,18 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
   const [viewMode, setViewMode] = useState<'unified' | 'split'>('unified');
   const [snackbar, setSnackbar] = useState<string | null>(null);
   const { copy } = useCopyToClipboard();
+
+  const allVersionOptions = useMemo(() => [
+    { id: 'master', label: t('history:diff.masterCv', 'Original Career Profile') },
+    { id: 'current', label: t('history:diff.currentTailored', 'Current Tailored CV (Editor)') },
+    ...savedVersions.map((v) => {
+      const company = v.companyName || 'General';
+      const role = v.targetRole ? ` • ${v.targetRole}` : '';
+      const date = formatLocalizedDate(v.createdAt, i18n.language || 'en');
+      return { id: v.id, label: `${company}${role} (${date})` };
+    }),
+  ], [savedVersions, i18n.language, t]);
+
 
   // Helper to resolve markdown content by ID
   const getVersionText = (id: string): { label: string; text: string } => {
@@ -120,8 +134,6 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
       slotProps={{
         paper: {
           sx: {
-            borderRadius: '16px',
-            bgcolor: 'background.paper',
             height: '88vh',
             display: 'flex',
             flexDirection: 'column',
@@ -129,7 +141,6 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
         },
       }}
     >
-      {/* Modal Header */}
       <DialogTitle
         sx={{
           p: 2,
@@ -138,7 +149,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          bgcolor: isDark ? alpha(theme.palette.background.default, 0.6) : '#f8fafc',
+          bgcolor: 'background.default',
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -146,7 +157,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
             sx={{
               width: 36,
               height: 36,
-              borderRadius: '10px',
+              borderRadius: 1,
               bgcolor: alpha(theme.palette.primary.main, 0.15),
               display: 'flex',
               alignItems: 'center',
@@ -171,12 +182,11 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
         </IconButton>
       </DialogTitle>
 
-      {/* Version Selector & Mode Controls Bar */}
       <Box
         sx={{
           p: 2,
           px: 3,
-          bgcolor: isDark ? 'background.default' : '#f1f5f9',
+          bgcolor: alpha(theme.palette.text.primary, 0.02),
           borderBottom: `1px solid ${theme.palette.divider}`,
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
@@ -185,52 +195,44 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
           gap: 2,
         }}
       >
-        {/* Selectors for Version A vs Version B */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, flexWrap: 'wrap' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1, minWidth: 200 }}>
-            <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>
-              {t('history:diff.baseVersion', 'Base Version (Original):')}
-            </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+          <FormControl size="small" sx={{ minWidth: 200 }}>
+            <InputLabel id="diff-base-label">{t('history:diff.baseVersion', 'Base (Old)')}</InputLabel>
             <Select
-              size="small"
+              labelId="diff-base-label"
               value={versionAId}
+              label={t('history:diff.baseVersion', 'Base (Old)')}
               onChange={(e) => setVersionAId(e.target.value)}
-              sx={{ fontSize: '0.82rem', fontWeight: 600, bgcolor: 'background.paper', borderRadius: '8px' }}
+              sx={{ fontSize: '0.82rem', fontWeight: 600 }}
             >
-              <MenuItem value="master">{t('history:diff.masterCv', 'Original Career Profile')}</MenuItem>
-              <MenuItem value="current">{t('history:diff.currentTailored', 'Current Tailored CV')}</MenuItem>
-              {savedVersions.map((v) => (
-                <MenuItem key={v.id} value={v.id}>
-                  {v.companyName || 'General'} {v.targetRole ? `(${v.targetRole})` : ''} - {formatLocalizedDate(v.createdAt, i18n.language || 'en')}
+              {allVersionOptions.map((opt) => (
+                <MenuItem key={opt.id} value={opt.id} sx={{ fontSize: '0.82rem' }}>
+                  {opt.label}
                 </MenuItem>
               ))}
             </Select>
-          </Box>
+          </FormControl>
 
-          <CompareArrowsRoundedIcon sx={{ color: 'text.secondary', display: { xs: 'none', md: 'block' }, mt: 2 }} />
+          <CompareArrowsRoundedIcon sx={{ color: 'text.secondary', display: { xs: 'none', sm: 'block' } }} />
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1, minWidth: 200 }}>
-            <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>
-              {t('history:diff.targetVersion', 'Compare Target (Tailored):')}
-            </Typography>
+          <FormControl size="small" sx={{ minWidth: 200 }}>
+            <InputLabel id="diff-target-label">{t('history:diff.targetVersion', 'Target (New)')}</InputLabel>
             <Select
-              size="small"
+              labelId="diff-target-label"
               value={versionBId}
+              label={t('history:diff.targetVersion', 'Target (New)')}
               onChange={(e) => setVersionBId(e.target.value)}
-              sx={{ fontSize: '0.82rem', fontWeight: 600, bgcolor: 'background.paper', borderRadius: '8px' }}
+              sx={{ fontSize: '0.82rem', fontWeight: 600 }}
             >
-              <MenuItem value="current">{t('history:diff.currentTailored', 'Current Tailored CV')}</MenuItem>
-              <MenuItem value="master">{t('history:diff.masterCv', 'Original Career Profile')}</MenuItem>
-              {savedVersions.map((v) => (
-                <MenuItem key={v.id} value={v.id}>
-                  {v.companyName || 'General'} {v.targetRole ? `(${v.targetRole})` : ''} - {formatLocalizedDate(v.createdAt, i18n.language || 'en')}
+              {allVersionOptions.map((opt) => (
+                <MenuItem key={opt.id} value={opt.id} sx={{ fontSize: '0.82rem' }}>
+                  {opt.label}
                 </MenuItem>
               ))}
             </Select>
-          </Box>
-
-
+          </FormControl>
         </Box>
+
 
         {/* View Mode Toggle: Unified vs Split */}
         <ButtonGroup size="small" variant="outlined" sx={{ alignSelf: { xs: 'flex-start', md: 'center' }, mt: { xs: 1, md: 2 } }}>
@@ -299,7 +301,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
       </Box>
 
       {/* Main Diff Code Display */}
-      <DialogContent sx={{ p: 0, flex: 1, overflowY: 'auto', bgcolor: isDark ? '#0f172a' : '#ffffff' }}>
+      <DialogContent sx={{ p: 0, flex: 1, overflowY: 'auto', bgcolor: 'background.paper' }}>
         {viewMode === 'unified' ? (
           /* UNIFIED DIFF VIEW */
           <Box sx={{ fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace", fontSize: '0.82rem', lineHeight: 1.6 }}>
@@ -308,16 +310,16 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
               const isRemoved = line.type === 'removed';
 
               let bg = 'transparent';
-              let color = isDark ? '#cbd5e1' : '#334155';
+              let color = 'text.primary';
               let prefix = '  ';
 
               if (isAdded) {
-                bg = isDark ? 'rgba(34, 197, 94, 0.18)' : 'rgba(34, 197, 94, 0.12)';
-                color = isDark ? '#86efac' : '#15803d';
+                bg = alpha(theme.palette.success.main, isDark ? 0.18 : 0.12);
+                color = 'success.main';
                 prefix = '+ ';
               } else if (isRemoved) {
-                bg = isDark ? 'rgba(239, 68, 68, 0.18)' : 'rgba(239, 68, 68, 0.1)';
-                color = isDark ? '#fca5a5' : '#b91c1c';
+                bg = alpha(theme.palette.error.main, isDark ? 0.18 : 0.1);
+                color = 'error.main';
                 prefix = '- ';
               }
 
@@ -331,8 +333,12 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
                     color: color,
                     px: 2,
                     py: 0.25,
-                    borderLeft: isAdded ? '3px solid #22c55e' : isRemoved ? '3px solid #ef4444' : '3px solid transparent',
-                    '&:hover': { bgcolor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' },
+                    borderLeft: isAdded
+                      ? `3px solid ${theme.palette.success.main}`
+                      : isRemoved
+                      ? `3px solid ${theme.palette.error.main}`
+                      : '3px solid transparent',
+                    '&:hover': { bgcolor: alpha(theme.palette.text.primary, 0.04) },
                   }}
                 >
                   <Typography
@@ -340,7 +346,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
                     sx={{
                       width: 44,
                       userSelect: 'none',
-                      color: isDark ? '#64748b' : '#94a3b8',
+                      color: 'text.secondary',
                       fontSize: '0.72rem',
                       textAlign: 'right',
                       pr: 2,
@@ -355,7 +361,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
                       fontWeight: 700,
                       width: 20,
                       userSelect: 'none',
-                      color: isAdded ? '#22c55e' : isRemoved ? '#ef4444' : '#94a3b8',
+                      color: isAdded ? 'success.main' : isRemoved ? 'error.main' : 'text.disabled',
                       flexShrink: 0,
                     }}
                   >
@@ -368,6 +374,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
               );
             })}
           </Box>
+
         ) : (
           /* SIDE-BY-SIDE SPLIT VIEW */
           <Box sx={{ display: 'flex', height: '100%', minHeight: 400 }}>

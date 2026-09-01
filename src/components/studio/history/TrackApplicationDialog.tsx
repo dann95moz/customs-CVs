@@ -159,7 +159,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
             sx={{
               width: 38,
               height: 38,
-              borderRadius: '10px',
+              borderRadius: 1,
               bgcolor: alpha(theme.palette.primary.main, 0.12),
               color: theme.palette.primary.main,
               display: 'flex',
@@ -190,7 +190,6 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
             severity="warning"
             icon={<WarningAmberRoundedIcon />}
             sx={{
-              borderRadius: '12px',
               fontSize: '0.82rem',
               '& .MuiAlert-message': { fontWeight: 500 },
             }}
@@ -239,7 +238,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
           {matchingVersions.length === 0 ? (
             <Paper
               variant="outlined"
-              sx={{ p: 2, textAlign: 'center', borderRadius: '12px', bgcolor: alpha(theme.palette.divider, 0.05) }}
+              sx={{ p: 2, textAlign: 'center', bgcolor: alpha(theme.palette.divider, 0.05) }}
             >
               <Typography variant="body2" color="text.secondary">
                 {t('history:trackModal.noVersionsFound', 'No saved resume versions found for this company. Please save or synthesize a CV first.')}
@@ -260,7 +259,6 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
                     onClick={() => setSelectedVersionId(v.id)}
                     sx={{
                       p: 1.5,
-                      borderRadius: '12px',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
@@ -276,6 +274,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
                       },
                     }}
                   >
+
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flex: 1, minWidth: 0 }}>
                       <FormControlLabel
                         value={v.id}

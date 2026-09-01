@@ -75,13 +75,11 @@ export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
         maxHeight: '100%',
         display: 'flex',
         flexDirection: 'column',
-        borderRadius: '16px',
+        borderRadius: 2,
         boxSizing: 'border-box',
         bgcolor: isOver
           ? alpha(columnColor, isDark ? 0.12 : 0.05)
-          : isDark
-          ? 'rgba(255, 255, 255, 0.02)'
-          : 'rgba(248, 250, 252, 0.8)',
+          : alpha(theme.palette.text.primary, isDark ? 0.02 : 0.015),
         borderColor: isOver ? columnColor : theme.palette.divider,
         transition: 'background-color 0.2s ease, border-color 0.2s ease',
         flexShrink: 0,
@@ -128,10 +126,10 @@ export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
               fontWeight: 700,
               bgcolor: alpha(columnColor, 0.12),
               color: columnColor,
-              borderRadius: '6px',
             }}
           />
         </Box>
+
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
           <IconButton

@@ -112,16 +112,13 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
       <Card
         variant="outlined"
         sx={{
-          borderRadius: '14px',
           bgcolor: 'background.paper',
           border: `1px solid ${isDraggingOverlay ? theme.palette.primary.main : theme.palette.divider}`,
-          boxShadow: isDraggingOverlay
-            ? '0 12px 32px rgba(0,0,0,0.25)'
-            : '0 2px 8px rgba(0,0,0,0.03)',
+          boxShadow: isDraggingOverlay ? 8 : 1,
           transition: 'border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease',
           '&:hover': {
             borderColor: 'primary.main',
-            boxShadow: `0 4px 16px ${alpha(theme.palette.primary.main, 0.1)}`,
+            boxShadow: 3,
           },
         }}
       >
@@ -139,7 +136,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
                   color: 'text.disabled',
                   cursor: isDraggingOverlay ? 'grabbing' : 'grab',
                   p: 0.25,
-                  borderRadius: '4px',
+                  borderRadius: 0.5,
                   '&:hover': { color: 'text.primary', bgcolor: alpha(theme.palette.text.primary, 0.05) },
                 }}
               >
@@ -151,7 +148,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
                 sx={{
                   width: 28,
                   height: 28,
-                  borderRadius: '8px',
+                  borderRadius: 1,
                   bgcolor: alpha(palConfig.accentColor || theme.palette.primary.main, 0.12),
                   color: palConfig.accentColor || theme.palette.primary.main,
                   display: 'flex',
@@ -160,6 +157,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
                   flexShrink: 0,
                 }}
               >
+
                 <BusinessRoundedIcon sx={{ fontSize: 16 }} />
               </Box>
 
@@ -293,7 +291,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             borderTop: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
-            bgcolor: isDark ? 'rgba(255,255,255,0.015)' : 'rgba(0,0,0,0.01)',
+            bgcolor: alpha(theme.palette.text.primary, isDark ? 0.015 : 0.01),
           }}
         >
           <Button
@@ -310,7 +308,6 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
               fontSize: '0.72rem',
               p: 0.4,
               px: 1,
-              borderRadius: '6px',
               textTransform: 'none',
             }}
           >
@@ -330,7 +327,6 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
                   sx={{
                     p: 0.5,
                     border: `1px solid ${theme.palette.divider}`,
-                    borderRadius: '6px',
                     '&:hover': {
                       borderColor: 'primary.main',
                       color: 'primary.main',
@@ -355,13 +351,6 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         anchorEl={menuAnchor}
         open={Boolean(menuAnchor)}
         onClose={() => handleCloseMenu()}
-        slotProps={{
-          paper: {
-            sx: {
-              minWidth: 180,
-            },
-          },
-        }}
 
       >
         <MenuItem
@@ -410,17 +399,9 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         onClose={() => setIsDeleteDialogOpen(false)}
         maxWidth="xs"
         fullWidth
-        slotProps={{
-          paper: {
-            sx: {
-              borderRadius: '16px',
-              p: 1,
-              bgcolor: 'background.paper',
-            },
-          },
-        }}
       >
         <DialogTitle sx={{ fontWeight: 800, pb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+
           <DeleteOutlineRoundedIcon color="error" />
           {t('history:deleteDialog.title', 'Delete Application?')}
         </DialogTitle>
