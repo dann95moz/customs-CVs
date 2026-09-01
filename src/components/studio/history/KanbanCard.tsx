@@ -358,12 +358,11 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         slotProps={{
           paper: {
             sx: {
-              borderRadius: '12px',
               minWidth: 180,
-              boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.6)' : '0 8px 24px rgba(0,0,0,0.1)',
             },
           },
         }}
+
       >
         <MenuItem
           onClick={(e) => {

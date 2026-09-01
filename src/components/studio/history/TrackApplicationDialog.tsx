@@ -147,14 +147,11 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
       slotProps={{
         paper: {
           sx: {
-            borderRadius: '18px',
-            bgcolor: 'background.paper',
-            backgroundImage: 'none',
-            boxShadow: isDark ? '0 16px 40px rgba(0,0,0,0.8)' : '0 16px 40px rgba(0,0,0,0.12)',
             p: 1,
           },
         },
       }}
+
     >
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>

@@ -425,8 +425,31 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
           },
         },
       },
+      MuiPopover: {
+        styleOverrides: {
+          paper: {
+            borderRadius: parseInt(RADIUS_TOKENS.lg, 10),
+            backgroundColor: tokens.background.paper,
+            border: `1px solid ${tokens.border.default}`,
+            boxShadow: tokens.shadow.floating,
+            backgroundImage: 'none',
+          },
+        },
+      },
+      MuiMenu: {
+        styleOverrides: {
+          paper: {
+            borderRadius: parseInt(RADIUS_TOKENS.lg, 10),
+            backgroundColor: tokens.background.paper,
+            border: `1px solid ${tokens.border.default}`,
+            boxShadow: tokens.shadow.floating,
+            backgroundImage: 'none',
+          },
+        },
+      },
     },
   };
 };
+
 
 export const buildTheme = (mode: ThemeMode) => createTheme(getDesignTokens(mode));

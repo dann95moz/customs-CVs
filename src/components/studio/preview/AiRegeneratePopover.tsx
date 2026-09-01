@@ -278,13 +278,10 @@ export const AiRegeneratePopover: React.FC<AiRegeneratePopoverProps> = ({
         slotProps={{
           paper: {
             sx: {
-              borderTopLeftRadius: '20px',
-              borderTopRightRadius: '20px',
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
               p: 2.5,
-              pb: 3.5,
-              bgcolor: 'background.paper',
-              boxShadow: '0 -8px 32px rgba(0,0,0,0.35)',
-              zIndex: 10001,
+              pb: 'calc(env(safe-area-inset-bottom, 0px) + 24px)',
             },
           },
         }}
@@ -310,23 +307,16 @@ export const AiRegeneratePopover: React.FC<AiRegeneratePopoverProps> = ({
       }}
       slotProps={{
         paper: {
-          elevation: 6,
           sx: {
             width: 380,
-            maxWidth: '100%',
+            maxWidth: '100vw',
             p: 2,
-            borderRadius: '12px',
-            border: `1px solid ${theme.palette.divider}`,
-            bgcolor: 'background.paper',
-            boxShadow: isDark
-              ? '0 12px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08)'
-              : '0 12px 32px rgba(15,23,42,0.14), 0 0 0 1px rgba(0,0,0,0.06)',
-            zIndex: 10001,
           },
         },
       }}
     >
       {content}
     </Popover>
+
   );
 };

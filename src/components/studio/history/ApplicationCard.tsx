@@ -358,13 +358,12 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             slotProps={{
               paper: {
                 sx: {
-                  borderRadius: '12px',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
                   minWidth: 180,
                   py: 0.5,
                 },
               },
             }}
+
           >
             {onDownloadPdf && (
               <MenuItem

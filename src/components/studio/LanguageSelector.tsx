@@ -104,18 +104,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         slotProps={{
           paper: {
-            elevation: 4,
             sx: {
               minWidth: 190,
-              borderRadius: '12px',
               mt: 0.75,
-              border: `1px solid ${theme.palette.divider}`,
-              bgcolor: isDark ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.98)',
-              backdropFilter: 'blur(12px)',
-              boxShadow: isDark
-                ? '0 10px 30px rgba(0, 0, 0, 0.5)'
-                : '0 10px 30px rgba(0, 0, 0, 0.1)',
-              overflow: 'visible',
               '& .MuiMenuItem-root': {
                 px: 1.75,
                 py: 1,
@@ -123,20 +114,12 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                 mx: 0.75,
                 my: 0.25,
                 transition: 'all 0.15s ease',
-                '&:hover': {
-                  bgcolor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
-                },
-                '&.Mui-selected': {
-                  bgcolor: alpha(theme.palette.primary.main, isDark ? 0.18 : 0.1),
-                  '&:hover': {
-                    bgcolor: alpha(theme.palette.primary.main, isDark ? 0.24 : 0.15),
-                  },
-                },
               },
             },
           },
         }}
       >
+
         <Box sx={{ px: 2, py: 1, borderBottom: `1px solid ${theme.palette.divider}` }}>
           <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {t('language.selectLanguage', 'Language')}

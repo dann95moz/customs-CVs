@@ -418,14 +418,12 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
           slotProps={{
             paper: {
               sx: {
-                borderRadius: '14px',
                 mt: 0.75,
                 minWidth: 240,
-                boxShadow: isDark ? '0 12px 32px rgba(0,0,0,0.7)' : '0 12px 32px rgba(0,0,0,0.12)',
-                border: `1px solid ${theme.palette.divider}`,
               },
             },
           }}
+
         >
           <MenuItem
             onClick={() => {

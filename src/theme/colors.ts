@@ -54,7 +54,9 @@ export interface ThemeColorTokens {
   shadow: {
     box: string;
     pill: string;
+    floating: string;
   };
+
   glass: {
     background: string;
     border: string;
@@ -149,7 +151,9 @@ export const DARK_THEME_TOKENS: ThemeColorTokens = {
   shadow: {
     box: '0 4px 20px -2px rgba(0, 0, 0, 0.4)',
     pill: '0 2px 10px rgba(56, 189, 248, 0.25)',
+    floating: '0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08)',
   },
+
   glass: {
     background: 'rgba(16, 22, 35, 0.96)',
     border: 'rgba(56, 189, 248, 0.22)',
@@ -244,7 +248,9 @@ export const LIGHT_THEME_TOKENS: ThemeColorTokens = {
   shadow: {
     box: '0 4px 20px -2px rgba(0, 0, 0, 0.06)',
     pill: '0 2px 10px rgba(2, 132, 199, 0.18)',
+    floating: '0 12px 32px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06)',
   },
+
   glass: {
     background: 'rgba(255, 255, 255, 0.98)',
     border: 'rgba(2, 132, 199, 0.18)',
