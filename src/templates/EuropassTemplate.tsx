@@ -128,11 +128,15 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
         {(() => {
           const activePhoto = photo || slots.header.photo;
           if (!activePhoto?.enabled || !activePhoto.url) return null;
+          const photoSize = activePhoto.size || 96;
+          const scale = photoSize / 96;
+          const photoWidth = Math.round(84 * scale);
+          const photoHeight = Math.round(105 * scale);
           return (
             <div
               style={{
-                width: '84px',
-                height: '105px',
+                width: `${photoWidth}px`,
+                height: `${photoHeight}px`,
                 borderRadius: '4px',
                 border: `2px solid ${euBorder}`,
                 overflow: 'hidden',
@@ -154,6 +158,7 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
           );
         })()}
       </header>
+
 
 
       {/* BODY SECTIONS */}

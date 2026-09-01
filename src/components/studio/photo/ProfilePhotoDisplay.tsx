@@ -82,15 +82,19 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
     }
   };
 
-  // Priority: photo configuration size > explicit prop size > default 108px (clear, high-detail portrait)
-  const configuredSize = currentPhoto?.size || (typeof size === 'number' ? size : 108);
-  // Max bounds to respect template margins & avoid layout breakage: 120px in top banner, 144px in sidebars
+  // If explicit width/height/size prop is provided, honor it directly (for thumbnails, UI panels, etc.)
+  const explicitWidth = width !== undefined ? width : (size !== undefined ? size : null);
+  const explicitHeight = height !== undefined ? height : (size !== undefined ? size : null);
+
+  // If no explicit dimensions are given, compute template-safe size from photo.size or default 108px
+  const templateConfiguredSize = currentPhoto?.size || 108;
   const maxSafeSize = currentTheme === 'executive' ? 120 : currentTheme === 'designer-uiux' ? 132 : 144;
   const minSafeSize = 80;
-  const clampedSize = Math.max(minSafeSize, Math.min(maxSafeSize, configuredSize));
+  const clampedSize = Math.max(minSafeSize, Math.min(maxSafeSize, templateConfiguredSize));
 
-  const finalWidth = width || (size && typeof size === 'string' ? size : clampedSize);
-  const finalHeight = height || (size && typeof size === 'string' ? size : clampedSize);
+  const finalWidth = explicitWidth !== null ? explicitWidth : clampedSize;
+  const finalHeight = explicitHeight !== null ? explicitHeight : clampedSize;
+
   const borderRadius = getBorderRadius();
   const hasActivePhoto = Boolean(currentPhoto && currentPhoto.enabled && currentPhoto.url);
 
