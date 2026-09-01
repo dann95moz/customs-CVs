@@ -32,6 +32,7 @@ import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { extractCandidateName } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
@@ -58,6 +59,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
 
   const [editMode, setEditMode] = React.useState<'guided' | 'markdown'>('guided');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [showClearConfirmDialog, setShowClearConfirmDialog] = useState(false);
   const [pendingFile, setPendingFile] = useState<{
     content: string;
     fileName: string;
@@ -123,6 +125,16 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   const handleCancelReplace = () => {
     setPendingFile(null);
     setShowConfirmDialog(false);
+  };
+
+  const handleConfirmClear = () => {
+    onChange('');
+    setShowClearConfirmDialog(false);
+    setNotification({
+      open: true,
+      message: t('profile:status.clearedSuccess', 'Career profile cleared. You can start from a blank slate.'),
+      severity: 'info'
+    });
   };
 
   const {
@@ -308,6 +320,33 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             >
               {t('profile:actions.loadSample', 'Load Sample Profile')}
             </Button>
+
+            {hasData && (
+              <Tooltip title={t('profile:actions.clearProfileTip', 'Clear all profile fields and start from a blank slate')}>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  size="small"
+                  startIcon={<DeleteOutlineRoundedIcon sx={{ fontSize: '15px !important' }} />}
+                  onClick={() => setShowClearConfirmDialog(true)}
+                  disabled={isProcessing}
+                  sx={{
+                    fontWeight: 600,
+                    color: 'text.secondary',
+                    borderColor: theme.palette.divider,
+                    whiteSpace: 'nowrap',
+                    width: { xs: '100%', sm: 'auto' },
+                    '&:hover': {
+                      borderColor: theme.palette.error.main,
+                      color: theme.palette.error.main,
+                      bgcolor: alpha(theme.palette.error.main, 0.04),
+                    },
+                  }}
+                >
+                  {t('profile:actions.clearProfile', 'Start from Scratch')}
+                </Button>
+              </Tooltip>
+            )}
           </Stack>
         </Paper>
 
@@ -341,8 +380,8 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               <EditNoteRoundedIcon fontSize="small" color="primary" />
               <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
                 {editMode === 'markdown'
-                  ? t('profile:modes.markdownTitle', 'Natural Freeform Dossier (Markdown / Natural Language)')
-                  : t('profile:modes.guidedTitle', 'Structured Profile Assistant')}
+                  ? t('profile:modes.markdownTitle', 'Freeform Text / Manual Mode')
+                  : t('profile:modes.guidedTitle', 'Guided Profile Form')}
               </Typography>
             </Box>
 
@@ -353,7 +392,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 onClick={() => setEditMode('guided')}
                 sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' } }}
               >
-                {t('profile:modes.guidedAssistant', 'Guided Assistant')}
+                {t('profile:modes.guidedAssistant', 'Guided Form')}
               </Button>
               <Button
                 variant={editMode === 'markdown' ? 'contained' : 'outlined'}
@@ -361,7 +400,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                 onClick={() => setEditMode('markdown')}
                 sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' } }}
               >
-                {t('profile:modes.markdownEditor', 'Markdown Editor')}
+                {t('profile:modes.markdownEditor', 'Manual Mode')}
               </Button>
             </ButtonGroup>
           </Box>
@@ -547,6 +586,43 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             sx={{ fontWeight: 700 }}
           >
             {t('profile:dialog.confirm', 'Import & Replace')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Confirmation Dialog Before Starting From Scratch / Clearing Data */}
+      <Dialog
+        open={showClearConfirmDialog}
+        onClose={() => setShowClearConfirmDialog(false)}
+        slotProps={{
+          paper: {
+            sx: { borderRadius: '16px', p: 1, maxWidth: 440 }
+          }
+        }}
+      >
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1.5, fontWeight: 800 }}>
+          <WarningAmberRoundedIcon color="warning" />
+          {t('profile:dialog.confirmClearTitle', 'Start from scratch?')}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ color: 'text.secondary', fontSize: '0.92rem' }}>
+            {t(
+              'profile:dialog.confirmClearDesc',
+              'Are you sure you want to clear all profile data? This action cannot be undone.'
+            )}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setShowClearConfirmDialog(false)} color="inherit" sx={{ fontWeight: 600 }}>
+            {t('profile:dialog.cancel', 'Cancel')}
+          </Button>
+          <Button
+            onClick={handleConfirmClear}
+            variant="contained"
+            color="error"
+            sx={{ fontWeight: 700 }}
+          >
+            {t('profile:dialog.confirmClear', 'Clear All Data')}
           </Button>
         </DialogActions>
       </Dialog>

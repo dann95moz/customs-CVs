@@ -6,6 +6,8 @@
     "importResume": "Lebenslauf importieren (PDF, .md)",
     "uploadFile": "Lebenslauf importieren (PDF, .md)",
     "loadSample": "Beispiel-Profil laden",
+    "clearProfile": "Von Grund auf neu",
+    "clearProfileTip": "Alle Profilfelder leeren und mit einer leeren Vorlage beginnen",
     "exportBackup": "Sicherung exportieren (.md)",
     "exportBackupTip": "Laden Sie Ihr Master-Profil als Markdown (.md) herunter",
     "continueToTarget": "Weiter zur Zielstelle"
@@ -14,13 +16,16 @@
     "confirmReplaceTitle": "Aktuelles Profil ersetzen?",
     "confirmReplaceDesc": "Der Import dieser Datei überschreibt Ihre aktuellen Profildaten. Möchten Sie fortfahren?",
     "confirm": "Importieren & Ersetzen",
+    "confirmClearTitle": "Von Grund auf neu beginnen?",
+    "confirmClearDesc": "Möchten Sie wirklich alle Profildaten löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "confirmClear": "Alle Daten löschen",
     "cancel": "Abbrechen"
   },
   "modes": {
-    "guidedAssistant": "Geführter Assistent",
-    "markdownEditor": "Markdown-Editor",
-    "guidedTitle": "Strukturierter Profil-Assistent",
-    "markdownTitle": "Freies Dossier (Markdown / Natürliche Sprache)"
+    "guidedAssistant": "Geführtes Formular",
+    "markdownEditor": "Manueller Modus",
+    "guidedTitle": "Geführtes Profilformular",
+    "markdownTitle": "Manueller Modus / Freitext"
   },
   "status": {
     "ready": "Master-Profil bereit für die Anpassung",

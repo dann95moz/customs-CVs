@@ -6,6 +6,8 @@
     "importResume": "Importar CV (PDF, .md)",
     "uploadFile": "Importar CV (PDF, .md)",
     "loadSample": "Cargar Perfil de Ejemplo",
+    "clearProfile": "Comenzar de Cero",
+    "clearProfileTip": "Limpiar todos los campos del perfil para empezar desde cero",
     "exportBackup": "Exportar Respaldo (.md)",
     "exportBackupTip": "Descargar tu perfil maestro como archivo Markdown (.md)",
     "continueToTarget": "Continuar a Vacante Objetivo"
@@ -14,13 +16,16 @@
     "confirmReplaceTitle": "¿Reemplazar el perfil actual?",
     "confirmReplaceDesc": "Importar este archivo sobrescribirá los datos de tu perfil actual. ¿Deseas continuar?",
     "confirm": "Importar y Reemplazar",
+    "confirmClearTitle": "¿Comenzar de cero?",
+    "confirmClearDesc": "¿Estás seguro de que deseas limpiar todos los datos del perfil? Esta acción no se puede deshacer.",
+    "confirmClear": "Limpiar Todos los Datos",
     "cancel": "Cancelar"
   },
   "modes": {
-    "guidedAssistant": "Asistente Guiado",
-    "markdownEditor": "Editor Markdown",
-    "guidedTitle": "Asistente de Perfil Estructurado",
-    "markdownTitle": "Expediente Libre (Markdown / Lenguaje Natural)"
+    "guidedAssistant": "Formulario Guiado",
+    "markdownEditor": "Modo Manual",
+    "guidedTitle": "Formulario Guiado de Perfil",
+    "markdownTitle": "Modo Manual / Texto Libre"
   },
   "status": {
     "ready": "Perfil maestro listo para adaptación",

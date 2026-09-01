@@ -6,6 +6,8 @@
     "importResume": "Import Resume (PDF, .md)",
     "uploadFile": "Import Resume (PDF, .md)",
     "loadSample": "Load Sample Profile",
+    "clearProfile": "Start from Scratch",
+    "clearProfileTip": "Clear all profile fields and start from a blank slate",
     "exportBackup": "Export Backup (.md)",
     "exportBackupTip": "Download your master career profile as Markdown (.md)",
     "continueToTarget": "Continue to Target Vacancy"
@@ -14,13 +16,16 @@
     "confirmReplaceTitle": "Replace current profile?",
     "confirmReplaceDesc": "Importing this file will replace your current profile data. Are you sure you want to proceed?",
     "confirm": "Import & Replace",
+    "confirmClearTitle": "Start from scratch?",
+    "confirmClearDesc": "Are you sure you want to clear all profile data? This action cannot be undone.",
+    "confirmClear": "Clear All Data",
     "cancel": "Cancel"
   },
   "modes": {
-    "guidedAssistant": "Guided Assistant",
-    "markdownEditor": "Markdown Editor",
-    "guidedTitle": "Structured Profile Assistant",
-    "markdownTitle": "Natural Freeform Dossier (Markdown / Natural Language)"
+    "guidedAssistant": "Guided Form",
+    "markdownEditor": "Manual Mode",
+    "guidedTitle": "Guided Profile Form",
+    "markdownTitle": "Freeform Text / Manual Mode"
   },
   "status": {
     "ready": "Master profile ready for tailoring",
