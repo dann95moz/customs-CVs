@@ -13,7 +13,8 @@ export const ExperienceSlot: React.FC<ExperienceSlotProps> = ({
 }) => {
   const liveEdit = useCvLiveEdit();
   const displayItems = maxItems ? data.items.slice(0, maxItems) : data.items;
-  const sectionType = data.type === 'projects' ? 'projects' : 'experience';
+  const isProjects = data.type === 'projects';
+  const sectionType = isProjects ? 'projects' : 'experience';
 
   return (
     <section className={`cv-section section-${data.type} section-block ${className}`}>
@@ -22,10 +23,9 @@ export const ExperienceSlot: React.FC<ExperienceSlotProps> = ({
         className="cv-section-title"
         value={data.title}
         onSave={(newTitle) => liveEdit?.updateSectionTitle(sectionType, newTitle)}
-        placeholder={sectionType === 'projects' ? 'Projects & Extras' : 'Work Experience'}
+        placeholder={isProjects ? 'Personal & Open Source Projects' : 'Work Experience'}
       />
       <div className="experience-list">
-
         {displayItems.map((item, idx) => (
           <div key={idx} className="experience-item section-block">
             <div className="item-header">
@@ -33,10 +33,11 @@ export const ExperienceSlot: React.FC<ExperienceSlotProps> = ({
                 tagName="span"
                 className="item-company"
                 value={item.company}
+                htmlContent={item.company ? (marked.parseInline(item.company) as string) : ''}
                 onSave={(newVal) => liveEdit?.updateExperienceField(sectionType, idx, 'company', newVal)}
-                placeholder="Company / Organization"
+                placeholder={isProjects ? 'Project Title' : 'Company / Organization'}
               />
-              {(item.location || liveEdit?.isLiveEditing) && (
+              {!isProjects && (item.location || liveEdit?.isLiveEditing) && (
                 <EditableText
                   tagName="span"
                   className="item-location"
@@ -47,22 +48,25 @@ export const ExperienceSlot: React.FC<ExperienceSlotProps> = ({
               )}
             </div>
             
-            {(item.role || item.date || liveEdit?.isLiveEditing) && (
+            {(item.role || (!isProjects && item.date) || liveEdit?.isLiveEditing) && (
               <div className="item-sub-header">
                 <EditableText
                   tagName="span"
                   className="item-role"
                   value={item.role || ''}
+                  htmlContent={item.role ? (marked.parseInline(item.role) as string) : ''}
                   onSave={(newVal) => liveEdit?.updateExperienceField(sectionType, idx, 'role', newVal)}
-                  placeholder="Role / Job Title"
+                  placeholder={isProjects ? 'Project Links / Stack' : 'Role / Job Title'}
                 />
-                <EditableText
-                  tagName="span"
-                  className="item-date"
-                  value={item.date || ''}
-                  onSave={(newVal) => liveEdit?.updateExperienceField(sectionType, idx, 'date', newVal)}
-                  placeholder="Date Range"
-                />
+                {!isProjects && (item.date || liveEdit?.isLiveEditing) && (
+                  <EditableText
+                    tagName="span"
+                    className="item-date"
+                    value={item.date || ''}
+                    onSave={(newVal) => liveEdit?.updateExperienceField(sectionType, idx, 'date', newVal)}
+                    placeholder="Date Range"
+                  />
+                )}
               </div>
             )}
 

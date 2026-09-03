@@ -454,7 +454,15 @@ export const EuropassTemplate: React.FC<CVTemplateProps> = ({ slots, theme, data
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {projects.items.map((proj, pIdx) => (
                 <div key={pIdx}>
-                  <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '12px' }}>{proj.company}</span>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
+                    <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '12px' }}>{proj.company}</span>
+                    {proj.role && (
+                      <span
+                        style={{ fontSize: '11px', color: '#64748b', fontWeight: 600 }}
+                        dangerouslySetInnerHTML={{ __html: safeMarkdownInline(proj.role) }}
+                      />
+                    )}
+                  </div>
                   {proj.bullets && (
                     <ul style={{ margin: '2px 0 0 0', paddingLeft: '18px' }}>
                       {proj.bullets.map((b, bIdx) => (

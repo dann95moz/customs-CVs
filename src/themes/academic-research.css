@@ -239,14 +239,38 @@
 }
 
 /* Skills */
-.theme-academic-research .skills-group {
-  margin-bottom: 4px;
+.theme-academic-research ul.skills-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 2px;
+}
+
+.theme-academic-research ul.skills-list li.skills-group {
+  position: relative;
+  padding-left: 11px;
+  margin-bottom: 3.5px;
+  font-size: 8.6pt;
+  line-height: 1.36;
+  color: var(--cv-text-secondary);
+}
+
+.theme-academic-research ul.skills-list li.skills-group::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--cv-accent-color);
 }
 
 .theme-academic-research .skills-category {
   font-weight: 700;
   color: var(--cv-accent-color);
-  margin-right: 5px;
+  display: inline;
+}
+
+.theme-academic-research .skills-colon {
+  color: var(--cv-text-secondary);
+  display: inline;
+  margin-right: 4px;
 }
 
 .theme-academic-research .skill-pill {

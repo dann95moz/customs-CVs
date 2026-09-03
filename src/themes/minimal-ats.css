@@ -92,16 +92,29 @@
 }
 
 /* Skills */
-.theme-minimal-ats .skills-group {
-  margin-bottom: 3px;
+.theme-minimal-ats ul.skills-list {
+  list-style-type: disc;
+  padding-left: 16px;
+  margin-top: 2px;
+}
+
+.theme-minimal-ats ul.skills-list li.skills-group {
+  margin-bottom: 2.5px;
   font-size: 8.8pt;
   line-height: 1.38;
+  color: var(--cv-text-primary);
 }
 
 .theme-minimal-ats .skills-category {
   font-weight: 700;
   color: var(--cv-text-heading);
-  margin-right: 5px;
+  display: inline;
+}
+
+.theme-minimal-ats .skills-colon {
+  color: var(--cv-text-heading);
+  display: inline;
+  margin-right: 4px;
 }
 
 .theme-minimal-ats .skill-pill {

@@ -236,6 +236,12 @@
 }
 
 /* Skills in sidebar */
+.theme-executive .banner-side-col .skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 .theme-executive .banner-side-col .skills-group {
   margin-bottom: 5px;
 }
@@ -246,6 +252,10 @@
   font-weight: 700;
   color: var(--cv-accent-color);
   margin-bottom: 2px;
+}
+
+.theme-executive .banner-side-col .skills-colon {
+  display: none;
 }
 
 .theme-executive .banner-side-col .skill-pill {

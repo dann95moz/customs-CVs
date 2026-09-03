@@ -430,7 +430,15 @@ export const EuroModernTemplate: React.FC<CVTemplateProps> = ({ slots, theme, da
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {projects.items.map((proj, pIdx) => (
                 <div key={pIdx}>
-                  <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '11.5px' }}>{proj.company}</div>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
+                    <span style={{ fontWeight: 700, color: '#0f172a', fontSize: '11.5px' }}>{proj.company}</span>
+                    {proj.role && (
+                      <span
+                        style={{ fontSize: '10.5px', color: '#64748b', fontWeight: 600 }}
+                        dangerouslySetInnerHTML={{ __html: safeMarkdownInline(proj.role) }}
+                      />
+                    )}
+                  </div>
                   {proj.bullets && (
                     <ul style={{ margin: '2px 0 0 0', paddingLeft: '16px' }}>
                       {proj.bullets.map((b, bIdx) => (

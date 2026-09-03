@@ -21,10 +21,9 @@ export const SkillsSlot: React.FC<SkillsSlotProps> = ({
         onSave={(newTitle) => liveEdit?.updateSectionTitle('skills', newTitle)}
         placeholder="Skills & Competencies"
       />
-      <div className="skills-container">
-
+      <ul className="skills-container skills-list">
         {data.skillGroups.map((group, idx) => (
-          <div key={idx} className="skills-group">
+          <li key={idx} className="skills-group cv-bullet-item">
             <EditableText
               tagName="span"
               className="skills-category"
@@ -32,7 +31,7 @@ export const SkillsSlot: React.FC<SkillsSlotProps> = ({
               onSave={(newCat) => liveEdit?.updateSkillCategory(idx, newCat)}
               placeholder="Category"
             />
-            {': '}
+            <span className="skills-colon">: </span>
             {liveEdit?.isLiveEditing ? (
               <EditableText
                 tagName="span"
@@ -61,9 +60,9 @@ export const SkillsSlot: React.FC<SkillsSlotProps> = ({
                 ))}
               </span>
             )}
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 };

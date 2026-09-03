@@ -105,16 +105,37 @@
 }
 
 /* Skills */
-.theme-modern-tech .skills-group {
+.theme-modern-tech ul.skills-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 2px;
+}
+
+.theme-modern-tech ul.skills-list li.skills-group {
+  position: relative;
+  padding-left: 11px;
   margin-bottom: 4px;
   font-size: 8.8pt;
   line-height: 1.4;
 }
 
+.theme-modern-tech ul.skills-list li.skills-group::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--cv-accent-color);
+}
+
 .theme-modern-tech .skills-category {
   font-weight: 700;
   color: var(--cv-text-heading);
-  margin-right: 5px;
+  display: inline;
+}
+
+.theme-modern-tech .skills-colon {
+  color: var(--cv-text-heading);
+  display: inline;
+  margin-right: 4px;
 }
 
 .theme-modern-tech .skill-pill {

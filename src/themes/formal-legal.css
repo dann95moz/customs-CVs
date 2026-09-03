@@ -95,17 +95,30 @@
 }
 
 /* Skills: Classic Inline Format */
-.theme-formal-legal .skills-group {
+.theme-formal-legal ul.skills-list {
+  list-style-type: disc;
+  padding-left: 16px;
+  margin-top: 2px;
+}
+
+.theme-formal-legal ul.skills-list li.skills-group {
   margin-bottom: 3.5px;
   font-family: var(--cv-font-family, 'Inter', -apple-system, sans-serif);
   font-size: 8.8pt;
   line-height: 1.4;
+  color: var(--cv-text-primary);
 }
 
 .theme-formal-legal .skills-category {
   font-weight: 700;
   color: var(--cv-text-heading);
-  margin-right: 5px;
+  display: inline;
+}
+
+.theme-formal-legal .skills-colon {
+  color: var(--cv-text-heading);
+  display: inline;
+  margin-right: 4px;
 }
 
 .theme-formal-legal .skill-inline {

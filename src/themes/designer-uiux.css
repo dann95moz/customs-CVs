@@ -126,8 +126,14 @@
 }
 
 /* Left Column Specifics */
+.theme-designer-uiux .pastel-left-col .skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 .theme-designer-uiux .pastel-left-col .skills-group {
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .theme-designer-uiux .pastel-left-col .skills-category {
@@ -136,6 +142,10 @@
   font-weight: 700;
   color: var(--cv-accent-color);
   margin-bottom: 2px;
+}
+
+.theme-designer-uiux .pastel-left-col .skills-colon {
+  display: none;
 }
 
 .theme-designer-uiux .pastel-left-col .skill-pill {
