@@ -38,6 +38,7 @@ import { getAllPalettes } from '../../../constants/palettes';
 import { themeSupportsPhoto } from '../../../templates';
 import { ProfilePhotoDisplay } from '../photo/ProfilePhotoDisplay';
 import { PhotoCropperModal } from '../photo/PhotoCropperModal';
+import { usePhotoUpload } from '../../../hooks/usePhotoUpload';
 
 export type { DesignFormattingPanelProps };
 
@@ -70,32 +71,17 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
 
   const isPhotoSupported = themeSupportsPhoto(activeTheme);
 
-  const handlePhotoUploadFromFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Photo file size is too large (max 5MB). Please upload a smaller image.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (typeof event.target?.result === 'string') {
-        const newPhoto: ProfilePhotoConfig = {
-          url: event.target.result,
-          crop: { x: 0, y: 0, zoom: 1.0 },
-          enabled: true,
-        };
-        onPhotoChange?.(newPhoto);
-        setCropperOpen(true);
-      }
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
-  };
-
-  const hiddenFileInputRef = React.useRef<HTMLInputElement>(null);
+  const {
+    fileInputRef: hiddenFileInputRef,
+    handleFileInputChange: handlePhotoUploadFromFileInput,
+    uploadError,
+    clearError,
+  } = usePhotoUpload({
+    onPhotoLoaded: (newPhoto) => {
+      onPhotoChange?.(newPhoto);
+      setCropperOpen(true);
+    },
+  });
 
   return (
     <Box sx={{ p: 2.5, pb: 'calc(env(safe-area-inset-bottom, 0px) + 36px)', boxSizing: 'border-box' }}>
@@ -203,7 +189,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
               }}
               sx={{
                 p: 1,
-                borderRadius: '8px',
+                borderRadius: (theme) => `${theme.shape.borderRadius}px`,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -221,7 +207,7 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
                   borderRadius: '50%',
                   bgcolor: p.previewColor,
                   flexShrink: 0,
-                  border: '1.5px solid rgba(0,0,0,0.1)',
+                  border: `1px solid ${muiTheme.palette.divider}`,
                 }}
               />
               <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -395,6 +381,11 @@ export const DesignFormattingPanel: React.FC<DesignFormattingPanelProps> = ({
             >
               {t('preview:panels.design.photoUpload', 'Upload Professional Photo')}
             </Button>
+            {uploadError && (
+              <Alert severity="error" onClose={clearError} sx={{ fontSize: '0.75rem' }}>
+                {uploadError}
+              </Alert>
+            )}
             <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.68rem', textAlign: 'center' }}>
               PNG, JPG or WebP (Max 5MB)
             </Typography>

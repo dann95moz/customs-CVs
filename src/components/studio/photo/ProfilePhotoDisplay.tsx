@@ -10,6 +10,8 @@ import {
   Button,
   ButtonGroup,
   Divider,
+  Alert,
+  Snackbar,
   useTheme,
   alpha,
 } from '@mui/material';
@@ -24,6 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { ProfilePhotoConfig, ThemeId } from '../../../types/cv';
 import { useResumeStore } from '../../../store';
 import { PhotoCropperModal } from './PhotoCropperModal';
+import { usePhotoUpload } from '../../../hooks/usePhotoUpload';
 
 export interface ProfilePhotoDisplayProps {
   photo?: ProfilePhotoConfig | null;
@@ -47,8 +50,8 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
   size,
   width,
   height,
-  border = '2px solid rgba(255, 255, 255, 0.85)',
-  boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)',
+  border,
+  boxShadow,
   fallbackInitials,
   fallbackIcon = 'monogram',
   editable = true,
@@ -58,7 +61,6 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const muiTheme = useTheme();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [cropperOpen, setCropperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -113,31 +115,18 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
     setAnchorEl(null);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Photo file size is too large (max 5MB). Please upload a smaller image.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (typeof event.target?.result === 'string') {
-        const newPhoto: ProfilePhotoConfig = {
-          url: event.target.result,
-          crop: { x: 0, y: 0, zoom: 1.0 },
-          enabled: true,
-          size: currentPhoto?.size || 108,
-        };
-        setProfilePhoto(newPhoto);
-        setCropperOpen(true);
-      }
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
-  };
+  const {
+    fileInputRef,
+    handleFileInputChange: handleFileUpload,
+    uploadError,
+    clearError,
+  } = usePhotoUpload({
+    defaultSize: currentPhoto?.size || 108,
+    onPhotoLoaded: (newPhoto) => {
+      setProfilePhoto(newPhoto);
+      setCropperOpen(true);
+    },
+  });
 
   const handleLiveSizeChange = (newSize: number) => {
     if (!currentPhoto) return;
@@ -173,8 +162,8 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
             width: finalWidth,
             height: finalHeight,
             borderRadius,
-            border,
-            boxShadow,
+            border: border || (muiTheme.palette.mode === 'dark' ? `2px solid ${alpha(muiTheme.palette.common.white, 0.2)}` : `2px solid ${muiTheme.palette.divider}`),
+            boxShadow: boxShadow || muiTheme.shadows[2],
             overflow: 'hidden',
             position: 'relative',
             flexShrink: 0,
@@ -215,7 +204,7 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
               sx={{
                 width: '100%',
                 height: '100%',
-                bgcolor: '#ffffff',
+                bgcolor: 'common.white',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -238,7 +227,7 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
               sx={{
                 width: '100%',
                 height: '100%',
-                bgcolor: 'rgba(255, 255, 255, 0.12)',
+                bgcolor: alpha(muiTheme.palette.common.white, 0.12),
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -249,7 +238,7 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
                   fontWeight: 800,
                   fontSize: typeof finalWidth === 'number' ? Math.round(finalWidth * 0.38) : '1.1rem',
                   lineHeight: 1,
-                  color: '#ffffff',
+                  color: 'common.white',
                 }}
               >
                 {fallbackInitials}
@@ -341,11 +330,6 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
               p: 2.25,
               width: { xs: 'calc(100vw - 32px)', sm: 330 },
               maxWidth: 350,
-              borderRadius: '16px',
-              bgcolor: 'background.paper',
-              backgroundImage: 'none',
-              boxShadow: '0 16px 40px rgba(0,0,0,0.28)',
-              border: `1px solid ${muiTheme.palette.divider}`,
               mt: 1,
             },
           },
@@ -370,13 +354,19 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
           </Box>
         </Box>
 
+        {uploadError && (
+          <Alert severity="error" onClose={clearError} sx={{ mb: 1.25, fontSize: '0.75rem' }}>
+            {uploadError}
+          </Alert>
+        )}
+
         {/* Live Photo Size Stepper & Slider */}
         <Box sx={{ my: 1.5 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
             <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontSize: '0.74rem' }}>
               {t('preview:panels.design.photoSize', 'Live Display Size')}
             </Typography>
-            <ButtonGroup size="small" variant="outlined" sx={{ borderRadius: '999px', height: 24 }}>
+            <ButtonGroup size="small" variant="outlined" sx={{ borderRadius: 2, height: 24 }}>
               <IconButton
                 size="small"
                 onClick={() => handleLiveSizeChange(clampedSize - 4)}
@@ -502,6 +492,18 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
           activeTheme={currentTheme}
         />
       )}
+
+      {/* Global Error Notification for file uploads outside popover */}
+      <Snackbar
+        open={Boolean(uploadError && !isPopoverOpen)}
+        autoHideDuration={5000}
+        onClose={clearError}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={clearError} severity="error" variant="filled">
+          {uploadError}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

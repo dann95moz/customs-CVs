@@ -23,6 +23,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTranslation } from 'react-i18next';
 import { ProfilePhotoConfig, ProfilePhotoCrop, ThemeId } from '../../../types/cv';
+import { usePhotoUpload } from '../../../hooks/usePhotoUpload';
 
 export interface PhotoCropperModalProps {
   open: boolean;
@@ -41,7 +42,6 @@ export const PhotoCropperModal: React.FC<PhotoCropperModalProps> = ({
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const muiTheme = useTheme();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [imageUrl, setImageUrl] = useState<string>(photo?.url || '');
   const [crop, setCrop] = useState<ProfilePhotoCrop>(
@@ -79,26 +79,17 @@ export const PhotoCropperModal: React.FC<PhotoCropperModalProps> = ({
     }
   }, [open, photo]);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Check size limit (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Photo file size is too large (max 5MB). Please upload a smaller image.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (typeof event.target?.result === 'string') {
-        setImageUrl(event.target.result);
-        setCrop({ x: 0, y: 0, zoom: 1.0 });
-      }
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
-  };
+  const {
+    fileInputRef,
+    handleFileInputChange: handleFileUpload,
+    uploadError,
+    clearError,
+  } = usePhotoUpload({
+    onPhotoLoaded: (loadedPhoto) => {
+      setImageUrl(loadedPhoto.url);
+      setCrop({ x: 0, y: 0, zoom: 1.0 });
+    },
+  });
 
   // Mouse drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -227,9 +218,6 @@ export const PhotoCropperModal: React.FC<PhotoCropperModalProps> = ({
       slotProps={{
         paper: {
           sx: {
-            borderRadius: '16px',
-            bgcolor: 'background.paper',
-            backgroundImage: 'none',
             overflow: 'hidden',
           },
         },
@@ -259,6 +247,12 @@ export const PhotoCropperModal: React.FC<PhotoCropperModalProps> = ({
       </DialogTitle>
 
       <DialogContent sx={{ p: 2.5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {uploadError && (
+          <Alert severity="error" onClose={clearError} sx={{ width: '100%', mb: 1.5 }}>
+            {uploadError}
+          </Alert>
+        )}
+
         {/* Hidden File Input */}
         <input
           ref={fileInputRef}
@@ -273,14 +267,14 @@ export const PhotoCropperModal: React.FC<PhotoCropperModalProps> = ({
           sx={{
             width: 240,
             height: 240,
-            borderRadius: '16px',
-            bgcolor: '#0f172a',
+            borderRadius: 2,
+            bgcolor: (theme) => alpha(theme.palette.common.black, 0.85),
             position: 'relative',
             overflow: 'hidden',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+            boxShadow: (theme) => theme.shadows[8],
             border: `1px solid ${muiTheme.palette.divider}`,
             cursor: imageUrl ? (isDragging ? 'grabbing' : 'grab') : 'default',
             touchAction: 'none',
@@ -393,7 +387,6 @@ export const PhotoCropperModal: React.FC<PhotoCropperModalProps> = ({
               sx={{
                 mt: 2,
                 width: '100%',
-                borderRadius: '10px',
                 fontSize: '0.74rem',
                 lineHeight: 1.35,
                 bgcolor: alpha(muiTheme.palette.info.main, 0.08),
