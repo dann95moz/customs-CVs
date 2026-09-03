@@ -35,7 +35,7 @@ import { KanbanBoard } from './history/KanbanBoard';
 import { ArchivedApplicationsView } from './history/ArchivedApplicationsView';
 import { ApplicationCard } from './history/ApplicationCard';
 import { TrackApplicationDialog } from './history/TrackApplicationDialog';
-import { downloadTextFile } from '../../utils/fileUtils';
+import { downloadTextFile, buildTimestampedFileName } from '../../utils/fileUtils';
 import { ColumnEditDialog } from './history/ColumnEditDialog';
 import { VersionDiffModal } from './history/VersionDiffModal';
 
@@ -162,7 +162,11 @@ export const ApplicationsHistoryView: React.FC = () => {
   };
 
   const handleDownloadMarkdown = (v: GeneratedCvVersion) => {
-    const fileName = `CV_${v.candidateName.replace(/\s+/g, '_')}_${v.companyName.replace(/\s+/g, '_')}.md`;
+    const candidate = v.candidateName.replace(/\s+/g, '_');
+    const company = v.companyName.replace(/\s+/g, '_');
+    const versionDate = v.createdAt ? new Date(v.createdAt) : undefined;
+    const baseName = `CV_${candidate}_${company}`;
+    const fileName = buildTimestampedFileName(baseName, 'md', versionDate);
     downloadTextFile(v.cvMarkdown, fileName);
   };
 

@@ -16,7 +16,7 @@ import {
   extractTargetCompany,
   extractTargetRole,
 } from '../../core/parser';
-import { downloadTextFile } from '../../utils/fileUtils';
+import { downloadTextFile, buildTimestampedFileName } from '../../utils/fileUtils';
 
 export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> = (set, get) => ({
   masterData: BLANK_MASTER_DATA,
@@ -122,7 +122,8 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
     const { masterData, targetJob, companyName, cvMarkdown } = get();
     const candidateName = extractCandidateName(masterData, 'Candidate');
     const targetComp = companyName || extractTargetCompany(targetJob, 'Target');
-    const fileName = `CV_${candidateName}_${targetComp}.md`;
+    const baseName = `CV_${candidateName}_${targetComp}`;
+    const fileName = buildTimestampedFileName(baseName, 'md');
 
     downloadTextFile(cvMarkdown, fileName);
   },

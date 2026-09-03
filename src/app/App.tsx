@@ -14,7 +14,7 @@ import {
   DEMO_MASTER_DATA,
   DEMO_TARGET_JOB,
 } from '../constants/templates';
-import { downloadTextFile } from '../utils/fileUtils';
+import { downloadTextFile, buildTimestampedFileName } from '../utils/fileUtils';
 import { useTranslation } from 'react-i18next';
 import './App.css';
 
@@ -210,7 +210,10 @@ export const App: React.FC = () => {
                   companyName={companyName}
                   targetRole={targetRole}
                   onDownload={() => {
-                    downloadTextFile(gapMarkdown, `Gap_Analysis_${companyName || 'Target'}.md`);
+                    const targetComp = companyName || 'Target';
+                    const baseName = `Gap_Analysis_${targetComp.replace(/\s+/g, '_')}`;
+                    const fileName = buildTimestampedFileName(baseName, 'md');
+                    downloadTextFile(gapMarkdown, fileName);
                   }}
                 />
               </Suspense>

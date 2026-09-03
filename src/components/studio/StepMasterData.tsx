@@ -36,7 +36,7 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { extractCandidateName } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
-import { downloadTextFile } from '../../utils/fileUtils';
+import { downloadTextFile, buildTimestampedFileName } from '../../utils/fileUtils';
 import { StepMasterDataProps } from '../../types';
 import { StudioSkeleton } from './StudioSkeleton';
 import { PdfImportResult } from '../../core/pdf-extractor';
@@ -205,7 +205,10 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   });
 
   const handleDownload = () => {
-    downloadTextFile(content, 'master-profile.md');
+    const candidateName = extractCandidateName(content, '');
+    const baseName = candidateName ? `master-profile_${candidateName.replace(/\s+/g, '_')}` : 'master-profile';
+    const fileName = buildTimestampedFileName(baseName, 'md');
+    downloadTextFile(content, fileName);
   };
 
   return (

@@ -7,7 +7,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icons';
 import { QualityAuditReport, QualityAuditViewProps } from '../../types';
-import { downloadTextFile } from '../../utils/fileUtils';
+import { downloadTextFile, buildTimestampedFileName } from '../../utils/fileUtils';
 import { AuditImprovementModal } from './audit/AuditImprovementModal';
 import { AuditSectionCard } from './audit/AuditSectionCard';
 import { useAuditActions } from '../../hooks/useAuditActions';
@@ -58,7 +58,10 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
   };
 
   const handleDownloadReport = () => {
-    downloadTextFile(report.markdownReport, `Quality_Report_${report.candidateName.replace(/\s+/g, '_')}.md`);
+    const candidate = report.candidateName.replace(/\s+/g, '_');
+    const baseName = `Quality_Report_${candidate}`;
+    const fileName = buildTimestampedFileName(baseName, 'md');
+    downloadTextFile(report.markdownReport, fileName);
   };
 
   const getScoreColor = (score: number) => {
