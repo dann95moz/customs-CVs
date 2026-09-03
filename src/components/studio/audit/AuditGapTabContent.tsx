@@ -104,8 +104,8 @@ export const AuditGapTabContent: React.FC<AuditGapTabContentProps> = React.memo(
         variant="outlined"
         sx={{
           p: 1.75,
-          borderRadius: '12px',
-          bgcolor: isDark ? alpha(theme.palette.primary.main, 0.05) : '#f8fafc',
+          borderRadius: 1.5,
+          bgcolor: isDark ? alpha(theme.palette.primary.main, 0.05) : alpha(theme.palette.primary.main, 0.02),
           borderColor: alpha(theme.palette.primary.main, 0.2),
         }}
       >

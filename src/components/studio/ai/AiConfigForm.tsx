@@ -380,8 +380,8 @@ export const AiConfigForm: React.FC<AiConfigFormProps> = ({
             variant="outlined"
             sx={{
               p: 1.5,
-              borderRadius: '8px',
-              bgcolor: isDark ? alpha(muiTheme.palette.secondary.main, 0.05) : '#f8fafc',
+              borderRadius: (theme) => `${theme.shape.borderRadius}px`,
+              bgcolor: isDark ? alpha(muiTheme.palette.secondary.main, 0.05) : alpha(muiTheme.palette.secondary.main, 0.02),
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.5 }}>

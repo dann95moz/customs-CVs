@@ -78,7 +78,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
         variant="outlined"
         onClick={selectionMode ? () => onToggleSelect?.(version.id) : undefined}
         sx={{
-          borderRadius: '16px',
+          borderRadius: 2,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -113,7 +113,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
                 sx={{
                   width: 36,
                   height: 36,
-                  borderRadius: '10px',
+                  borderRadius: (theme) => `${theme.shape.borderRadius}px`,
                   bgcolor: alpha(palConfig.accentColor || theme.palette.primary.main, 0.15),
                   color: palConfig.accentColor || theme.palette.primary.main,
                   display: 'flex',
@@ -178,8 +178,6 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
                     slotProps={{
                       paper: {
                         sx: {
-                          borderRadius: '12px',
-                          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
                           minWidth: 190,
                           py: 0.5,
                         },
@@ -257,13 +255,13 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
             <Chip
               label={version.theme || 'modern-tech'}
               size="small"
-              sx={{ fontSize: '0.72rem', bgcolor: alpha(palConfig.accentColor || '#38bdf8', 0.1), color: palConfig.accentColor }}
+              sx={{ fontSize: '0.72rem', bgcolor: alpha(palConfig.accentColor || theme.palette.primary.main, 0.1), color: palConfig.accentColor || theme.palette.primary.main }}
             />
           </Box>
 
           {/* Tailored Professional Summary Excerpt */}
           {summaryExcerpt && (
-            <Box sx={{ mt: 1, p: 1.25, borderRadius: '8px', bgcolor: alpha(theme.palette.text.primary, 0.03), border: `1px solid ${alpha(theme.palette.divider, 0.6)}` }}>
+            <Box sx={{ mt: 1, p: 1.25, borderRadius: (theme) => `${theme.shape.borderRadius}px`, bgcolor: alpha(theme.palette.text.primary, 0.03), border: `1px solid ${alpha(theme.palette.divider, 0.6)}` }}>
               <Typography
                 variant="caption"
                 sx={{

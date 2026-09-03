@@ -227,8 +227,8 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
           maxWidth: 794,
           minHeight: 1123,
           p: { xs: 4, sm: 6, md: 7 },
-          bgcolor: '#ffffff',
-          color: '#0f172a',
+          bgcolor: 'background.paper',
+          color: 'text.primary',
           boxSizing: 'border-box',
           position: 'relative',
           fontFamily: fontCss,
@@ -268,7 +268,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
             </Typography>
             <Typography sx={{ fontWeight: 600 }}>{companyName || 'Target Company'}</Typography>
             {targetRole && (
-              <Typography sx={{ color: '#64748b', fontStyle: 'italic', fontSize: '0.85rem' }}>
+              <Typography sx={{ color: 'text.secondary', fontStyle: 'italic', fontSize: '0.85rem' }}>
                 Re: Application for {targetRole}
               </Typography>
             )}
@@ -278,7 +278,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
           {loading ? (
             <Box sx={{ py: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
               <CircularProgress size={36} sx={{ color: primaryColor }} />
-              <Typography variant="body2" sx={{ color: '#64748b', fontWeight: 600 }}>
+              <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
                 {t('preview:coverLetter.crafting', 'Crafting high-impact tailored cover letter...')}
               </Typography>
             </Box>
@@ -290,13 +290,13 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
                 width: '100%',
                 minHeight: 450,
                 border: `1.5px solid ${alpha(primaryColor, 0.4)}`,
-                borderRadius: '8px',
+                borderRadius: `${muiTheme.shape.borderRadius}px`,
                 padding: '16px',
                 fontFamily: fontCss,
                 fontSize: '0.94rem',
                 lineHeight: 1.7,
-                color: '#0f172a',
-                backgroundColor: '#f8fafc',
+                color: muiTheme.palette.text.primary,
+                backgroundColor: isDark ? alpha(muiTheme.palette.common.white, 0.04) : alpha(muiTheme.palette.primary.main, 0.02),
                 outline: 'none',
                 resize: 'vertical',
                 boxSizing: 'border-box',
@@ -306,7 +306,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
             <Box
               sx={{
                 fontSize: '0.94rem',
-                color: '#1e293b',
+                color: 'text.primary',
                 lineHeight: 1.75,
                 '& p': { mb: 2.2 },
                 '& strong': { color: primaryColor, fontWeight: 700 },
@@ -319,7 +319,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
         </Box>
 
         {/* Professional Footer Sign-Off */}
-        <Box sx={{ pt: 4, borderTop: '1px solid #e2e8f0', mt: 4, fontSize: '0.8rem', color: '#94a3b8', display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ pt: 4, borderTop: `1px solid ${muiTheme.palette.divider}`, mt: 4, fontSize: '0.8rem', color: 'text.secondary', display: 'flex', justifyContent: 'space-between' }}>
           <span>{cvData.name || 'Candidate'} • Application Dossier</span>
           <span>{companyName ? `Tailored for ${companyName}` : 'Confidential'}</span>
         </Box>

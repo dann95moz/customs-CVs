@@ -45,9 +45,7 @@ export const ConfirmDeleteDialog: React.FC<ConfirmDeleteDialogProps> = React.mem
       slotProps={{
         paper: {
           sx: {
-            borderRadius: '16px',
             p: 1,
-            bgcolor: 'background.paper',
           },
         },
       }}
@@ -61,7 +59,7 @@ export const ConfirmDeleteDialog: React.FC<ConfirmDeleteDialogProps> = React.mem
           <Alert
             severity="warning"
             variant="outlined"
-            sx={{ mb: 1.5, py: 0.5, fontSize: '0.8rem', borderRadius: '8px' }}
+            sx={{ mb: 1.5, py: 0.5, fontSize: '0.8rem' }}
           >
             {warningMessage}
           </Alert>

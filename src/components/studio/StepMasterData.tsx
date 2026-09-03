@@ -236,7 +236,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           sx={{
             position: 'absolute',
             inset: 12,
-            zIndex: 100,
+            zIndex: 10,
             bgcolor: alpha(theme.palette.primary.main, 0.12),
             backdropFilter: 'blur(8px)',
             border: `2px dashed ${theme.palette.primary.main}`,

@@ -63,16 +63,16 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             minWidth: variant === 'compact' ? 40 : 'auto',
             px: variant === 'compact' ? 1 : { xs: 0.75, sm: 1.25 },
             py: { xs: 0.4, sm: 0.6 },
-            borderRadius: '8px',
+            borderRadius: (theme) => `${theme.shape.borderRadius}px`,
             border: `1px solid ${theme.palette.divider}`,
             color: 'text.primary',
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+            bgcolor: isDark ? alpha(theme.palette.common.white, 0.04) : alpha(theme.palette.common.black, 0.03),
             fontWeight: 600,
             fontSize: { xs: '0.75rem', sm: '0.82rem' },
             textTransform: 'none',
             transition: 'all 0.2s ease',
             '&:hover': {
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+              bgcolor: isDark ? alpha(theme.palette.common.white, 0.08) : alpha(theme.palette.common.black, 0.06),
               borderColor: alpha(theme.palette.primary.main, 0.5),
             },
           }}
@@ -110,7 +110,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
               '& .MuiMenuItem-root': {
                 px: 1.75,
                 py: 1,
-                borderRadius: '8px',
+                borderRadius: (theme) => `${theme.shape.borderRadius}px`,
                 mx: 0.75,
                 my: 0.25,
                 transition: 'all 0.15s ease',

@@ -40,7 +40,7 @@ export const SynthesisErrorBanner: React.FC<SynthesisErrorBannerProps> = React.m
         bottom: { xs: 16, sm: 24 },
         left: { xs: 16, sm: 24 },
         right: 'auto !important',
-        zIndex: 1400,
+        zIndex: (theme) => theme.zIndex.snackbar,
         maxWidth: { xs: 'calc(100vw - 32px)', sm: 400 },
       }}
     >

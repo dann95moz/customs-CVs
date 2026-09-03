@@ -35,7 +35,7 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
         bottom: { xs: 16, sm: 24 },
         right: { xs: 16, sm: 24 },
         left: 'auto !important',
-        zIndex: 1400,
+        zIndex: (theme) => theme.zIndex.snackbar,
         maxWidth: { xs: 'calc(100vw - 32px)', sm: 360 },
       }}
     >
@@ -43,14 +43,12 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
         elevation={6}
         sx={{
           p: 2,
-          borderRadius: '16px',
-          bgcolor: isDark ? 'rgba(16, 22, 35, 0.94)' : 'rgba(255, 255, 255, 0.96)',
+          borderRadius: 2,
+          bgcolor: (theme) => alpha(theme.palette.background.paper, 0.96),
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
-          border: `1px solid ${isDark ? 'rgba(56, 189, 248, 0.22)' : 'rgba(2, 132, 199, 0.18)'}`,
-          boxShadow: isDark
-            ? '0 16px 36px -4px rgba(0, 0, 0, 0.65), 0 0 24px rgba(56, 189, 248, 0.12)'
-            : '0 12px 32px -4px rgba(15, 23, 42, 0.12), 0 0 20px rgba(2, 132, 199, 0.08)',
+          border: (theme) => `1px solid ${alpha(theme.palette.primary.main, isDark ? 0.25 : 0.2)}`,
+          boxShadow: (theme) => theme.shadows[8],
           display: 'flex',
           flexDirection: 'column',
           gap: 1.5,
@@ -70,19 +68,18 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
               sx={{
                 width: 34,
                 height: 34,
-                borderRadius: '10px',
-                background: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+                borderRadius: (theme) => `${theme.shape.borderRadius}px`,
+                background: (theme) =>
+                  `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#ffffff',
+                color: 'common.white',
                 flexShrink: 0,
-                boxShadow: isDark
-                  ? '0 4px 12px rgba(2, 132, 199, 0.4)'
-                  : '0 4px 12px rgba(2, 132, 199, 0.25)',
+                boxShadow: (theme) => `0 4px 12px ${alpha(theme.palette.primary.main, 0.35)}`,
               }}
             >
-              <StarRoundedIcon sx={{ fontSize: 20, color: '#f8fafc' }} />
+              <StarRoundedIcon sx={{ fontSize: 20, color: 'common.white' }} />
             </Box>
 
             <Typography
@@ -105,7 +102,6 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
               sx={{
                 color: 'text.secondary',
                 p: 0.5,
-                borderRadius: '8px',
                 mt: -0.5,
                 mr: -0.5,
                 '&:hover': {
@@ -141,7 +137,6 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
               fontWeight: 600,
               fontSize: '0.78rem',
               textTransform: 'none',
-              borderRadius: '8px',
               px: 1.25,
               py: 0.5,
               color: 'text.secondary',
@@ -156,6 +151,7 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
 
           <Button
             variant="contained"
+            color="primary"
             size="small"
             onClick={onStarClick}
             endIcon={<OpenInNewRoundedIcon sx={{ fontSize: 14 }} />}
@@ -163,24 +159,8 @@ export const GitHubStarToast: React.FC<GitHubStarToastProps> = ({
               fontWeight: 700,
               fontSize: '0.8rem',
               textTransform: 'none',
-              borderRadius: '8px',
               px: 1.5,
               py: 0.6,
-              background: isDark
-                ? 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)'
-                : 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
-              color: '#ffffff',
-              boxShadow: isDark
-                ? '0 2px 10px rgba(2, 132, 199, 0.4)'
-                : '0 2px 10px rgba(2, 132, 199, 0.25)',
-              '&:hover': {
-                background: isDark
-                  ? 'linear-gradient(135deg, #0369a1 0%, #1e40af 100%)'
-                  : 'linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%)',
-                boxShadow: isDark
-                  ? '0 4px 14px rgba(2, 132, 199, 0.5)'
-                  : '0 4px 14px rgba(2, 132, 199, 0.35)',
-              },
             }}
           >
             {t('common:footer.giveStar', 'Give a star')}

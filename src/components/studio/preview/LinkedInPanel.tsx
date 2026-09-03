@@ -36,7 +36,7 @@ export interface LinkedInPanelProps {
 const DEFAULT_SETTINGS_FALLBACK: AIProviderSettings = {
   provider: 'gemini',
   apiKey: '',
-  model: 'gemini-1.5-flash',
+  model: 'gemini-3.7-flash',
   temperature: 0.2,
 };
 
@@ -238,7 +238,7 @@ export const LinkedInPanel: React.FC<LinkedInPanelProps> = ({
                       width: '100%',
                       minHeight: 220,
                       padding: '12px',
-                      borderRadius: '8px',
+                      borderRadius: `${theme.shape.borderRadius}px`,
                       border: `1px solid ${theme.palette.divider}`,
                       backgroundColor: theme.palette.background.paper,
                       color: theme.palette.text.primary,
