@@ -6,7 +6,16 @@ import { createCvDataSlice } from './slices/cvDataSlice';
 import { createDesignSlice } from './slices/designSlice';
 import { createAiSlice } from './slices/aiSlice';
 import { createHistorySlice } from './slices/historySlice';
-import { StudioTab } from '../types/cv';
+import {
+  StudioTab,
+  ThemeId,
+  PaletteId,
+  FontFamilyId,
+  SpacingDensity,
+  AIProviderSettings,
+  GeneratedCvVersion,
+  WizardStep,
+} from '../types/cv';
 
 /**
  * Migration helper to import legacy localStorage keys into the unified Zustand store
@@ -54,31 +63,31 @@ const migrateLegacyLocalStorage = (): Partial<ResumeStore> => {
     const budget = loadJson<1 | 2>('cv_page_budget');
     if (budget) legacyData.pageBudget = budget;
 
-    const theme = loadJson<any>('cv_theme');
+    const theme = loadJson<ThemeId>('cv_theme');
     if (theme) legacyData.theme = theme;
 
-    const palette = loadJson<any>('cv_palette');
+    const palette = loadJson<PaletteId>('cv_palette');
     if (palette) legacyData.palette = palette;
 
     const customColor = loadJson<string>('cv_custom_color');
     if (customColor) legacyData.customColor = customColor;
 
-    const font = loadJson<any>('cv_font_family');
+    const font = loadJson<FontFamilyId>('cv_font_family');
     if (font) legacyData.fontFamily = font;
 
-    const density = loadJson<any>('cv_spacing_density');
+    const density = loadJson<SpacingDensity>('cv_spacing_density');
     if (density) legacyData.spacingDensity = density;
 
-    const aiSettings = loadJson<any>('cv_ai_settings');
+    const aiSettings = loadJson<AIProviderSettings>('cv_ai_settings');
     if (aiSettings) legacyData.providerSettings = aiSettings;
 
-    const savedVersions = loadJson<any[]>('cv_saved_versions');
+    const savedVersions = loadJson<GeneratedCvVersion[]>('cv_saved_versions');
     if (savedVersions && Array.isArray(savedVersions)) legacyData.savedVersions = savedVersions;
 
     const activeTab = loadJson<StudioTab>('cv_active_tab');
     if (activeTab) legacyData.activeTab = activeTab;
 
-    const wizardStep = loadJson<any>('cv_wizard_step');
+    const wizardStep = loadJson<WizardStep>('cv_wizard_step');
     if (wizardStep) legacyData.wizardStep = wizardStep;
   } catch (err) {
     console.warn('Failed to migrate legacy localStorage data:', err);
