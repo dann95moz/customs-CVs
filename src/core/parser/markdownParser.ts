@@ -302,10 +302,22 @@ function parseSkillGroups(rawContent: string): SkillCategory[] {
   }));
 }
 
+function cleanEmptyMarkdownLinks(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\(\s*\)/g, '')
+    .replace(/\|\s*(?:\d{4}|present|presente|actual|current).*$/i, '')
+    .replace(/^\*+|\*+$/g, '')
+    .replace(/\s*•\s*•\s*/g, ' • ')
+    .replace(/^\s*•\s*|\s*•\s*$/g, '')
+    .trim();
+}
+
 /**
- * Parses raw experience/projects text into typed ExperienceItem array
+ * Parses raw experience/projects text into typed ExperienceItem array.
+ * If isProjects is true, date and location are strictly omitted (not work experiences),
+ * and markdown links [Title](url) in headings and subtitles are fully preserved.
  */
-function parseExperienceItems(rawContent: string): ExperienceItem[] {
+function parseExperienceItems(rawContent: string, isProjects: boolean = false): ExperienceItem[] {
   const lines = rawContent.split(/\r?\n/);
   const items: ExperienceItem[] = [];
   let currentItem: ExperienceItem | null = null;
@@ -338,31 +350,48 @@ function parseExperienceItems(rawContent: string): ExperienceItem[] {
       flush();
 
       const cleanLine = trimmed.replace(/^#+\s*/, '').trim();
-      const parts = cleanLine.split('|').map(cleanMarkdownFormatting);
+      const rawParts = cleanLine.split('|');
 
-      const companyPart = parts[0] || '';
-      let rolePart = parts[1] || undefined;
-      let locationPart = parts[2] || undefined;
+      const companyPart = cleanMarkdownFormatting(rawParts[0]);
+      let rolePart = rawParts.slice(1).join(' | ').trim() || undefined;
+      let locationPart: string | undefined = undefined;
 
-      if (
-        rolePart &&
-        (rolePart.toLowerCase().includes('remoto') ||
-          rolePart.toLowerCase().includes('remote') ||
-          rolePart.includes(','))
-      ) {
-        locationPart = rolePart;
-        rolePart = undefined;
+      if (isProjects) {
+        // Personal projects do not have physical locations or employment tenure dates
+        const cleanedRole = rolePart ? cleanEmptyMarkdownLinks(rolePart) : undefined;
+        currentItem = {
+          company: companyPart,
+          location: undefined,
+          role: cleanedRole,
+          date: undefined,
+          bullets: []
+        };
+      } else {
+        const parts = cleanLine.split('|').map(cleanMarkdownFormatting);
+        rolePart = parts[1] || undefined;
+        locationPart = parts[2] || undefined;
+
+        if (
+          rolePart &&
+          (rolePart.toLowerCase().includes('remoto') ||
+            rolePart.toLowerCase().includes('remote') ||
+            rolePart.includes(','))
+        ) {
+          locationPart = rolePart;
+          rolePart = undefined;
+        }
+
+        currentItem = {
+          company: companyPart,
+          location: locationPart,
+          role: rolePart,
+          date: undefined,
+          bullets: []
+        };
       }
-
-      currentItem = {
-        company: companyPart,
-        location: locationPart,
-        role: rolePart,
-        date: undefined,
-        bullets: []
-      };
     } else if (isBullet) {
-      const bulletText = cleanMarkdownFormatting(trimmed);
+      // Strip leading bullet marker without removing markdown bold (**) or links ([...](...))
+      const bulletText = trimmed.replace(/^(?:[-*•·]|\*(?!\*))\s*/, '').trim();
       if (!currentItem) {
         currentItem = {
           company: '',
@@ -373,16 +402,24 @@ function parseExperienceItems(rawContent: string): ExperienceItem[] {
         currentItem.bullets.push(bulletText);
       }
     } else if (currentItem) {
-      const parts = trimmed.split('|').map(cleanMarkdownFormatting);
+      if (isProjects) {
+        // Project subtitle / links / stack line without accidental dates
+        const cleanSub = cleanEmptyMarkdownLinks(trimmed);
+        if (cleanSub) {
+          currentItem.role = currentItem.role ? `${currentItem.role} • ${cleanSub}` : cleanSub;
+        }
+      } else {
+        const parts = trimmed.split('|').map(cleanMarkdownFormatting);
 
-      for (const p of parts) {
-        const cleanPart = p.trim();
-        if (/\d{4}|present|presente|actual/i.test(cleanPart)) {
-          currentItem.date = cleanPart;
-        } else if (/remot[eo]|hybrid|h[íi]brido|onsite|presencial|,/i.test(cleanPart)) {
-          currentItem.location = cleanPart;
-        } else if (!currentItem.role) {
-          currentItem.role = cleanPart;
+        for (const p of parts) {
+          const cleanPart = p.trim();
+          if (/\d{4}|present|presente|actual/i.test(cleanPart)) {
+            currentItem.date = cleanPart;
+          } else if (/remot[eo]|hybrid|h[íi]brido|onsite|presencial|,/i.test(cleanPart)) {
+            currentItem.location = cleanPart;
+          } else if (!currentItem.role) {
+            currentItem.role = cleanPart;
+          }
         }
       }
     }
@@ -759,8 +796,8 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
         }
       }
     }
-    if (s.type === 'experience') cvData.experience = parseExperienceItems(s.rawContent);
-    if (s.type === 'projects') cvData.projects = parseExperienceItems(s.rawContent);
+    if (s.type === 'experience') cvData.experience = parseExperienceItems(s.rawContent, false);
+    if (s.type === 'projects') cvData.projects = parseExperienceItems(s.rawContent, true);
     if (s.type === 'education') {
       const items = parseListItems(s.rawContent);
       cvData.education = cvData.education && cvData.education.length > 0 ? [...cvData.education, ...items] : items;
