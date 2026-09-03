@@ -39,7 +39,8 @@ Your mission is to take my comprehensive master background database (`master-dat
 - **Strict 3–5 Certification Cap:** Select strictly between 3 and 5 (ideally 4) most relevant certifications to `target-job.md`. ❌ NEVER output 6 or more certifications under any circumstance. Omit generic or introductory courses (e.g. basic Git or generic documentation courses) when higher-signal credentials exist.
 - **Zero hallucinations:** NEVER invent companies, roles, certifications, or technologies not present in `master-data.md`.
 - **Strict Date Fidelity:** Copy exact start and end dates from `master-data.md` (e.g., `Oct 2024 – Apr 2026`). Never assume "Present" if an explicit end month/year is provided.
-- **Strict Bullet Count Limit:** Generate **strictly 3 bullets per role (maximum 4, never 5+)**.
+- **Strict Bullet Count Limit & Cross-Role Redundancy:** Generate **strictly 3 bullets per role (maximum 4, never 5+)**. Cross-check bullets across all included roles: if two bullets from different roles emphasize the same technical theme (e.g. both about CI/CD pipeline optimization), keep only the strongest/most quantified instance and select a different achievement angle for the other role.
+- **Natural Keyword Integration (Anti-Stuffing / No Verbatim Copying):** Integrate keywords naturally into the candidate's achievements. ❌ NEVER copy phrases verbatim from the job posting into the CV.
 - ATS formatting standards: No photos, no age, no sensitive personal data.
 - Strict length: 1 page (<6 years experience) or max 2 pages (Lead/Senior).
 
