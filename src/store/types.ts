@@ -75,10 +75,16 @@ export interface AiSlice {
   providerSettings: AIProviderSettings;
   isGenerating: boolean;
   generationStep: string;
+  generationStage: number;
+  generationProgress: number;
+  streamedWords: number;
+  streamedSnippet: string;
+  activeModelName: string;
   generationError: string | null;
   setProviderSettings: (val: AIProviderSettings | ((prev: AIProviderSettings) => AIProviderSettings)) => void;
   setGenerationError: (err: string | null) => void;
   handleGenerate: () => Promise<void>;
+  cancelGeneration: () => void;
 }
 
 export interface HistorySlice {

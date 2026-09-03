@@ -38,6 +38,8 @@
     "stage2": "Formulazione dei risultati con la formula Google XYZ",
     "stage3": "Calibrazione layout su 1 pagina",
     "stage4": "Verifica dell'autenticità: 100% fedele alla tua reale esperienza",
+    "errorTitle": "Si è verificato un problema durante la sintesi",
+    "tryAgain": "Riprova Sintesi",
     "step1": "Analisi dei requisiti di lavoro ed estrazione parole chiave...",
     "step2": "Allineamento dell'esperienza con l'offerta (100% Autentico)...",
     "step3": "Sintesi del Markdown ottimizzato ATS e report di corrispondenza...",

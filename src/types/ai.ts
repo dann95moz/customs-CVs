@@ -38,6 +38,16 @@ export interface AIConnectionTestResult {
   detectedModels?: string[];
 }
 
+export interface TailorProgressUpdate {
+  stage: 'preparing' | 'synthesizing' | 'parsing' | 'auditing' | 'finalizing';
+  stageIndex: number;
+  message: string;
+  progress: number;
+  wordCount?: number;
+  snippet?: string;
+  modelUsed?: string;
+}
+
 export interface TailorRequest {
   masterData: string;
   targetJob: string;

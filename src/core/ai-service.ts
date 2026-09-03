@@ -67,39 +67,32 @@ export const AVAILABLE_AI_MODELS: AIModelOption[] = [
     requiresKey: false
   },
 
-  // 2. Google Gemini (Recommended Cloud - Free API Key from Google AI Studio)
+  // 2. Google Gemini (Cloud - Free API Key from Google AI Studio)
   {
-    id: 'gemini-3.6-flash',
-    name: 'Google Gemini 3.6 Flash (Recommended — Free API Key)',
+    id: 'gemini-3.7-flash',
+    name: 'Google Gemini 3.7 Flash (Recommended — Free API Key)',
     provider: 'gemini',
     description: 'Zero hallucinations. Ultra-fast synthesis with free Google AI Studio key.',
     isFree: false,
     requiresKey: true
   },
   {
-    id: 'gemini-3.7-flash',
-    name: 'Google Gemini 3.7 Flash',
+    id: 'gemini-3.8-flash',
+    name: 'Google Gemini 3.8 Flash',
     provider: 'gemini',
-    description: 'Latest Google flagship model with advanced reasoning capabilities.',
+    description: 'Fast, high-fidelity generative inference for ATS resume optimization.',
     isFree: false,
     requiresKey: true
   },
   {
-    id: 'gemini-2.5-flash',
-    name: 'Google Gemini 2.5 Flash',
+    id: 'gemini-3.6-flash',
+    name: 'Google Gemini 3.6 Flash',
     provider: 'gemini',
-    description: 'Fast and reliable generative inference for resume optimization.',
+    description: 'Next-gen high speed generative reasoning model.',
     isFree: false,
     requiresKey: true
   },
-  {
-    id: 'gemini-2.5-pro',
-    name: 'Google Gemini 2.5 Pro',
-    provider: 'gemini',
-    description: 'Deep context reasoning and nuanced executive leadership articulation.',
-    isFree: false,
-    requiresKey: true
-  },
+
 
   // 3. Groq (Ultra-Fast Free Tier)
   {
@@ -251,7 +244,7 @@ export async function testAIConnection(settings: AIProviderSettings): Promise<AI
         return { success: false, message: 'Please enter your Google Gemini API Key from aistudio.google.com' };
       }
       const genAI = new GoogleGenerativeAI(key);
-      const model = genAI.getGenerativeModel({ model: settings.model || 'gemini-3.6-flash' });
+      const model = genAI.getGenerativeModel({ model: settings.model || 'gemini-3.7-flash' });
       await model.generateContent('Say OK');
       return { success: true, message: 'Google Gemini API Key validated successfully!' };
     }
@@ -335,14 +328,76 @@ export async function testAIConnection(settings: AIProviderSettings): Promise<AI
 }
 
 /**
- * Main Tailor function delegating to Strategy pattern
+ * Main Tailor function delegating to Strategy pattern with real streaming & telemetry
  */
-export async function tailorResume(req: TailorRequest): Promise<TailorResponse> {
+export async function tailorResume(
+  req: TailorRequest,
+  onProgress?: (update: import('../types/ai').TailorProgressUpdate) => void,
+  signal?: AbortSignal
+): Promise<TailorResponse> {
+  onProgress?.({
+    stage: 'preparing',
+    stageIndex: 1,
+    message: 'Analyzing employer requirements & extracting ATS keywords...',
+    progress: 15,
+    modelUsed: req.providerSettings.model
+  });
+
   const prompts: PromptBundle = buildPrompts(req);
   const strategy = getAIStrategy(req.providerSettings.provider);
 
-  const result = await strategy.execute(prompts, req.providerSettings);
+  if (signal?.aborted) throw new Error('Generation cancelled by user.');
+
+  onProgress?.({
+    stage: 'synthesizing',
+    stageIndex: 2,
+    message: `Synthesizing with ${req.providerSettings.model}...`,
+    progress: 30,
+    wordCount: 0,
+    modelUsed: req.providerSettings.model
+  });
+
+  const result = await strategy.execute(
+    prompts,
+    req.providerSettings,
+    ({ accumulatedText, wordCount }) => {
+      const lastSnippet = accumulatedText.slice(-100);
+      onProgress?.({
+        stage: 'synthesizing',
+        stageIndex: 2,
+        message: `Synthesizing with ${req.providerSettings.model} (${wordCount} words)...`,
+        progress: Math.min(78, 30 + Math.floor(wordCount / 8)),
+        wordCount,
+        snippet: lastSnippet,
+        modelUsed: req.providerSettings.model
+      });
+    },
+    signal
+  );
+
+  if (signal?.aborted) throw new Error('Generation cancelled by user.');
+
+  const totalWords = result.text.trim().split(/\s+/).filter(Boolean).length;
+
+  onProgress?.({
+    stage: 'parsing',
+    stageIndex: 3,
+    message: 'Calibrating document layout & page budget...',
+    progress: 85,
+    wordCount: totalWords,
+    modelUsed: result.modelUsed
+  });
+
   const extracted: ExtractedCvAndGap = extractCvAndGap(result.text, req.masterData, prompts.company, req.targetRole);
+
+  onProgress?.({
+    stage: 'auditing',
+    stageIndex: 4,
+    message: 'Ensuring 100% authenticity & fidelity to your real career history...',
+    progress: 95,
+    wordCount: totalWords,
+    modelUsed: result.modelUsed
+  });
 
   return {
     tailoredCvMarkdown: extracted.cvMarkdown,

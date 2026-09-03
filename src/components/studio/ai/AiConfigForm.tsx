@@ -75,7 +75,7 @@ export const AiConfigForm: React.FC<AiConfigFormProps> = ({
   const isLocal = settings.provider === 'local';
 
   const handleProviderChange = (provider: AIProviderId) => {
-    let defaultModel = 'gemini-3.6-flash';
+    let defaultModel = 'gemini-3.7-flash';
     let defaultEndpoint = settings.customEndpoint;
 
     if (provider === 'local') {

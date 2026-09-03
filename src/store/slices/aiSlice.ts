@@ -10,16 +10,23 @@ import {
 
 export const DEFAULT_AI_SETTINGS: AIProviderSettings = {
   provider: 'gemini',
-  model: 'gemini-3.6-flash',
+  model: 'gemini-3.7-flash',
   apiKey: '',
   temperature: 0.15,
   customEndpoint: 'http://localhost:11434/v1',
 };
 
+let activeAbortController: AbortController | null = null;
+
 export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, get) => ({
   providerSettings: DEFAULT_AI_SETTINGS,
   isGenerating: false,
   generationStep: '',
+  generationStage: 1,
+  generationProgress: 0,
+  streamedWords: 0,
+  streamedSnippet: '',
+  activeModelName: '',
   generationError: null,
 
   setProviderSettings: (val) => {
@@ -31,20 +38,44 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
     set({ generationError: err });
   },
 
+  cancelGeneration: () => {
+    if (activeAbortController) {
+      activeAbortController.abort();
+      activeAbortController = null;
+    }
+    set({
+      isGenerating: false,
+      generationStep: '',
+      generationStage: 1,
+      generationProgress: 0,
+      streamedWords: 0,
+      streamedSnippet: '',
+      generationError: null,
+    });
+  },
+
   handleGenerate: async () => {
-    if (get().isGenerating) {
+    if (get().isGenerating && !get().generationError) {
       return;
     }
+
+    if (activeAbortController) {
+      activeAbortController.abort();
+    }
+    activeAbortController = new AbortController();
+
+    const currentModel = get().providerSettings.model || 'AI Model';
 
     set({
       isGenerating: true,
       generationError: null,
-      generationStep: 'Reading Master Data & Target Vacancy...',
+      generationStage: 1,
+      generationProgress: 15,
+      generationStep: 'Analyzing employer requirements & extracting ATS keywords...',
+      streamedWords: 0,
+      streamedSnippet: '',
+      activeModelName: currentModel,
     });
-
-    const stepTimer1 = setTimeout(() => set({ generationStep: 'Cross-referencing requirements with Google XYZ Formula...' }), 800);
-    const stepTimer2 = setTimeout(() => set({ generationStep: 'Synthesizing 3-Category Universal Stack & ATS Structure...' }), 1800);
-    const stepTimer3 = setTimeout(() => set({ generationStep: 'Generating Gap Analysis & Quality Report...' }), 2800);
 
     try {
       const {
@@ -60,19 +91,28 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
         savedVersions,
       } = get();
 
-      const response = await tailorResume({
-        masterData,
-        targetJob,
-        rules,
-        companyName,
-        targetRole,
-        pageBudget,
-        providerSettings,
-      });
-
-      clearTimeout(stepTimer1);
-      clearTimeout(stepTimer2);
-      clearTimeout(stepTimer3);
+      const response = await tailorResume(
+        {
+          masterData,
+          targetJob,
+          rules,
+          companyName,
+          targetRole,
+          pageBudget,
+          providerSettings,
+        },
+        (progress) => {
+          set({
+            generationStage: progress.stageIndex,
+            generationProgress: progress.progress,
+            generationStep: progress.message,
+            streamedWords: progress.wordCount ?? get().streamedWords,
+            streamedSnippet: progress.snippet ?? get().streamedSnippet,
+            activeModelName: progress.modelUsed ?? currentModel,
+          });
+        },
+        activeAbortController.signal
+      );
 
       const tailoredCv = response.tailoredCvMarkdown || get().cvMarkdown;
       const gapReport = response.gapAnalysisMarkdown || get().gapMarkdown;
@@ -116,6 +156,8 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
         cvMarkdown: tailoredCv,
         gapMarkdown: gapReport,
         savedVersions: nextSavedVersions,
+        generationStage: 4,
+        generationProgress: 100,
         generationStep: 'Done! Resume tailored successfully.',
       });
 
@@ -125,17 +167,25 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
           activeTab: 'wizard',
           wizardStep: 'preview',
         });
-      }, 500);
+      }, 400);
     } catch (err: unknown) {
-      clearTimeout(stepTimer1);
-      clearTimeout(stepTimer2);
-      clearTimeout(stepTimer3);
+      if (err instanceof Error && err.message.includes('cancelled')) {
+        set({
+          isGenerating: false,
+          generationError: null,
+          generationProgress: 0,
+        });
+        return;
+      }
 
       const message = err instanceof Error ? err.message : 'Error occurred during AI resume synthesis.';
       set({
         generationError: message,
-        isGenerating: false,
+        isGenerating: true,
+        generationProgress: 0,
       });
+    } finally {
+      activeAbortController = null;
     }
   },
 });

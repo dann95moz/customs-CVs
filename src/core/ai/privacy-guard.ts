@@ -42,12 +42,18 @@ export function sanitizeMasterDataForAi(masterData: string): AnonymizedPayload {
   // 4. Sanitize Top Header (# Full Name and contact line)
   sanitized = sanitized.replace(/^#\s+[^\n]+/m, '# [CANDIDATE FULL NAME]');
 
-  // 5. Replace Personal Profile URLs
-  sanitized = sanitized
-    .replace(/https?:\/\/(?:www\.)?linkedin\.com\/in\/[^\s)\]]+/gi, 'https://linkedin.com/in/candidate-profile')
-    .replace(/https?:\/\/(?:www\.)?github\.com\/[^\s)\]]+/gi, 'https://github.com/candidate-profile')
-    .replace(/https?:\/\/(?:www\.)?twitter\.com\/[^\s)\]]+/gi, 'https://x.com/candidate-profile')
-    .replace(/https?:\/\/(?:www\.)?x\.com\/[^\s)\]]+/gi, 'https://x.com/candidate-profile');
+  // 5. Replace Personal Profile URLs ONLY in the top header (before the first ## section)
+  // Preserving public project repositories (e.g. github.com/user/repo) and demo URLs in body
+  if (headerMatch && headerMatch[1]) {
+    const rawHeader = headerMatch[1];
+    const sanitizedHeader = rawHeader
+      .replace(/https?:\/\/(?:www\.)?linkedin\.com\/in\/[^\s)\]]+/gi, 'https://linkedin.com/in/candidate-profile')
+      .replace(/https?:\/\/(?:www\.)?github\.com\/[^\s)\]]+/gi, 'https://github.com/candidate-profile')
+      .replace(/https?:\/\/(?:www\.)?twitter\.com\/[^\s)\]]+/gi, 'https://x.com/candidate-profile')
+      .replace(/https?:\/\/(?:www\.)?x\.com\/[^\s)\]]+/gi, 'https://x.com/candidate-profile');
+
+    sanitized = sanitizedHeader + sanitized.slice(rawHeader.length);
+  }
 
   return {
     sanitizedText: sanitized,

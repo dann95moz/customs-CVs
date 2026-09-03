@@ -74,7 +74,7 @@ export async function tailorCvWithGemini({
   customColor,
   fontFamily,
   spacingDensity,
-  modelName = 'gemini-3.6-flash',
+  modelName = 'gemini-3.7-flash',
   maxPages = 1,
   baseDir,
   masterDataPath,
@@ -108,35 +108,18 @@ export async function tailorCvWithGemini({
   });
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  const modelsToTry = [modelName, 'gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash'].filter((v, i, a) => a.indexOf(v) === i);
-
-  let result;
-  let usedModel = modelName;
-  let activeModel: GenerativeModel | null = null;
-
-  for (const m of modelsToTry) {
-    try {
-      console.log(`📡 Sending request to model ${m}...`);
-      const model = genAI.getGenerativeModel({
-        model: m,
-        systemInstruction: prompts.systemInstruction,
-        generationConfig: {
-          temperature: 0.15
-        }
-      });
-      result = await model.generateContent(prompts.userPrompt);
-      usedModel = m;
-      activeModel = model;
-      break;
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.warn(`⏳ Model ${m} unavailable (${msg}). Trying next model...`);
+  console.log(`📡 Sending request to model ${modelName}...`);
+  const model = genAI.getGenerativeModel({
+    model: modelName,
+    systemInstruction: prompts.systemInstruction,
+    generationConfig: {
+      temperature: 0.15
     }
-  }
+  });
 
-  if (!result) {
-    throw new Error('Failed to obtain a response from any Gemini model after several attempts.');
-  }
+  const result = await model.generateContent(prompts.userPrompt);
+  const usedModel = modelName;
+  const activeModel = model;
 
   const responseText = result.response.text();
   const outputsDir = getOutputsDir(root);
@@ -201,7 +184,7 @@ CONDENSATION RULES:
 `;
 
     try {
-      const condenseResponse = await (activeModel || genAI.getGenerativeModel({ model: 'gemini-3.5-flash' })).generateContent([
+      const condenseResponse = await (activeModel || genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })).generateContent([
         { text: condensationInstruction },
         { text: `CURRENT CV TO CONDENSE:\n\n${cvContent}` }
       ]);

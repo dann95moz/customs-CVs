@@ -7,15 +7,31 @@ export interface StrategyResult {
   modelUsed: string;
 }
 
+export type StrategyProgressCallback = (update: {
+  chunk: string;
+  accumulatedText: string;
+  wordCount: number;
+}) => void;
+
 export interface AIProviderStrategy {
-  execute(prompts: PromptBundle, settings: AIProviderSettings): Promise<StrategyResult>;
+  execute(
+    prompts: PromptBundle,
+    settings: AIProviderSettings,
+    onProgress?: StrategyProgressCallback,
+    signal?: AbortSignal
+  ): Promise<StrategyResult>;
 }
 
 /**
  * Strategy: Local AI (Ollama, LM Studio, LocalAI, vLLM, text-generation-webui)
  */
 export class LocalAIStrategy implements AIProviderStrategy {
-  async execute(prompts: PromptBundle, settings: AIProviderSettings): Promise<StrategyResult> {
+  async execute(
+    prompts: PromptBundle,
+    settings: AIProviderSettings,
+    onProgress?: StrategyProgressCallback,
+    signal?: AbortSignal
+  ): Promise<StrategyResult> {
     const rawEndpoint = settings.customEndpoint?.trim() || 'http://localhost:11434/v1';
     let endpoint = rawEndpoint.replace(/\/$/, '');
     if (!endpoint.endsWith('/chat/completions')) {
@@ -34,12 +50,14 @@ export class LocalAIStrategy implements AIProviderStrategy {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers,
+        signal,
         body: JSON.stringify({
           model: modelName,
           messages: [
             { role: 'system', content: prompts.systemInstruction },
             { role: 'user', content: prompts.userPrompt }
           ],
+          stream: true,
           temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15
         })
       });
@@ -50,8 +68,43 @@ export class LocalAIStrategy implements AIProviderStrategy {
         throw new Error(`Local model error: ${errDetail}`);
       }
 
-      const data = await response.json();
-      const text = data.choices?.[0]?.message?.content || data.message?.content || '';
+      if (!response.body) {
+        throw new Error('No response stream received from Local AI server.');
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let text = '';
+      let buffer = '';
+
+      while (true) {
+        if (signal?.aborted) throw new Error('Generation cancelled by user.');
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed.startsWith('data: ') && trimmed !== 'data: [DONE]') {
+            try {
+              const parsed = JSON.parse(trimmed.slice(6));
+              const delta = parsed.choices?.[0]?.delta?.content || '';
+              if (delta) {
+                text += delta;
+                if (onProgress) {
+                  const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+                  onProgress({ chunk: delta, accumulatedText: text, wordCount });
+                }
+              }
+            } catch {
+              // Ignore partial chunk parse error
+            }
+          }
+        }
+      }
 
       if (!text || text.trim().length === 0) {
         throw new Error(`Empty response from local AI (${modelName}). Please check if the model is loaded in your local server.`);
@@ -62,6 +115,9 @@ export class LocalAIStrategy implements AIProviderStrategy {
         modelUsed: `Local AI (${modelName})`
       };
     } catch (err: unknown) {
+      if (signal?.aborted || (err instanceof Error && err.name === 'AbortError')) {
+        throw new Error('Generation cancelled by user.');
+      }
       if (err instanceof Error && (err.message.startsWith('Local model error:') || err.message.startsWith('Empty response'))) {
         throw err;
       }
@@ -76,46 +132,62 @@ export class LocalAIStrategy implements AIProviderStrategy {
 }
 
 /**
- * Strategy: Google Gemini (SDK)
+ * Strategy: Google Gemini (SDK with Content Stream)
  */
 export class GeminiStrategy implements AIProviderStrategy {
-  async execute(prompts: PromptBundle, settings: AIProviderSettings): Promise<StrategyResult> {
+  async execute(
+    prompts: PromptBundle,
+    settings: AIProviderSettings,
+    onProgress?: StrategyProgressCallback,
+    signal?: AbortSignal
+  ): Promise<StrategyResult> {
     const apiKey = settings.apiKey?.trim();
     if (!apiKey) {
       throw new Error('Please enter your Google Gemini API Key in AI Settings.');
     }
 
-    const requestedModel = settings.model || 'gemini-3.6-flash';
-    const modelsToTry = [requestedModel, 'gemini-3.5-flash', 'gemini-3.7-flash'].filter((v, i, a) => a.indexOf(v) === i);
+    const modelName = settings.model?.trim() || 'gemini-3.6-flash';
 
-    let lastError: unknown = null;
-    for (const m of modelsToTry) {
-      try {
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({
-          model: m,
-          systemInstruction: prompts.systemInstruction,
-          generationConfig: {
-            temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15
-          }
-        });
+    if (signal?.aborted) throw new Error('Generation cancelled by user.');
 
-        const result = await model.generateContent(prompts.userPrompt);
-        const text = result.response.text();
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({
+        model: modelName,
+        systemInstruction: prompts.systemInstruction,
+        generationConfig: {
+          temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15
+        }
+      });
 
-        return {
-          text,
-          modelUsed: `Google ${m}`
-        };
-      } catch (err: unknown) {
-        lastError = err;
-        const msg = err instanceof Error ? err.message : String(err);
-        console.warn(`Gemini model ${m} failed (${msg}). Trying fallback model...`);
+      const resultStream = await model.generateContentStream(prompts.userPrompt);
+      let text = '';
+
+      for await (const chunk of resultStream.stream) {
+        if (signal?.aborted) throw new Error('Generation cancelled by user.');
+        const chunkText = chunk.text();
+        text += chunkText;
+        if (onProgress) {
+          const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+          onProgress({ chunk: chunkText, accumulatedText: text, wordCount });
+        }
       }
-    }
 
-    const finalErrMsg = lastError instanceof Error ? lastError.message : 'Failed to generate with Google Gemini';
-    throw new Error(`Gemini API Error: ${finalErrMsg}`);
+      if (!text || text.trim().length === 0) {
+        throw new Error(`Empty response from Gemini model ${modelName}`);
+      }
+
+      return {
+        text,
+        modelUsed: `Google ${modelName}`
+      };
+    } catch (err: unknown) {
+      if (signal?.aborted || (err instanceof Error && (err.name === 'AbortError' || err.message.includes('cancelled')))) {
+        throw new Error('Generation cancelled by user.');
+      }
+      const msg = err instanceof Error ? err.message : String(err);
+      throw new Error(`Gemini (${modelName}) Error: ${msg}`);
+    }
   }
 }
 
@@ -123,7 +195,12 @@ export class GeminiStrategy implements AIProviderStrategy {
  * Strategy: OpenAI-Compatible APIs (OpenAI, Groq, OpenRouter, Custom Endpoints)
  */
 export class OpenAICompatibleStrategy implements AIProviderStrategy {
-  async execute(prompts: PromptBundle, settings: AIProviderSettings): Promise<StrategyResult> {
+  async execute(
+    prompts: PromptBundle,
+    settings: AIProviderSettings,
+    onProgress?: StrategyProgressCallback,
+    signal?: AbortSignal
+  ): Promise<StrategyResult> {
     let endpoint = 'https://api.openai.com/v1/chat/completions';
     const apiKey = settings.apiKey?.trim() || '';
 
@@ -154,12 +231,14 @@ export class OpenAICompatibleStrategy implements AIProviderStrategy {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers,
+        signal,
         body: JSON.stringify({
           model: settings.model || (settings.provider === 'groq' ? 'llama-3.3-70b-versatile' : 'gpt-4o'),
           messages: [
             { role: 'system', content: prompts.systemInstruction },
             { role: 'user', content: prompts.userPrompt }
           ],
+          stream: true,
           temperature: typeof settings.temperature === 'number' ? settings.temperature : 0.15
         })
       });
@@ -169,14 +248,52 @@ export class OpenAICompatibleStrategy implements AIProviderStrategy {
         throw new Error(errJson.error?.message || `API error ${response.status}: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      const text = data.choices?.[0]?.message?.content || '';
+      if (!response.body) {
+        throw new Error('No stream response from API.');
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let text = '';
+      let buffer = '';
+
+      while (true) {
+        if (signal?.aborted) throw new Error('Generation cancelled by user.');
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed.startsWith('data: ') && trimmed !== 'data: [DONE]') {
+            try {
+              const parsed = JSON.parse(trimmed.slice(6));
+              const delta = parsed.choices?.[0]?.delta?.content || '';
+              if (delta) {
+                text += delta;
+                if (onProgress) {
+                  const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+                  onProgress({ chunk: delta, accumulatedText: text, wordCount });
+                }
+              }
+            } catch {
+              // Ignore partial chunk parse error
+            }
+          }
+        }
+      }
 
       return {
         text,
         modelUsed: `${settings.provider.toUpperCase()} (${settings.model})`
       };
     } catch (err: unknown) {
+      if (signal?.aborted || (err instanceof Error && err.name === 'AbortError')) {
+        throw new Error('Generation cancelled by user.');
+      }
       const msg = err instanceof Error ? err.message : String(err);
       throw new Error(`${settings.provider.toUpperCase()} Error: ${msg}`);
     }
@@ -187,7 +304,12 @@ export class OpenAICompatibleStrategy implements AIProviderStrategy {
  * Strategy: Anthropic Claude API
  */
 export class ClaudeStrategy implements AIProviderStrategy {
-  async execute(prompts: PromptBundle, settings: AIProviderSettings): Promise<StrategyResult> {
+  async execute(
+    prompts: PromptBundle,
+    settings: AIProviderSettings,
+    onProgress?: StrategyProgressCallback,
+    signal?: AbortSignal
+  ): Promise<StrategyResult> {
     const apiKey = settings.apiKey?.trim();
     if (!apiKey) {
       throw new Error('Please enter your Anthropic API Key in AI Settings.');
@@ -202,6 +324,7 @@ export class ClaudeStrategy implements AIProviderStrategy {
           'anthropic-version': '2023-06-01',
           'anthropic-dangerous-direct-browser-access': 'true'
         },
+        signal,
         body: JSON.stringify({
           model: settings.model || 'claude-3-7-sonnet-latest',
           max_tokens: 4000,
@@ -220,12 +343,19 @@ export class ClaudeStrategy implements AIProviderStrategy {
 
       const data = await response.json();
       const text = data.content?.[0]?.text || '';
+      if (onProgress) {
+        const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+        onProgress({ chunk: text, accumulatedText: text, wordCount });
+      }
 
       return {
         text,
         modelUsed: `Anthropic ${settings.model || 'Claude 3.7 Sonnet'}`
       };
     } catch (err: unknown) {
+      if (signal?.aborted || (err instanceof Error && err.name === 'AbortError')) {
+        throw new Error('Generation cancelled by user.');
+      }
       const msg = err instanceof Error ? err.message : String(err);
       throw new Error(`Claude API Error: ${msg}`);
     }

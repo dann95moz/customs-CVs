@@ -38,6 +38,8 @@
     "stage2": "Formulation des réalisations avec la formule Google XYZ",
     "stage3": "Calibrage de la mise en page sur 1 page",
     "stage4": "Vérification de l'authenticité : 100 % fidèle à votre parcours réel",
+    "errorTitle": "Un problème est survenu lors de la synthèse",
+    "tryAgain": "Réessayer la synthèse",
     "step1": "Analyse des exigences du poste et extraction des mots-clés...",
     "step2": "Alignement de l'expérience avec l'offre (100 % authentique)...",
     "step3": "Synthèse du Markdown optimisé ATS et du rapport d'écarts...",
