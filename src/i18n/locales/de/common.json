@@ -80,5 +80,18 @@
     "craftedBy": "Erstellt von",
     "openSource": "Open Source auf GitHub",
     "giveStar": "Einen Stern vergeben"
+  },
+  "backup": {
+    "today": "Sicherung: Heute",
+    "daysAgo": "Sicherung: vor {{count}} T.",
+    "tooltipFresh": "Ihr Profil wurde kürzlich gesichert.",
+    "tooltipModerate": "Seit Ihrer letzten Sicherung sind mehrere Tage vergangen.",
+    "tooltipOld": "Achtung: Ihre letzte Sicherung ist mehr als 10 Tage alt.",
+    "changesDetected": "nicht exportierte Änderungen",
+    "clickToExport": "Klicken, um eine .md-Sicherung zu exportieren",
+    "pending": "ausstehend",
+    "toastTitle": "Ungesicherte Änderungen erkannt",
+    "toastMessage": "Sie haben seit Ihrem letzten Export mehrere Änderungen vorgenommen. Möchten Sie eine aktualisierte Sicherung herunterladen?",
+    "exportNow": "Sicherung exportieren"
   }
 }

@@ -80,5 +80,18 @@
     "craftedBy": "Crafted by",
     "openSource": "Open Source on GitHub",
     "giveStar": "Give a star"
+  },
+  "backup": {
+    "today": "Backup: Today",
+    "daysAgo": "Backup: {{count}}d ago",
+    "tooltipFresh": "Your career profile has been backed up recently.",
+    "tooltipModerate": "Several days since your last backup export.",
+    "tooltipOld": "Warning: Your last backup export is more than 10 days old.",
+    "changesDetected": "unexported edits",
+    "clickToExport": "Click to export a .md backup",
+    "pending": "pending",
+    "toastTitle": "Unsaved career changes detected",
+    "toastMessage": "You have made multiple profile edits since your last backup export. Would you like to download an updated copy?",
+    "exportNow": "Export Backup"
   }
 }

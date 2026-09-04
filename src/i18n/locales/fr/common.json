@@ -80,5 +80,18 @@
     "craftedBy": "Créé par",
     "openSource": "Open source sur GitHub",
     "giveStar": "Donner une étoile"
+  },
+  "backup": {
+    "today": "Sauvegarde : Aujourd'hui",
+    "daysAgo": "Sauvegarde : il y a {{count}} j.",
+    "tooltipFresh": "Votre profil a été sauvegardé récemment.",
+    "tooltipModerate": "Plusieurs jours se sont écoulés depuis votre dernière sauvegarde.",
+    "tooltipOld": "Attention : Votre dernière sauvegarde a plus de 10 jours.",
+    "changesDetected": "modifications non exportées",
+    "clickToExport": "Cliquer pour exporter une sauvegarde .md",
+    "pending": "en attente",
+    "toastTitle": "Modifications non sauvegardées détectées",
+    "toastMessage": "Vous avez apporté plusieurs modifications à votre profil depuis le dernier export. Souhaitez-vous télécharger une copie à jour ?",
+    "exportNow": "Exporter la sauvegarde"
   }
 }

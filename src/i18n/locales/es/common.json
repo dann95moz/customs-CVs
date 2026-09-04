@@ -80,5 +80,18 @@
     "craftedBy": "Creado por",
     "openSource": "Código abierto en GitHub",
     "giveStar": "Dale una estrella"
+  },
+  "backup": {
+    "today": "Respaldo: Hoy",
+    "daysAgo": "Respaldo: hace {{count}}d",
+    "tooltipFresh": "Tu perfil profesional ha sido respaldado recientemente.",
+    "tooltipModerate": "Han pasado varios días desde tu último respaldo.",
+    "tooltipOld": "Atención: Tu último respaldo tiene más de 10 días.",
+    "changesDetected": "cambios no exportados",
+    "clickToExport": "Haz clic para exportar un respaldo .md",
+    "pending": "pendientes",
+    "toastTitle": "Cambios detectados sin respaldar",
+    "toastMessage": "Has realizado varias modificaciones en tu perfil desde tu última exportación. ¿Deseas descargar una copia actualizada?",
+    "exportNow": "Exportar Respaldo"
   }
 }

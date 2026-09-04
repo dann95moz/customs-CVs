@@ -28,13 +28,21 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
   rules: DEFAULT_RULES,
   companyName: '',
   targetRole: '',
+  lastBackupTimestamp: Date.now(),
+  unsavedChangesCount: 0,
+
+  recordBackup: () => {
+    set({ lastBackupTimestamp: Date.now(), unsavedChangesCount: 0 });
+  },
 
   setMasterData: (val) => {
     const nextVal = typeof val === 'function' ? val(get().masterData) : val;
     const extractedRole = extractTargetRole(get().targetJob, nextVal);
+    const hasChanged = nextVal !== get().masterData;
     set({
       masterData: nextVal,
       ...(extractedRole ? { targetRole: extractedRole } : {}),
+      ...(hasChanged ? { unsavedChangesCount: get().unsavedChangesCount + 1 } : {}),
     });
   },
 
@@ -51,7 +59,11 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
 
   setCvMarkdown: (val) => {
     const nextVal = typeof val === 'function' ? val(get().cvMarkdown) : val;
-    set({ cvMarkdown: nextVal });
+    const hasChanged = nextVal !== get().cvMarkdown;
+    set({
+      cvMarkdown: nextVal,
+      ...(hasChanged ? { unsavedChangesCount: get().unsavedChangesCount + 1 } : {}),
+    });
   },
 
   setGapMarkdown: (val) => {
@@ -126,5 +138,6 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
     const fileName = buildTimestampedFileName(baseName, 'md');
 
     downloadTextFile(cvMarkdown, fileName);
+    get().recordBackup();
   },
 });

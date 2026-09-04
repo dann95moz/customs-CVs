@@ -119,6 +119,8 @@ export const useResumeStore = create<ResumeStore>()(
         rules: state.rules,
         companyName: state.companyName,
         targetRole: state.targetRole,
+        lastBackupTimestamp: state.lastBackupTimestamp,
+        unsavedChangesCount: state.unsavedChangesCount,
         pageBudget: state.pageBudget,
         theme: state.theme,
         palette: state.palette,

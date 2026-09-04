@@ -34,6 +34,9 @@ export interface CvDataSlice {
   rules: string;
   companyName: string;
   targetRole: string;
+  lastBackupTimestamp: number;
+  unsavedChangesCount: number;
+  recordBackup: () => void;
   setMasterData: (val: string | ((prev: string) => string)) => void;
   setTargetJob: (val: string | ((prev: string) => string)) => void;
   setCvMarkdown: (val: string | ((prev: string) => string)) => void;
