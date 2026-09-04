@@ -5,15 +5,25 @@
   "newApplication": "Neuen CV anpassen",
   "searchPlaceholder": "Nach Unternehmen oder Position filtern...",
   "actions": {
-    "trackApp": "Als beworben markieren"
+    "trackApp": "Als beworben markieren",
+    "manageStages": "Phasen verwalten",
+    "stagesShort": "Phasen",
+    "openInStudio": "In Studio öffnen",
+    "downloadPdf": "PDF herunterladen",
+    "archive": "Bewerbung archivieren"
   },
   "views": {
+    "grid": "Bewerbungs-Raster",
+    "gridShort": "Raster",
     "board": "Aktives Board",
     "boardShort": "Board",
     "archived": "Archiviert",
     "archivedShort": "Archiviert",
     "allVersions": "CV-Versionshistorie",
     "versionsShort": "Versionen"
+  },
+  "filter": {
+    "allStagesWithCount": "Alle Phasen ({{count}})"
   },
   "stats": {
     "total": "Gesamte CVs",
@@ -31,7 +41,9 @@
     "tech_test": "Fachgespräch / Test",
     "offer": "Angebot erhalten",
     "rejected": "Abgelehnt",
-    "archived": "Archiviert"
+    "archived": "Archiviert",
+    "clickToChange": "Klicken, um Phase zu ändern",
+    "moveToStage": "In Phase verschieben"
   },
   "stages": {
     "applied": "Beworben",
@@ -53,7 +65,18 @@
     "editTitle": "Phase bearbeiten",
     "newTitle": "Neue Kanban-Phase",
     "nameField": "Phasenname",
-    "colorTheme": "Akzentfarbe"
+    "colorTheme": "Akzentfarbe",
+    "preview": "Live-Vorschau",
+    "defaultName": "Beispiel-Phase"
+  },
+  "grid": {
+    "noMatchingApps": "Keine Bewerbungen entsprechen dem Filter",
+    "noMatchingAppsDesc": "Wählen Sie eine andere Phase oder löschen Sie Ihre Suchbegriffe.",
+    "clearFilters": "Phasenfilter zurücksetzen"
+  },
+  "externalCv": {
+    "badge": "Externer CV",
+    "defaultTitle": "Direktkontakt / Externer CV"
   },
   "card": {
     "openInStudio": "Im Studio anzeigen & bearbeiten",
@@ -125,6 +148,12 @@
     "multiVersionPrompt": "Sie haben {{count}} Versionen für {{company}} — mit welcher haben Sie sich beworben?",
     "singleVersionPrompt": "Angehängte CV-Version:",
     "noVersionsFound": "Keine gespeicherten Versionen für dieses Unternehmen gefunden. Bitte erstellen Sie zuerst einen CV.",
+    "cvSourceTitle": "Lebenslauf-Dokument",
+    "sourceStudio": "Studio-Lebenslauf",
+    "sourceExternal": "Externer / Direkter Lebenslauf",
+    "externalCvDesc": "Verfolgen Sie Direktbewerbungen oder Recruiter-Kontakte ohne CV Studio-Version.",
+    "externalCvTitleField": "Dokumentenbezeichnung oder Quelle (Optional)",
+    "externalCvPlaceholder": "z. B. LinkedIn-Bewerbung, Master-PDF, Empfehlung per E-Mail",
     "initialColumn": "Startphase",
     "salary": "Gehalt / Budget (Optional)",
     "location": "Standort / Remote-Regelung",
@@ -178,5 +207,8 @@
     "notes": "Zusätzliche Notizen",
     "notesPlaceholder": "Schwerpunkte, vorbereitete Fragen, Notizen...",
     "downloadIcs": "Termin herunterladen (.ics)"
-  }
+  },
+  "deleteAppTitle": "Bewerbung löschen",
+  "deleteAppConfirm": "Möchten Sie {{company}} wirklich aus Ihrer Nachverfolgung entfernen? Dies kann nicht rückgängig gemacht werden.",
+  "appliedOn": "Beworben am"
 }

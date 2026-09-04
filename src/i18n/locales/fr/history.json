@@ -5,15 +5,25 @@
   "newApplication": "Adapter un nouveau CV",
   "searchPlaceholder": "Filtrer par entreprise ou poste visé...",
   "actions": {
-    "trackApp": "Marquer comme postulé"
+    "trackApp": "Marquer comme postulé",
+    "manageStages": "Gérer les étapes",
+    "stagesShort": "Étapes",
+    "openInStudio": "Ouvrir dans Studio",
+    "downloadPdf": "Télécharger le PDF",
+    "archive": "Archiver la candidature"
   },
   "views": {
+    "grid": "Grille de Candidatures",
+    "gridShort": "Grille",
     "board": "Tableau Actif",
     "boardShort": "Tableau",
     "archived": "Archivées",
     "archivedShort": "Archivées",
     "allVersions": "Historique des Versions CV",
     "versionsShort": "Versions"
+  },
+  "filter": {
+    "allStagesWithCount": "Toutes les étapes ({{count}})"
   },
   "stats": {
     "total": "Total CVs Adaptés",
@@ -31,7 +41,9 @@
     "tech_test": "Test Technique",
     "offer": "Offre Reçue",
     "rejected": "Refusé",
-    "archived": "Archivé"
+    "archived": "Archivé",
+    "clickToChange": "Cliquer pour changer d'étape",
+    "moveToStage": "Passer à l'étape"
   },
   "stages": {
     "applied": "Postulé",
@@ -53,7 +65,18 @@
     "editTitle": "Modifier l'étape",
     "newTitle": "Nouvelle étape Kanban",
     "nameField": "Nom de l'étape",
-    "colorTheme": "Couleur d'accentuation"
+    "colorTheme": "Couleur d'accentuation",
+    "preview": "Aperçu en direct",
+    "defaultName": "Étape d'exemple"
+  },
+  "grid": {
+    "noMatchingApps": "Aucune candidature ne correspond au filtre",
+    "noMatchingAppsDesc": "Essayez de sélectionner une autre étape ou d'effacer vos termes de recherche.",
+    "clearFilters": "Réinitialiser le filtre"
+  },
+  "externalCv": {
+    "badge": "CV Externe",
+    "defaultTitle": "Contact Direct / CV Externe"
   },
   "card": {
     "openInStudio": "Voir & modifier dans le Studio",
@@ -125,6 +148,12 @@
     "multiVersionPrompt": "Vous avez {{count}} versions pour {{company}} — laquelle avez-vous envoyée ?",
     "singleVersionPrompt": "Version de CV associée :",
     "noVersionsFound": "Aucune version enregistrée trouvée pour cette entreprise. Veuillez d'abord adapter un CV.",
+    "cvSourceTitle": "Document de CV",
+    "sourceStudio": "CV Studio",
+    "sourceExternal": "CV Externe / Direct",
+    "externalCvDesc": "Suivez les candidatures directes ou contacts de recruteurs sans version issue de CV Studio.",
+    "externalCvTitleField": "Libellé ou source du document (Optionnel)",
+    "externalCvPlaceholder": "ex. Candidature LinkedIn, PDF Principal, Recommandation par e-mail",
     "initialColumn": "Étape Initiale",
     "salary": "Salaire / Budget (Optionnel)",
     "location": "Localisation / Politique Télétravail",
@@ -178,5 +207,8 @@
     "notes": "Notes supplémentaires",
     "notesPlaceholder": "Points clés, questions préparées...",
     "downloadIcs": "Télécharger l'événement (.ics)"
-  }
+  },
+  "deleteAppTitle": "Supprimer la candidature",
+  "deleteAppConfirm": "Êtes-vous sûr de vouloir supprimer {{company}} de votre suivi ? Cette action est irréversible.",
+  "appliedOn": "Postulé le"
 }

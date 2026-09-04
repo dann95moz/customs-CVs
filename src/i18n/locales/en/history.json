@@ -5,15 +5,25 @@
   "newApplication": "Tailor New CV",
   "searchPlaceholder": "Filter by company name or target role...",
   "actions": {
-    "trackApp": "Track Application"
+    "trackApp": "Track Application",
+    "manageStages": "Manage Stages",
+    "stagesShort": "Stages",
+    "openInStudio": "Open Studio",
+    "downloadPdf": "Download PDF",
+    "archive": "Archive Application"
   },
   "views": {
+    "grid": "Applications Grid",
+    "gridShort": "Grid",
     "board": "Active Board",
     "boardShort": "Board",
     "archived": "Archived",
     "archivedShort": "Archived",
     "allVersions": "CV Versions History",
     "versionsShort": "Versions"
+  },
+  "filter": {
+    "allStagesWithCount": "All Stages ({{count}})"
   },
   "stats": {
     "total": "Total Tailored CVs",
@@ -31,7 +41,9 @@
     "tech_test": "Technical Assessment",
     "offer": "Offer Received",
     "rejected": "Rejected",
-    "archived": "Archived"
+    "archived": "Archived",
+    "clickToChange": "Click to change stage",
+    "moveToStage": "Move to Stage"
   },
   "stages": {
     "applied": "Applied",
@@ -53,7 +65,18 @@
     "editTitle": "Edit Stage",
     "newTitle": "New Kanban Stage",
     "nameField": "Stage Name",
-    "colorTheme": "Accent Color"
+    "colorTheme": "Accent Color",
+    "preview": "Live Preview",
+    "defaultName": "Sample Stage"
+  },
+  "grid": {
+    "noMatchingApps": "No applications match your filter",
+    "noMatchingAppsDesc": "Try selecting a different stage filter or clear your search terms to see more applications.",
+    "clearFilters": "Reset Stage Filter"
+  },
+  "externalCv": {
+    "badge": "External CV",
+    "defaultTitle": "Direct Contact / External CV"
   },
   "card": {
     "openInStudio": "View & Edit in Studio",
@@ -125,6 +148,12 @@
     "multiVersionPrompt": "You have {{count}} versions for {{company}} — which one did you apply with?",
     "singleVersionPrompt": "Attached CV Version:",
     "noVersionsFound": "No saved resume versions found for this company. Please save or synthesize a CV first.",
+    "cvSourceTitle": "Resume / CV Document",
+    "sourceStudio": "Studio Resume",
+    "sourceExternal": "External / Direct CV",
+    "externalCvDesc": "Track direct submissions or recruiter contacts that did not use a tailored version from CV Studio.",
+    "externalCvTitleField": "Document Label or Source (Optional)",
+    "externalCvPlaceholder": "e.g. LinkedIn Quick Apply, Master PDF, Referral via Email",
     "initialColumn": "Initial Stage",
     "salary": "Salary / Budget (Optional)",
     "location": "Location / Remote Policy",
@@ -178,5 +207,8 @@
     "notes": "Additional Notes",
     "notesPlaceholder": "Key topics, questions to ask, requirements...",
     "downloadIcs": "Download Event (.ics)"
-  }
+  },
+  "deleteAppTitle": "Delete Application",
+  "deleteAppConfirm": "Are you sure you want to remove {{company}} from your application tracking? This cannot be undone.",
+  "appliedOn": "Applied"
 }

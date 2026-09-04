@@ -5,15 +5,25 @@
   "newApplication": "Adaptar Nuevo CV",
   "searchPlaceholder": "Filtrar por empresa o puesto objetivo...",
   "actions": {
-    "trackApp": "Marcar como Postulado"
+    "trackApp": "Registrar Candidatura",
+    "manageStages": "Gestionar Etapas",
+    "stagesShort": "Etapas",
+    "openInStudio": "Abrir en Studio",
+    "downloadPdf": "Descargar PDF",
+    "archive": "Archivar Candidatura"
   },
   "views": {
+    "grid": "Grid de Candidaturas",
+    "gridShort": "Grid",
     "board": "Tablero Activo",
     "boardShort": "Tablero",
     "archived": "Archivadas",
     "archivedShort": "Archivadas",
     "allVersions": "Historial de Versiones CV",
     "versionsShort": "Versiones"
+  },
+  "filter": {
+    "allStagesWithCount": "Todas las etapas ({{count}})"
   },
   "stats": {
     "total": "Total CVs Personalizados",
@@ -31,7 +41,9 @@
     "tech_test": "Prueba Técnica",
     "offer": "Oferta Recibida",
     "rejected": "Descartado",
-    "archived": "Archivado"
+    "archived": "Archivado",
+    "clickToChange": "Clic para cambiar etapa",
+    "moveToStage": "Mover a Etapa"
   },
   "stages": {
     "applied": "Postulado",
@@ -53,7 +65,18 @@
     "editTitle": "Editar Etapa",
     "newTitle": "Nueva Etapa Kanban",
     "nameField": "Nombre de la Etapa",
-    "colorTheme": "Color Distintivo"
+    "colorTheme": "Color Distintivo",
+    "preview": "Vista Previa",
+    "defaultName": "Etapa de Ejemplo"
+  },
+  "grid": {
+    "noMatchingApps": "Ninguna postulación coincide con el filtro",
+    "noMatchingAppsDesc": "Prueba seleccionando otra etapa o borra los términos de búsqueda.",
+    "clearFilters": "Restablecer Filtro de Etapa"
+  },
+  "externalCv": {
+    "badge": "CV Externo",
+    "defaultTitle": "Contacto Directo / CV Externo"
   },
   "card": {
     "openInStudio": "Ver y Editar en Studio",
@@ -125,6 +148,12 @@
     "multiVersionPrompt": "Tienes {{count}} versiones para {{company}} — ¿con cuál aplicaste?",
     "singleVersionPrompt": "Versión de CV Adjunta:",
     "noVersionsFound": "No se encontraron versiones de CV guardadas para esta empresa. Por favor genera o guarda un CV primero.",
+    "cvSourceTitle": "Documento de CV",
+    "sourceStudio": "CV de Studio",
+    "sourceExternal": "CV Externo / Directo",
+    "externalCvDesc": "Registra postulaciones directas o contactos de reclutadores que no usaron una versión generada en CV Studio.",
+    "externalCvTitleField": "Etiqueta o Fuente del Documento (Opcional)",
+    "externalCvPlaceholder": "ej. Postulación Rápida LinkedIn, PDF Maestro, Referencia por Email",
     "initialColumn": "Etapa Inicial",
     "salary": "Salario / Presupuesto (Opcional)",
     "location": "Ubicación / Modalidad de Trabajo",
@@ -178,5 +207,8 @@
     "notes": "Notas adicionales",
     "notesPlaceholder": "Temas clave a repasar, preguntas preparadas...",
     "downloadIcs": "Descargar Evento (.ics)"
-  }
+  },
+  "deleteAppTitle": "Eliminar Candidatura",
+  "deleteAppConfirm": "¿Estás seguro de que deseas eliminar {{company}} del seguimiento? Esta acción no se puede deshacer.",
+  "appliedOn": "Postulado"
 }

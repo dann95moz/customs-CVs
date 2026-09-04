@@ -5,15 +5,25 @@
   "newApplication": "Adatta Nuovo CV",
   "searchPlaceholder": "Filtra per azienda o ruolo target...",
   "actions": {
-    "trackApp": "Segna come Candidato"
+    "trackApp": "Segna come Candidato",
+    "manageStages": "Gestisci fasi",
+    "stagesShort": "Fasi",
+    "openInStudio": "Apri in Studio",
+    "downloadPdf": "Scarica PDF",
+    "archive": "Archivia candidatura"
   },
   "views": {
+    "grid": "Griglia Candidature",
+    "gridShort": "Griglia",
     "board": "Bacheca Attiva",
     "boardShort": "Bacheca",
     "archived": "Archiviate",
     "archivedShort": "Archiviate",
     "allVersions": "Cronologia Versioni CV",
     "versionsShort": "Versioni"
+  },
+  "filter": {
+    "allStagesWithCount": "Tutte le fasi ({{count}})"
   },
   "stats": {
     "total": "Totale CV Adattati",
@@ -31,7 +41,9 @@
     "tech_test": "Prova Tecnica",
     "offer": "Offerta Ricevuta",
     "rejected": "Rifiutato",
-    "archived": "Archiviato"
+    "archived": "Archiviato",
+    "clickToChange": "Clicca per cambiare fase",
+    "moveToStage": "Sposta alla fase"
   },
   "stages": {
     "applied": "Candidato",
@@ -53,7 +65,18 @@
     "editTitle": "Modifica Fase",
     "newTitle": "Nuova Fase Kanban",
     "nameField": "Nome della Fase",
-    "colorTheme": "Colore di Accento"
+    "colorTheme": "Colore di Accento",
+    "preview": "Anteprima",
+    "defaultName": "Fase di esempio"
+  },
+  "grid": {
+    "noMatchingApps": "Nessuna candidatura corrisponde al filtro",
+    "noMatchingAppsDesc": "Prova a selezionare una fase diversa o cancella i termini di ricerca.",
+    "clearFilters": "Reimposta filtro"
+  },
+  "externalCv": {
+    "badge": "CV Esterno",
+    "defaultTitle": "Contatto Diretto / CV Esterno"
   },
   "card": {
     "openInStudio": "Visualizza & Modifica in Studio",
@@ -125,6 +148,12 @@
     "multiVersionPrompt": "Hai {{count}} versioni per {{company}} — quale hai effettivamente inviato?",
     "singleVersionPrompt": "Versione CV collegata:",
     "noVersionsFound": "Nessuna versione salvata trovata per questa azienda. Crea prima un CV.",
+    "cvSourceTitle": "Documento CV",
+    "sourceStudio": "CV di Studio",
+    "sourceExternal": "CV Esterno / Diretto",
+    "externalCvDesc": "Monitora candidature dirette o contatti di recruiter che non hanno usato una versione di CV Studio.",
+    "externalCvTitleField": "Etichetta o fonte del documento (Opzionale)",
+    "externalCvPlaceholder": "es. Candidatura rapida LinkedIn, PDF Master, Referenza via email",
     "initialColumn": "Fase Iniziale",
     "salary": "Stipendio / Budget (Opzionale)",
     "location": "Sede / Politica da Remoto",
@@ -178,5 +207,8 @@
     "notes": "Note aggiuntive",
     "notesPlaceholder": "Argomenti chiave, domande preparate...",
     "downloadIcs": "Scarica Evento (.ics)"
-  }
+  },
+  "deleteAppTitle": "Elimina candidatura",
+  "deleteAppConfirm": "Sei sicuro di voler rimuovere {{company}} dal tracciamento? Questa operazione non può essere annullata.",
+  "appliedOn": "Candidato il"
 }
