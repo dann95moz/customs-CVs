@@ -6,8 +6,6 @@ import {
   Typography,
   Tabs,
   Tab,
-  Button,
-  ButtonGroup,
   IconButton,
   Tooltip,
   Chip,
@@ -15,33 +13,37 @@ import {
   alpha,
 } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
-import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { useThemeMode } from '../../theme/ThemeContext';
-import { useResumeStore } from '../../store';
+import { useNavbarWorkflow } from '../../hooks/useNavbarWorkflow';
 import { StudioTab } from '../../types/cv';
 import { Icon } from '../Icons';
 import { APP_LINKS } from '../../constants/links';
 import { LanguageSelector } from './LanguageSelector';
 import { useTranslation } from 'react-i18next';
 
-export const StudioNavbar: React.FC = () => {
+export interface StudioNavbarProps {
+  activeTab?: StudioTab;
+  onSelectTab?: (tab: StudioTab) => void;
+  badgeCount?: number;
+}
+
+export const StudioNavbar: React.FC<StudioNavbarProps> = ({
+  activeTab: controlledTab,
+  onSelectTab: controlledOnSelectTab,
+  badgeCount: controlledBadgeCount,
+}) => {
   const { mode, toggleThemeMode } = useThemeMode();
   const { t } = useTranslation('common');
   const muiTheme = useTheme();
-  const isDark = muiTheme.palette.mode === 'dark';
 
-  const activeTab = useResumeStore((s) => s.activeTab);
-  const setActiveTab = useResumeStore((s) => s.setActiveTab);
-  const activeApplicationsCount = useResumeStore((s) => (s.applications || []).filter((a) => !a.isArchived).length);
-  const savedVersionsCount = useResumeStore((s) => s.savedVersions.length);
-  const displayBadgeCount = activeApplicationsCount > 0 ? activeApplicationsCount : savedVersionsCount;
+  const workflow = useNavbarWorkflow();
+  const activeTab = controlledTab !== undefined ? controlledTab : workflow.activeTab;
+  const setActiveTab = controlledOnSelectTab || workflow.handleSelectTab;
+  const displayBadgeCount = controlledBadgeCount !== undefined ? controlledBadgeCount : workflow.displayBadgeCount;
 
 
   return (

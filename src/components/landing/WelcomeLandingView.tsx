@@ -16,31 +16,31 @@ import SpeedRoundedIcon from '@mui/icons-material/SpeedRounded';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { useTranslation } from 'react-i18next';
-import { useResumeStore } from '../../store';
 import { useFileUploader } from '../../hooks/useFileUploader';
+import { useWelcomeLandingWorkflow } from '../../hooks/useWelcomeLandingWorkflow';
 import { APP_LINKS } from '../../constants/links';
 
 export interface WelcomeLandingViewProps {
   onStart?: () => void;
   onExploreDemo?: () => void;
+  onFileLoaded?: (content: string) => void;
 }
 
 export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
   onStart,
   onExploreDemo,
+  onFileLoaded,
 }) => {
   const { t } = useTranslation(['landing', 'common', 'profile']);
-  const handleStartWizard = useResumeStore((s) => s.handleStartWizard);
-  const handleExploreDemo = useResumeStore((s) => s.handleExploreDemo);
-  const setMasterData = useResumeStore((s) => s.setMasterData);
-  const setActiveTab = useResumeStore((s) => s.setActiveTab);
-  const setWizardStep = useResumeStore((s) => s.setWizardStep);
+  const workflow = useWelcomeLandingWorkflow();
 
   const { fileInputRef, isProcessing, handleFileUpload, openFileDialog } = useFileUploader({
     onFileLoaded: (content) => {
-      setMasterData(content);
-      setActiveTab('wizard');
-      setWizardStep('profile');
+      if (onFileLoaded) {
+        onFileLoaded(content);
+      } else {
+        workflow.handleUploadSuccess(content);
+      }
     },
   });
 
@@ -48,7 +48,7 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
     if (onStart) {
       onStart();
     } else {
-      handleStartWizard();
+      workflow.handleStartWizard();
     }
   };
 
@@ -56,7 +56,7 @@ export const WelcomeLandingView: React.FC<WelcomeLandingViewProps> = ({
     if (onExploreDemo) {
       onExploreDemo();
     } else {
-      handleExploreDemo();
+      workflow.handleExploreDemo();
     }
   };
 

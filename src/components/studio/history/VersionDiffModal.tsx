@@ -12,8 +12,6 @@ import {
   MenuItem,
   Chip,
   IconButton,
-  Tooltip,
-  Paper,
   Snackbar,
   FormControl,
   InputLabel,
@@ -23,15 +21,14 @@ import {
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CompareArrowsRoundedIcon from '@mui/icons-material/CompareArrowsRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import DifferenceRoundedIcon from '@mui/icons-material/DifferenceRounded';
 import ViewColumnRoundedIcon from '@mui/icons-material/ViewColumnRounded';
 import ViewAgendaRoundedIcon from '@mui/icons-material/ViewAgendaRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { useTranslation } from 'react-i18next';
-import { useResumeStore } from '../../../store';
 import { computeLineDiff } from '../../../utils/diffUtils';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
+import { useVersionDiffWorkflow } from '../../../hooks/useVersionDiffWorkflow';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
 
 export interface VersionDiffModalProps {
@@ -51,11 +48,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
-  const masterData = useResumeStore((s) => s.masterData);
-  const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
-  const savedVersions = useResumeStore((s) => s.savedVersions || []);
-  const handleLoadVersion = useResumeStore((s) => s.handleLoadVersion);
-  const setWizardStep = useResumeStore((s) => s.setWizardStep);
+  const { masterData, cvMarkdown, savedVersions, applyVersion } = useVersionDiffWorkflow();
 
   const [versionAId, setVersionAId] = useState<string>(() => initialVersionAId || 'master');
   const [versionBId, setVersionBId] = useState<string>(() => {
@@ -116,12 +109,7 @@ export const VersionDiffModal: React.FC<VersionDiffModalProps> = ({
   };
 
   const handleLoadVersionB = () => {
-    if (versionBId === 'master') {
-      useResumeStore.getState().setCvMarkdown(masterData);
-    } else if (versionBId !== 'current') {
-      handleLoadVersion(versionBId);
-    }
-    setWizardStep('preview');
+    applyVersion(versionBId);
     onClose();
   };
 
