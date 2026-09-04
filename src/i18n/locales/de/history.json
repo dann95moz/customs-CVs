@@ -85,7 +85,18 @@
     "outdated": "Veraltet",
     "translateInStudio": "+ In Studio übersetzen..."
   },
+  "channels": {
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "email": "Direkte E-Mail",
+    "referral": "Mitarbeiterempfehlung",
+    "headhunter": "Headhunter / Agentur",
+    "portal": "Karriereportal / Website",
+    "direct": "Direktansprache",
+    "other": "Anderer Kanal"
+  },
   "card": {
+    "tailorCvForApp": "✨ CV im Studio anpassen",
     "openInStudio": "Im Studio anzeigen & bearbeiten",
     "exportPdf": "PDF exportieren",
     "viewGap": "Gap-Analyse anzeigen",
@@ -150,7 +161,11 @@
   },
   "trackModal": {
     "title": "Bewerbung verfolgen",
+    "titleExternal": "Direkte / Externe Bewerbung erfassen",
     "subtitle": "Verknüpfen Sie eine maßgeschneiderte CV-Version mit Ihrem Kanban-Board",
+    "subtitleExternal": "Erfassen Sie Direktkontakte, Recruiter-Nachrichten oder externe Einreichungen",
+    "companyPlaceholder": "z. B. Acme Corp, Google, Siemens",
+    "rolePlaceholder": "z. B. Senior Frontend Engineer",
     "duplicateWarning": "Sie haben bereits eine aktive Bewerbung bei {{company}} für die Position {{role}}. Es wird eine neue Karte angelegt.",
     "multiVersionPrompt": "Sie haben {{count}} Versionen für {{company}} — mit welcher haben Sie sich beworben?",
     "singleVersionPrompt": "Angehängte CV-Version:",
@@ -159,8 +174,12 @@
     "sourceStudio": "Studio-Lebenslauf",
     "sourceExternal": "Externer / Direkter Lebenslauf",
     "externalCvDesc": "Verfolgen Sie Direktbewerbungen oder Recruiter-Kontakte ohne CV Studio-Version.",
-    "externalCvTitleField": "Dokumentenbezeichnung oder Quelle (Optional)",
+    "contactChannel": "Kontaktkanal / Quelle",
+    "contactPerson": "Recruiter / Ansprechpartner (Optional)",
+    "contactPersonPlaceholder": "z. B. John Doe, Sarah HR",
+    "externalCvTitleField": "Dokumentenbezeichnung oder gesendeter CV (Optional)",
     "externalCvPlaceholder": "z. B. LinkedIn-Bewerbung, Master-PDF, Empfehlung per E-Mail",
+    "jobUrlField": "Stellenanzeigen-Link oder Chat-URL (Optional)",
     "initialColumn": "Startphase",
     "salary": "Gehalt / Budget (Optional)",
     "location": "Standort / Remote-Regelung",
@@ -179,7 +198,8 @@
   "empty": {
     "title": "Noch keine Bewerbungen erfasst",
     "desc": "Erstellen oder speichern Sie einen CV im Studio und klicken Sie auf \"Als beworben markieren\", um Ihre Pipeline zu organisieren.",
-    "action": "Neue Bewerbung starten"
+    "action": "Neue Bewerbung starten",
+    "actionDirect": "+ Direktprozess erfassen"
   },
   "emptyBoardWithVersions": {
     "title": "Sie haben {{count}} angepassten CV bereit zur Verfolgung",

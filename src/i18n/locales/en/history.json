@@ -85,7 +85,18 @@
     "outdated": "Outdated",
     "translateInStudio": "+ Translate in Studio..."
   },
+  "channels": {
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "email": "Direct Email",
+    "referral": "Employee Referral",
+    "headhunter": "Headhunter / Agency",
+    "portal": "Career Site / Portal",
+    "direct": "Direct Outreach",
+    "other": "Other Channel"
+  },
   "card": {
+    "tailorCvForApp": "✨ Tailor CV in Studio",
     "openInStudio": "View & Edit in Studio",
     "exportPdf": "Export PDF",
     "viewGap": "View Gap Report",
@@ -150,7 +161,11 @@
   },
   "trackModal": {
     "title": "Track Job Application",
+    "titleExternal": "Track Direct / External Application",
     "subtitle": "Link a tailored CV version to your Kanban board",
+    "subtitleExternal": "Track direct contacts, recruiter messages, or non-tailored submissions",
+    "companyPlaceholder": "e.g. Acme Corp, Google, Globant",
+    "rolePlaceholder": "e.g. Senior Frontend Engineer",
     "duplicateWarning": "You already have an active application with {{company}} for {{role}}. A new tracking card will be created alongside it.",
     "multiVersionPrompt": "You have {{count}} versions for {{company}} — which one did you apply with?",
     "singleVersionPrompt": "Attached CV Version:",
@@ -159,8 +174,12 @@
     "sourceStudio": "Studio Resume",
     "sourceExternal": "External / Direct CV",
     "externalCvDesc": "Track direct submissions or recruiter contacts that did not use a tailored version from CV Studio.",
-    "externalCvTitleField": "Document Label or Source (Optional)",
+    "contactChannel": "Contact Channel / Source",
+    "contactPerson": "Recruiter / Contact Person (Optional)",
+    "contactPersonPlaceholder": "e.g. John Doe, Sarah HR",
+    "externalCvTitleField": "Document Label or Sent CV (Optional)",
     "externalCvPlaceholder": "e.g. LinkedIn Quick Apply, Master PDF, Referral via Email",
+    "jobUrlField": "Job Link or Chat URL (Optional)",
     "initialColumn": "Initial Stage",
     "salary": "Salary / Budget (Optional)",
     "location": "Location / Remote Policy",
@@ -179,7 +198,8 @@
   "empty": {
     "title": "No Applications Tracked Yet",
     "desc": "Synthesize or save a tailored resume in Resume Studio, then click \"Track Application\" to organize your recruitment pipeline on the Kanban board.",
-    "action": "Start New Application"
+    "action": "Start New Application",
+    "actionDirect": "+ Track Direct Process"
   },
   "emptyBoardWithVersions": {
     "title": "You have {{count}} tailored CV ready to track",

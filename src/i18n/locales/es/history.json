@@ -85,7 +85,18 @@
     "outdated": "Desactualizado",
     "translateInStudio": "+ Traducir en Studio..."
   },
+  "channels": {
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "email": "Email Directo",
+    "referral": "Recomendación de Empleado",
+    "headhunter": "Headhunter / Agencia",
+    "portal": "Portal de Empleo / Web",
+    "direct": "Contacto Directo",
+    "other": "Otro Canal"
+  },
   "card": {
+    "tailorCvForApp": "✨ Adaptar CV en Studio",
     "openInStudio": "Ver y Editar en Studio",
     "exportPdf": "Exportar PDF",
     "viewGap": "Ver Reporte de Brechas",
@@ -150,7 +161,11 @@
   },
   "trackModal": {
     "title": "Seguimiento de Postulación",
+    "titleExternal": "Registrar Candidatura Directa / Externa",
     "subtitle": "Vincula una versión de CV adaptada a tu tablero Kanban",
+    "subtitleExternal": "Haz seguimiento de contactos directos, mensajes de reclutadores o postulaciones externas",
+    "companyPlaceholder": "ej. Acme Corp, Google, Globant",
+    "rolePlaceholder": "ej. Senior Frontend Engineer",
     "duplicateWarning": "Ya tienes una postulación activa con {{company}} para el puesto {{role}}. Se creará una nueva tarjeta de seguimiento de forma complementaria.",
     "multiVersionPrompt": "Tienes {{count}} versiones para {{company}} — ¿con cuál aplicaste?",
     "singleVersionPrompt": "Versión de CV Adjunta:",
@@ -159,8 +174,12 @@
     "sourceStudio": "CV de Studio",
     "sourceExternal": "CV Externo / Directo",
     "externalCvDesc": "Registra postulaciones directas o contactos de reclutadores que no usaron una versión generada en CV Studio.",
-    "externalCvTitleField": "Etiqueta o Fuente del Documento (Opcional)",
+    "contactChannel": "Canal de Contacto / Fuente",
+    "contactPerson": "Reclutador / Persona de Contacto (Opcional)",
+    "contactPersonPlaceholder": "ej. Juan Pérez, Sara HR",
+    "externalCvTitleField": "Etiqueta o CV Enviado (Opcional)",
     "externalCvPlaceholder": "ej. Postulación Rápida LinkedIn, PDF Maestro, Referencia por Email",
+    "jobUrlField": "Enlace a la Oferta o Chat (Opcional)",
     "initialColumn": "Etapa Inicial",
     "salary": "Salario / Presupuesto (Opcional)",
     "location": "Ubicación / Modalidad de Trabajo",
@@ -179,7 +198,8 @@
   "empty": {
     "title": "Aún No Hay Candidaturas en Seguimiento",
     "desc": "Genera o guarda un CV adaptado en Resume Studio y haz clic en \"Marcar como postulado\" para organizar tu proceso de selección en el tablero Kanban.",
-    "action": "Iniciar Nueva Candidatura"
+    "action": "Iniciar Nueva Candidatura",
+    "actionDirect": "+ Registrar Proceso Directo"
   },
   "emptyBoardWithVersions": {
     "title": "Tienes {{count}} CV adaptado listo para seguimiento",

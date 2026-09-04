@@ -85,7 +85,18 @@
     "outdated": "Obsolète",
     "translateInStudio": "+ Traduire dans Studio..."
   },
+  "channels": {
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "email": "E-mail Direct",
+    "referral": "Recommandation d'employé",
+    "headhunter": "Chasseur de têtes / Cabinet",
+    "portal": "Site Carrière / Portail",
+    "direct": "Contact Direct",
+    "other": "Autre Canal"
+  },
   "card": {
+    "tailorCvForApp": "✨ Adapter le CV dans Studio",
     "openInStudio": "Voir & modifier dans le Studio",
     "exportPdf": "Exporter en PDF",
     "viewGap": "Voir le rapport d'adéquation",
@@ -150,7 +161,11 @@
   },
   "trackModal": {
     "title": "Suivre la Candidature",
+    "titleExternal": "Suivre une Candidature Directe / Externe",
     "subtitle": "Associez une version de CV spécifique à votre tableau Kanban",
+    "subtitleExternal": "Suivez les contacts directs, messages de recruteurs ou candidatures externes",
+    "companyPlaceholder": "ex. Acme Corp, Google, Capgemini",
+    "rolePlaceholder": "ex. Senior Frontend Engineer",
     "duplicateWarning": "Vous avez déjà une candidature active chez {{company}} pour le poste de {{role}}. Une nouvelle carte sera créée.",
     "multiVersionPrompt": "Vous avez {{count}} versions pour {{company}} — laquelle avez-vous envoyée ?",
     "singleVersionPrompt": "Version de CV associée :",
@@ -159,8 +174,12 @@
     "sourceStudio": "CV Studio",
     "sourceExternal": "CV Externe / Direct",
     "externalCvDesc": "Suivez les candidatures directes ou contacts de recruteurs sans version issue de CV Studio.",
-    "externalCvTitleField": "Libellé ou source du document (Optionnel)",
+    "contactChannel": "Canal de Contact / Source",
+    "contactPerson": "Recruteur / Personne de Contact (Optionnel)",
+    "contactPersonPlaceholder": "ex. Jean Dupont, Sophie RH",
+    "externalCvTitleField": "Libellé ou CV Envoyé (Optionnel)",
     "externalCvPlaceholder": "ex. Candidature LinkedIn, PDF Principal, Recommandation par e-mail",
+    "jobUrlField": "Lien de l'offre ou URL de discussion (Optionnel)",
     "initialColumn": "Étape Initiale",
     "salary": "Salaire / Budget (Optionnel)",
     "location": "Localisation / Politique Télétravail",
@@ -179,7 +198,8 @@
   "empty": {
     "title": "Aucune candidature suivie pour l'instant",
     "desc": "Créez ou sauvegardez un CV dans le Studio, puis cliquez sur \"Marquer comme postulé\" pour organiser votre pipeline sur le tableau Kanban.",
-    "action": "Démarrer une nouvelle candidature"
+    "action": "Démarrer une nouvelle candidature",
+    "actionDirect": "+ Suivre un Processus Direct"
   },
   "emptyBoardWithVersions": {
     "title": "Vous avez {{count}} CV prêt à être suivi",

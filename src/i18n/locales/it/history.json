@@ -85,7 +85,18 @@
     "outdated": "Non aggiornato",
     "translateInStudio": "+ Traduci in Studio..."
   },
+  "channels": {
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "email": "Email Diretta",
+    "referral": "Segnalazione Interna",
+    "headhunter": "Headhunter / Agenzia",
+    "portal": "Portale Lavoro / Sito Web",
+    "direct": "Contatto Diretto",
+    "other": "Altro Canale"
+  },
   "card": {
+    "tailorCvForApp": "✨ Adatta CV in Studio",
     "openInStudio": "Visualizza & Modifica in Studio",
     "exportPdf": "Esporta in PDF",
     "viewGap": "Visualizza Report Gap",
@@ -150,7 +161,11 @@
   },
   "trackModal": {
     "title": "Monitora Candidatura",
+    "titleExternal": "Monitora Candidatura Diretta / Esterna",
     "subtitle": "Collega una specifica versione di CV alla tua bacheca Kanban",
+    "subtitleExternal": "Monitora contatti diretti, messaggi di recruiter o candidature esterne",
+    "companyPlaceholder": "es. Acme Corp, Google, Reply",
+    "rolePlaceholder": "es. Senior Frontend Engineer",
     "duplicateWarning": "Hai già una candidatura attiva presso {{company}} per il ruolo {{role}}. Verrà creata una nuova scheda.",
     "multiVersionPrompt": "Hai {{count}} versioni per {{company}} — quale hai effettivamente inviato?",
     "singleVersionPrompt": "Versione CV collegata:",
@@ -159,8 +174,12 @@
     "sourceStudio": "CV di Studio",
     "sourceExternal": "CV Esterno / Diretto",
     "externalCvDesc": "Monitora candidature dirette o contatti di recruiter che non hanno usato una versione di CV Studio.",
-    "externalCvTitleField": "Etichetta o fonte del documento (Opzionale)",
+    "contactChannel": "Canale di Contatto / Fonte",
+    "contactPerson": "Recruiter / Referente (Opzionale)",
+    "contactPersonPlaceholder": "es. Mario Rossi, Sara HR",
+    "externalCvTitleField": "Etichetta o CV Inviato (Opzionale)",
     "externalCvPlaceholder": "es. Candidatura rapida LinkedIn, PDF Master, Referenza via email",
+    "jobUrlField": "Link offerta o URL chat (Opzionale)",
     "initialColumn": "Fase Iniziale",
     "salary": "Stipendio / Budget (Opzionale)",
     "location": "Sede / Politica da Remoto",
@@ -179,7 +198,8 @@
   "empty": {
     "title": "Nessuna candidatura monitorata",
     "desc": "Crea o salva un CV in Resume Studio e clicca \"Segna come Candidato\" per organizzare la tua pipeline sulla bacheca Kanban.",
-    "action": "Inizia Nuova Candidatura"
+    "action": "Inizia Nuova Candidatura",
+    "actionDirect": "+ Monitora Processo Diretto"
   },
   "emptyBoardWithVersions": {
     "title": "Hai {{count}} CV pronto per il monitoraggio",
