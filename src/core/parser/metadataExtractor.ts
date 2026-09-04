@@ -223,8 +223,18 @@ export function extractSummaryExcerpt(cvMarkdown?: string): string {
 }
 
 /**
+ * Multilingual regex matching match score across 5 supported locales (EN, ES, DE, FR, IT).
+ */
+export const MULTILINGUAL_MATCH_SCORE_REGEX = /(?:Estimated Match Score|Puntuación Estimada|Geschätzter Match-Score|Score de Correspondance|Punteggio di Corrispondenza):\*{0,2}\s*(\d{1,3})/i;
+
+/**
+ * Multilingual regex matching critical integrated keywords across 5 supported locales (EN, ES, DE, FR, IT).
+ */
+export const MULTILINGUAL_KEYWORDS_REGEX = /(?:Critical Integrated Keywords|Palabras Clave Críticas Integradas|Integrierte kritische Schlüsselwörter|Mots-clés Critiques Intégrés|Parole Chiave Critiche Integrate):\*{0,2}\s*\[?([^\]\r\n]+)\]?/i;
+
+/**
  * Extracts match score and critical keywords from Gap Analysis Markdown text (DRY & Single Responsibility).
- * Includes intelligent keyword extraction without hardcoding software-specific frameworks.
+ * Supports multilingual reports across all 5 locales and includes intelligent keyword extraction without hardcoded frameworks.
  */
 export function extractGapInfo(
   gapMarkdown: string,
@@ -232,7 +242,7 @@ export function extractGapInfo(
 ): { matchScore: number; keywords: string[] } {
   let matchScore = 0;
   if (gapMarkdown) {
-    const scoreMatch = gapMarkdown.match(/Estimated Match Score:\*{0,2}\s*(\d{1,3})/i);
+    const scoreMatch = gapMarkdown.match(MULTILINGUAL_MATCH_SCORE_REGEX);
     if (scoreMatch) {
       const parsed = parseInt(scoreMatch[1], 10);
       if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
@@ -244,7 +254,7 @@ export function extractGapInfo(
   let keywords: string[] = [];
 
   if (gapMarkdown) {
-    const kwMatch = gapMarkdown.match(/Critical Integrated Keywords:\*{0,2}\s*\[?([^\]\r\n]+)\]?/i);
+    const kwMatch = gapMarkdown.match(MULTILINGUAL_KEYWORDS_REGEX);
     if (kwMatch) {
       keywords = kwMatch[1]
         .split(/[,|•·;]/)

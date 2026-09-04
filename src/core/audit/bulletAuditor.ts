@@ -23,11 +23,11 @@ export const auditSingleBullet = (text: string): BulletAuditIssue | null => {
     return {
       type: 'too_short',
       titleKey: 'preview:bulletAudit.tooShortTitle',
-      defaultTitle: 'Bullet demasiado breve',
+      defaultTitle: 'Bullet point is very brief',
       descKey: 'preview:bulletAudit.tooShortDesc',
-      defaultDesc: 'Las viñetas muy cortas carecen del contexto de negocio necesario para los reclutadores.',
+      defaultDesc: 'Very short bullet points lack the business scope and context recruiters scan for.',
       suggestionKey: 'preview:bulletAudit.tooShortSuggestion',
-      defaultSuggestion: 'Desarrolla el alcance de la tarea y qué herramientas utilizaste.',
+      defaultSuggestion: 'Expand on the task scope and what tools or technologies you used.',
     };
   }
 
@@ -36,11 +36,11 @@ export const auditSingleBullet = (text: string): BulletAuditIssue | null => {
     return {
       type: 'missing_metric',
       titleKey: 'preview:bulletAudit.missingMetricTitle',
-      defaultTitle: 'Falta métrica de resultado (Fórmula XYZ)',
+      defaultTitle: 'Missing quantifiable outcome (XYZ formula)',
       descKey: 'preview:bulletAudit.missingMetricDesc',
-      defaultDesc: 'Este bullet describe responsabilidades pero no incluye un resultado medible (números, %, tiempo o dinero).',
+      defaultDesc: 'This bullet describes responsibilities but lacks a measurable result (numbers, %, time, or money).',
       suggestionKey: 'preview:bulletAudit.missingMetricSuggestion',
-      defaultSuggestion: 'Cuantifica el impacto: ¿cuánto mejoró el rendimiento, qué % de ahorro se logró o cuántos usuarios impactó?',
+      defaultSuggestion: 'Quantify impact: how much did performance improve, what % savings was achieved, or how many users were impacted?',
     };
   }
 

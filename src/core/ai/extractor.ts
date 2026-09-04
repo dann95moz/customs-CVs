@@ -1,4 +1,9 @@
 import { restoreOriginalHeader } from './privacy-guard';
+import {
+  MULTILINGUAL_MATCH_SCORE_REGEX,
+  MULTILINGUAL_KEYWORDS_REGEX
+} from '../parser/metadataExtractor';
+import { extractJobKeywords } from '../matching/quickMatcher';
 
 export interface ExtractedCvAndGap {
   cvMarkdown: string;
@@ -50,22 +55,29 @@ export function extractCvAndGap(
   // Restore candidate real header deterministically (name, target role, contacts)
   cvContent = restoreOriginalHeader(cvContent, masterData, targetRole);
 
-  // Extract Match Score (supports multilingual label matching)
-  let score = 90;
-  const scoreMatch = (gapContent || rawText).match(/(?:Estimated Match Score|Puntuación Estimada|Geschätzter Match-Score|Score de Correspondance|Punteggio di Corrispondenza):\*{0,2}\s*(\d{1,3})/i);
+  // Extract Match Score (supports multilingual label matching; defaults to 0 if unparsed, per anti-patterns rules)
+  let score = 0;
+  const scoreMatch = (gapContent || rawText).match(MULTILINGUAL_MATCH_SCORE_REGEX);
   if (scoreMatch) {
-    score = Math.min(100, Math.max(50, parseInt(scoreMatch[1], 10)));
+    const parsed = parseInt(scoreMatch[1], 10);
+    if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
+      score = parsed;
+    }
   }
 
   // Extract Keywords (supports multilingual label matching)
   let keywords: string[] = [];
-  const kwMatch = (gapContent || rawText).match(/(?:Critical Integrated Keywords|Palabras Clave Críticas Integradas|Integrierte kritische Schlüsselwörter|Mots-clés Critiques Intégrés|Parole Chiave Critiche Integrate):\*{0,2}\s*\[?([^\]\r\n]+)\]?/i);
+  const kwMatch = (gapContent || rawText).match(MULTILINGUAL_KEYWORDS_REGEX);
   if (kwMatch) {
-    keywords = kwMatch[1].split(/[,|•]/).map(k => k.trim()).filter(Boolean);
+    keywords = kwMatch[1]
+      .split(/[,|•·;]/)
+      .map(k => k.replace(/[*_`\[\]]/g, '').trim())
+      .filter(Boolean);
   }
 
+  // Fallback: extract domain keywords from actual response text if gap block didn't contain explicit list
   if (keywords.length === 0) {
-    keywords = ['TypeScript', 'React', 'Component Architecture', 'CI/CD', 'State Management', 'Performance Optimization'];
+    keywords = extractJobKeywords(gapContent || rawText).slice(0, 6);
   }
 
   return {

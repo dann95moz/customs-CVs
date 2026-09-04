@@ -134,7 +134,10 @@ export function restoreOriginalHeader(
         !c.label.includes('[Email') &&
         !c.label.includes('[Phone')
       ) {
-        basicContacts.push(c.label);
+        const cleanLabel = c.label.replace(/\\/g, '').trim();
+        if (cleanLabel) {
+          basicContacts.push(cleanLabel);
+        }
       }
     } else if (
       c.url &&
@@ -143,7 +146,7 @@ export function restoreOriginalHeader(
       !c.url.includes('...') &&
       !c.url.includes('[')
     ) {
-      let displayLabel = c.label;
+      let displayLabel = (c.label || '').replace(/\\/g, '').trim();
       if (c.type === 'linkedin') displayLabel = 'LinkedIn';
       else if (c.type === 'github') displayLabel = 'GitHub';
       else if (c.type === 'globe') displayLabel = 'Portfolio';
