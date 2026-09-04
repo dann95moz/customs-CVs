@@ -113,6 +113,8 @@
       "degreePlaceholder": "ej. Ingeniería de Sistemas",
       "institutionPlaceholder": "ej. Universidad Nacional / Udemy",
       "yearPlaceholder": "ej. 2018 – 2022",
+      "description": "Descripción / Logros clave (opcional)",
+      "descriptionPlaceholder": "ej. Diseñé y desarrollé aplicaciones web responsivas con React, Redux, OAuth y Firebase...",
       "location": "Ubicación (opcional)",
       "edit": "Editar",
       "cancel": "Cancelar",

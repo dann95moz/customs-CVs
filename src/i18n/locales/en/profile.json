@@ -113,6 +113,8 @@
       "degreePlaceholder": "e.g. B.S. in Computer Science",
       "institutionPlaceholder": "e.g. UC Berkeley / Udemy",
       "yearPlaceholder": "e.g. 2018 – 2022",
+      "description": "Description / Key Achievements (optional)",
+      "descriptionPlaceholder": "e.g. Designed and developed responsive web applications with React, Redux, OAuth, and Firebase...",
       "location": "Location (optional)",
       "edit": "Edit",
       "cancel": "Cancel",

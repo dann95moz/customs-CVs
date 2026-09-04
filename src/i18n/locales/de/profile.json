@@ -113,6 +113,8 @@
       "degreePlaceholder": "z.B. B.Sc. Informatik",
       "institutionPlaceholder": "z.B. TU München / Udemy",
       "yearPlaceholder": "z.B. 2018 – 2022",
+      "description": "Beschreibung / Wichtigste Erfolge (optional)",
+      "descriptionPlaceholder": "z.B. Konzeption und Entwicklung responsiver Webanwendungen mit React, Redux, OAuth und Firebase...",
       "location": "Ort (optional)",
       "edit": "Bearbeiten",
       "cancel": "Abbrechen",

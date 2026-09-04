@@ -29,16 +29,26 @@ export interface StructuredEducationItem {
   degree: string;
   institution: string;
   year: string;
+  description?: string;
 }
 
 /**
- * Robust parser to decompose a Markdown education string into 3 structured entities:
+ * Robust parser to decompose a Markdown education string into structured entities:
  * 1. degree (Título o Grado)
  * 2. institution (Universidad, Escuela o Emisor)
  * 3. year (Año o rango de años, ej. 2018 – 2022 o 2024)
+ * 4. description (Viñeta o descripción adicional de logros)
  */
 export function parseEducationString(raw: string): StructuredEducationItem {
-  let clean = (raw || '').trim().replace(/^(?:[-•·]|\*(?!\*))\s*/, '').trim();
+  const lines = (raw || '').split(/\r?\n/);
+  const mainLine = lines[0] || '';
+  const descLines = lines
+    .slice(1)
+    .map((l) => l.replace(/^\s*[-*•·]\s*/, '').trim())
+    .filter(Boolean);
+  const description = descLines.join('\n');
+
+  let clean = mainLine.trim().replace(/^(?:[-•·]|\*(?!\*))\s*/, '').trim();
 
   // 1. Extract year / date range at the end: (2014 – 2020), 2024, 2018 - 2022, etc.
   let year = '';
@@ -79,7 +89,8 @@ export function parseEducationString(raw: string): StructuredEducationItem {
   return {
     degree: cleanDegree,
     institution: cleanInstitution,
-    year: year.trim()
+    year: year.trim(),
+    description: description || undefined
   };
 }
 
@@ -98,6 +109,15 @@ export function formatEducationString(item: StructuredEducationItem): string {
   if (yearClean) {
     formatted += ` (${yearClean})`;
   }
+  if (item.description && item.description.trim()) {
+    const descLines = item.description
+      .split(/\r?\n/)
+      .map((l) => l.replace(/^\s*[-*•·]\s*/, '').trim())
+      .filter(Boolean);
+    for (const descLine of descLines) {
+      formatted += `\n  - ${descLine}`;
+    }
+  }
   return formatted;
 }
 
@@ -115,6 +135,7 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
   const [degreeField, setDegreeField] = useState('');
   const [institutionField, setInstitutionField] = useState('');
   const [yearField, setYearField] = useState('');
+  const [descriptionField, setDescriptionField] = useState('');
   const [showAll, setShowAll] = useState(false);
 
   const handleStartEdit = (idx: number, rawEdu: string) => {
@@ -123,6 +144,7 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
     setDegreeField(parsed.degree);
     setInstitutionField(parsed.institution);
     setYearField(parsed.year);
+    setDescriptionField(parsed.description || '');
   };
 
   const handleSaveEdit = (idx: number) => {
@@ -134,7 +156,8 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
     const formatted = formatEducationString({
       degree: degreeField,
       institution: institutionField,
-      year: yearField
+      year: yearField,
+      description: descriptionField.trim() || undefined
     });
 
     onUpdateEducation(idx, formatted);
@@ -152,6 +175,7 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
     setDegreeField('Nuevo Título / Certificación');
     setInstitutionField('Institución / Universidad');
     setYearField('2024');
+    setDescriptionField('');
   };
 
   // Limit display to 8 items by default if there are many entries
@@ -246,6 +270,19 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
                     />
                   </Box>
 
+                  {/* Optional Description / Achievements */}
+                  <TextField
+                    size="small"
+                    fullWidth
+                    multiline
+                    minRows={2}
+                    maxRows={4}
+                    label={t('profile:sections.education.description', 'Descripción / Logros (Opcional)')}
+                    placeholder={t('profile:sections.education.descriptionPlaceholder', 'ej. Diseñé y desarrollé aplicaciones web responsivas...')}
+                    value={descriptionField}
+                    onChange={(e) => setDescriptionField(e.target.value)}
+                  />
+
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 0.5 }}>
                     <Button
                       size="small"
@@ -275,8 +312,8 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
                 key={idx}
                 sx={{
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
+                  flexDirection: 'column',
+                  gap: 0.75,
                   p: 1.25,
                   px: 1.75,
                   borderRadius: 1.5,
@@ -288,59 +325,77 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
                   transition: 'background-color 0.15s ease-in-out'
                 }}
               >
-                <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, flexWrap: 'wrap', overflow: 'hidden', pr: 1 }}>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: 700,
-                      fontSize: '0.88rem',
-                      color: 'text.primary'
-                    }}
-                  >
-                    {parsed.degree}
-                  </Typography>
-
-                  {parsed.institution && (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, flexWrap: 'wrap', overflow: 'hidden', pr: 1 }}>
                     <Typography
                       variant="body2"
                       sx={{
-                        fontWeight: 500,
-                        fontSize: '0.84rem',
-                        color: 'text.secondary'
+                        fontWeight: 700,
+                        fontSize: '0.88rem',
+                        color: 'text.primary'
                       }}
                     >
-                      — {parsed.institution}
+                      {parsed.degree}
                     </Typography>
-                  )}
 
-                  {parsed.year && (
-                    <Chip
-                      label={parsed.year}
-                      size="small"
-                      variant="outlined"
-                    />
-                  )}
+                    {parsed.institution && (
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 500,
+                          fontSize: '0.84rem',
+                          color: 'text.secondary'
+                        }}
+                      >
+                        — {parsed.institution}
+                      </Typography>
+                    )}
+
+                    {parsed.year && (
+                      <Chip
+                        label={parsed.year}
+                        size="small"
+                        variant="outlined"
+                      />
+                    )}
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
+                    <Tooltip title={t('profile:sections.education.edit', 'Editar')}>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleStartEdit(idx, edu)}
+                      >
+                        <EditRoundedIcon sx={{ fontSize: 16 }} />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t('profile:sections.education.remove', 'Eliminar')}>
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={() => onRemoveEducation(idx)}
+                      >
+                        <DeleteOutlineRoundedIcon sx={{ fontSize: 16 }} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                 </Box>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
-                  <Tooltip title={t('profile:sections.education.edit', 'Editar')}>
-                    <IconButton
-                      size="small"
-                      onClick={() => handleStartEdit(idx, edu)}
-                    >
-                      <EditRoundedIcon sx={{ fontSize: 16 }} />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={t('profile:sections.education.remove', 'Eliminar')}>
-                    <IconButton
-                      size="small"
-                      color="error"
-                      onClick={() => onRemoveEducation(idx)}
-                    >
-                      <DeleteOutlineRoundedIcon sx={{ fontSize: 16 }} />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
+                {parsed.description && (
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: 'text.secondary',
+                      fontSize: '0.8rem',
+                      lineHeight: 1.45,
+                      pl: 1.25,
+                      borderLeft: `2px solid ${alpha(theme.palette.primary.main, 0.4)}`,
+                      whiteSpace: 'pre-line'
+                    }}
+                  >
+                    {parsed.description}
+                  </Typography>
+                )}
               </Box>
             );
           })}

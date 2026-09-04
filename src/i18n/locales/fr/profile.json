@@ -113,6 +113,8 @@
       "degreePlaceholder": "ex. Master en Informatique",
       "institutionPlaceholder": "ex. Sorbonne Université / Udemy",
       "yearPlaceholder": "ex. 2018 – 2022",
+      "description": "Description / Réalisations clés (facultatif)",
+      "descriptionPlaceholder": "ex. Conception et développement d'applications web réactives avec React, Redux, OAuth et Firebase...",
       "location": "Lieu (optionnel)",
       "edit": "Modifier",
       "cancel": "Annuler",
