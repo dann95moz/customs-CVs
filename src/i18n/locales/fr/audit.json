@@ -75,5 +75,20 @@
     "action": "Action (Ce que vous avez fait) :",
     "result": "Résultat (Impact Quantifiable) :",
     "speakingOutline": "Points Clés d'Argumentation :"
+  },
+  "radar": {
+    "title": "Analyse Multidimensionnelle d'Affinité",
+    "desc": "Synthèse exécutive sur 6 dimensions clés ATS. Survolez les sommets pour voir des leviers d'amélioration ciblés.",
+    "legend": "Dimensions clés évaluées :",
+    "xyzHint": "Formule Google XYZ et métriques mesurables",
+    "skillsHint": "Segmentation thématique et densité de mots-clés"
+  },
+  "dimensions": {
+    "header": "Contact",
+    "summary": "Résumé",
+    "skills": "Compétences",
+    "experience": "Impact",
+    "education": "Formation",
+    "languages": "Langues"
   }
 }

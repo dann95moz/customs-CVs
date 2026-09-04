@@ -75,5 +75,20 @@
     "action": "Action (What You Did):",
     "result": "Result (Quantifiable Impact):",
     "speakingOutline": "Key Speaking Points:"
+  },
+  "radar": {
+    "title": "Multidimensional Affinity Analysis",
+    "desc": "Executive overview across 6 key ATS dimensions. Hover over vertices for calibrated improvement levers.",
+    "legend": "Key Dimensions Evaluated:",
+    "xyzHint": "Google XYZ formula and quantifiable outcomes",
+    "skillsHint": "Thematic clustering and keyword density"
+  },
+  "dimensions": {
+    "header": "Contact",
+    "summary": "Summary",
+    "skills": "Skills",
+    "experience": "Impact",
+    "education": "Education",
+    "languages": "Languages"
   }
 }

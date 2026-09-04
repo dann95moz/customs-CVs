@@ -75,5 +75,20 @@
     "action": "Handlung (Was Sie getan haben):",
     "result": "Ergebnis (Messbare Wirkung):",
     "speakingOutline": "Wichtige Argumentationspunkte:"
+  },
+  "radar": {
+    "title": "Multidimensionale Passgenauigkeitsanalyse",
+    "desc": "Führungsübersicht über 6 wichtige ATS-Dimensionen. Bewegen Sie den Mauszeiger über die Punkte für konkrete Optimierungsschritte.",
+    "legend": "Bewertete Dimensionen:",
+    "xyzHint": "Google XYZ-Formel und quantifizierbare Ergebnisse",
+    "skillsHint": "Thematische Segmentierung und Keyword-Dichte"
+  },
+  "dimensions": {
+    "header": "Kontakt",
+    "summary": "Zusammenfassung",
+    "skills": "Fähigkeiten",
+    "experience": "Wirkung",
+    "education": "Ausbildung",
+    "languages": "Sprachen"
   }
 }

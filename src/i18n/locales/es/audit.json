@@ -75,5 +75,20 @@
     "action": "Acción (Lo que hiciste):",
     "result": "Resultado (Impacto Cuantificable):",
     "speakingOutline": "Puntos Clave de Argumentación:"
+  },
+  "radar": {
+    "title": "Análisis Multidimensional de Afinidad",
+    "desc": "Radiografía ejecutiva de tus 6 dimensiones ATS. Pasa el cursor sobre los vértices para ver acciones concretas de mejora.",
+    "legend": "Dimensiones clave evaluadas:",
+    "xyzHint": "Fórmula Google XYZ y métricas cuantificables",
+    "skillsHint": "Segmentación temática y densidad de palabras clave"
+  },
+  "dimensions": {
+    "header": "Contacto",
+    "summary": "Extracto",
+    "skills": "Habilidades",
+    "experience": "Impacto",
+    "education": "Educación",
+    "languages": "Idiomas"
   }
 }

@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import {
+  Box,
+  Paper,
+  Typography,
   Button,
   Snackbar,
   useTheme,
+  alpha,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icons';
 import { QualityAuditViewProps } from '../../types';
+import { HexagonRadarChart, RadarDimension } from '../atoms/HexagonRadarChart';
 import { downloadTextFile, buildTimestampedFileName } from '../../utils/fileUtils';
 import { AuditImprovementModal } from './audit/AuditImprovementModal';
 import { AuditSectionCard } from './audit/AuditSectionCard';
@@ -71,6 +76,24 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
     return theme.palette.error.main;
   };
 
+  const radarDimensions: RadarDimension[] = report.sections.slice(0, 6).map((sec) => {
+    let shortLabel = sec.sectionName.split(' ')[0];
+    if (sec.sectionName.includes('Header')) shortLabel = t('audit:dimensions.header', 'Contacto');
+    else if (sec.sectionName.includes('Summary')) shortLabel = t('audit:dimensions.summary', 'Extracto');
+    else if (sec.sectionName.includes('Skills')) shortLabel = t('audit:dimensions.skills', 'Habilidades');
+    else if (sec.sectionName.includes('Experience')) shortLabel = t('audit:dimensions.experience', 'Impacto');
+    else if (sec.sectionName.includes('Education')) shortLabel = t('audit:dimensions.education', 'Educación');
+    else if (sec.sectionName.includes('Languages')) shortLabel = t('audit:dimensions.languages', 'Idiomas');
+
+    return {
+      key: sec.sectionName,
+      label: shortLabel,
+      score: sec.score,
+      maxScore: 10,
+      recommendation: sec.actionToTen?.[0] || sec.comment,
+    };
+  });
+
   return (
     <div className="audit-dashboard-container">
       {/* Top Overview Banner */}
@@ -113,6 +136,49 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Hexagonal Radar Chart Multidimensional Affinity */}
+      {radarDimensions.length >= 3 && (
+        <Paper
+          elevation={0}
+          sx={{
+            p: { xs: 2, sm: 2.5 },
+            mb: 3,
+            borderRadius: 2,
+            bgcolor: 'background.paper',
+            border: `1px solid ${theme.palette.divider}`,
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 3,
+          }}
+        >
+          <Box sx={{ maxWidth: { xs: '100%', md: 380 } }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 800, mb: 0.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Icon type="star" size={18} /> {t('audit:radar.title', 'Análisis Multidimensional de Afinidad')}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
+              {t('audit:radar.desc', 'Radiografía ejecutiva de tus 6 dimensiones ATS. Pasa el cursor sobre los vértices para ver acciones concretas de mejora.')}
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>
+                {t('audit:radar.legend', 'Dimensiones clave evaluadas:')}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                • <strong>{t('audit:dimensions.experience', 'Impacto')}</strong>: {t('audit:radar.xyzHint', 'Fórmula Google XYZ y métricas cuantificables')}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                • <strong>{t('audit:dimensions.skills', 'Habilidades')}</strong>: {t('audit:radar.skillsHint', 'Segmentación temática y densidad de palabras clave')}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <HexagonRadarChart dimensions={radarDimensions} size={280} />
+          </Box>
+        </Paper>
+      )}
 
       {/* Section Breakdown */}
       <div className="audit-section-group">
