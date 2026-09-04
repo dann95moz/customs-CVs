@@ -33,6 +33,7 @@ const EMPTY_PROJECTS: ExperienceItem[] = [];
 export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   markdownContent,
   onChange,
+  onFlushRef,
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
@@ -58,6 +59,18 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     }
   }, [onChange]);
 
+  // Hook up onFlushRef for parent components
+  useEffect(() => {
+    if (onFlushRef) {
+      onFlushRef.current = flushChanges;
+    }
+    return () => {
+      if (onFlushRef) {
+        onFlushRef.current = null;
+      }
+    };
+  }, [flushChanges, onFlushRef]);
+
   // Flush on unmount
   useEffect(() => {
     return () => {
@@ -77,6 +90,10 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   useEffect(() => {
     if (markdownContent === lastEmittedMarkdownRef.current) {
       return;
+    }
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = null;
     }
     lastEmittedMarkdownRef.current = markdownContent;
     const parsed = parseCvMarkdownToData(markdownContent);
@@ -151,16 +168,24 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   // Skill category helpers
   const handleSkillGroupCategoryChange = useCallback((index: number, newCategory: string) => {
     updateData(prev => {
-      const groups = [...(prev.skillGroups || [])];
+      const groups = prev.skillGroups && prev.skillGroups.length > 0 ? [...prev.skillGroups] : [
+        { category: t('profile:sections.skills.defaultCore', 'Core & Languages'), skills: ['TypeScript', 'JavaScript ES6+', 'HTML5', 'CSS3'] },
+        { category: t('profile:sections.skills.defaultArchitecture', 'Architecture & Frameworks'), skills: ['State Management', 'Clean Architecture', 'REST APIs'] },
+        { category: t('profile:sections.skills.defaultTooling', 'Tooling, Cloud & CI/CD'), skills: ['Git', 'Vite', 'CI/CD'] }
+      ];
       if (!groups[index]) return prev;
       groups[index] = { ...groups[index], category: newCategory };
       return { ...prev, skillGroups: groups };
     });
-  }, [updateData]);
+  }, [updateData, t]);
 
   const handleSkillGroupSkillsChange = useCallback((index: number, skillsStr: string) => {
     updateData(prev => {
-      const groups = [...(prev.skillGroups || [])];
+      const groups = prev.skillGroups && prev.skillGroups.length > 0 ? [...prev.skillGroups] : [
+        { category: t('profile:sections.skills.defaultCore', 'Core & Languages'), skills: ['TypeScript', 'JavaScript ES6+', 'HTML5', 'CSS3'] },
+        { category: t('profile:sections.skills.defaultArchitecture', 'Architecture & Frameworks'), skills: ['State Management', 'Clean Architecture', 'REST APIs'] },
+        { category: t('profile:sections.skills.defaultTooling', 'Tooling, Cloud & CI/CD'), skills: ['Git', 'Vite', 'CI/CD'] }
+      ];
       if (!groups[index]) return prev;
       groups[index] = {
         ...groups[index],
@@ -168,7 +193,7 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
       };
       return { ...prev, skillGroups: groups };
     });
-  }, [updateData]);
+  }, [updateData, t]);
 
   const handleAddSkillGroup = useCallback(() => {
     updateData(prev => {

@@ -165,6 +165,7 @@ export interface GuidedProfileFormProps {
   markdownContent: string;
   onChange: (newMarkdown: string) => void;
   data?: CVData;
+  onFlushRef?: React.MutableRefObject<(() => void) | null>;
 }
 
 
