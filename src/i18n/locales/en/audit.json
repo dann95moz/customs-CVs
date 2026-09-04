@@ -97,5 +97,37 @@
     "education": "Education",
     "languages": "Languages",
     "structure": "Structure"
-  }
+  },
+  "pillars": {
+    "measurable": {
+      "title": "1. Measurable Outcomes & Quantitative Metrics",
+      "diagnostic": "Recruiters and ATS scorecards prioritize candidates whose bullets clearly quantify efficiency gains, revenue impact, scale, or quality improvements.",
+      "recommendation": "Ensure at least 70% of experience bullets follow the Google XYZ formula: 'Accomplished [X], as measured by [Y], by doing [Z]'."
+    },
+    "keywords": {
+      "title": "2. Strategic Alignment & Keyword Calibration",
+      "diagnostic": "ATS parsing systems search for exact terminology and domain skills specified in the target job description.",
+      "recommendation": "Review target job keywords in the Gap Analysis and ensure mission-critical skills appear naturally in both summary and experience bullets."
+    },
+    "scope": {
+      "title": "3. Organizational Scope & Context Magnitude",
+      "diagnostic": "Highlighting team size, operational budgets, or volume of deliverables provides essential context for executive evaluation.",
+      "recommendation": "Incorporate scale metrics: budgets managed, cross-functional stakeholders engaged, client volume served, or project timelines delivered."
+    }
+  },
+  "impactLevels": {
+    "high": "High",
+    "strategic": "Strategic",
+    "mediumHigh": "Medium-High",
+    "optimal": "Optimal"
+  },
+  "actions": {
+    "addGoogleXyz": "Add Google XYZ Achievement",
+    "addMetric": "Add Business Impact Metric",
+    "linkPortfolio": "Link GitHub / Portfolio",
+    "addCertification": "Add Official Certification",
+    "reorganizeCategories": "Reorganize into 3 Categories",
+    "applyAction": "Apply Action"
+  },
+  "appliedSuccess": "Successfully applied \"{{title}}\" to your tailored CV!"
 }

@@ -97,5 +97,37 @@
     "education": "Istruzione",
     "languages": "Lingue",
     "structure": "Struttura"
-  }
+  },
+  "pillars": {
+    "measurable": {
+      "title": "1. Risultati Misurabili & Metriche Quantitative",
+      "diagnostic": "I selezionatori e i sistemi ATS premiano i punti che quantificano chiaramente guadagni di efficienza, impatto sul fatturato, scala o miglioramenti di qualità.",
+      "recommendation": "Assicurati che almeno il 70% dei punti di esperienza segua la formula Google XYZ: 'Raggiunto [X], misurato da [Y], facendo [Z]'."
+    },
+    "keywords": {
+      "title": "2. Allineamento Strategico & Calibrazione Parole Chiave",
+      "diagnostic": "I sistemi di analisi ATS cercano la terminologia esatta e le competenze di dominio specificate nell'offerta di lavoro.",
+      "recommendation": "Controlla le parole chiave nell'analisi dei gap e integra le competenze essenziali nel profilo e nell'esperienza."
+    },
+    "scope": {
+      "title": "3. Portata Organizzativa & Ampiezza di Contesto",
+      "diagnostic": "Evidenziare le dimensioni del team, i budget o il volume dei deliverable fornisce un contesto essenziale per la valutazione direzionale.",
+      "recommendation": "Includi metriche di scala: budget gestiti, team coordinati, volume di clienti o tempistiche rispettate."
+    }
+  },
+  "impactLevels": {
+    "high": "Alto",
+    "strategic": "Strategico",
+    "mediumHigh": "Medio-Alto",
+    "optimal": "Ottimale"
+  },
+  "actions": {
+    "addGoogleXyz": "Aggiungi Risultato Google XYZ",
+    "addMetric": "Aggiungi Metrica di Impatto Aziendale",
+    "linkPortfolio": "Collega GitHub / Portfolio",
+    "addCertification": "Aggiungi Certificazione Ufficiale",
+    "reorganizeCategories": "Riorganizza in 3 Categorie",
+    "applyAction": "Applica Azione"
+  },
+  "appliedSuccess": "\"{{title}}\" applicato con successo al tuo CV adattato!"
 }

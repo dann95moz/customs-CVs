@@ -97,5 +97,37 @@
     "education": "Formation",
     "languages": "Langues",
     "structure": "Structure"
-  }
+  },
+  "pillars": {
+    "measurable": {
+      "title": "1. Résultats Mesurables & Métriques Quantitatives",
+      "diagnostic": "Les recruteurs et ATS privilégient les puces qui quantifient clairement les gains d'efficacité, l'impact sur le chiffre d'affaires, l'échelle ou la qualité.",
+      "recommendation": "Assurez-vous qu'au moins 70 % des puces d'expérience suivent la formule Google XYZ : 'Accompli [X], mesuré par [Y], en faisant [Z]'."
+    },
+    "keywords": {
+      "title": "2. Alignement Stratégique & Calibrage des Mots-Clés",
+      "diagnostic": "Les systèmes ATS recherchent la terminologie exacte et les compétences métiers mentionnées dans l'offre cible.",
+      "recommendation": "Consultez les mots-clés dans l'analyse des écarts et intégrez les compétences essentielles dans le profil et l'expérience."
+    },
+    "scope": {
+      "title": "3. Envergure Organisationnelle & Ampleur de Contexte",
+      "diagnostic": "Mettre en avant la taille de l'équipe, les budgets ou le volume de livrables offre un contexte essentiel pour l'évaluation décisionnelle.",
+      "recommendation": "Intégrez des métriques d'échelle : budgets gérés, équipes coordonnées, volume d'utilisateurs ou délais respectés."
+    }
+  },
+  "impactLevels": {
+    "high": "Élevé",
+    "strategic": "Stratégique",
+    "mediumHigh": "Moyen-Élevé",
+    "optimal": "Optimal"
+  },
+  "actions": {
+    "addGoogleXyz": "Ajouter un succès Google XYZ",
+    "addMetric": "Ajouter une métrique d'impact métier",
+    "linkPortfolio": "Lier GitHub / Portfolio",
+    "addCertification": "Ajouter une certification officielle",
+    "reorganizeCategories": "Réorganiser en 3 catégories",
+    "applyAction": "Appliquer l'action"
+  },
+  "appliedSuccess": "\"{{title}}\" a été appliqué avec succès à votre CV adapté !"
 }

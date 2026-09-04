@@ -139,67 +139,86 @@ export const AuditPillarsBreakdown: React.FC<AuditPillarsBreakdownProps> = React
             {t('audit:subtitle', 'Strategic Improvements')}
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
-            {auditReport.strategicPillars.slice(0, 3).map((pillar: StrategicGrowthPillar, idx: number) => (
-              <Paper
-                key={idx}
-                variant="outlined"
-                sx={{
-                  p: 1.5,
-                  borderRadius: RADIUS_TOKENS.lg,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 1,
-                  bgcolor: isDark ? alpha(theme.palette.background.default, 0.3) : 'background.paper',
-                  boxSizing: 'border-box',
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    borderColor: 'primary.main',
-                  },
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
-                  <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.primary', flex: 1, lineHeight: 1.35 }}>
-                    {pillar.pillarName}
+            {auditReport.strategicPillars.slice(0, 3).map((pillar: StrategicGrowthPillar, idx: number) => {
+              const name = (pillar.pillarName || '').toLowerCase();
+              let title = pillar.pillarName;
+              let diagnostic = pillar.diagnostic;
+              let impactLabel: string = pillar.impactLevel || 'High';
+              let impactColor: 'warning' | 'primary' | 'default' = 'default';
+
+              if (name.includes('measurable') || name.includes('metric') || idx === 0) {
+                title = t('audit:pillars.measurable.title', pillar.pillarName);
+                diagnostic = t('audit:pillars.measurable.diagnostic', pillar.diagnostic);
+                impactLabel = t('audit:impactLevels.high', 'High');
+                impactColor = 'warning';
+              } else if (name.includes('alignment') || name.includes('keyword') || idx === 1) {
+                title = t('audit:pillars.keywords.title', pillar.pillarName);
+                diagnostic = t('audit:pillars.keywords.diagnostic', pillar.diagnostic);
+                impactLabel = t('audit:impactLevels.strategic', 'Strategic');
+                impactColor = 'primary';
+              } else {
+                title = t('audit:pillars.scope.title', pillar.pillarName);
+                diagnostic = t('audit:pillars.scope.diagnostic', pillar.diagnostic);
+                impactLabel = t('audit:impactLevels.mediumHigh', 'Medium-High');
+                impactColor = 'warning';
+              }
+
+              return (
+                <Paper
+                  key={idx}
+                  variant="outlined"
+                  sx={{
+                    p: 1.5,
+                    borderRadius: RADIUS_TOKENS.lg,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 1,
+                    bgcolor: isDark ? alpha(theme.palette.background.default, 0.3) : 'background.paper',
+                    boxSizing: 'border-box',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      borderColor: 'primary.main',
+                    },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
+                    <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.primary', flex: 1, lineHeight: 1.35 }}>
+                      {title}
+                    </Typography>
+                    <Chip
+                      label={impactLabel}
+                      size="small"
+                      color={impactColor}
+                      variant="outlined"
+                      sx={{ fontWeight: 700 }}
+                    />
+                  </Box>
+
+                  <Typography variant="caption" sx={{ lineHeight: 1.45, color: 'text.secondary' }}>
+                    {diagnostic}
                   </Typography>
-                  <Chip
-                    label={pillar.impactLevel || 'High'}
-                    size="small"
-                    color={
-                      pillar.impactLevel?.toLowerCase().includes('high')
-                        ? 'warning'
-                        : pillar.impactLevel?.toLowerCase().includes('strat')
-                        ? 'primary'
-                        : 'default'
-                    }
-                    variant="outlined"
-                    sx={{ fontWeight: 700 }}
-                  />
-                </Box>
 
-                <Typography variant="caption" sx={{ lineHeight: 1.45, color: 'text.secondary' }}>
-                  {pillar.diagnostic}
-                </Typography>
-
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.25 }}>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    color="primary"
-                    startIcon={<BoltRoundedIcon sx={{ fontSize: '14px !important' }} />}
-                    onClick={() => onOpenAction(pillar.recommendationForMasterData || pillar.diagnostic, pillar.pillarName)}
-                    sx={{
-                      textTransform: 'none',
-                      fontWeight: 700,
-                      fontSize: '0.74rem',
-                      py: 0.35,
-                      px: 1.5,
-                    }}
-                  >
-                    {getActionButtonLabel(pillar.recommendationForMasterData || pillar.pillarName)}
-                  </Button>
-                </Box>
-              </Paper>
-            ))}
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.25 }}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                      startIcon={<BoltRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                      onClick={() => onOpenAction(pillar.recommendationForMasterData || pillar.diagnostic, pillar.pillarName)}
+                      sx={{
+                        textTransform: 'none',
+                        fontWeight: 700,
+                        fontSize: '0.74rem',
+                        py: 0.35,
+                        px: 1.5,
+                      }}
+                    >
+                      {getActionButtonLabel(pillar.recommendationForMasterData || pillar.pillarName)}
+                    </Button>
+                  </Box>
+                </Paper>
+              );
+            })}
           </Box>
         </Box>
       )}

@@ -38,6 +38,8 @@
     "stage2": "Sintetizando logros medibles con la fórmula Google XYZ",
     "stage3": "Calibrando maquetación y presupuesto de 1 página",
     "stage4": "Garantizando 100% de autenticidad y fidelidad a tu trayectoria real",
+    "synthesizingWith": "Sintetizando con {{model}}...",
+    "synthesizingWithWords": "Sintetizando con {{model}} ({{count}} palabras)...",
     "errorTitle": "La síntesis encontró un problema",
     "tryAgain": "Reintentar Síntesis",
     "step1": "Analizando Requisitos del Puesto y Extrayendo Palabras Clave...",

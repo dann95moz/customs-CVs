@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActionModalState } from '../types/audit';
 import { useResumeStore } from '../store';
 
@@ -19,6 +20,7 @@ export interface UseAuditActionsReturn {
  * Principle: Single Responsibility & DRY (SOLID).
  */
 export function useAuditActions(): UseAuditActionsReturn {
+  const { t } = useTranslation(['audit', 'common']);
   const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
   const setCvMarkdown = useResumeStore((s) => s.setCvMarkdown);
   const masterData = useResumeStore((s) => s.masterData);
@@ -168,28 +170,48 @@ export function useAuditActions(): UseAuditActionsReturn {
 
     setCvMarkdown(updatedCv);
     setMasterData(updatedMaster);
-    setSnackbarMessage(`Successfully applied "${modalState.title}" to your tailored CV!`);
+    setSnackbarMessage(
+      t('audit:appliedSuccess', 'Successfully applied "{{title}}" to your tailored CV!', {
+        title: modalState.title,
+      })
+    );
     setModalState(prev => ({ ...prev, open: false }));
   };
 
   const getActionButtonLabel = (action: string): string => {
     const lower = action.toLowerCase();
     if (lower.includes('aws') || lower.includes('cloud') || lower.includes('certif')) {
-      return 'Add Official Certification';
+      return t('audit:actions.addCertification', 'Add Official Certification');
     }
-    if (lower.includes('metric') || lower.includes('business') || lower.includes('revenue') || lower.includes('impact')) {
-      return 'Add Business Impact Metric';
+    if (
+      lower.includes('metric') ||
+      lower.includes('business') ||
+      lower.includes('revenue') ||
+      lower.includes('impact') ||
+      lower.includes('organizational') ||
+      lower.includes('scope') ||
+      lower.includes('métrica') ||
+      lower.includes('metrica')
+    ) {
+      return t('audit:actions.addMetric', 'Add Business Impact Metric');
     }
     if (lower.includes('github') || lower.includes('portfolio') || lower.includes('code')) {
-      return 'Link GitHub / Portfolio';
+      return t('audit:actions.linkPortfolio', 'Link GitHub / Portfolio');
     }
-    if (lower.includes('percentage') || lower.includes('xyz') || lower.includes('quantitative') || lower.includes('achievement')) {
-      return 'Add Google XYZ Achievement';
+    if (
+      lower.includes('percentage') ||
+      lower.includes('xyz') ||
+      lower.includes('quantitative') ||
+      lower.includes('achievement') ||
+      lower.includes('measurable') ||
+      lower.includes('cuantificable')
+    ) {
+      return t('audit:actions.addGoogleXyz', 'Add Google XYZ Achievement');
     }
     if (lower.includes('3 categories') || lower.includes('categor')) {
-      return 'Reorganize into 3 Categories';
+      return t('audit:actions.reorganizeCategories', 'Reorganize into 3 Categories');
     }
-    return 'Apply Action';
+    return t('audit:actions.applyAction', 'Apply Action');
   };
 
   return {

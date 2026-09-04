@@ -21,7 +21,6 @@ import SmartToyRoundedIcon from '@mui/icons-material/SmartToyRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
 import { useTranslation } from 'react-i18next';
 import { useAiGeneratingWorkflow } from '../../../hooks/useAiGeneratingWorkflow';
 import { RADIUS_TOKENS } from '../../../theme/dimensions';
@@ -52,7 +51,6 @@ export const AiGeneratingOverlay: React.FC = () => {
     generationProgress,
     generationStep,
     streamedWords,
-    streamedSnippet,
     activeModelName,
     generationError,
     handleGenerate,
@@ -80,6 +78,32 @@ export const AiGeneratingOverlay: React.FC = () => {
   if (!isGenerating) return null;
 
   const hasError = Boolean(generationError);
+
+  const getStepMessage = () => {
+    if (generationStage === 1) {
+      return t('target:progress.stage1', 'Analyzing employer requirements & extracting ATS keywords');
+    }
+    if (generationStage === 2) {
+      if (streamedWords > 0) {
+        return t('target:progress.synthesizingWithWords', {
+          model: activeModelName,
+          count: streamedWords,
+          defaultValue: `Synthesizing with ${activeModelName} (${streamedWords} words)...`,
+        });
+      }
+      return t('target:progress.synthesizingWith', {
+        model: activeModelName,
+        defaultValue: `Synthesizing with ${activeModelName}...`,
+      });
+    }
+    if (generationStage === 3) {
+      return t('target:progress.stage3', 'Calibrating document layout & page budget');
+    }
+    if (generationStage === 4) {
+      return t('target:progress.stage4', 'Ensuring 100% authenticity & fidelity to your real career history');
+    }
+    return generationStep || t('target:progress.title', 'Synthesizing Tailored Resume with AI...');
+  };
 
   return (
     <Box
@@ -256,7 +280,7 @@ export const AiGeneratingOverlay: React.FC = () => {
             <Box sx={{ width: '100%' }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.8 }}>
                 <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.75rem' }}>
-                  {generationStep || t('target:progress.title', 'Synthesizing Tailored Resume with AI...')}
+                  {getStepMessage()}
                 </Typography>
                 <Typography variant="caption" sx={{ color: 'primary.main', fontWeight: 800, fontSize: '0.75rem' }}>
                   {Math.max(10, Math.min(100, Math.round(generationProgress)))}%
@@ -343,56 +367,6 @@ export const AiGeneratingOverlay: React.FC = () => {
                 );
               })}
             </Stack>
-
-            {/* Live Streaming Snippet Box */}
-            {streamedSnippet && (
-              <Box
-                sx={{
-                  width: '100%',
-                  textAlign: 'left',
-                  p: 1.25,
-                  px: 1.5,
-                  borderRadius: 2,
-                  bgcolor: isDark ? 'rgba(0, 0, 0, 0.45)' : 'rgba(241, 245, 249, 0.8)',
-                  border: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
-                  fontFamily: 'monospace',
-                  fontSize: '0.74rem',
-                  color: 'text.secondary',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1
-                }}
-              >
-                <TerminalRoundedIcon sx={{ fontSize: 14, color: theme.palette.primary.main, flexShrink: 0 }} />
-                <Typography
-                  component="span"
-                  sx={{
-                    fontFamily: 'monospace',
-                    fontSize: '0.74rem',
-                    color: 'text.secondary',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    flexGrow: 1
-                  }}
-                >
-                  {streamedSnippet.replace(/[\r\n]+/g, ' ')}
-                </Typography>
-                <Box
-                  component="span"
-                  sx={{
-                    display: 'inline-block',
-                    width: 6,
-                    height: 12,
-                    bgcolor: theme.palette.primary.main,
-                    animation: 'pulse 1s infinite'
-                  }}
-                />
-              </Box>
-            )}
 
             {/* Safeguard Guarantee Badge & Cancel Action */}
             <Stack

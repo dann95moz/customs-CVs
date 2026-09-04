@@ -38,6 +38,8 @@
     "stage2": "Synthesizing measurable achievements with Google XYZ formula",
     "stage3": "Calibrating document layout & page budget",
     "stage4": "Ensuring 100% authenticity & fidelity to your real career history",
+    "synthesizingWith": "Synthesizing with {{model}}...",
+    "synthesizingWithWords": "Synthesizing with {{model}} ({{count}} words)...",
     "errorTitle": "Synthesis Encountered an Issue",
     "tryAgain": "Retry Synthesis",
     "step1": "Analyzing Job Requirements & Extracting Keywords...",

@@ -97,5 +97,37 @@
     "education": "Educación",
     "languages": "Idiomas",
     "structure": "Estructura"
-  }
+  },
+  "pillars": {
+    "measurable": {
+      "title": "1. Métricas Cuantificables y Resultados Medibles",
+      "diagnostic": "Los reclutadores y sistemas ATS priorizan viñetas que cuantifiquen ganancias de eficiencia, impacto en ingresos, escala o mejoras de calidad.",
+      "recommendation": "Asegura que al menos el 70% de las viñetas sigan la fórmula Google XYZ: 'Logrado [X], medido por [Y], haciendo [Z]'."
+    },
+    "keywords": {
+      "title": "2. Alineación Estratégica y Calibración de Palabras Clave",
+      "diagnostic": "Los sistemas de análisis ATS buscan terminología exacta y habilidades de dominio especificadas en la oferta objetivo.",
+      "recommendation": "Revisa las palabras clave de la oferta en el Análisis de Brechas e integra habilidades esenciales en el resumen y experiencia."
+    },
+    "scope": {
+      "title": "3. Alcance Organizacional y Magnitud de Contexto",
+      "diagnostic": "Destacar el tamaño de equipo, presupuestos gestionados o volumen de entregables proporciona contexto esencial para la evaluación ejecutiva.",
+      "recommendation": "Incorpora métricas de escala: presupuestos gestionados, equipos coordinados, volumen de clientes o cronogramas cumplidos."
+    }
+  },
+  "impactLevels": {
+    "high": "Alto",
+    "strategic": "Estratégico",
+    "mediumHigh": "Medio-Alto",
+    "optimal": "Óptimo"
+  },
+  "actions": {
+    "addGoogleXyz": "Añadir Logro Google XYZ",
+    "addMetric": "Añadir Métrica de Impacto",
+    "linkPortfolio": "Enlazar GitHub / Portafolio",
+    "addCertification": "Añadir Certificación Oficial",
+    "reorganizeCategories": "Reorganizar en 3 Categorías",
+    "applyAction": "Aplicar Acción"
+  },
+  "appliedSuccess": "¡Se aplicó con éxito \"{{title}}\" a tu CV adaptado!"
 }

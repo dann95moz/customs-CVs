@@ -38,6 +38,8 @@
     "stage2": "Formulation des réalisations avec la formule Google XYZ",
     "stage3": "Calibrage de la mise en page sur 1 page",
     "stage4": "Vérification de l'authenticité : 100 % fidèle à votre parcours réel",
+    "synthesizingWith": "Synthèse avec {{model}}...",
+    "synthesizingWithWords": "Synthèse avec {{model}} ({{count}} mots)...",
     "errorTitle": "Un problème est survenu lors de la synthèse",
     "tryAgain": "Réessayer la synthèse",
     "step1": "Analyse des exigences du poste et extraction des mots-clés...",

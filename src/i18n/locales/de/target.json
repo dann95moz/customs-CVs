@@ -38,6 +38,8 @@
     "stage2": "Erfolge mit der Google XYZ-Formel quantifizieren",
     "stage3": "Layout & 1-Seiten-Budget kalibrieren",
     "stage4": "Authentizitätsprüfung: 100 % treu zu Ihrem echten Werdegang",
+    "synthesizingWith": "Synthese mit {{model}}...",
+    "synthesizingWithWords": "Synthese mit {{model}} ({{count}} Wörter)...",
     "errorTitle": "Fehler bei der Synthese aufgetreten",
     "tryAgain": "Synthese wiederholen",
     "step1": "Stellenanforderungen analysieren und Schlüsselwörter extrahieren...",

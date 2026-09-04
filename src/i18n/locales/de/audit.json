@@ -97,5 +97,37 @@
     "education": "Ausbildung",
     "languages": "Sprachen",
     "structure": "Struktur"
-  }
+  },
+  "pillars": {
+    "measurable": {
+      "title": "1. Messbare Ergebnisse & Quantitative Kennzahlen",
+      "diagnostic": "Recruiter und ATS-Systeme bevorzugen Aufzählungspunkte, die Effizienzsteigerungen, Umsatzwirkung, Skalierung oder Qualitätsverbesserungen klar beziffern.",
+      "recommendation": "Stellen Sie sicher, dass mindestens 70 % der Erfahrungspunkte der Google-XYZ-Formel folgen: 'Erreichte [X], gemessen an [Y], durch [Z]'."
+    },
+    "keywords": {
+      "title": "2. Strategische Ausrichtung & Schlüsselwort-Kalibrierung",
+      "diagnostic": "ATS-Systeme scannen nach exakter Fachterminologie und Domänenkenntnissen aus der Stellenausschreibung.",
+      "recommendation": "Überprüfen Sie die Schlüsselwörter in der Gap-Analyse und betten Sie unverzichtbare Fähigkeiten in Kurzprofil und Berufserfahrung ein."
+    },
+    "scope": {
+      "title": "3. Organisatorischer Umfang & Kontext-Dimension",
+      "diagnostic": "Die Angabe von Teamgrößen, Budgets oder Projektvolumen bietet entscheidenden Kontext für Führungskräfte.",
+      "recommendation": "Integrieren Sie Skalierungsmetriken: verwaltete Budgets, koordinierte Teams, Kundenvolumen oder eingehaltene Zeitpläne."
+    }
+  },
+  "impactLevels": {
+    "high": "Hoch",
+    "strategic": "Strategisch",
+    "mediumHigh": "Mittel-Hoch",
+    "optimal": "Optimal"
+  },
+  "actions": {
+    "addGoogleXyz": "Google XYZ-Erfolg hinzufügen",
+    "addMetric": "Geschäftliche Wirkungskennzahl hinzufügen",
+    "linkPortfolio": "GitHub / Portfolio verknüpfen",
+    "addCertification": "Offizielle Zertifizierung hinzufügen",
+    "reorganizeCategories": "In 3 Kategorien umstrukturieren",
+    "applyAction": "Aktion anwenden"
+  },
+  "appliedSuccess": "\"{{title}}\" wurde erfolgreich auf Ihren angepassten Lebenslauf angewendet!"
 }
