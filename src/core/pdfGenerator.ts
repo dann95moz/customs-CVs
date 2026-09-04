@@ -97,6 +97,17 @@ export async function generateDirectPdf(
           (el as HTMLElement).style.display = 'none';
         });
 
+        // Suppress placeholder pseudo-elements and empty editable elements in exported canvas
+        const printPlaceholderStyle = clonedDoc.createElement('style');
+        printPlaceholderStyle.textContent = `
+          [data-placeholder]::before,
+          .cv-editable-field:empty::before {
+            display: none !important;
+            content: "" !important;
+          }
+        `;
+        clonedDoc.head.appendChild(printPlaceholderStyle);
+
         // Ensure cloned printable sheet and containers have clean unscaled styling
         const clonedScaleContainer = clonedDoc.querySelector('.paper-scale-container') as HTMLElement;
         if (clonedScaleContainer) {

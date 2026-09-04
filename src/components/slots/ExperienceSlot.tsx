@@ -37,18 +37,37 @@ export const ExperienceSlot: React.FC<ExperienceSlotProps> = ({
                 onSave={(newVal) => liveEdit?.updateExperienceField(sectionType, idx, 'company', newVal)}
                 placeholder={isProjects ? 'Project Title' : 'Company / Organization'}
               />
-              {!isProjects && (item.location || liveEdit?.isLiveEditing) && (
-                <EditableText
-                  tagName="span"
-                  className="item-location"
-                  value={item.location || ''}
-                  onSave={(newVal) => liveEdit?.updateExperienceField(sectionType, idx, 'location', newVal)}
-                  placeholder="Location"
-                />
+              {isProjects ? (
+                (item.demoUrl || item.repoUrl || item.location) && (
+                  <span
+                    className="item-location"
+                    dangerouslySetInnerHTML={{
+                      __html: (item.demoUrl || item.repoUrl)
+                        ? (marked.parseInline(
+                            [
+                              item.demoUrl ? `[Live Demo](${item.demoUrl})` : '',
+                              item.repoUrl ? `[GitHub Repository](${item.repoUrl})` : ''
+                            ].filter(Boolean).join(' • ')
+                          ) as string)
+                        : (item.location ? (marked.parseInline(item.location) as string) : '')
+                    }}
+                  />
+                )
+              ) : (
+                (item.location || liveEdit?.isLiveEditing) && (
+                  <EditableText
+                    tagName="span"
+                    className="item-location"
+                    value={item.location || ''}
+                    htmlContent={item.location ? (marked.parseInline(item.location) as string) : ''}
+                    onSave={(newVal) => liveEdit?.updateExperienceField(sectionType, idx, 'location', newVal)}
+                    placeholder="Location"
+                  />
+                )
               )}
             </div>
             
-            {(item.role || (!isProjects && item.date) || liveEdit?.isLiveEditing) && (
+            {(item.role || item.date || (!isProjects && liveEdit?.isLiveEditing)) && (
               <div className="item-sub-header">
                 <EditableText
                   tagName="span"
@@ -56,15 +75,15 @@ export const ExperienceSlot: React.FC<ExperienceSlotProps> = ({
                   value={item.role || ''}
                   htmlContent={item.role ? (marked.parseInline(item.role) as string) : ''}
                   onSave={(newVal) => liveEdit?.updateExperienceField(sectionType, idx, 'role', newVal)}
-                  placeholder={isProjects ? 'Project Links / Stack' : 'Role / Job Title'}
+                  placeholder={isProjects ? 'Category / Role' : 'Role / Job Title'}
                 />
-                {!isProjects && (item.date || liveEdit?.isLiveEditing) && (
+                {(Boolean(item.date?.trim()) || (!isProjects && liveEdit?.isLiveEditing)) && (
                   <EditableText
                     tagName="span"
                     className="item-date"
                     value={item.date || ''}
                     onSave={(newVal) => liveEdit?.updateExperienceField(sectionType, idx, 'date', newVal)}
-                    placeholder="Date Range"
+                    placeholder={isProjects ? 'Year / Date' : 'Date Range'}
                   />
                 )}
               </div>

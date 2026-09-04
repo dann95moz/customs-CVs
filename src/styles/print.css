@@ -312,4 +312,10 @@
     text-decoration: none !important;
     color: inherit !important;
   }
+
+  [data-placeholder]::before,
+  .cv-editable-field:empty::before {
+    display: none !important;
+    content: "" !important;
+  }
 }
