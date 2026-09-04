@@ -31,8 +31,11 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
           : c.url || c.label || '';
       map[c.type] = raw
         .replace(/^mailto:/i, '')
+        .replace(/\\([\[\]+*`_~\\-])/g, '$1')
         .replace(/\*\*([^*]+)\*\*/g, '$1')
-        .replace(/[*_\[\]]/g, '');
+        .replace(/[*_\[\]]/g, '')
+        .replace(/^\\+|\\+$/g, '')
+        .trim();
     });
     return map;
   }, [contacts]);

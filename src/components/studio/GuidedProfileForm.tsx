@@ -41,6 +41,7 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   const lastEmittedMarkdownRef = useRef<string>(markdownContent);
   const formDataRef = useRef<CVData>(formData);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isDirtyRef = useRef<boolean>(false);
 
   formDataRef.current = formData;
 
@@ -50,6 +51,10 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
       clearTimeout(debounceTimerRef.current);
       debounceTimerRef.current = null;
     }
+    if (!isDirtyRef.current) {
+      return;
+    }
+    isDirtyRef.current = false;
     const newMarkdown = serializeCvDataToMarkdown(formDataRef.current);
     if (newMarkdown !== lastEmittedMarkdownRef.current) {
       lastEmittedMarkdownRef.current = newMarkdown;
@@ -75,6 +80,9 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
         debounceTimerRef.current = null;
+      }
+      if (isDirtyRef.current) {
+        isDirtyRef.current = false;
         const newMarkdown = serializeCvDataToMarkdown(formDataRef.current);
         if (newMarkdown !== lastEmittedMarkdownRef.current) {
           lastEmittedMarkdownRef.current = newMarkdown;
@@ -93,6 +101,7 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
       clearTimeout(debounceTimerRef.current);
       debounceTimerRef.current = null;
     }
+    isDirtyRef.current = false;
     lastEmittedMarkdownRef.current = markdownContent;
     const parsed = parseCvMarkdownToData(markdownContent);
     setFormData(parsed);
@@ -105,15 +114,19 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
     }
     debounceTimerRef.current = setTimeout(() => {
       debounceTimerRef.current = null;
-      const newMarkdown = serializeCvDataToMarkdown(formDataRef.current);
-      if (newMarkdown !== lastEmittedMarkdownRef.current) {
-        lastEmittedMarkdownRef.current = newMarkdown;
-        onChange(newMarkdown);
+      if (isDirtyRef.current) {
+        isDirtyRef.current = false;
+        const newMarkdown = serializeCvDataToMarkdown(formDataRef.current);
+        if (newMarkdown !== lastEmittedMarkdownRef.current) {
+          lastEmittedMarkdownRef.current = newMarkdown;
+          onChange(newMarkdown);
+        }
       }
     }, 250);
   }, [onChange]);
 
   const updateData = useCallback((updater: (prev: CVData) => CVData) => {
+    isDirtyRef.current = true;
     setFormData(prev => {
       const next = updater(prev);
       formDataRef.current = next;

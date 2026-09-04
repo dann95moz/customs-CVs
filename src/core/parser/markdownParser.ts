@@ -25,6 +25,7 @@ export function cleanMarkdownFormatting(text: string): string {
   if (!text) return '';
   return text
     .replace(/^#+\s*/, '')
+    .replace(/\\([\[\]+*`_~\\-])/g, '$1') // unescape any backslash-escaped characters
     .replace(/\*\*([^*]+)\*\*/g, '$1')
     .replace(/\*([^*]+)\*/g, '$1')
     .replace(/__([^_]+)__/g, '$1')
@@ -32,8 +33,9 @@ export function cleanMarkdownFormatting(text: string): string {
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/\[([^\]]+)\]/g, '$1')
     .replace(/`([^`]+)`/g, '$1')
-    .replace(/^[*•\-–—]+\s*/, '')
-    .replace(/[*•\-–—]+$/, '')
+    .replace(/^[*•\-\u2013\u2014]+\s*/, '')
+    .replace(/[*•\-\u2013\u2014]+$/, '')
+    .replace(/^\\+|\\+$/g, '') // remove stray leading or trailing backslashes
     .trim();
 }
 

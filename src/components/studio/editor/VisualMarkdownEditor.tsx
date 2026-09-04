@@ -43,6 +43,7 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
 
   const visualRef = useRef<HTMLDivElement>(null);
   const isInternalChangeRef = useRef<boolean>(false);
+  const isDirtyRef = useRef<boolean>(false);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Sync Markdown to Visual HTML on mount and whenever external markdown updates
@@ -51,6 +52,7 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
       isInternalChangeRef.current = false;
       return;
     }
+    isDirtyRef.current = false;
     if (visualRef.current) {
       if (document.activeElement !== visualRef.current) {
         visualRef.current.innerHTML = safeMarkdown(markdown || '');
@@ -64,7 +66,8 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
       clearTimeout(debounceTimerRef.current);
       debounceTimerRef.current = null;
     }
-    if (visualRef.current) {
+    if (isDirtyRef.current && visualRef.current) {
+      isDirtyRef.current = false;
       const html = visualRef.current.innerHTML;
       const convertedMarkdown = htmlToMarkdown(html);
       onChange(convertedMarkdown);
@@ -89,7 +92,8 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
         debounceTimerRef.current = null;
-        if (visualRef.current) {
+        if (isDirtyRef.current && visualRef.current) {
+          isDirtyRef.current = false;
           const html = visualRef.current.innerHTML;
           const convertedMarkdown = htmlToMarkdown(html);
           onChange(convertedMarkdown);
@@ -101,6 +105,7 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
   // Handle rich-text inputs in contentEditable surface
   const handleVisualInput = useCallback(() => {
     if (!visualRef.current) return;
+    isDirtyRef.current = true;
     const html = visualRef.current.innerHTML;
     const convertedMarkdown = htmlToMarkdown(html);
 
@@ -111,6 +116,7 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
     }
     debounceTimerRef.current = setTimeout(() => {
       debounceTimerRef.current = null;
+      isDirtyRef.current = false;
       onChange(convertedMarkdown);
     }, 200);
   }, [onChange]);
@@ -125,6 +131,7 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
 
     if (hasMarkdownSyntax) {
       e.preventDefault();
+      isDirtyRef.current = true;
       const parsedHtml = safeMarkdown(text);
       document.execCommand('insertHTML', false, parsedHtml);
       handleVisualInput();
@@ -136,12 +143,14 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
     if (visualRef.current) {
       visualRef.current.focus();
     }
+    isDirtyRef.current = true;
     document.execCommand(command, false, value);
     handleVisualInput();
   };
 
   const handleVisualBlur = () => {
-    if (visualRef.current) {
+    if (isDirtyRef.current && visualRef.current) {
+      isDirtyRef.current = false;
       const html = visualRef.current.innerHTML;
       const convertedMarkdown = htmlToMarkdown(html);
       if (convertedMarkdown.trim().length > 0 || (markdown || '').trim().length === 0) {

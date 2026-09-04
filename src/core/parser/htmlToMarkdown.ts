@@ -29,6 +29,10 @@ turndownService.addRule('paragraphSpacing', {
   },
 });
 
+// IMPORTANT: Bypass Turndown's default character escaping.
+// Turndown by default escapes [, ], +, *, _, -, etc. with backslashes (\), which corrupts resume text (e.g. [+123] -> \[\+123\]).
+turndownService.escape = (content: string) => content;
+
 /**
  * Converts sanitized HTML from the visual WYSIWYG editor into clean Markdown.
  * Preserves Google XYZ bullets, ATX headers, dividers, and emphasis.
@@ -38,8 +42,11 @@ export function htmlToMarkdown(html: string): string {
 
   try {
     const markdown = turndownService.turndown(html);
-    // Normalize multiple consecutive blank lines to standard double newline
-    return markdown.replace(/\n{3,}/g, '\n\n').trim();
+    // Normalize multiple consecutive blank lines to standard double newline and remove any rogue backslashes
+    return markdown
+      .replace(/\\([\[\]+*`_~\\-])/g, '$1')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
   } catch (err) {
     console.error('Failed to convert HTML to Markdown:', err);
     return html;
