@@ -453,6 +453,7 @@ export interface KanbanBoardProps {
 
 export interface KanbanColumnProps {
   column: KanbanColumn;
+  allColumns?: KanbanColumn[];
   applications: ApplicationItem[];
   savedVersions: GeneratedCvVersion[];
   onMoveApplication: (appId: string, targetColumnId: string, newIndex?: number) => void;
@@ -470,10 +471,12 @@ export interface KanbanColumnProps {
 
 export interface KanbanCardProps {
   application: ApplicationItem;
+  allColumns?: KanbanColumn[];
   attachedVersion?: GeneratedCvVersion;
   allMatchingVersions: GeneratedCvVersion[];
   onLoadInStudio: (versionId: string) => void;
   onSetAttachedVersion: (appId: string, versionId: string) => void;
+  onMoveToColumn?: (targetColumnId: string) => void;
   onArchive: (appId: string) => void;
   onDelete: (appId: string) => void;
   onDownloadPdf: (version: GeneratedCvVersion) => void;
