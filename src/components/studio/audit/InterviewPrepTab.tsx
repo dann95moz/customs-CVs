@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 import { CVData } from '../../../types/cv';
 import { InterviewQuestion } from '../../../types/audit';
 import { useInterviewPrepWorkflow } from '../../../hooks/useInterviewPrepWorkflow';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export interface InterviewPrepTabProps {
   gapKeywords: string[];
@@ -122,7 +123,7 @@ export const InterviewPrepTab: React.FC<InterviewPrepTabProps> = ({
       <Box
         sx={{
           p: 2,
-          borderRadius: '12px',
+          borderRadius: RADIUS_TOKENS.md,
           bgcolor: isDark ? alpha(theme.palette.primary.main, 0.08) : alpha(theme.palette.primary.main, 0.04),
           border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
           display: 'flex',
@@ -187,7 +188,7 @@ export const InterviewPrepTab: React.FC<InterviewPrepTabProps> = ({
             <Card
               variant="outlined"
               sx={{
-                borderRadius: '12px',
+                borderRadius: RADIUS_TOKENS.md,
                 bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)',
                 borderColor: alpha(theme.palette.divider, 0.8),
               }}
@@ -267,7 +268,7 @@ export const InterviewPrepTab: React.FC<InterviewPrepTabProps> = ({
 
                 <AccordionDetails sx={{ px: 2, pt: 0, pb: 2, borderTop: `1px solid ${alpha(theme.palette.divider, 0.4)}` }}>
                   {/* Rationale Context */}
-                  <Box sx={{ mt: 1.5, p: 1.25, borderRadius: '8px', bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)', border: `1px solid ${alpha(theme.palette.divider, 0.5)}` }}>
+                  <Box sx={{ mt: 1.5, p: 1.25, borderRadius: RADIUS_TOKENS.sm, bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)', border: `1px solid ${alpha(theme.palette.divider, 0.5)}` }}>
                     <Typography variant="caption" sx={{ fontWeight: 800, color: 'primary.main', display: 'block', mb: 0.25 }}>
                       🔍 {t('audit:interview.rationaleTitle', 'Why the interviewer asks this:')}
                     </Typography>

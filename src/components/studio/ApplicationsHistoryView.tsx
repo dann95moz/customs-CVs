@@ -37,6 +37,7 @@ import { TrackApplicationDialog } from './history/TrackApplicationDialog';
 import { ColumnEditDialog } from './history/ColumnEditDialog';
 import { VersionDiffModal } from './history/VersionDiffModal';
 import { useApplicationsHistory } from '../../hooks/useApplicationsHistory';
+import { RADIUS_TOKENS } from '../../theme/dimensions';
 
 export const ApplicationsHistoryView: React.FC = () => {
   const { t } = useTranslation(['history', 'common']);
@@ -161,7 +162,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                   mx: 'auto',
                   width: '100%',
                   textAlign: 'center',
-                  borderRadius: '16px',
+                  borderRadius: RADIUS_TOKENS.lg,
                   borderStyle: 'dashed',
                   bgcolor: 'background.paper',
                 }}
@@ -171,7 +172,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                     sx={{
                       width: 56,
                       height: 56,
-                      borderRadius: '14px',
+                      borderRadius: RADIUS_TOKENS.md,
                       bgcolor: alpha(theme.palette.primary.main, 0.1),
                       color: theme.palette.primary.main,
                       display: 'flex',
@@ -210,7 +211,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                   mx: 'auto',
                   width: '100%',
                   textAlign: 'center',
-                  borderRadius: '16px',
+                  borderRadius: RADIUS_TOKENS.lg,
                   bgcolor: 'background.paper',
                   border: `1.5px dashed ${alpha(theme.palette.primary.main, 0.35)}`,
                   boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
@@ -221,7 +222,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                     sx={{
                       width: 52,
                       height: 52,
-                      borderRadius: '14px',
+                      borderRadius: RADIUS_TOKENS.md,
                       bgcolor: alpha(theme.palette.primary.main, 0.12),
                       color: theme.palette.primary.main,
                       display: 'flex',
@@ -307,7 +308,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: 1.5,
-                borderRadius: '12px',
+                borderRadius: RADIUS_TOKENS.md,
                 border: `1px solid ${theme.palette.divider}`,
                 bgcolor: isSelectionMode
                   ? alpha(theme.palette.primary.main, isDark ? 0.12 : 0.04)
@@ -443,7 +444,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                 sx={{
                   p: { xs: 3, sm: 4.5 },
                   textAlign: 'center',
-                  borderRadius: '16px',
+                  borderRadius: RADIUS_TOKENS.lg,
                   bgcolor: 'background.paper',
                   borderStyle: 'dashed',
                 }}
@@ -503,7 +504,7 @@ export const ApplicationsHistoryView: React.FC = () => {
         slotProps={{
           paper: {
             sx: {
-              borderRadius: '16px',
+              borderRadius: RADIUS_TOKENS.lg,
               p: 1,
               bgcolor: 'background.paper',
             },
@@ -532,7 +533,7 @@ export const ApplicationsHistoryView: React.FC = () => {
             <Alert
               severity="warning"
               variant="outlined"
-              sx={{ mb: 1.5, py: 0.75, fontSize: '0.82rem', borderRadius: '8px' }}
+              sx={{ mb: 1.5, py: 0.75, fontSize: '0.82rem', borderRadius: RADIUS_TOKENS.sm }}
             >
               {t(
                 'history:bulkDeleteDialog.protectedAlert',

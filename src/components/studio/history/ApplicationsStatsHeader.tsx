@@ -24,6 +24,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { useTranslation } from 'react-i18next';
 import { ApplicationsStatsHeaderProps } from '../../../types';
 import { SearchBarWithClear } from '../../molecules';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = ({
   totalActiveApplications,
@@ -55,8 +56,8 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
           justifyContent: 'space-between',
           gap: 2,
           border: `1px solid ${theme.palette.divider}`,
-          bgcolor: isDark ? 'rgba(16, 22, 35, 0.8)' : '#ffffff',
-          borderRadius: '16px',
+          bgcolor: 'background.paper',
+          borderRadius: RADIUS_TOKENS.lg,
           width: '100%',
           boxSizing: 'border-box',
           minWidth: 0,
@@ -127,7 +128,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
               gap: { xs: 1, sm: 1.25, md: 1.5 },
               border: `1px solid ${theme.palette.divider}`,
               bgcolor: 'background.paper',
-              borderRadius: '12px',
+              borderRadius: RADIUS_TOKENS.md,
               minWidth: 0,
               boxSizing: 'border-box',
               overflow: 'hidden',
@@ -137,7 +138,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
               sx={{
                 width: { xs: 32, sm: 36, md: 40 },
                 height: { xs: 32, sm: 36, md: 40 },
-                borderRadius: '8px',
+                borderRadius: RADIUS_TOKENS.sm,
                 bgcolor: alpha(theme.palette.primary.main, 0.12),
                 color: theme.palette.primary.main,
                 display: 'flex',
@@ -179,7 +180,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
               gap: { xs: 1, sm: 1.25, md: 1.5 },
               border: `1px solid ${theme.palette.divider}`,
               bgcolor: 'background.paper',
-              borderRadius: '12px',
+              borderRadius: RADIUS_TOKENS.md,
               minWidth: 0,
               boxSizing: 'border-box',
               overflow: 'hidden',
@@ -189,7 +190,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
               sx={{
                 width: { xs: 32, sm: 36, md: 40 },
                 height: { xs: 32, sm: 36, md: 40 },
-                borderRadius: '8px',
+                borderRadius: RADIUS_TOKENS.sm,
                 bgcolor: alpha(theme.palette.secondary.main, 0.12),
                 color: theme.palette.secondary.main,
                 display: 'flex',
@@ -231,7 +232,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
               gap: { xs: 1, sm: 1.25, md: 1.5 },
               border: `1px solid ${theme.palette.divider}`,
               bgcolor: 'background.paper',
-              borderRadius: '12px',
+              borderRadius: RADIUS_TOKENS.md,
               minWidth: 0,
               boxSizing: 'border-box',
               overflow: 'hidden',
@@ -241,7 +242,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
               sx={{
                 width: { xs: 32, sm: 36, md: 40 },
                 height: { xs: 32, sm: 36, md: 40 },
-                borderRadius: '8px',
+                borderRadius: RADIUS_TOKENS.sm,
                 bgcolor: alpha(theme.palette.success.main, 0.12),
                 color: theme.palette.success.main,
                 display: 'flex',
@@ -283,7 +284,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
               gap: { xs: 1, sm: 1.25, md: 1.5 },
               border: `1px solid ${theme.palette.divider}`,
               bgcolor: 'background.paper',
-              borderRadius: '12px',
+              borderRadius: RADIUS_TOKENS.md,
               minWidth: 0,
               boxSizing: 'border-box',
               overflow: 'hidden',
@@ -293,7 +294,7 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
               sx={{
                 width: { xs: 32, sm: 36, md: 40 },
                 height: { xs: 32, sm: 36, md: 40 },
-                borderRadius: '8px',
+                borderRadius: RADIUS_TOKENS.sm,
                 bgcolor: alpha(theme.palette.warning.main, 0.12),
                 color: theme.palette.warning.main,
                 display: 'flex',

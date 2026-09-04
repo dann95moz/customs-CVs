@@ -38,6 +38,7 @@ import { useTranslation } from 'react-i18next';
 import { AIProviderId, AIProviderSettings } from '../../../types';
 import { AVAILABLE_AI_MODELS } from '../../../constants/models';
 import { useAiConnectionTest } from '../../../hooks/useAiConnectionTest';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export interface AiConfigFormProps {
   settings: AIProviderSettings;
@@ -308,7 +309,7 @@ export const AiConfigForm: React.FC<AiConfigFormProps> = ({
         p: { xs: 1.75, sm: 2.5 },
         border: `1px solid ${muiTheme.palette.divider}`,
         bgcolor: 'background.paper',
-        borderRadius: '16px',
+        borderRadius: RADIUS_TOKENS.lg,
         display: 'flex',
         flexDirection: 'column',
         gap: 2.5,
@@ -491,7 +492,7 @@ export const AiConfigForm: React.FC<AiConfigFormProps> = ({
       {testResult && (
         <Alert
           severity={testResult.success ? 'success' : 'warning'}
-          sx={{ borderRadius: '12px' }}
+          sx={{ borderRadius: RADIUS_TOKENS.md }}
           onClose={() => setTestResult(null)}
         >
           <AlertTitle sx={{ fontWeight: 700 }}>
