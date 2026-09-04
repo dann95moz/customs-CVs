@@ -181,5 +181,15 @@
     "copyAbout": "Copiar Texto 'Acerca de'",
     "regenerate": "Regenerar Paquete de LinkedIn",
     "copiedToast": "¡{{label}} copiado al portapapeles!"
+  },
+  "bulletAudit": {
+    "tooShortTitle": "Viñeta demasiado breve",
+    "tooShortDesc": "Las viñetas muy cortas carecen del contexto y alcance que buscan los reclutadores.",
+    "tooShortSuggestion": "Detalla el alcance del proyecto y qué herramientas utilizaste.",
+    "missingMetricTitle": "Falta métrica de resultado (Fórmula XYZ)",
+    "missingMetricDesc": "Esta viñeta describe responsabilidades pero carece de un resultado cuantificable (números, %, tiempo o dinero).",
+    "missingMetricSuggestion": "Cuantifica el impacto: ¿cuánto mejoró el rendimiento, qué % de ahorro se logró o cuántos usuarios impactó?",
+    "hintTitle": "Fórmula Google XYZ recomendada:",
+    "optimizeWithAi": "Optimizar logro con IA"
   }
 }

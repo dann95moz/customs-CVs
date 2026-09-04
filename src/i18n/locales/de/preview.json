@@ -180,5 +180,15 @@
     "copyAbout": "'Info'-Text kopieren",
     "regenerate": "LinkedIn-Paket neu generieren",
     "copiedToast": "{{label}} in die Zwischenablage kopiert!"
+  },
+  "bulletAudit": {
+    "tooShortTitle": "Aufzählungspunkt ist sehr kurz",
+    "tooShortDesc": "Sehr kurze Punkte bieten nicht den nötigen Kontext, den Recruiter suchen.",
+    "tooShortSuggestion": "Erweitern Sie den Umfang und die verwendeten Tools oder Technologien.",
+    "missingMetricTitle": "Messbare Wirkung fehlt (XYZ-Formel)",
+    "missingMetricDesc": "Dieser Punkt beschreibt Aufgaben, lässt aber messbare Ergebnisse vermissen (Zahlen, %, Zeit oder Budget).",
+    "missingMetricSuggestion": "Quantifizieren Sie die Wirkung: Wie stark verbesserte sich die Leistung, welche Ersparnis wurde erzielt?",
+    "hintTitle": "Empfohlene Google XYZ-Formel:",
+    "optimizeWithAi": "Erfolg mit KI optimieren"
   }
 }

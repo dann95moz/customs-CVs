@@ -181,5 +181,15 @@
     "copyAbout": "Copier la Section 'Infos'",
     "regenerate": "Régénérer le Package LinkedIn",
     "copiedToast": "{{label}} copié dans le presse-papiers !"
+  },
+  "bulletAudit": {
+    "tooShortTitle": "Puce très courte",
+    "tooShortDesc": "Les puces très brèves manquent du contexte professionnel attendu par les recruteurs.",
+    "tooShortSuggestion": "Développez la portée de la mission et les technologies utilisées.",
+    "missingMetricTitle": "Résultat mesurable manquant (Formule XYZ)",
+    "missingMetricDesc": "Cette puce décrit des tâches sans résultat chiffré (chiffres, %, temps ou budget).",
+    "missingMetricSuggestion": "Quantifiez l'impact : quel % d'amélioration ou d'économie a été obtenu ?",
+    "hintTitle": "Formule Google XYZ recommandée :",
+    "optimizeWithAi": "Optimiser la réalisation avec l'IA"
   }
 }

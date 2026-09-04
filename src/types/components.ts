@@ -529,11 +529,15 @@ export interface GitHubStarToastProps {
   onStarClick: () => void;
 }
 
+import { BulletAuditIssue } from './audit';
+
 export interface AiHoverActionsPillProps {
   hasUndo: boolean;
   isRecentlyRegenerated?: boolean;
   onAccept: (e: React.MouseEvent) => void;
   onUndo: (e: React.MouseEvent) => void;
   onOpenAiPopover: (e: React.MouseEvent<HTMLElement>) => void;
+  auditIssue?: BulletAuditIssue | null;
+  onOpenAuditPopover?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 

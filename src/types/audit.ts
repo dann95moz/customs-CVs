@@ -62,3 +62,13 @@ export interface InterviewPrepResult {
   questions: InterviewQuestion[];
   generatedAt: string;
 }
+
+export interface BulletAuditIssue {
+  type: 'missing_metric' | 'weak_verb' | 'too_short';
+  titleKey: string;
+  defaultTitle: string;
+  descKey: string;
+  defaultDesc: string;
+  suggestionKey: string;
+  defaultSuggestion: string;
+}

@@ -5,6 +5,8 @@ import { markdownToHtml, htmlToMarkdown } from '../../../utils/textFormatting';
 import { CvSelectionBubble } from './CvSelectionBubble';
 import { AiRegeneratePopover } from './AiRegeneratePopover';
 import { AiHoverActionsPill } from './AiHoverActionsPill';
+import { BulletAuditPopover } from './BulletAuditPopover';
+import { auditSingleBullet } from '../../../core/audit/bulletAuditor';
 
 export interface AiRegenerateConfig {
   type: 'bullet' | 'summary';
@@ -58,6 +60,13 @@ export const EditableText: React.FC<EditableTextProps> = ({
   const [isBoldActive, setIsBoldActive] = useState(false);
   const [isItalicActive, setIsItalicActive] = useState(false);
   const [aiPopoverAnchor, setAiPopoverAnchor] = useState<HTMLElement | null>(null);
+  const [auditPopoverAnchor, setAuditPopoverAnchor] = useState<HTMLElement | null>(null);
+
+  const bulletAuditIssue = React.useMemo(() => {
+    if (tagName !== 'li') return null;
+    return auditSingleBullet(value || '');
+  }, [tagName, value]);
+
   const [isRecentlyRegenerated, setIsRecentlyRegenerated] = useState(false);
   const regenTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -510,6 +519,8 @@ export const EditableText: React.FC<EditableTextProps> = ({
             onAccept={handleAccept}
             onUndo={handleUndo}
             onOpenAiPopover={handleOpenAiPopover}
+            auditIssue={bulletAuditIssue}
+            onOpenAuditPopover={(e) => setAuditPopoverAnchor(e.currentTarget)}
           />
         )}
 
@@ -533,6 +544,20 @@ export const EditableText: React.FC<EditableTextProps> = ({
             onRegenerate={handleRegenerateWithAi}
           />
         )}
+
+        {/* In-line Bullet Quality Audit Popover */}
+        <BulletAuditPopover
+          open={Boolean(auditPopoverAnchor)}
+          anchorEl={auditPopoverAnchor}
+          issue={bulletAuditIssue}
+          onClose={() => setAuditPopoverAnchor(null)}
+          onOptimizeWithAi={() => {
+            setAuditPopoverAnchor(null);
+            if (elementRef.current) {
+              setAiPopoverAnchor(elementRef.current);
+            }
+          }}
+        />
       </li>
     );
   }

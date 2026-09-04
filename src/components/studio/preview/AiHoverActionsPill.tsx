@@ -4,12 +4,13 @@ import { Box, IconButton, Tooltip, alpha, useTheme } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import { RADIUS_TOKENS } from '../../../theme/dimensions';
 import { AiHoverActionsPillProps } from '../../../types/components';
 
 /**
  * Presentational dumb component for AI granular bullet and summary hover actions.
- * Displays compact icon buttons (accept, undo, regenerate) with zero text clutter.
+ * Displays compact icon buttons (accept, undo, regenerate, audit warning) with zero text clutter.
  */
 export const AiHoverActionsPill: React.FC<AiHoverActionsPillProps> = ({
   hasUndo,
@@ -17,6 +18,8 @@ export const AiHoverActionsPill: React.FC<AiHoverActionsPillProps> = ({
   onAccept,
   onUndo,
   onOpenAiPopover,
+  auditIssue,
+  onOpenAuditPopover,
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const theme = useTheme();
@@ -86,6 +89,32 @@ export const AiHoverActionsPill: React.FC<AiHoverActionsPillProps> = ({
               </IconButton>
             </Tooltip>
           </>
+        )}
+
+        {auditIssue && (
+          <Tooltip title={t(auditIssue.titleKey, auditIssue.defaultTitle)} arrow placement="top">
+            <IconButton
+              size="small"
+              onClick={onOpenAuditPopover}
+              aria-label={t(auditIssue.titleKey, auditIssue.defaultTitle)}
+              sx={{
+                width: 24,
+                height: 24,
+                bgcolor: alpha(theme.palette.warning.main, 0.12),
+                color: 'warning.main',
+                borderRadius: RADIUS_TOKENS.full,
+                border: `1px solid ${alpha(theme.palette.warning.main, 0.3)}`,
+                transition: 'all 0.15s ease',
+                '&:hover': {
+                  bgcolor: 'warning.main',
+                  color: 'warning.contrastText',
+                  transform: 'scale(1.1)',
+                },
+              }}
+            >
+              <WarningAmberRoundedIcon sx={{ fontSize: 13 }} />
+            </IconButton>
+          </Tooltip>
         )}
 
         <Tooltip title={t('preview:aiRegen.tooltip', 'Regenerate with AI')} arrow placement="top">

@@ -181,5 +181,15 @@
     "copyAbout": "Copia Testo 'Informazioni'",
     "regenerate": "Rigenera Pacchetto LinkedIn",
     "copiedToast": "{{label}} copiato negli appunti!"
+  },
+  "bulletAudit": {
+    "tooShortTitle": "Punto elenco troppo breve",
+    "tooShortDesc": "I punti elenco molto brevi non forniscono il contesto ricercato dai recruiter.",
+    "tooShortSuggestion": "Approfondisci la portata del compito e gli strumenti utilizzati.",
+    "missingMetricTitle": "Risultato quantificabile mancante (Formula XYZ)",
+    "missingMetricDesc": "Questo punto elenco descrive mansioni ma manca di un risultato misurabile (numeri, %, tempo o budget).",
+    "missingMetricSuggestion": "Quantifica l'impatto: di quanto è migliorata l'efficienza o quale % di risparmio hai ottenuto?",
+    "hintTitle": "Formula Google XYZ consigliata:",
+    "optimizeWithAi": "Ottimizza il risultato con l'IA"
   }
 }

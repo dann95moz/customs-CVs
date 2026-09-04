@@ -180,5 +180,15 @@
     "copyAbout": "Copy 'About' Text",
     "regenerate": "Regenerate LinkedIn Package",
     "copiedToast": "{{label}} copied to clipboard!"
+  },
+  "bulletAudit": {
+    "tooShortTitle": "Bullet point is very brief",
+    "tooShortDesc": "Very short bullet points lack the business scope and context recruiters scan for.",
+    "tooShortSuggestion": "Expand on the task scope and what tools or technologies you used.",
+    "missingMetricTitle": "Missing quantifiable outcome (XYZ formula)",
+    "missingMetricDesc": "This bullet describes responsibilities but lacks a measurable result (numbers, %, time, or money).",
+    "missingMetricSuggestion": "Quantify impact: how much did performance improve, what % savings was achieved, or how many users were impacted?",
+    "hintTitle": "Recommended Google XYZ Formula:",
+    "optimizeWithAi": "Optimize achievement with AI"
   }
 }
