@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, IconButton, Tooltip, Chip, alpha, useTheme } from '@mui/material';
+import { Box, IconButton, Tooltip, alpha, useTheme } from '@mui/material';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -9,7 +9,7 @@ import { AiHoverActionsPillProps } from '../../../types/components';
 
 /**
  * Presentational dumb component for AI granular bullet and summary hover actions.
- * Displays check (accept), undo, AI edited badge, and AI re-generation trigger.
+ * Displays compact icon buttons (accept, undo, regenerate) with zero text clutter.
  */
 export const AiHoverActionsPill: React.FC<AiHoverActionsPillProps> = ({
   hasUndo,
@@ -29,39 +29,16 @@ export const AiHoverActionsPill: React.FC<AiHoverActionsPillProps> = ({
         sx={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: 0.6,
+          gap: 0.5,
           bgcolor: 'background.paper',
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: RADIUS_TOKENS.full,
           boxShadow: 2,
-          px: hasUndo ? 0.6 : 0.25,
-          py: 0.25,
+          p: '2px 3px',
         }}
       >
         {hasUndo && (
           <>
-            <Chip
-              size="small"
-              icon={<AutoAwesomeRoundedIcon sx={{ fontSize: '11px !important', color: 'primary.main' }} />}
-              label={t('preview:aiRegen.editedBadge', 'AI Edited')}
-              sx={{
-                height: 22,
-                fontSize: '0.68rem',
-                fontWeight: 700,
-                border: 'none',
-                borderRadius: RADIUS_TOKENS.full,
-                bgcolor: alpha(theme.palette.primary.main, 0.08),
-                color: 'primary.main',
-                '& .MuiChip-label': {
-                  px: 0.75,
-                },
-                '& .MuiChip-icon': {
-                  ml: 0.75,
-                  mr: -0.25,
-                },
-              }}
-            />
-
             <Tooltip title={t('preview:aiRegen.accept', 'Accept changes')} arrow placement="top">
               <IconButton
                 size="small"
@@ -69,8 +46,8 @@ export const AiHoverActionsPill: React.FC<AiHoverActionsPillProps> = ({
                 color="success"
                 aria-label={t('preview:aiRegen.accept', 'Accept changes')}
                 sx={{
-                  width: 22,
-                  height: 22,
+                  width: 24,
+                  height: 24,
                   bgcolor: alpha(theme.palette.success.main, 0.12),
                   color: 'success.main',
                   borderRadius: RADIUS_TOKENS.full,
@@ -82,36 +59,31 @@ export const AiHoverActionsPill: React.FC<AiHoverActionsPillProps> = ({
                   },
                 }}
               >
-                <CheckRoundedIcon sx={{ fontSize: 13 }} />
+                <CheckRoundedIcon sx={{ fontSize: 14 }} />
               </IconButton>
             </Tooltip>
 
             <Tooltip title={t('preview:aiRegen.undoTooltip', 'Undo and revert to previous text')} arrow placement="top">
-              <Button
+              <IconButton
                 size="small"
-                variant="outlined"
                 onClick={onUndo}
-                startIcon={<UndoRoundedIcon sx={{ fontSize: '13px !important' }} />}
+                aria-label={t('preview:aiRegen.undoTooltip', 'Undo and revert to previous text')}
                 sx={{
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
-                  textTransform: 'none',
-                  py: 0.1,
-                  px: 0.8,
-                  minHeight: 22,
-                  height: 22,
+                  width: 24,
+                  height: 24,
+                  bgcolor: alpha(theme.palette.text.primary, 0.08),
+                  color: 'text.secondary',
                   borderRadius: RADIUS_TOKENS.full,
-                  borderColor: 'divider',
-                  color: 'text.primary',
-                  whiteSpace: 'nowrap',
+                  transition: 'all 0.15s ease',
                   '&:hover': {
-                    bgcolor: alpha(theme.palette.primary.main, 0.08),
-                    borderColor: 'primary.main',
+                    bgcolor: alpha(theme.palette.text.primary, 0.16),
+                    color: 'text.primary',
+                    transform: 'scale(1.1)',
                   },
                 }}
               >
-                {t('preview:aiRegen.undo', 'Undo')}
-              </Button>
+                <UndoRoundedIcon sx={{ fontSize: 14 }} />
+              </IconButton>
             </Tooltip>
           </>
         )}
@@ -123,8 +95,8 @@ export const AiHoverActionsPill: React.FC<AiHoverActionsPillProps> = ({
             className="cv-ai-sparkle-btn"
             aria-label={t('preview:aiRegen.tooltip', 'Regenerate with AI')}
             sx={{
-              width: 22,
-              height: 22,
+              width: 24,
+              height: 24,
               bgcolor: alpha(theme.palette.primary.main, 0.1),
               color: 'primary.main',
               borderRadius: RADIUS_TOKENS.full,
@@ -137,7 +109,7 @@ export const AiHoverActionsPill: React.FC<AiHoverActionsPillProps> = ({
               },
             }}
           >
-            <AutoAwesomeRoundedIcon sx={{ fontSize: 13 }} />
+            <AutoAwesomeRoundedIcon sx={{ fontSize: 14 }} />
           </IconButton>
         </Tooltip>
       </Box>
