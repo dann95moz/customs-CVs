@@ -167,5 +167,16 @@
     "metricsEnhanced": "Métricas Optimizadas",
     "copyDiff": "Copiar Diff en Bruto",
     "openInEditor": "Cargar Versión en el Editor"
+  },
+  "calendar": {
+    "modalTitle": "Agendar Entrevista en Calendario",
+    "modalDesc": "Genera un archivo de evento (.ics) compatible con Google Calendar, Apple Calendar y Outlook sin necesidad de conectar cuentas externas.",
+    "dateTime": "Fecha y Hora",
+    "duration": "Duración",
+    "meetingLink": "Enlace de Reunión (Google Meet, Zoom, Teams)",
+    "interviewer": "Entrevistador / Contacto (Opcional)",
+    "notes": "Notas adicionales",
+    "notesPlaceholder": "Temas clave a repasar, preguntas preparadas...",
+    "downloadIcs": "Descargar Evento (.ics)"
   }
 }

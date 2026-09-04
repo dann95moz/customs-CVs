@@ -167,5 +167,16 @@
     "metricsEnhanced": "Metriken optimiert",
     "copyDiff": "Roh-Diff kopieren",
     "openInEditor": "Version in Editor laden"
+  },
+  "calendar": {
+    "modalTitle": "Vorstellungsgespräch im Kalender planen",
+    "modalDesc": "Erstellen Sie eine universelle .ics-Kalenderdatei für Google Calendar, Apple Calendar und Outlook – ganz ohne externe Konten.",
+    "dateTime": "Datum & Uhrzeit",
+    "duration": "Dauer",
+    "meetingLink": "Meeting-Link (Google Meet, Zoom, Teams)",
+    "interviewer": "Interviewer / Ansprechpartner (Optional)",
+    "notes": "Zusätzliche Notizen",
+    "notesPlaceholder": "Schwerpunkte, vorbereitete Fragen, Notizen...",
+    "downloadIcs": "Termin herunterladen (.ics)"
   }
 }

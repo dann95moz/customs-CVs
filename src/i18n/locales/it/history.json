@@ -167,5 +167,16 @@
     "metricsEnhanced": "Metriche Ottimizzate",
     "copyDiff": "Copia Diff Grezzo",
     "openInEditor": "Carica Versione nell'Editor"
+  },
+  "calendar": {
+    "modalTitle": "Pianifica Colloquio nel Calendario",
+    "modalDesc": "Genera un file evento universale (.ics) compatibile con Google Calendar, Apple Calendar e Outlook senza account esterni.",
+    "dateTime": "Data e ora",
+    "duration": "Durata",
+    "meetingLink": "Link della riunione (Google Meet, Zoom, Teams)",
+    "interviewer": "Intervistatore / Contatto (Opzionale)",
+    "notes": "Note aggiuntive",
+    "notesPlaceholder": "Argomenti chiave, domande preparate...",
+    "downloadIcs": "Scarica Evento (.ics)"
   }
 }

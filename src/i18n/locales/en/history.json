@@ -167,5 +167,16 @@
     "metricsEnhanced": "Metrics Enhanced",
     "copyDiff": "Copy Raw Diff",
     "openInEditor": "Load Version into Editor"
+  },
+  "calendar": {
+    "modalTitle": "Schedule Interview in Calendar",
+    "modalDesc": "Generate a universal .ics calendar event compatible with Google Calendar, Apple Calendar, and Outlook without connecting external accounts.",
+    "dateTime": "Date & Time",
+    "duration": "Duration",
+    "meetingLink": "Meeting Link (Google Meet, Zoom, Teams)",
+    "interviewer": "Interviewer / Contact (Optional)",
+    "notes": "Additional Notes",
+    "notesPlaceholder": "Key topics, questions to ask, requirements...",
+    "downloadIcs": "Download Event (.ics)"
   }
 }

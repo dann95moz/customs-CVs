@@ -24,6 +24,7 @@ import { KanbanBoardProps, ApplicationItem } from '../../../types';
 import { HorizontalScrollContainer } from '../common/HorizontalScrollContainer';
 import { KanbanColumnComponent } from './KanbanColumn';
 import { KanbanCard } from './KanbanCard';
+import { ScheduleInterviewModal } from './ScheduleInterviewModal';
 import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export const KanbanBoard: React.FC<KanbanBoardProps> = ({
@@ -47,6 +48,26 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
   const [activeApp, setActiveApp] = useState<ApplicationItem | null>(null);
+  const [scheduleModalApp, setScheduleModalApp] = useState<ApplicationItem | null>(null);
+
+  const isInterviewStage = (colId: string) => {
+    if (colId === 'interview') return true;
+    const col = columns.find((c) => c.id === colId);
+    const title = (col?.title || '').toLowerCase();
+    return (
+      title.includes('interview') ||
+      title.includes('entrevista') ||
+      title.includes('gespräch') ||
+      title.includes('entretien') ||
+      title.includes('colloquio')
+    );
+  };
+
+  const checkInterviewTransition = (app: ApplicationItem, targetColId: string) => {
+    if (app.columnId !== targetColId && isInterviewStage(targetColId)) {
+      setScheduleModalApp(app);
+    }
+  };
 
   // Configure sensors: MouseSensor for desktop mouse, TouchSensor with long-press for mobile/touch devices
   const sensors = useSensors(
@@ -105,6 +126,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     if (overData?.type === 'column' || columns.some((c) => c.id === overId)) {
       const targetColumnId = overData?.column?.id || overId;
       if (sourceApp.columnId !== targetColumnId) {
+        checkInterviewTransition(sourceApp, targetColumnId);
         onMoveApplication(activeAppId, targetColumnId);
       }
       return;
@@ -117,6 +139,9 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         const targetColumnId = targetApp.columnId;
         const columnApps = applications.filter((a) => a.columnId === targetColumnId && !a.isArchived);
         const targetIndex = columnApps.findIndex((a) => a.id === overId);
+        if (sourceApp.columnId !== targetColumnId) {
+          checkInterviewTransition(sourceApp, targetColumnId);
+        }
         onMoveApplication(activeAppId, targetColumnId, targetIndex >= 0 ? targetIndex : undefined);
       }
     }
@@ -131,6 +156,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
     : [];
 
   return (
+    <>
     <DndContext
       sensors={sensors}
       collisionDetection={closestCorners}
@@ -222,5 +248,12 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         ) : null}
       </DragOverlay>
     </DndContext>
+
+    <ScheduleInterviewModal
+      open={Boolean(scheduleModalApp)}
+      application={scheduleModalApp}
+      onClose={() => setScheduleModalApp(null)}
+    />
+  </>
   );
 };

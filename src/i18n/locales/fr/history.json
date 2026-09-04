@@ -167,5 +167,16 @@
     "metricsEnhanced": "Métriques Optimisées",
     "copyDiff": "Copier le Diff Brut",
     "openInEditor": "Charger la Version dans l'Éditeur"
+  },
+  "calendar": {
+    "modalTitle": "Planifier l'entretien dans le calendrier",
+    "modalDesc": "Générez un fichier d'événement universel (.ics) compatible avec Google Calendar, Apple Calendar et Outlook, sans aucun compte externe requis.",
+    "dateTime": "Date et heure",
+    "duration": "Durée",
+    "meetingLink": "Lien de réunion (Google Meet, Zoom, Teams)",
+    "interviewer": "Recruteur / Contact (Facultatif)",
+    "notes": "Notes supplémentaires",
+    "notesPlaceholder": "Points clés, questions préparées...",
+    "downloadIcs": "Télécharger l'événement (.ics)"
   }
 }
