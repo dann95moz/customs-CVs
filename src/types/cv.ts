@@ -42,6 +42,8 @@ export interface ExperienceItem {
   role?: string;
   date?: string;
   bullets: string[];
+  demoUrl?: string;
+  repoUrl?: string;
 }
 
 export interface ProjectItem {

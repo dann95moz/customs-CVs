@@ -115,46 +115,18 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
   const results: ContactItem[] = [];
   const addedTypes = new Set<string>();
 
-  // 1. First extract all explicit markdown links [Label](URL) to preserve URLs
-  const mdLinkRegex = /\[(.*?)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g;
-  let linkMatch: RegExpExecArray | null;
-  while ((linkMatch = mdLinkRegex.exec(text)) !== null) {
-    const rawLabel = linkMatch[1].trim();
-    const rawUrl = linkMatch[2].trim();
-    const cleanLabel = cleanMarkdownFormatting(rawLabel);
-
-    if (rawUrl.includes('linkedin.com') || cleanLabel.toLowerCase().includes('linkedin')) {
-      if (!addedTypes.has('linkedin')) {
-        results.push({ type: 'linkedin', label: cleanLabel || 'LinkedIn', url: rawUrl });
-        addedTypes.add('linkedin');
-      }
-    } else if (rawUrl.includes('github.com') || cleanLabel.toLowerCase().includes('github')) {
-      if (!addedTypes.has('github')) {
-        results.push({ type: 'github', label: cleanLabel || 'GitHub', url: rawUrl });
-        addedTypes.add('github');
-      }
-    } else if (rawUrl.startsWith('mailto:') || rawUrl.includes('@')) {
-      const email = rawUrl.replace(/^mailto:/i, '');
-      if (!addedTypes.has('email')) {
-        results.push({ type: 'email', label: email, url: `mailto:${email}` });
-        addedTypes.add('email');
-      }
-    } else if (!addedTypes.has('globe')) {
-      results.push({ type: 'globe', label: cleanLabel || 'Portfolio', url: rawUrl });
-      addedTypes.add('globe');
-    }
-  }
-
-  // 2. Check for structured key-value pairs like '- **Email:** foo@bar.com'
+  // 1. First extract structured key-value pairs (highest specificity, e.g. '- **Location:** Bogotá, Colombia')
   const lines = text.split(/\r?\n/);
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
 
-    const kvMatch = trimmed.match(/^[-*•]?\s*\*{0,2}(Full Name|Nombre Completo|Primary Professional Title|Title|Cargo|Location|Ubicación|Email|Correo|Phone|Teléfono|WhatsApp|LinkedIn|GitHub|Portfolio|Portafolio|Website)(?:\s*\/[^*:]*)?:\*{0,2}\s*(.+)$/i);
+    const kvMatch = trimmed.match(
+      /^[-*•]?\s*\*{0,2}(Full Name|Nombre Completo|Primary Professional Title|Title|Cargo|Location|Ubicación|Email|Correo|Phone|Teléfono|WhatsApp|LinkedIn|GitHub|Portfolio|Portafolio|Website)(?:\s*\/[^*:]*)?(?::\*{0,2}|\*{0,2}:)\s*(.+)$/i
+    );
     if (kvMatch) {
       const key = kvMatch[1].toLowerCase();
-      const rawVal = kvMatch[2].trim();
+      let rawVal = kvMatch[2].trim().replace(/^\s*\\?\[\s*|\s*\\?\]\s*$/g, '');
 
       // Check if value contains a markdown link [Label](url)
       const innerLink = rawVal.match(/\[(.*?)\]\((.*?)\)/);
@@ -188,13 +160,51 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
     }
   }
 
+  // 2. Extract explicit markdown links [Label](URL) for remaining missing types
+  const mdLinkRegex = /\[(.*?)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g;
+  let linkMatch: RegExpExecArray | null;
+  while ((linkMatch = mdLinkRegex.exec(text)) !== null) {
+    const rawLabel = linkMatch[1].trim();
+    const rawUrl = linkMatch[2].trim();
+    const cleanLabel = cleanMarkdownFormatting(rawLabel);
+
+    if (rawUrl.includes('linkedin.com') || cleanLabel.toLowerCase().includes('linkedin')) {
+      if (!addedTypes.has('linkedin')) {
+        results.push({ type: 'linkedin', label: cleanLabel || 'LinkedIn', url: rawUrl });
+        addedTypes.add('linkedin');
+      }
+    } else if (rawUrl.includes('github.com') || cleanLabel.toLowerCase().includes('github')) {
+      if (!addedTypes.has('github')) {
+        results.push({ type: 'github', label: cleanLabel || 'GitHub', url: rawUrl });
+        addedTypes.add('github');
+      }
+    } else if (rawUrl.startsWith('mailto:') || rawUrl.includes('@')) {
+      const email = rawUrl.replace(/^mailto:/i, '');
+      if (!addedTypes.has('email')) {
+        results.push({ type: 'email', label: email, url: `mailto:${email}` });
+        addedTypes.add('email');
+      }
+    } else if (!addedTypes.has('globe')) {
+      results.push({ type: 'globe', label: cleanLabel || 'Portfolio', url: rawUrl });
+      addedTypes.add('globe');
+    }
+  }
+
   // 3. Extract embedded entities from inline text (split by •, |, ·, \n)
   const rawParts = text
     .split(/[\r\n•|·\u00B7\u2022;]+/)
     .map(p => p.trim())
     .filter(Boolean);
 
+  const isNonLocationKeyword = (str: string) =>
+    /^(?:portfolio|portafolio|website|web|sitio web|blog|live demo|demo|github|linkedin|email|correo|phone|tel[ée]fono|whatsapp|availability|disponibilidad|immediate|inmediata)$/i.test(str.trim());
+
   for (const part of rawParts) {
+    // If the part is or contains a link/URL, skip it for location parsing
+    if (part.includes('http://') || part.includes('https://') || /\[.*?\]\(.*?\)/.test(part)) {
+      continue;
+    }
+
     const emailMatch = part.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
     const linkedinMatch = part.match(/(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+/i);
     const githubMatch = part.match(/(?:https?:\/\/)?(?:www\.)?github\.com\/[a-zA-Z0-9_-]+/i);
@@ -225,16 +235,16 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
     if (linkedinMatch) locClean = locClean.replace(linkedinMatch[0], '');
     if (githubMatch) locClean = locClean.replace(githubMatch[0], '');
     if (phoneMatch) locClean = locClean.replace(phoneMatch[0], '');
-    locClean = cleanMarkdownFormatting(locClean).replace(/^[,\s\-.:]+|[,\s\-.:]+$/g, '').trim();
+    locClean = cleanMarkdownFormatting(locClean).replace(/^[,\s\-.:|]+|[,\s\-.:|]+$/g, '').trim();
 
     if (
       locClean &&
       !addedTypes.has('location') &&
+      !isNonLocationKeyword(locClean) &&
       locClean.length >= 3 &&
       locClean.length <= 60 &&
       (locClean.includes(',') ||
-        /remot[eo]|hybrid|h[íi]brido|onsite|presencial/i.test(locClean) ||
-        (!locClean.includes('@') && !locClean.includes('/') && !/\d{5,}/.test(locClean) && !locClean.toLowerCase().includes('github') && !locClean.toLowerCase().includes('linkedin')))
+        /remot[eo]|hybrid|h[íi]brido|onsite|presencial/i.test(locClean))
     ) {
       results.push({ type: 'location', label: locClean });
       addedTypes.add('location');
@@ -347,10 +357,52 @@ function cleanEmptyMarkdownLinks(text: string): string {
     .trim();
 }
 
+const isLinkPattern = (str: string) =>
+  /https?:\/\/|\[.*?\]\(.*?\)|github\.com|gitlab\.com|bitbucket\.org|vercel\.app|netlify\.app/i.test(str);
+
+const isDatePattern = (str: string) =>
+  /\b(?:\d{4}|present|presente|actual|current|actuellement)\b/i.test(str);
+
+function extractProjectLinks(text: string): { demoUrl?: string; repoUrl?: string; primaryLocation?: string } {
+  let demoUrl: string | undefined;
+  let repoUrl: string | undefined;
+
+  // 1. Explicit markdown links [Label](url)
+  const mdMatches = Array.from(text.matchAll(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g));
+  if (mdMatches.length > 0) {
+    for (const m of mdMatches) {
+      const label = m[1].toLowerCase();
+      const url = m[2].trim();
+      if (/repo|git|c[oó]digo|source/i.test(label) || /github\.com|gitlab\.com|bitbucket\.org/i.test(url)) {
+        if (!repoUrl) repoUrl = url;
+      } else {
+        if (!demoUrl) demoUrl = url;
+      }
+    }
+  }
+
+  // 2. Plain URLs
+  if (!demoUrl || !repoUrl) {
+    const urlMatches = text.match(/https?:\/\/[^\s•|]+/g);
+    if (urlMatches) {
+      for (const rawUrl of urlMatches) {
+        const url = rawUrl.trim();
+        if (/github\.com|gitlab\.com|bitbucket\.org/i.test(url)) {
+          if (!repoUrl) repoUrl = url;
+        } else {
+          if (!demoUrl) demoUrl = url;
+        }
+      }
+    }
+  }
+
+  const primaryLocation = repoUrl || demoUrl || (text.includes('http') ? text.trim() : undefined);
+  return { demoUrl, repoUrl, primaryLocation };
+}
+
 /**
  * Parses raw experience/projects text into typed ExperienceItem array.
- * If isProjects is true, date and location are strictly omitted (not work experiences),
- * and markdown links [Title](url) in headings and subtitles are fully preserved.
+ * If isProjects is true, links are mapped to demoUrl / repoUrl, category to role, and dates to date.
  */
 function parseExperienceItems(rawContent: string, isProjects: boolean = false): ExperienceItem[] {
   const lines = rawContent.split(/\r?\n/);
@@ -364,6 +416,8 @@ function parseExperienceItems(rawContent: string, isProjects: boolean = false): 
         currentItem.role ||
         currentItem.bullets.length > 0 ||
         currentItem.location ||
+        currentItem.demoUrl ||
+        currentItem.repoUrl ||
         currentItem.date)
     ) {
       items.push(currentItem);
@@ -398,16 +452,36 @@ function parseExperienceItems(rawContent: string, isProjects: boolean = false): 
       const rawParts = cleanLine.split('|');
 
       const companyPart = cleanMarkdownFormatting(rawParts[0]);
-      let rolePart = rawParts.slice(1).join(' | ').trim() || undefined;
 
       if (isProjects) {
-        // Personal projects do not have physical locations or employment tenure dates
-        const cleanedRole = rolePart ? cleanEmptyMarkdownLinks(rolePart) : undefined;
+        let detectedRole: string | undefined = undefined;
+        let detectedDemoUrl: string | undefined = undefined;
+        let detectedRepoUrl: string | undefined = undefined;
+        let detectedLocation: string | undefined = undefined;
+        let detectedDate: string | undefined = undefined;
+
+        for (let pIdx = 1; pIdx < rawParts.length; pIdx++) {
+          const rawP = rawParts[pIdx].trim();
+          if (!rawP) continue;
+          if (isLinkPattern(rawP)) {
+            const links = extractProjectLinks(rawP);
+            if (links.demoUrl) detectedDemoUrl = links.demoUrl;
+            if (links.repoUrl) detectedRepoUrl = links.repoUrl;
+            detectedLocation = links.primaryLocation;
+          } else if (isDatePattern(rawP)) {
+            detectedDate = cleanMarkdownFormatting(rawP);
+          } else if (!detectedRole) {
+            detectedRole = cleanMarkdownFormatting(rawP);
+          }
+        }
+
         currentItem = {
           company: companyPart,
-          location: undefined,
-          role: cleanedRole,
-          date: undefined,
+          location: detectedLocation,
+          demoUrl: detectedDemoUrl,
+          repoUrl: detectedRepoUrl,
+          role: detectedRole,
+          date: detectedDate,
           bullets: []
         };
       } else {
@@ -451,10 +525,23 @@ function parseExperienceItems(rawContent: string, isProjects: boolean = false): 
       }
     } else if (currentItem) {
       if (isProjects) {
-        // Project subtitle / links / stack line without accidental dates
-        const cleanSub = cleanEmptyMarkdownLinks(trimmed);
-        if (cleanSub) {
-          currentItem.role = currentItem.role ? `${currentItem.role} • ${cleanSub}` : cleanSub;
+        const parts = trimmed.split('|');
+        for (const p of parts) {
+          const rawP = p.trim();
+          if (!rawP) continue;
+          if (isLinkPattern(rawP)) {
+            const links = extractProjectLinks(rawP);
+            if (links.demoUrl && !currentItem.demoUrl) currentItem.demoUrl = links.demoUrl;
+            if (links.repoUrl && !currentItem.repoUrl) currentItem.repoUrl = links.repoUrl;
+            if (!currentItem.location) currentItem.location = links.primaryLocation;
+          } else if (isDatePattern(rawP)) {
+            currentItem.date = cleanMarkdownFormatting(rawP);
+          } else {
+            const cleanP = cleanMarkdownFormatting(rawP);
+            if (cleanP) {
+              currentItem.role = currentItem.role ? `${currentItem.role} • ${cleanP}` : cleanP;
+            }
+          }
         }
       } else {
         const parts = trimmed.split('|').map(cleanMarkdownFormatting);
@@ -836,9 +923,24 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
   }
   flushSection();
 
-  // Extract contacts from header and entire markdown document (including personal info section)
-  const fullTextToScan = [headerContactText.join('\n'), rawMarkdown].join('\n');
-  const contacts = extractContactsFromBlock(fullTextToScan);
+  // Extract contacts from header lines and personal/contact info section only (never from body/projects)
+  const personalSec = sections.find(
+    s =>
+      s.type !== 'projects' &&
+      s.type !== 'experience' &&
+      s.type !== 'skills' &&
+      s.type !== 'education' &&
+      s.type !== 'languages' &&
+      !/project|proyecto|iniciativa|portfolio|portafolio/i.test(s.title) &&
+      /(?:personal\s*(?:info|detail|data|contact)|contact|contacto|informaci[oó]n\s*personal|datos\s*personales|kontaktdaten|coordonn[eé]es|dati di contatto)/i.test(
+        s.title
+      )
+  );
+  const textToScanForContacts = [
+    headerContactText.join('\n'),
+    personalSec ? personalSec.rawContent : ''
+  ].filter(Boolean).join('\n');
+  const contacts = extractContactsFromBlock(textToScanForContacts);
 
   // Check for explicit title / role declaration in personal info or entire document (takes priority over loose headers)
   const explicitTitleMatch = rawMarkdown.match(
@@ -945,7 +1047,11 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
       const langItems = parseLanguageItems(s.rawContent);
       cvData.languageItems = cvData.languageItems && cvData.languageItems.length > 0 ? [...cvData.languageItems, ...langItems] : langItems;
     }
-    if (s.type === 'generic' && s.rawContent && s.rawContent.trim()) {
+    const isPersonalInfoSec =
+      /(?:personal\s*(?:info|detail|data|contact)|contact|contacto|informaci[oó]n\s*personal|datos\s*personales|kontaktdaten|coordonn[eé]es|dati di contatto)/i.test(
+        s.title
+      );
+    if (s.type === 'generic' && !isPersonalInfoSec && s.rawContent && s.rawContent.trim()) {
       if (!cvData.customSections) cvData.customSections = [];
       const lower = s.title.toLowerCase();
       let presetType: CustomSectionPresetType = 'custom';

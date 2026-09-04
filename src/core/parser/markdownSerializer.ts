@@ -93,7 +93,15 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     const projItemsFormatted = data.projects.map(proj => {
       const company = proj.company || '';
       const role = proj.role || '';
-      const headerLine = `### **${company}**${proj.location ? ` | ${proj.location}` : ''}`;
+      const links: string[] = [];
+      if (proj.demoUrl) {
+        links.push(`[Live Demo](${proj.demoUrl})`);
+      }
+      if (proj.repoUrl) {
+        links.push(`[GitHub Repository](${proj.repoUrl})`);
+      }
+      const linkText = links.length > 0 ? links.join(' • ') : (proj.location || '');
+      const headerLine = `### **${company}**${linkText ? ` | ${linkText}` : ''}`;
       const subHeaderLine = `*${role}*${proj.date ? ` | **${proj.date}**` : ''}`;
       const bullets = (proj.bullets || [])
         .filter(b => Boolean(b && b.trim()))
