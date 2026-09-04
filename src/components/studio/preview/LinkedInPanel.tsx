@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Box,
   Paper,
@@ -21,8 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { CVData } from '../../../types/cv';
 import { LinkedInProfileResult, LinkedInHeadline } from '../../../types/linkedin';
 import { AIProviderSettings } from '../../../types/ai';
-import { generateLinkedInProfile } from '../../../core/ai-service';
-import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
+import { useLinkedInWorkflow } from '../../../hooks/useLinkedInWorkflow';
 
 export interface LinkedInPanelProps {
   cvData: CVData;
@@ -32,14 +31,6 @@ export interface LinkedInPanelProps {
   providerSettings?: AIProviderSettings;
   onClose: () => void;
 }
-
-const DEFAULT_SETTINGS_FALLBACK: AIProviderSettings = {
-  provider: 'gemini',
-  apiKey: '',
-  model: 'gemini-3.7-flash',
-  temperature: 0.2,
-};
-
 
 export const LinkedInPanel: React.FC<LinkedInPanelProps> = ({
   cvData,
@@ -52,45 +43,26 @@ export const LinkedInPanel: React.FC<LinkedInPanelProps> = ({
   const { t } = useTranslation(['preview', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const { copy } = useCopyToClipboard();
 
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<LinkedInProfileResult | null>(null);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [isEditingAbout, setIsEditingAbout] = useState(false);
-  const [aboutText, setAboutText] = useState('');
-  const [snackbar, setSnackbar] = useState<string | null>(null);
-
-  useEffect(() => {
-    handleGenerate();
-
-  }, [companyName, targetRole]);
-
-  const handleGenerate = async () => {
-    setLoading(true);
-    try {
-      const res = await generateLinkedInProfile(
-        cvData,
-        targetJob,
-        companyName,
-        targetRole,
-        providerSettings || DEFAULT_SETTINGS_FALLBACK
-      );
-      setData(res);
-      setAboutText(res.about.text);
-    } catch (err) {
-      console.error('Failed to generate LinkedIn profile:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCopy = async (text: string, id: string, label: string) => {
-    await copy(text);
-    setCopiedId(id);
-    setSnackbar(t('preview:linkedin.copiedToast', '{{label}} copied to clipboard!', { label }));
-    setTimeout(() => setCopiedId(null), 2000);
-  };
+  const {
+    loading,
+    data,
+    copiedId,
+    isEditingAbout,
+    setIsEditingAbout,
+    aboutText,
+    setAboutText,
+    snackbar,
+    handleGenerate,
+    handleCopy,
+    handleCloseSnackbar,
+  } = useLinkedInWorkflow({
+    cvData,
+    companyName,
+    targetRole,
+    targetJob,
+    providerSettings,
+  });
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box' }}>
@@ -295,7 +267,7 @@ export const LinkedInPanel: React.FC<LinkedInPanelProps> = ({
       <Snackbar
         open={Boolean(snackbar)}
         autoHideDuration={3000}
-        onClose={() => setSnackbar(null)}
+        onClose={handleCloseSnackbar}
         message={snackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       />
