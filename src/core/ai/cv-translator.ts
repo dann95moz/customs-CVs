@@ -141,7 +141,9 @@ function sanitizeLlmOutput(rawText: string): string {
 /**
  * System guidelines for CV translation with strict technical term protection.
  */
-function buildTranslationSystemPrompt(targetLangName: string): string {
+function buildTranslationSystemPrompt(targetLangName: string, targetLangCode?: string): string {
+  const isSpanish = targetLangCode === 'es' || /spanish|español/i.test(targetLangName);
+
   return `You are an elite, ATS-specialized multilingual CV translator and executive resume editor.
 Your mission is to translate a professional CV/Resume into ${targetLangName} with native executive polish, maintaining high ATS compatibility.
 
@@ -156,9 +158,9 @@ CRITICAL INTEGRITY & NON-LITERAL TRANSLATION RULES:
 4. METRICS & FORMATTING:
    - Preserve all metrics, numbers, percentages, dates, and currency values.
    - Maintain the exact same Markdown syntax: headings (#, ##, ###), bold text (**word**), bullet points (-), and clean spacing.
-5. NATURAL NARRATIVE:
+5. NATURAL NARRATIVE & VERB TENSES:
    - For bullet points and summaries, translate the action verbs and business impact narratives using strong, natural executive phrasing in ${targetLangName} following the Google XYZ formula.
-6. OUTPUT FORMAT:
+${isSpanish ? '   - **CRITICAL SPANISH VERB STANDARD (MANDATORY INFINITIVE):** In Spanish, ALL experience and project bullet points MUST begin with action verbs in the **INFINITIVE** form (e.g., Diseñar, Desarrollar, Implementar, Optimizar, Liderar, Refactorizar, Reducir, Coordinar). ❌ NEVER translate action verbs into past tense / pretérito (e.g. Diseñó, Desarrollé, Implementó, Optimizó).\n' : ''}6. OUTPUT FORMAT:
    - Return ONLY the translated Markdown text.
    - Do NOT include conversational greetings, explanations, or commentary.`;
 }
@@ -176,7 +178,7 @@ export async function translateFullCv(params: TranslateCvParams): Promise<string
   const langDef = LANGUAGE_DEFINITIONS[params.targetLanguage] || LANGUAGE_DEFINITIONS.en;
   const targetLangName = langDef.name;
 
-  const systemPrompt = buildTranslationSystemPrompt(targetLangName);
+  const systemPrompt = buildTranslationSystemPrompt(targetLangName, langDef.code);
   const userPrompt = `Translate the following complete CV into ${targetLangName}. Follow all technical preservation rules strictly:
 
 \`\`\`markdown
@@ -211,7 +213,7 @@ export async function translateCvSection(params: TranslateSectionParams): Promis
   const langDef = LANGUAGE_DEFINITIONS[params.targetLanguage] || LANGUAGE_DEFINITIONS.en;
   const targetLangName = langDef.name;
 
-  const systemPrompt = buildTranslationSystemPrompt(targetLangName);
+  const systemPrompt = buildTranslationSystemPrompt(targetLangName, langDef.code);
   const userPrompt = `Translate ONLY this single CV section titled "${params.sectionTitle}" into ${targetLangName}.
 Preserve exact Markdown formatting, bullet points, and technical terms:
 

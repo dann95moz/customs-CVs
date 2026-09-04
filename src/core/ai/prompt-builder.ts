@@ -15,6 +15,7 @@ This document defines the strict styling, formatting, content, and ATS optimizat
 2. GOOGLE XYZ ACHIEVEMENT FORMULA & RELATIONAL VERBS:
    - Every experience bullet must follow: "Accomplished [X] as measured by [Y] by doing [Z]".
    - Use proactive technical leadership verbs (Architected, Spearheaded, Standardized, Engineered, Streamlined).
+   - SPANISH VERB FORM STANDARD: For Spanish CVs, action verbs at the start of experience and project bullet points MUST ALWAYS be in the INFINITIVE form (Diseñar, Liderar, Implementar, Optimizar, Refactorizar, Desarrollar), NEVER in past tense (Diseñó, Implementó, Desarrollé).
    - PRESERVE RELATIONAL VERBS & MIGRATIONS: When MASTER-DATA.MD describes a technology transition (e.g., "migrated from X to Y", "replaced X with Y", "refactored from X to Y"), preserve that directional relationship in the bullet. ❌ NEVER flatten it into "using X and Y" as if both were used simultaneously.
 
 3. STRICT BULLET COUNT LIMIT (IDEALLY 3, MAXIMUM 4, NEVER 5+):
@@ -102,7 +103,7 @@ Your mission is to analyze the candidate's comprehensive master knowledge base (
 - ❌ STRICTLY PROHIBITED: Do NOT mix languages (e.g., do NOT leave English bullet points or English section titles when the vacancy is in ${lang.name}).
 - Translate and write the Professional Summary, job roles, achievement bullets, action verbs, project summaries, and gap analysis directly in **${lang.name}**.
 - Preserve ONLY canonical industry-standard proper nouns, brand names, and programming tools in their standard technical spelling (e.g., React, TypeScript, Angular, Vue, Node.js, Docker, Kubernetes, AWS, GraphQL, CI/CD).
-- Strictly use the following localized section headings in PART 2:
+${lang.code === 'es' ? '- **SPANISH VERB FORM DIRECTIVE (STRICT MANDATORY):** In Spanish CVs, ALL experience and project bullet points MUST begin with action verbs in the **INFINITIVE** form (e.g., Diseñar, Desarrollar, Implementar, Optimizar, Liderar, Refactorizar, Reducir, Coordinar). ❌ NEVER use past tense / pretérito (e.g. Diseñó, Desarrollé, Implementó, Optimizó).\n' : ''}- Strictly use the following localized section headings in PART 2:
   - ## ${lang.sections.summary}
   - ## ${lang.sections.skills}
   - ## ${lang.sections.experience}

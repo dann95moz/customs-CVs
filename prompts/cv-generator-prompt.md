@@ -32,6 +32,7 @@ Your mission is to take my comprehensive master background database (`master-dat
 - **Experience Bolding:** Bold 1-2 core technologies and bold key numerical percentages per bullet.
 - **No parenthetical breakdowns or trivial counters:** Do not write `(from 40m down to 20m)` or count minor items like `7 microfrontends`. State clean percentages and architectural scale directly.
 - **Technical leadership verbs:** Employ strong proactive action verbs (*Spearheaded, Led, Architected, Engineered, Standardized, Streamlined*).
+- **Spanish Verb Form Rule (Mandatory Infinitive):** For CVs generated or translated in Spanish, action verbs initiating experience and project bullet points MUST ALWAYS be in the **infinitive form** (*Diseñar, Liderar, Desarrollar, Implementar, Optimizar, Refactorizar, Estandarizar*). ❌ NEVER use past tense / pretérito (*Diseñó, Lideró, Implementó, Desarrollé*).
 
 #### 4. Strict Constraints & Verification (`rules.md` & SSOT)
 - **Headline Seniority Boundary:** The headline subtitle under the candidate's name may incorporate domain/technology keywords from `target-job.md` (e.g. "Angular", "Front-End", "React") but must **NEVER copy a seniority qualifier (Senior/Lead/Staff/Principal)** from the job posting unless that exact qualifier appears in `master-data.md`'s own Primary Professional Title or held job titles. If the target role implies a higher seniority than the candidate's source data, align only on domain/technology terms — e.g., `"Frontend Engineer | Angular & TypeScript Specialist"` — never on the seniority level.

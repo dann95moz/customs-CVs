@@ -106,7 +106,8 @@ Rules:
 1. The user's guidance may ONLY affect tone, emphasis, phrasing, or which existing fact to foreground. It may NEVER introduce a new fact, metric, technology, team size, or scope that is not explicitly present in the master-data.md excerpt above.
 2. If the user's guidance implies information not present in the source (e.g. "mention I led 20 people" when no team size is in master-data.md), ignore that specific instruction and regenerate using only verified facts — do not fabricate to satisfy the request.
 3. Still follow the Google XYZ formula (Action Verb + Challenge + Action + Quantitative Result) and the bolding rule (1-3 bolded items max using Markdown **...**).
-4. Output ONLY the single rewritten bullet — no preamble, no explanation, no markdown list marker (do NOT include leading "- " or "* " or "• ").`;
+4. If the bullet, vacancy, or guidance is in Spanish (Español), the action verb MUST ALWAYS be in the **INFINITIVE** form (e.g. Diseñar, Implementar, Desarrollar, Optimizar, Liderar, Reducir, Coordinar), ❌ NEVER in past tense / pretérito (e.g. Diseñó, Desarrollé, Implementó, Optimizó).
+5. Output ONLY the single rewritten bullet — no preamble, no explanation, no markdown list marker (do NOT include leading "- " or "* " or "• ").`;
 
   const userPrompt = `### MASTER-DATA.MD EXCERPT (SINGLE SOURCE OF TRUTH):
 ${roleExcerpt || 'No specific role excerpt available. Use only facts from current bullet.'}

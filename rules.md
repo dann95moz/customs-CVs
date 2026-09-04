@@ -71,6 +71,7 @@ This document defines the strict styling, formatting, content, and ATS optimizat
   - *Example:* *"Led technical upskilling and codebase onboarding for junior frontend engineers on TypeScript and Clean Code standards, accelerating feature delivery cycles by 35%."*
   - *Architecture & Engineering:* **Architected, Engineered, Refactored, Modernized, Deployed.**
   - *Optimization:* **Streamlined, Reduced, Accelerated, Scaled, Eliminated.**
+- **Spanish CV Verb Standard (Mandatory Infinitive):** When writing or translating CVs in Spanish, all verbs initiating an experience or project bullet point MUST be in the **infinitive form** (*Liderar, Diseñar, Implementar, Refactorizar, Optimizar, Estandarizar, Dirigir, Desarrollar, Reducir, Acelerar*). ❌ NEVER use past tense / pretérito (*"Lideró"*, *"Lideré"*, *"Diseñó"*, *"Diseñé"*, *"Implementó"*).
 
 ### E. Universal 3-Category Skills Architecture
 - Regardless of role or discipline (Frontend, Backend, Fullstack, Data, DevOps,
@@ -90,7 +91,9 @@ This document defines the strict styling, formatting, content, and ATS optimizat
 
 ### F. Google XYZ Achievement Formula
 Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Accomplished [X] as measured by [Y] by doing [Z]"}$):
-- **Action Verb:** Strong past-tense action verb (*Architected, Spearheaded, Refactored, Streamlined*).
+- **Action Verb:**
+  - *For English CVs:* Strong past-tense action verb (*Architected, Spearheaded, Refactored, Streamlined*).
+  - *For Spanish CVs:* **ALWAYS in the infinitive form** (*Diseñar, Liderar, Implementar, Refactorizar, Optimizar, Reducir, Acelerar*). ❌ NEVER in the past tense (*Diseñó, Implementó, Desarrollé*).
 - **Challenge / Technical Context:** The engineering problem or architectural initiative.
 - **Action / Implementation:** The modern stack, design pattern, or migration applied.
 - **Quantitative Result:** Clear percentage or business/engineering metric achieved.
@@ -130,8 +133,9 @@ Each experience bullet point must follow the **Google XYZ Formula** ($\text{"Acc
   - Always list each university degree and each certification as its own individual bullet point on a separate line (forming a clean vertical column).
   - ❌ Do NOT combine multiple certifications into a single inline line separated by pipes `|` or commas (e.g. NEVER output `- **Certifications:** Cert 1 | Cert 2`).
   - ✅ Format: `- **[Certification Name]** – [Issuer], [Year]`.
-- **Language Uniformity (100% English Standard):**
+- **Language Uniformity & Regional Verb Standards:**
   - Generate the CV in the same language as target-job.md. If the job posting's language cannot be reliably detected, default to English. Section headers (PROFESSIONAL SUMMARY, etc.) must also be translated accordingly — never mixed languages within the same document.
+  - **Spanish CV Verb Standard (Infinitive Mandatory):** When writing or translating a CV in Spanish, all experience and project bullet points MUST begin with verbs in the **infinitive** form (*Diseñar, Desarrollar, Implementar, Coordinar, Optimizar, Liderar, Reducir, Refactorizar*). ❌ NEVER use past tense / pretérito (*Diseñó, Implementó, Desarrollé*).
 - **Optional Projects & Extras Selection:**
   - Items in the candidate's optional "Projects & Extras" pool (personal
     projects, publications, volunteer work, talks, awards, etc.) are **not
