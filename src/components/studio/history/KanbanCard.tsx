@@ -42,10 +42,13 @@ import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useTranslation } from 'react-i18next';
-import { KanbanCardProps } from '../../../types';
+import { KanbanCardProps, GeneratedCvVersion } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
 import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
@@ -65,6 +68,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   isDownloadingPdf = false,
   isDraggingOverlay = false,
   onSelectLanguage,
+  onTailorForApplication,
 }) => {
   const { t, i18n } = useTranslation(['history', 'common', 'gap', 'audit', 'preview', 'target']);
   const theme = useTheme();
@@ -242,8 +246,46 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
               />
             )}
 
-            {/* Attached Version Switcher Dropdown */}
-            {allMatchingVersions.length > 1 ? (
+            {/* Attached Version Switcher or External CV Badge */}
+            {application.isExternalCv ? (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                <Chip
+                  icon={<DescriptionRoundedIcon sx={{ fontSize: '12px !important' }} />}
+                  label={application.externalCvTitle || t('history:externalCv.badge', 'External CV')}
+                  size="small"
+                  variant="outlined"
+                  sx={{ height: 22, fontSize: '0.68rem', fontWeight: 600 }}
+                />
+                {Boolean(application.contactChannel) && (
+                  <Chip
+                    label={
+                      application.contactChannel === 'linkedin' ? '🌐 LinkedIn' :
+                      application.contactChannel === 'whatsapp' ? '💬 WhatsApp' :
+                      application.contactChannel === 'email' ? '✉️ Email' :
+                      application.contactChannel === 'referral' ? '👥 Referido' :
+                      application.contactChannel === 'headhunter' ? '👔 Headhunter' :
+                      application.contactChannel === 'portal' ? '🏢 Portal' :
+                      application.contactChannel === 'direct' ? '🤝 Directo' :
+                      `📌 ${application.contactChannel}`
+                    }
+                    size="small"
+                    variant="outlined"
+                    sx={{ height: 22, fontSize: '0.65rem', fontWeight: 600 }}
+                  />
+                )}
+                {Boolean(application.contactPerson) && (
+                  <Tooltip title={`${t('history:trackModal.contactPerson', 'Contacto')}: ${application.contactPerson}`}>
+                    <Chip
+                      icon={<PersonRoundedIcon sx={{ fontSize: '11px !important' }} />}
+                      label={application.contactPerson}
+                      size="small"
+                      variant="outlined"
+                      sx={{ height: 22, fontSize: '0.65rem' }}
+                    />
+                  </Tooltip>
+                )}
+              </Box>
+            ) : allMatchingVersions.length > 1 ? (
               <FormControl size="small" sx={{ minWidth: 100 }}>
                 <Select
                   value={application.appliedVersionId}
@@ -505,6 +547,27 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         onClose={() => handleCloseMenu()}
 
       >
+        {onTailorForApplication && (
+          <MenuItem
+            onClick={(e) => {
+              handleCloseMenu(e);
+              onTailorForApplication(application);
+            }}
+            sx={{ fontSize: '0.8rem' }}
+          >
+            <ListItemIcon>
+              <AutoAwesomeRoundedIcon fontSize="small" color="primary" />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: 'primary.main' }}>
+                  {t('history:card.tailorCvForApp', '✨ Tailor CV in Studio')}
+                </Typography>
+              }
+            />
+          </MenuItem>
+        )}
+
         {application.appliedVersionId && (
           <MenuItem
             onClick={(e) => {

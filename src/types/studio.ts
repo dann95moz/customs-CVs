@@ -73,6 +73,16 @@ export interface KanbanColumn {
   isTerminal?: boolean;
 }
 
+export type ApplicationContactChannel =
+  | 'linkedin'
+  | 'whatsapp'
+  | 'email'
+  | 'referral'
+  | 'headhunter'
+  | 'portal'
+  | 'direct'
+  | 'other';
+
 export interface ApplicationItem {
   id: string;
   companyName: string;
@@ -82,6 +92,8 @@ export interface ApplicationItem {
   selectedLanguage?: string;
   isExternalCv?: boolean;
   externalCvTitle?: string;
+  contactChannel?: ApplicationContactChannel | string;
+  contactPerson?: string;
   createdAt: string; // ISO string
   updatedAt: string; // ISO string
   appliedDate?: string;

@@ -62,6 +62,7 @@ export const ApplicationsHistoryView: React.FC = () => {
     isTrackModalOpen,
     trackPrefillColumnId,
     trackPrefillVersion,
+    trackPrefillSourceType,
     isColumnEditOpen,
     editingColumn,
     isDiffModalOpen,
@@ -94,6 +95,7 @@ export const ApplicationsHistoryView: React.FC = () => {
     handleOpenBulkDeleteModal,
     handleCloseBulkDeleteModal,
     handleStartNewResume,
+    handleTailorForApplication,
     handleViewChange,
     handleLoadVersion,
     handleDeleteVersion,
@@ -193,15 +195,26 @@ export const ApplicationsHistoryView: React.FC = () => {
                       'Synthesize or save a tailored resume in Resume Studio, then click "Track Application" to organize your recruitment pipeline on the Kanban board.'
                     )}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AutoAwesomeRoundedIcon />}
-                    onClick={handleStartNewResume}
-                    sx={{ mt: 1, fontWeight: 700, px: 2.5 }}
-                  >
-                    {t('history:empty.action', 'Start New Application')}
-                  </Button>
+                  <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center', mt: 1 }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<AutoAwesomeRoundedIcon />}
+                      onClick={handleStartNewResume}
+                      sx={{ fontWeight: 700, px: 2.5 }}
+                    >
+                      {t('history:empty.action', 'Start New Application')}
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="inherit"
+                      startIcon={<AddRoundedIcon />}
+                      onClick={() => handleOpenTrackModal(undefined, undefined, 'external')}
+                      sx={{ fontWeight: 700, px: 2.5 }}
+                    >
+                      {t('history:empty.actionDirect', '+ Track Direct Process')}
+                    </Button>
+                  </Box>
                 </CardContent>
               </Card>
             ) : totalActive === 0 && savedVersions.length > 0 ? (
@@ -249,15 +262,26 @@ export const ApplicationsHistoryView: React.FC = () => {
                       'Select which CV version was actually submitted to an employer to add it to your active recruitment grid.'
                     )}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddRoundedIcon />}
-                    onClick={() => handleOpenTrackModal()}
-                    sx={{ mt: 0.75, fontWeight: 700, px: 3, py: 1 }}
-                  >
-                    {t('history:actions.trackApp', 'Track Application')}
-                  </Button>
+                  <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center', mt: 0.75 }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<AddRoundedIcon />}
+                      onClick={() => handleOpenTrackModal()}
+                      sx={{ fontWeight: 700, px: 3, py: 1 }}
+                    >
+                      {t('history:actions.trackApp', 'Track Application')}
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="inherit"
+                      startIcon={<AddRoundedIcon />}
+                      onClick={() => handleOpenTrackModal(undefined, undefined, 'external')}
+                      sx={{ fontWeight: 700, px: 2.5 }}
+                    >
+                      {t('history:empty.actionDirect', '+ Track Direct Process')}
+                    </Button>
+                  </Box>
                 </CardContent>
               </Card>
             ) : (
@@ -277,6 +301,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                 onManageStages={(col) => handleOpenEditColumn(col)}
                 onQuickAddApplication={handleOpenTrackModal}
                 onSelectLanguage={handleSetApplicationLanguage}
+                onTailorForApplication={handleTailorForApplication}
               />
             )}
           </>
@@ -323,15 +348,26 @@ export const ApplicationsHistoryView: React.FC = () => {
                       'Synthesize or save a tailored resume in Resume Studio, then click "Track Application" to organize your recruitment pipeline on the Kanban board.'
                     )}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AutoAwesomeRoundedIcon />}
-                    onClick={handleStartNewResume}
-                    sx={{ mt: 1, fontWeight: 700, px: 2.5 }}
-                  >
-                    {t('history:empty.action', 'Start New Application')}
-                  </Button>
+                  <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center', mt: 1 }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<AutoAwesomeRoundedIcon />}
+                      onClick={handleStartNewResume}
+                      sx={{ fontWeight: 700, px: 2.5 }}
+                    >
+                      {t('history:empty.action', 'Start New Application')}
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="inherit"
+                      startIcon={<AddRoundedIcon />}
+                      onClick={() => handleOpenTrackModal(undefined, undefined, 'external')}
+                      sx={{ fontWeight: 700, px: 2.5 }}
+                    >
+                      {t('history:empty.actionDirect', '+ Track Direct Process')}
+                    </Button>
+                  </Box>
                 </CardContent>
               </Card>
             ) : totalActive === 0 && savedVersions.length > 0 ? (
@@ -379,15 +415,26 @@ export const ApplicationsHistoryView: React.FC = () => {
                       'Select which CV version was actually submitted to an employer to add it to your active Kanban board.'
                     )}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddRoundedIcon />}
-                    onClick={() => handleOpenTrackModal()}
-                    sx={{ mt: 0.75, fontWeight: 700, px: 3, py: 1 }}
-                  >
-                    {t('history:actions.trackApp', 'Track Application')}
-                  </Button>
+                  <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center', mt: 0.75 }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<AddRoundedIcon />}
+                      onClick={() => handleOpenTrackModal()}
+                      sx={{ fontWeight: 700, px: 3, py: 1 }}
+                    >
+                      {t('history:actions.trackApp', 'Track Application')}
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="inherit"
+                      startIcon={<AddRoundedIcon />}
+                      onClick={() => handleOpenTrackModal(undefined, undefined, 'external')}
+                      sx={{ fontWeight: 700, px: 2.5 }}
+                    >
+                      {t('history:empty.actionDirect', '+ Track Direct Process')}
+                    </Button>
+                  </Box>
                 </CardContent>
               </Card>
             ) : (
@@ -409,6 +456,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                 onArchiveColumn={handleArchiveColumn}
                 onQuickAddApplication={handleOpenTrackModal}
                 onSelectLanguage={handleSetApplicationLanguage}
+                onTailorForApplication={handleTailorForApplication}
               />
             )}
           </>
@@ -736,6 +784,7 @@ export const ApplicationsHistoryView: React.FC = () => {
         open={isTrackModalOpen}
         onClose={handleCloseTrackModal}
         onConfirm={handleAddApplication}
+        initialSourceType={trackPrefillSourceType}
         prefillCompany={trackPrefillVersion?.companyName}
         prefillRole={trackPrefillVersion?.targetRole}
         prefillVersionId={trackPrefillVersion?.id}

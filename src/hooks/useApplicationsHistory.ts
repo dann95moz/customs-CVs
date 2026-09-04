@@ -25,6 +25,8 @@ export function useApplicationsHistory() {
 
   const setActiveTab = useResumeStore((s) => s.setActiveTab);
   const setWizardStep = useResumeStore((s) => s.setWizardStep);
+  const setCompanyName = useResumeStore((s) => s.setCompanyName);
+  const setTargetRole = useResumeStore((s) => s.setTargetRole);
 
   const [activeView, setActiveView] = useState<'grid' | 'board' | 'archived' | 'versions'>('grid');
   const [selectedStageFilter, setSelectedStageFilter] = useState<string | 'all'>('all');
@@ -40,6 +42,7 @@ export function useApplicationsHistory() {
   const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
   const [trackPrefillColumnId, setTrackPrefillColumnId] = useState<string | undefined>();
   const [trackPrefillVersion, setTrackPrefillVersion] = useState<GeneratedCvVersion | undefined>();
+  const [trackPrefillSourceType, setTrackPrefillSourceType] = useState<'internal' | 'external' | undefined>();
   const [isColumnEditOpen, setIsColumnEditOpen] = useState(false);
   const [editingColumn, setEditingColumn] = useState<KanbanColumn | null>(null);
 
@@ -148,9 +151,10 @@ export function useApplicationsHistory() {
     }
   }, []);
 
-  const handleOpenTrackModal = useCallback((columnId?: string, version?: GeneratedCvVersion) => {
+  const handleOpenTrackModal = useCallback((columnId?: string, version?: GeneratedCvVersion, initialSourceType?: 'internal' | 'external') => {
     setTrackPrefillColumnId(columnId);
     setTrackPrefillVersion(version);
+    setTrackPrefillSourceType(initialSourceType);
     setIsTrackModalOpen(true);
   }, []);
 
@@ -158,6 +162,7 @@ export function useApplicationsHistory() {
     setIsTrackModalOpen(false);
     setTrackPrefillColumnId(undefined);
     setTrackPrefillVersion(undefined);
+    setTrackPrefillSourceType(undefined);
   }, []);
 
   const handleOpenEditColumn = useCallback((col?: KanbanColumn) => {
@@ -203,6 +208,13 @@ export function useApplicationsHistory() {
     setWizardStep('target');
   }, [setActiveTab, setWizardStep]);
 
+  const handleTailorForApplication = useCallback((app: import('../types/cv').ApplicationItem) => {
+    if (app.companyName) setCompanyName(app.companyName);
+    if (app.targetRole) setTargetRole(app.targetRole);
+    setActiveTab('wizard');
+    setWizardStep('target');
+  }, [setCompanyName, setTargetRole, setActiveTab, setWizardStep]);
+
   const handleViewChange = useCallback((view: 'grid' | 'board' | 'archived' | 'versions') => {
     setActiveView(view);
     if (view !== 'versions' && isSelectionMode) {
@@ -229,6 +241,7 @@ export function useApplicationsHistory() {
     isTrackModalOpen,
     trackPrefillColumnId,
     trackPrefillVersion,
+    trackPrefillSourceType,
     isColumnEditOpen,
     editingColumn,
     isDiffModalOpen,
@@ -261,6 +274,7 @@ export function useApplicationsHistory() {
     handleOpenBulkDeleteModal,
     handleCloseBulkDeleteModal,
     handleStartNewResume,
+    handleTailorForApplication,
     handleViewChange,
     handleLoadVersion,
     handleDeleteVersion,

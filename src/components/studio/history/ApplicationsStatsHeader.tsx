@@ -78,23 +78,21 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', width: { xs: '100%', md: 'auto' }, flexShrink: 0 }}>
-          {/* Track Application (Only show in header if there is at least 1 active application) */}
-          {totalActiveApplications > 0 && (
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AddRoundedIcon />}
-              onClick={onTrackNewApplication}
-              sx={{ fontWeight: 700, fontSize: { xs: '0.78rem', sm: '0.84rem' }, whiteSpace: 'nowrap', px: 2, flex: { xs: '1 1 auto', sm: 'none' } }}
-            >
-              {t('history:actions.trackApp', '+ Track Application')}
-            </Button>
-          )}
+          {/* Track Application (Always visible for fast access to internal or direct processes) */}
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddRoundedIcon />}
+            onClick={onTrackNewApplication}
+            sx={{ fontWeight: 700, fontSize: { xs: '0.78rem', sm: '0.84rem' }, whiteSpace: 'nowrap', px: 2, flex: { xs: '1 1 auto', sm: 'none' } }}
+          >
+            {t('history:actions.trackApp', '+ Track Application')}
+          </Button>
 
           {/* New Tailored Resume in Wizard */}
           <Button
-            variant={totalActiveApplications > 0 ? 'outlined' : 'contained'}
-            color={totalActiveApplications > 0 ? 'inherit' : 'primary'}
+            variant="outlined"
+            color="inherit"
             startIcon={<AutoAwesomeRoundedIcon />}
             onClick={onStartNewResume}
             sx={{ fontWeight: 700, fontSize: { xs: '0.78rem', sm: '0.84rem' }, whiteSpace: 'nowrap', px: 2, flex: { xs: '1 1 auto', sm: 'none' } }}

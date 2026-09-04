@@ -40,6 +40,7 @@ export const ApplicationsGridView: React.FC<ApplicationsGridViewProps> = ({
   onManageStages,
   onQuickAddApplication,
   onSelectLanguage,
+  onTailorForApplication,
 }) => {
   const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
@@ -241,6 +242,7 @@ export const ApplicationsGridView: React.FC<ApplicationsGridViewProps> = ({
                 isDownloadingPdf={Boolean(attachedVersion && isDownloadingPdfId === attachedVersion.id)}
                 onManageStages={onManageStages}
                 onSelectLanguage={onSelectLanguage}
+                onTailorForApplication={onTailorForApplication}
               />
             );
           })}

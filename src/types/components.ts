@@ -439,6 +439,7 @@ export interface ApplicationGridCardProps {
   isDownloadingPdf?: boolean;
   onManageStages?: () => void;
   onSelectLanguage?: (appId: string, language: string) => void;
+  onTailorForApplication?: (app: ApplicationItem) => void;
 }
 
 export interface ApplicationsGridViewProps {
@@ -457,6 +458,7 @@ export interface ApplicationsGridViewProps {
   onManageStages: (column?: KanbanColumn) => void;
   onQuickAddApplication: (columnId?: string) => void;
   onSelectLanguage?: (appId: string, language: string) => void;
+  onTailorForApplication?: (app: ApplicationItem) => void;
 }
 
 export interface ApplicationCardProps {
@@ -492,6 +494,7 @@ export interface KanbanBoardProps {
   onArchiveColumn: (columnId: string) => void;
   onQuickAddApplication: (columnId: string) => void;
   onSelectLanguage?: (appId: string, language: string) => void;
+  onTailorForApplication?: (app: ApplicationItem) => void;
 }
 
 export interface KanbanColumnProps {
@@ -511,6 +514,7 @@ export interface KanbanColumnProps {
   onArchiveColumn: (columnId: string) => void;
   onQuickAdd: (columnId: string) => void;
   onSelectLanguage?: (appId: string, language: string) => void;
+  onTailorForApplication?: (app: ApplicationItem) => void;
 }
 
 export interface KanbanCardProps {
@@ -527,6 +531,7 @@ export interface KanbanCardProps {
   isDownloadingPdf?: boolean;
   isDraggingOverlay?: boolean;
   onSelectLanguage?: (appId: string, language: string) => void;
+  onTailorForApplication?: (app: ApplicationItem) => void;
 }
 
 export interface TrackApplicationDialogProps {
@@ -539,10 +544,14 @@ export interface TrackApplicationDialogProps {
     isExternalCv?: boolean;
     externalCvTitle?: string;
     columnId: string;
+    contactChannel?: string;
+    contactPerson?: string;
+    jobUrl?: string;
     notes?: string;
     salary?: string;
     location?: string;
   }) => void;
+  initialSourceType?: 'internal' | 'external';
   prefillCompany?: string;
   prefillRole?: string;
   prefillVersionId?: string;

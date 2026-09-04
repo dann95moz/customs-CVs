@@ -116,6 +116,9 @@ export interface HistorySlice {
     isExternalCv?: boolean;
     externalCvTitle?: string;
     columnId?: string;
+    contactChannel?: string;
+    contactPerson?: string;
+    jobUrl?: string;
     notes?: string;
     salary?: string;
     location?: string;

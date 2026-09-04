@@ -45,6 +45,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   onArchiveColumn,
   onQuickAddApplication,
   onSelectLanguage,
+  onTailorForApplication,
 }) => {
   const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
@@ -198,6 +199,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
               onArchiveColumn={onArchiveColumn}
               onQuickAdd={onQuickAddApplication}
               onSelectLanguage={onSelectLanguage}
+              onTailorForApplication={onTailorForApplication}
             />
           );
         })}

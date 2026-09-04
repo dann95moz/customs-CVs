@@ -35,6 +35,8 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { useTranslation } from 'react-i18next';
 import { ApplicationGridCardProps } from '../../../types';
 import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
@@ -55,6 +57,7 @@ export const ApplicationGridCard: React.FC<ApplicationGridCardProps> = React.mem
   isDownloadingPdf = false,
   onManageStages,
   onSelectLanguage,
+  onTailorForApplication,
 }) => {
   const { t, i18n } = useTranslation(['history', 'common']);
   const theme = useTheme();
@@ -207,14 +210,44 @@ export const ApplicationGridCard: React.FC<ApplicationGridCardProps> = React.mem
 
             {/* Resume Source Indicator */}
             {application.isExternalCv ? (
-              <Chip
-                icon={<DescriptionRoundedIcon sx={{ fontSize: '13px !important' }} />}
-                label={application.externalCvTitle || t('history:externalCv.badge', 'External CV')}
-                size="small"
-                variant="outlined"
-                color="default"
-                sx={{ fontSize: '0.68rem', height: 22 }}
-              />
+              <>
+                <Chip
+                  icon={<DescriptionRoundedIcon sx={{ fontSize: '13px !important' }} />}
+                  label={application.externalCvTitle || t('history:externalCv.badge', 'External CV')}
+                  size="small"
+                  variant="outlined"
+                  color="default"
+                  sx={{ fontSize: '0.68rem', height: 22 }}
+                />
+                {Boolean(application.contactChannel) && (
+                  <Chip
+                    label={
+                      application.contactChannel === 'linkedin' ? '🌐 LinkedIn' :
+                      application.contactChannel === 'whatsapp' ? '💬 WhatsApp' :
+                      application.contactChannel === 'email' ? '✉️ Email' :
+                      application.contactChannel === 'referral' ? '👥 Referido' :
+                      application.contactChannel === 'headhunter' ? '👔 Headhunter' :
+                      application.contactChannel === 'portal' ? '🏢 Portal' :
+                      application.contactChannel === 'direct' ? '🤝 Directo' :
+                      `📌 ${application.contactChannel}`
+                    }
+                    size="small"
+                    variant="outlined"
+                    sx={{ fontSize: '0.65rem', height: 22, fontWeight: 600 }}
+                  />
+                )}
+                {Boolean(application.contactPerson) && (
+                  <Tooltip title={`${t('history:trackModal.contactPerson', 'Contacto')}: ${application.contactPerson}`}>
+                    <Chip
+                      icon={<PersonRoundedIcon sx={{ fontSize: '12px !important' }} />}
+                      label={application.contactPerson}
+                      size="small"
+                      variant="outlined"
+                      sx={{ fontSize: '0.65rem', height: 22 }}
+                    />
+                  </Tooltip>
+                )}
+              </>
             ) : attachedVersion ? (
               <>
                 <Tooltip title={t('history:language.selectTooltip', 'Cambiar idioma del CV para esta postulación')}>
@@ -421,6 +454,25 @@ export const ApplicationGridCard: React.FC<ApplicationGridCardProps> = React.mem
               </Button>
             )}
 
+            {!attachedVersion && onTailorForApplication && (
+              <Button
+                size="small"
+                variant="outlined"
+                color="primary"
+                startIcon={<AutoAwesomeRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                onClick={() => onTailorForApplication(application)}
+                sx={{
+                  fontSize: '0.72rem',
+                  py: 0.4,
+                  px: 1.25,
+                  fontWeight: 700,
+                  textTransform: 'none',
+                }}
+              >
+                {t('history:card.tailorCvForApp', '✨ Adaptar CV')}
+              </Button>
+            )}
+
             {attachedVersion && onDownloadPdf && (
               <Tooltip title={t('history:actions.downloadPdfWithLang', 'Descargar PDF ({{lang}})', { lang: currentLang.toUpperCase() })} arrow>
                 <IconButton
@@ -546,6 +598,27 @@ export const ApplicationGridCard: React.FC<ApplicationGridCardProps> = React.mem
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
+        {onTailorForApplication && (
+          <MenuItem
+            onClick={() => {
+              handleCloseMoreMenu();
+              onTailorForApplication(application);
+            }}
+            sx={{ gap: 1 }}
+          >
+            <ListItemIcon sx={{ minWidth: 28, color: 'primary.main' }}>
+              <AutoAwesomeRoundedIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: 'primary.main' }}>
+                  {t('history:card.tailorCvForApp', '✨ Adaptar CV en Studio')}
+                </Typography>
+              }
+            />
+          </MenuItem>
+        )}
+
         <MenuItem
           onClick={() => {
             handleCloseMoreMenu();

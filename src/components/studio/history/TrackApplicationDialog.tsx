@@ -27,6 +27,11 @@ import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
+import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { useTranslation } from 'react-i18next';
 import { TrackApplicationDialogProps, GeneratedCvVersion } from '../../../types';
 import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
@@ -36,6 +41,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
   open,
   onClose,
   onConfirm,
+  initialSourceType,
   prefillCompany = '',
   prefillRole = '',
   prefillVersionId,
@@ -51,9 +57,12 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
   const [company, setCompany] = useState(prefillCompany);
   const [role, setRole] = useState(prefillRole);
   const [cvSourceType, setCvSourceType] = useState<'internal' | 'external'>(
-    savedVersions.length > 0 ? 'internal' : 'external'
+    initialSourceType || (savedVersions.length > 0 ? 'internal' : 'external')
   );
   const [externalCvTitle, setExternalCvTitle] = useState('');
+  const [contactChannel, setContactChannel] = useState<string>('linkedin');
+  const [contactPerson, setContactPerson] = useState<string>('');
+  const [jobUrl, setJobUrl] = useState<string>('');
   const [selectedVersionId, setSelectedVersionId] = useState<string>('');
   const [columnId, setColumnId] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
@@ -64,8 +73,8 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
   // Initialize or reset fields on open
   useEffect(() => {
     if (open) {
-      const initialCompany = prefillCompany || 'Target Company';
-      const initialRole = prefillRole || 'Specialist';
+      const initialCompany = prefillCompany || '';
+      const initialRole = prefillRole || '';
       setCompany(initialCompany);
       setRole(initialRole);
       setNotes('');
@@ -73,20 +82,17 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
       setLocation('');
       setShowExtraDetails(false);
       setExternalCvTitle('');
+      setContactChannel('linkedin');
+      setContactPerson('');
+      setJobUrl('');
 
       const defaultCol = defaultColumnId || (columns.length > 0 ? columns[0].id : 'applied');
       setColumnId(defaultCol);
 
-      // Find matching versions for this company
-      const matching = savedVersions.filter(
-        (v) => v.companyName.toLowerCase().trim() === initialCompany.toLowerCase().trim()
-      );
-
-      if (prefillVersionId && savedVersions.some((v) => v.id === prefillVersionId)) {
+      if (initialSourceType) {
+        setCvSourceType(initialSourceType);
+      } else if (prefillVersionId && savedVersions.some((v) => v.id === prefillVersionId)) {
         setSelectedVersionId(prefillVersionId);
-        setCvSourceType('internal');
-      } else if (matching.length > 0) {
-        setSelectedVersionId(matching[0].id);
         setCvSourceType('internal');
       } else if (savedVersions.length > 0) {
         setSelectedVersionId(savedVersions[0].id);
@@ -96,7 +102,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
         setCvSourceType('external');
       }
     }
-  }, [open, prefillCompany, prefillRole, prefillVersionId, defaultColumnId, savedVersions, columns]);
+  }, [open, prefillCompany, prefillRole, prefillVersionId, defaultColumnId, savedVersions, columns, initialSourceType]);
 
   // Matching versions for current company input
   const matchingVersions = useMemo(() => {
@@ -147,6 +153,9 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
       externalCvTitle: isExternal
         ? externalCvTitle.trim() || t('history:externalCv.defaultTitle', 'Direct Contact / External CV')
         : undefined,
+      contactChannel: isExternal ? contactChannel : undefined,
+      contactPerson: isExternal ? contactPerson.trim() || undefined : undefined,
+      jobUrl: jobUrl.trim() || undefined,
       columnId: columnId || (columns[0]?.id ?? 'applied'),
       notes: notes.trim() || undefined,
       salary: salary.trim() || undefined,
@@ -168,7 +177,6 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
           },
         },
       }}
-
     >
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
@@ -188,10 +196,14 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
           </Box>
           <Box>
             <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.2 }}>
-              {t('history:trackModal.title', 'Track Job Application')}
+              {isExternal
+                ? t('history:trackModal.titleExternal', 'Track Direct / External Application')
+                : t('history:trackModal.title', 'Track Job Application')}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {t('history:trackModal.subtitle', 'Link a tailored CV version to your Kanban board')}
+              {isExternal
+                ? t('history:trackModal.subtitleExternal', 'Track direct contacts, recruiter messages, or non-tailored submissions')
+                : t('history:trackModal.subtitle', 'Link a tailored CV version to your Kanban board')}
             </Typography>
           </Box>
         </Box>
@@ -223,6 +235,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
           <TextField
             label={t('target:fields.company', 'Company Name')}
+            placeholder={t('history:trackModal.companyPlaceholder', 'e.g. Acme Corp, Google, Globant')}
             value={company}
             onChange={(e) => setCompany(e.target.value)}
             fullWidth
@@ -232,6 +245,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
           />
           <TextField
             label={t('target:fields.role', 'Target Role / Position')}
+            placeholder={t('history:trackModal.rolePlaceholder', 'e.g. Senior Frontend Engineer')}
             value={role}
             onChange={(e) => setRole(e.target.value)}
             fullWidth
@@ -241,7 +255,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
 
         {/* CV Source Selector */}
         <Box sx={{ mt: 0.5 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1, flexWrap: 'wrap', gap: 1 }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: 0.75 }}>
               <CheckCircleRoundedIcon sx={{ fontSize: 16, color: 'primary.main' }} />
               {t('history:trackModal.cvSourceTitle', 'Resume / CV Document')}
@@ -252,6 +266,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
                 size="small"
                 variant={cvSourceType === 'internal' ? 'contained' : 'outlined'}
                 color={cvSourceType === 'internal' ? 'primary' : 'inherit'}
+                startIcon={<DescriptionRoundedIcon sx={{ fontSize: '14px !important' }} />}
                 onClick={() => setCvSourceType('internal')}
                 sx={{ fontSize: '0.72rem', py: 0.25, px: 1, textTransform: 'none' }}
               >
@@ -261,6 +276,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
                 size="small"
                 variant={cvSourceType === 'external' ? 'contained' : 'outlined'}
                 color={cvSourceType === 'external' ? 'primary' : 'inherit'}
+                startIcon={<SendRoundedIcon sx={{ fontSize: '14px !important' }} />}
                 onClick={() => setCvSourceType('external')}
                 sx={{ fontSize: '0.72rem', py: 0.25, px: 1, textTransform: 'none' }}
               >
@@ -282,20 +298,63 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
                 borderRadius: 2,
               }}
             >
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.82rem' }}>
                 {t(
                   'history:trackModal.externalCvDesc',
-                  'Track direct submissions or recruiter contacts that did not use a tailored version from CV Studio.'
+                  'Track direct submissions, recruiter inmails, or informal outreach that did not go through the tailored Studio workflow.'
                 )}
               </Typography>
-              <TextField
-                label={t('history:trackModal.externalCvTitleField', 'Document Label or Source (Optional)')}
-                placeholder={t('history:trackModal.externalCvPlaceholder', 'e.g. LinkedIn Quick Apply, Master PDF, Referral via Email')}
-                value={externalCvTitle}
-                onChange={(e) => setExternalCvTitle(e.target.value)}
-                size="small"
-                fullWidth
-              />
+
+              {/* Contact Channel & Recruiter Grid */}
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
+                <TextField
+                  select
+                  label={t('history:trackModal.contactChannel', 'Contact Channel / Source')}
+                  value={contactChannel}
+                  onChange={(e) => setContactChannel(e.target.value)}
+                  size="small"
+                  fullWidth
+                >
+                  <MenuItem value="linkedin">🌐 {t('history:channels.linkedin', 'LinkedIn')}</MenuItem>
+                  <MenuItem value="whatsapp">💬 {t('history:channels.whatsapp', 'WhatsApp')}</MenuItem>
+                  <MenuItem value="email">✉️ {t('history:channels.email', 'Direct Email')}</MenuItem>
+                  <MenuItem value="referral">👥 {t('history:channels.referral', 'Employee Referral')}</MenuItem>
+                  <MenuItem value="headhunter">👔 {t('history:channels.headhunter', 'Headhunter / Agency')}</MenuItem>
+                  <MenuItem value="portal">🏢 {t('history:channels.portal', 'Career Site / Portal')}</MenuItem>
+                  <MenuItem value="direct">🤝 {t('history:channels.direct', 'Direct Outreach')}</MenuItem>
+                  <MenuItem value="other">📌 {t('history:channels.other', 'Other Channel')}</MenuItem>
+                </TextField>
+
+                <TextField
+                  label={t('history:trackModal.contactPerson', 'Recruiter / Contact Person (Optional)')}
+                  placeholder={t('history:trackModal.contactPersonPlaceholder', 'e.g. John Doe, Sarah HR')}
+                  value={contactPerson}
+                  onChange={(e) => setContactPerson(e.target.value)}
+                  size="small"
+                  fullWidth
+                />
+              </Box>
+
+              {/* Document Label & Job URL */}
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
+                <TextField
+                  label={t('history:trackModal.externalCvTitleField', 'Document Label or Sent CV (Optional)')}
+                  placeholder={t('history:trackModal.externalCvPlaceholder', 'e.g. Generic Master PDF, LinkedIn Profile')}
+                  value={externalCvTitle}
+                  onChange={(e) => setExternalCvTitle(e.target.value)}
+                  size="small"
+                  fullWidth
+                />
+
+                <TextField
+                  label={t('history:trackModal.jobUrlField', 'Job Link or Chat URL (Optional)')}
+                  placeholder="https://..."
+                  value={jobUrl}
+                  onChange={(e) => setJobUrl(e.target.value)}
+                  size="small"
+                  fullWidth
+                />
+              </Box>
             </Paper>
           ) : (
             <>
