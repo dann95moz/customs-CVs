@@ -70,7 +70,11 @@
     "downloadMd": "Download Markdown (.md)",
     "trackVersion": "Track Application",
     "linkedToApp": "Kanban Active",
-    "linkedTooltip": "Linked to an active application card in your Kanban pipeline"
+    "linkedTooltip": "Linked to an active application card in your Kanban pipeline",
+    "moveToStage": "Move to Stage...",
+    "moveToStageTitle": "Move Application",
+    "dragHandle": "Drag card to reorder or move between stages",
+    "currentStage": "Current Stage"
   },
 
   "deleteDialog": {

@@ -70,7 +70,11 @@
     "downloadMd": "Scarica Markdown (.md)",
     "trackVersion": "Traccia nel Kanban",
     "linkedToApp": "Candidatura Attiva",
-    "linkedTooltip": "Collegata a una scheda attiva nella tua pipeline Kanban"
+    "linkedTooltip": "Collegata a una scheda attiva nella tua pipeline Kanban",
+    "moveToStage": "Sposta in fase...",
+    "moveToStageTitle": "Sposta candidatura",
+    "dragHandle": "Trascina la scheda per riordinare o spostare di fase",
+    "currentStage": "Fase attuale"
   },
 
   "deleteDialog": {

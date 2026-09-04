@@ -70,7 +70,11 @@
     "downloadMd": "Descargar Markdown (.md)",
     "trackVersion": "Rastrear en Kanban",
     "linkedToApp": "Postulación Activa",
-    "linkedTooltip": "Vinculada a una tarjeta activa en tu tablero Kanban"
+    "linkedTooltip": "Vinculada a una tarjeta activa en tu tablero Kanban",
+    "moveToStage": "Mover a etapa...",
+    "moveToStageTitle": "Mover postulación",
+    "dragHandle": "Arrastrar tarjeta para reordenar o mover entre etapas",
+    "currentStage": "Etapa actual"
   },
 
   "deleteDialog": {

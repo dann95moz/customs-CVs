@@ -70,7 +70,11 @@
     "downloadMd": "Télécharger Markdown (.md)",
     "trackVersion": "Suivre dans le Kanban",
     "linkedToApp": "Postulation Active",
-    "linkedTooltip": "Associée à une candidature active sur votre tableau Kanban"
+    "linkedTooltip": "Associée à une candidature active sur votre tableau Kanban",
+    "moveToStage": "Déplacer vers l'étape...",
+    "moveToStageTitle": "Déplacer la candidature",
+    "dragHandle": "Glisser la carte pour réorganiser ou changer d'étape",
+    "currentStage": "Étape actuelle"
   },
 
   "deleteDialog": {

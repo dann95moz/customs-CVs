@@ -70,7 +70,11 @@
     "downloadMd": "Markdown (.md) herunterladen",
     "trackVersion": "Im Kanban verfolgen",
     "linkedToApp": "Kanban-Aktiv",
-    "linkedTooltip": "Mit einer aktiven Bewerbungskarte in Ihrem Kanban-Board verknüpft"
+    "linkedTooltip": "Mit einer aktiven Bewerbungskarte in Ihrem Kanban-Board verknüpft",
+    "moveToStage": "In Phase verschieben...",
+    "moveToStageTitle": "Bewerbung verschieben",
+    "dragHandle": "Karte ziehen, um anzuordnen oder zu verschieben",
+    "currentStage": "Aktuelle Phase"
   },
 
   "deleteDialog": {
