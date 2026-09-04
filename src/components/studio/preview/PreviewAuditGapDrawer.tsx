@@ -13,6 +13,7 @@ import {
   Tooltip,
   Snackbar,
   Slide,
+  Chip,
   useTheme,
   alpha,
 } from '@mui/material';
@@ -23,9 +24,12 @@ import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { useTranslation } from 'react-i18next';
 import { safeMarkdown } from '../../../utils/sanitize';
 import { PreviewAuditGapDrawerProps } from '../../../types';
+import { HexagonRadarChart, RadarDimension } from '../../atoms/HexagonRadarChart';
 import { useAuditActions } from '../../../hooks/useAuditActions';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 import { AuditImprovementModal } from '../audit/AuditImprovementModal';
@@ -53,12 +57,33 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
   activeTab,
   onToggleTab,
   onClose,
+  onOpenFullAudit,
 }) => {
   const { t } = useTranslation(['audit', 'gap', 'preview', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const [fullReportModalOpen, setFullReportModalOpen] = useState(false);
   const { copied: isReportCopied, copy: copyReport } = useCopyToClipboard();
+
+  const radarDimensions: RadarDimension[] = (auditReport.sections || []).map((sec) => {
+    let shortLabel = sec.sectionName.split(' ')[0];
+    if (sec.sectionName.includes('Header')) shortLabel = t('audit:dimensions.header', 'Contacto');
+    else if (sec.sectionName.includes('Summary')) shortLabel = t('audit:dimensions.summary', 'Extracto');
+    else if (sec.sectionName.includes('Skills')) shortLabel = t('audit:dimensions.skills', 'Habilidades');
+    else if (sec.sectionName.includes('Experience')) shortLabel = t('audit:dimensions.experience', 'Impacto');
+    else if (sec.sectionName.includes('Education')) shortLabel = t('audit:dimensions.education', 'Educación');
+    else if (sec.sectionName.includes('Languages')) shortLabel = t('audit:dimensions.languages', 'Idiomas');
+    else if (sec.sectionName.includes('Structure') || sec.sectionName.includes('Legibility')) shortLabel = t('audit:dimensions.structure', 'Estructura');
+
+    return {
+      key: sec.sectionName,
+      label: shortLabel,
+      score: sec.score,
+      targetScore: sec.targetScore ?? 9.0,
+      maxScore: 10,
+      recommendation: sec.actionToTen?.[0] || sec.comment,
+    };
+  });
 
   const {
     modalState,
@@ -247,9 +272,8 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
             overflowY: 'auto',
             overflowX: 'hidden',
             flexShrink: 0,
-            zIndex: 40,
+            zIndex: { xs: theme.zIndex.modal, md: 10 },
             boxSizing: 'border-box',
-            boxShadow: 8,
           }}
         >
           {/* Header with Segmented Tabs and Close [X] */}
@@ -336,6 +360,69 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
             {activeTab === 'audit' && (
               <>
                 <AuditScoreHero score={auditScore} />
+
+                {/* Multidimensional Radar Chart in Lateral Drawer */}
+                {radarDimensions.length >= 3 && (
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      p: { xs: 1.5, sm: 2 },
+                      borderRadius: 2,
+                      bgcolor: alpha(theme.palette.background.default, 0.6),
+                      border: `1px solid ${theme.palette.divider}`,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Box sx={{ width: '100%', mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 0.75, fontSize: '0.85rem' }}>
+                        <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+                        {t('audit:radar.title', 'Análisis Multidimensional de Afinidad')}
+                      </Typography>
+                      <Chip
+                        size="small"
+                        label={t('audit:radar.sevenAxes', '7 Ejes ATS')}
+                        color="primary"
+                        variant="outlined"
+                        sx={{ fontSize: '0.65rem', height: 20, fontWeight: 700 }}
+                      />
+                    </Box>
+
+                    <Typography variant="caption" color="text.secondary" sx={{ width: '100%', mb: 1.5, display: 'block', lineHeight: 1.35 }}>
+                      {t('audit:radar.descShort', 'Pasa el cursor sobre los vértices para comparar tu puntuación actual vs la meta calibrada de la vacante.')}
+                    </Typography>
+
+                    <HexagonRadarChart
+                      dimensions={radarDimensions}
+                      size={275}
+                      actualLabel={t('audit:radar.actualLabel', 'Actual')}
+                      targetLabel={t('audit:radar.targetLabel', 'Objetivo para esta vacante')}
+                      targetShortLabel={t('audit:radar.targetShort', 'Meta')}
+                    />
+
+                    {onOpenFullAudit && (
+                      <Button
+                        size="small"
+                        variant="text"
+                        color="primary"
+                        endIcon={<OpenInNewRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                        onClick={onOpenFullAudit}
+                        sx={{
+                          mt: 1.5,
+                          fontSize: '0.74rem',
+                          fontWeight: 700,
+                          textTransform: 'none',
+                          width: '100%',
+                          py: 0.5,
+                        }}
+                      >
+                        {t('audit:radar.openFullAudit', 'Ver Diagnóstico Completo y Palancas de Acción')}
+                      </Button>
+                    )}
+                  </Paper>
+                )}
+
                 <AuditPillarsBreakdown
                   auditReport={auditReport}
                   onOpenAction={handleOpenAction}

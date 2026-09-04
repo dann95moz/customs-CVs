@@ -127,6 +127,7 @@ export interface PreviewAuditGapDrawerProps {
   activeTab: 'audit' | 'gap' | 'interview';
   onToggleTab: (tab: 'audit' | 'gap' | 'interview') => void;
   onClose: () => void;
+  onOpenFullAudit?: () => void;
 }
 
 export interface StepMasterDataProps {

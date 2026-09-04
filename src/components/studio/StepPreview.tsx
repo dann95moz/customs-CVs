@@ -73,6 +73,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     auditGapTab,
     setAuditGapTab,
     handleToggleSidePanel,
+    handleOpenFullAudit,
     mobileViewMode,
     setMobileViewMode,
     mobileZoomMode,
@@ -239,7 +240,7 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         {/* 3. Main Center Canvas: Document Sheet & Mobile Touch Editor or Cover Letter */}
         <div
           className="preview-canvas-wrapper"
-          style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', order: 1 }}
+          style={{ position: 'relative', display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', order: 2 }}
         >
           {previewDocType === 'cover-letter' ? (
             <Box
@@ -504,24 +505,27 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         </div>
 
         {/* 4. Unified Right-Side Audit & Gap Drawer */}
-        <React.Suspense fallback={null}>
-          <PreviewAuditGapDrawer
-            auditReport={auditReport}
-            gapInfo={gapInfo}
-            gapMarkdown={gapMarkdown}
-            companyName={companyName}
-            targetRole={targetRole}
-            cvData={parsedCv}
-            isOpen={isAuditGapOpen}
-            activeTab={auditGapTab}
-            onToggleTab={(tab) => {
-              setIsAuditGapOpen(true);
-              setAuditGapTab(tab);
-              setActiveSidePanel(null);
-            }}
-            onClose={() => setIsAuditGapOpen(false)}
-          />
-        </React.Suspense>
+        <Box sx={{ order: 3, display: 'flex', height: '100%' }}>
+          <React.Suspense fallback={null}>
+            <PreviewAuditGapDrawer
+              auditReport={auditReport}
+              gapInfo={gapInfo}
+              gapMarkdown={gapMarkdown}
+              companyName={companyName}
+              targetRole={targetRole}
+              cvData={parsedCv}
+              isOpen={isAuditGapOpen}
+              activeTab={auditGapTab}
+              onToggleTab={(tab) => {
+                setIsAuditGapOpen(true);
+                setAuditGapTab(tab);
+                setActiveSidePanel(null);
+              }}
+              onClose={() => setIsAuditGapOpen(false)}
+              onOpenFullAudit={handleOpenFullAudit}
+            />
+          </React.Suspense>
+        </Box>
       </Box>
 
       {/* One-Time Post-Export GitHub Star Satisfaction Toast */}

@@ -52,10 +52,15 @@ export const useStepPreviewWorkflow = () => {
   const handleAddApplication = useResumeStore((s) => s.handleAddApplication);
   const savedVersions = useResumeStore((s) => s.savedVersions);
   const gapMarkdown = useResumeStore((s) => s.gapMarkdown);
+  const setActiveTab = useResumeStore((s) => s.setActiveTab);
 
   const parsedCv = useParsedCv();
   const auditReport = useAuditReport();
   const gapInfo = useGapInfo();
+
+  const handleOpenFullAudit = () => {
+    setActiveTab('audit');
+  };
 
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
   const [trackSuccess, setTrackSuccess] = useState<boolean>(false);
@@ -244,6 +249,7 @@ export const useStepPreviewWorkflow = () => {
     auditGapTab,
     setAuditGapTab,
     handleToggleSidePanel,
+    handleOpenFullAudit,
     // Mobile canvas & zoom
     mobileViewMode,
     setMobileViewMode,

@@ -78,10 +78,16 @@
   },
   "radar": {
     "title": "Análisis Multidimensional de Afinidad",
-    "desc": "Radiografía ejecutiva de tus 6 dimensiones ATS. Pasa el cursor sobre los vértices para ver acciones concretas de mejora.",
+    "desc": "Radiografía ejecutiva de tus 7 dimensiones ATS. Pasa el cursor sobre los vértices para ver acciones concretas de mejora.",
     "legend": "Dimensiones clave evaluadas:",
     "xyzHint": "Fórmula Google XYZ y métricas cuantificables",
-    "skillsHint": "Segmentación temática y densidad de palabras clave"
+    "skillsHint": "Segmentación temática y densidad de palabras clave",
+    "actualLabel": "Actual",
+    "targetLabel": "Objetivo para esta vacante",
+    "targetShort": "Meta",
+    "sevenAxes": "7 Ejes ATS",
+    "descShort": "Pasa el cursor sobre los vértices para comparar tu puntuación actual vs la meta de la vacante.",
+    "openFullAudit": "Ver Diagnóstico Completo y Palancas de Acción"
   },
   "dimensions": {
     "header": "Contacto",
@@ -89,6 +95,7 @@
     "skills": "Habilidades",
     "experience": "Impacto",
     "education": "Educación",
-    "languages": "Idiomas"
+    "languages": "Idiomas",
+    "structure": "Estructura"
   }
 }

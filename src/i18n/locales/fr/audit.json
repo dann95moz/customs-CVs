@@ -78,10 +78,16 @@
   },
   "radar": {
     "title": "Analyse Multidimensionnelle d'Affinité",
-    "desc": "Synthèse exécutive sur 6 dimensions clés ATS. Survolez les sommets pour voir des leviers d'amélioration ciblés.",
+    "desc": "Synthèse exécutive sur 7 dimensions clés ATS. Survolez les sommets pour voir des leviers d'amélioration ciblés.",
     "legend": "Dimensions clés évaluées :",
     "xyzHint": "Formule Google XYZ et métriques mesurables",
-    "skillsHint": "Segmentation thématique et densité de mots-clés"
+    "skillsHint": "Segmentation thématique et densité de mots-clés",
+    "actualLabel": "Actuel",
+    "targetLabel": "Objectif pour ce poste",
+    "targetShort": "Cible",
+    "sevenAxes": "7 Axes ATS",
+    "descShort": "Survolez les sommets pour comparer votre score actuel à la cible calibrée du poste.",
+    "openFullAudit": "Voir le diagnostic ATS complet et leviers d'action"
   },
   "dimensions": {
     "header": "Contact",
@@ -89,6 +95,7 @@
     "skills": "Compétences",
     "experience": "Impact",
     "education": "Formation",
-    "languages": "Langues"
+    "languages": "Langues",
+    "structure": "Structure"
   }
 }

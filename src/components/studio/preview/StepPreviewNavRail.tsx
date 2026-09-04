@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography, useTheme, alpha } from '@mui/material';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import FormatPaintRoundedIcon from '@mui/icons-material/FormatPaintRounded';
-import SpellcheckRoundedIcon from '@mui/icons-material/SpellcheckRounded';
 import DifferenceRoundedIcon from '@mui/icons-material/DifferenceRounded';
 import { useTranslation } from 'react-i18next';
 import { PreviewSidePanelType, StepPreviewNavRailProps } from '../../../types';
@@ -134,53 +133,6 @@ export const StepPreviewNavRail: React.FC<StepPreviewNavRailProps> = ({
         </Typography>
       </Box>
 
-      {/* Audit Rail Button */}
-      <Box
-        onClick={() => onToggleSidePanel('audit')}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          cursor: 'pointer',
-          flex: { xs: 1, md: 'none' },
-          width: { xs: 'auto', md: '100%' },
-          px: 0.25,
-          gap: 0.25,
-          color: activeSidePanel === 'audit' ? 'primary.main' : 'text.secondary',
-          transition: 'all 0.15s ease',
-          '&:hover': { color: 'text.primary' }
-        }}
-      >
-        <Box
-          sx={{
-            width: { xs: 36, md: 44 },
-            height: { xs: 36, md: 44 },
-            borderRadius: { xs: '10px', md: '14px' },
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bgcolor: activeSidePanel === 'audit'
-              ? alpha(theme.palette.primary.main, isDark ? 0.2 : 0.1)
-              : 'transparent',
-            color: activeSidePanel === 'audit' ? 'primary.main' : 'inherit',
-            transition: 'all 0.15s ease',
-          }}
-        >
-          <SpellcheckRoundedIcon sx={{ fontSize: { xs: 20, md: 22 } }} />
-        </Box>
-        <Typography
-          variant="caption"
-          sx={{
-            fontSize: { xs: '0.65rem', md: '0.68rem' },
-            fontWeight: activeSidePanel === 'audit' ? 700 : 500,
-            textAlign: 'center',
-            lineHeight: 1.15,
-            px: 0.25,
-          }}
-        >
-          {t('preview:navRail.audit', 'Quality & Gaps')}
-        </Typography>
-      </Box>
 
       {/* LinkedIn Tailoring Rail Button */}
       <Box

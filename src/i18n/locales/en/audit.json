@@ -78,10 +78,16 @@
   },
   "radar": {
     "title": "Multidimensional Affinity Analysis",
-    "desc": "Executive overview across 6 key ATS dimensions. Hover over vertices for calibrated improvement levers.",
+    "desc": "Executive overview across 7 key ATS dimensions. Hover over vertices for calibrated improvement levers.",
     "legend": "Key Dimensions Evaluated:",
     "xyzHint": "Google XYZ formula and quantifiable outcomes",
-    "skillsHint": "Thematic clustering and keyword density"
+    "skillsHint": "Thematic clustering and keyword density",
+    "actualLabel": "Actual",
+    "targetLabel": "Target for this vacancy",
+    "targetShort": "Target",
+    "sevenAxes": "7 ATS Axes",
+    "descShort": "Hover over vertices to compare your actual score against the calibrated vacancy target.",
+    "openFullAudit": "View Full ATS Diagnostic & Action Levers"
   },
   "dimensions": {
     "header": "Contact",
@@ -89,6 +95,7 @@
     "skills": "Skills",
     "experience": "Impact",
     "education": "Education",
-    "languages": "Languages"
+    "languages": "Languages",
+    "structure": "Structure"
   }
 }
