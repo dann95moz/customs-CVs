@@ -23,7 +23,8 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
 import { useTranslation } from 'react-i18next';
-import { useResumeStore } from '../../../store';
+import { useAiGeneratingWorkflow } from '../../../hooks/useAiGeneratingWorkflow';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 interface MilestoneStage {
   id: number;
@@ -43,19 +44,21 @@ export const AiGeneratingOverlay: React.FC = () => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
-  const isGenerating = useResumeStore((s) => s.isGenerating);
-  const companyName = useResumeStore((s) => s.companyName);
-  const targetRole = useResumeStore((s) => s.targetRole);
-  const generationStage = useResumeStore((s) => s.generationStage);
-  const generationProgress = useResumeStore((s) => s.generationProgress);
-  const generationStep = useResumeStore((s) => s.generationStep);
-  const streamedWords = useResumeStore((s) => s.streamedWords);
-  const streamedSnippet = useResumeStore((s) => s.streamedSnippet);
-  const activeModelName = useResumeStore((s) => s.activeModelName);
-  const generationError = useResumeStore((s) => s.generationError);
-  const handleGenerate = useResumeStore((s) => s.handleGenerate);
-  const cancelGeneration = useResumeStore((s) => s.cancelGeneration);
-  const setActiveTab = useResumeStore((s) => s.setActiveTab);
+  const {
+    isGenerating,
+    companyName,
+    targetRole,
+    generationStage,
+    generationProgress,
+    generationStep,
+    streamedWords,
+    streamedSnippet,
+    activeModelName,
+    generationError,
+    handleGenerate,
+    cancelGeneration,
+    setActiveTab,
+  } = useAiGeneratingWorkflow();
 
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
 
@@ -408,8 +411,8 @@ export const AiGeneratingOverlay: React.FC = () => {
                   gap: 0.8,
                   p: 0.8,
                   px: 1.6,
-                  borderRadius: '999px',
-                  bgcolor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+                  borderRadius: RADIUS_TOKENS.full,
+                  bgcolor: alpha(theme.palette.text.primary, 0.04),
                   border: `1px solid ${theme.palette.divider}`
                 }}
               >

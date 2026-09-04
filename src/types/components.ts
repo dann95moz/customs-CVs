@@ -157,6 +157,8 @@ export interface StepTargetJobProps {
   isGenerating?: boolean;
   generationStep?: string;
   hasGeneratedCv?: boolean;
+  providerSettings?: AIProviderSettings;
+  onProviderSettingsChange?: (settings: AIProviderSettings) => void;
   onContinue?: () => void;
   onBack?: () => void;
 }

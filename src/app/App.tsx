@@ -125,6 +125,8 @@ export const App: React.FC = () => {
                   onCompanyChange={setCompanyName}
                   targetRole={targetRole}
                   onRoleChange={setTargetRole}
+                  providerSettings={providerSettings}
+                  onProviderSettingsChange={setProviderSettings}
                   onLoadSample={() => {
                     setTargetJob(DEMO_TARGET_JOB);
                     setCompanyName('Stripe');

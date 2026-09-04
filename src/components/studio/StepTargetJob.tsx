@@ -16,7 +16,6 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
-import { useResumeStore } from '../../store';
 import { StepTargetJobProps } from '../../types';
 import { TargetJobProgressBanner } from './target/TargetJobProgressBanner';
 import { TargetJobMetadataBar } from './target/TargetJobMetadataBar';
@@ -41,13 +40,13 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   onGenerate,
   isGenerating = false,
   generationStep,
-  hasGeneratedCv = false
+  hasGeneratedCv = false,
+  providerSettings,
+  onProviderSettingsChange,
 }) => {
   const { t } = useTranslation(['target', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const providerSettings = useResumeStore((s) => s.providerSettings);
-  const setProviderSettings = useResumeStore((s) => s.setProviderSettings);
   const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
   const lastClickRef = useRef<number>(0);
 
@@ -148,9 +147,11 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
     lastClickRef.current = now;
 
     const isConfigured = Boolean(
-      (providerSettings.provider === 'local') ||
-      (providerSettings.provider === 'custom' && providerSettings.customEndpoint?.trim()) ||
-      (providerSettings.apiKey && providerSettings.apiKey.trim().length > 5)
+      providerSettings && (
+        (providerSettings.provider === 'local') ||
+        (providerSettings.provider === 'custom' && providerSettings.customEndpoint?.trim()) ||
+        (providerSettings.apiKey && providerSettings.apiKey.trim().length > 5)
+      )
     );
 
     if (!isConfigured) {
@@ -163,8 +164,8 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
     }
   };
 
-  const handleSaveModalAndGenerate = (updatedSettings: typeof providerSettings) => {
-    setProviderSettings(updatedSettings);
+  const handleSaveModalAndGenerate = (updatedSettings: NonNullable<typeof providerSettings>) => {
+    onProviderSettingsChange?.(updatedSettings);
     setAiModalOpen(false);
     if (onGenerate && !isGenerating) {
       onGenerate();
@@ -390,14 +391,16 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
       </Box>
 
       {/* Contextual AI Setup Modal (opens on click if key is missing) */}
-      <React.Suspense fallback={null}>
-        <ContextualAiModal
-          open={aiModalOpen}
-          onClose={() => setAiModalOpen(false)}
-          settings={providerSettings}
-          onSaveAndGenerate={handleSaveModalAndGenerate}
-        />
-      </React.Suspense>
+      {providerSettings && (
+        <React.Suspense fallback={null}>
+          <ContextualAiModal
+            open={aiModalOpen}
+            onClose={() => setAiModalOpen(false)}
+            settings={providerSettings}
+            onSaveAndGenerate={handleSaveModalAndGenerate}
+          />
+        </React.Suspense>
+      )}
     </Box>
   );
 };
