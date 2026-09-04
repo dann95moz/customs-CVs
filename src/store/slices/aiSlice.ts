@@ -2,6 +2,7 @@ import { StateCreator } from 'zustand';
 import { ResumeStore, AiSlice } from '../types';
 import { AIProviderSettings, GeneratedCvVersion } from '../../types/cv';
 import { tailorResume } from '../../core/ai-service';
+import { detectVacancyLanguage } from '../../core/ai/language-detector';
 import {
   extractCandidateName,
   extractTargetCompany,
@@ -132,10 +133,15 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
           v.pageBudget === pageBudget
       );
 
+      const detectedLang = detectVacancyLanguage(targetJob).code || 'es';
       let nextSavedVersions = savedVersions;
+      let targetVersionId = existingDuplicate?.id;
+
       if (!existingDuplicate) {
+        const autoVersionId = `cv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+        targetVersionId = autoVersionId;
         const autoSavedVersion: GeneratedCvVersion = {
-          id: `cv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          id: autoVersionId,
           createdAt: new Date().toISOString(),
           candidateName: candName,
           companyName: comp,
@@ -148,6 +154,9 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
           cvMarkdown: tailoredCv,
           gapMarkdown: gapReport,
           targetJobSnippet: targetJob.slice(0, 280),
+          baseLanguage: detectedLang,
+          activeLanguage: detectedLang,
+          translations: {},
         };
         nextSavedVersions = [autoSavedVersion, ...savedVersions.filter((v) => v.id !== autoSavedVersion.id)];
       }
@@ -155,6 +164,10 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
       set({
         cvMarkdown: tailoredCv,
         gapMarkdown: gapReport,
+        currentBaseLanguage: detectedLang,
+        activeLanguage: detectedLang,
+        activeVersionId: targetVersionId,
+        translations: {},
         savedVersions: nextSavedVersions,
         generationStage: 4,
         generationProgress: 100,

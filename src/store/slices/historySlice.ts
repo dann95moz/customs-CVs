@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
 import { ResumeStore, HistorySlice } from '../types';
-import { GeneratedCvVersion, ApplicationItem, KanbanColumn, DEFAULT_KANBAN_COLUMNS } from '../../types/cv';
+import { GeneratedCvVersion, ApplicationItem, KanbanColumn, DEFAULT_KANBAN_COLUMNS, CvTranslationVariant } from '../../types/cv';
 import {
   extractCandidateName,
   extractTargetCompany,
@@ -27,35 +27,46 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
       pageBudget,
       photo,
       savedVersions,
+      currentBaseLanguage,
+      activeLanguage,
+      translations,
+      activeVersionId,
     } = get();
 
     const candName = extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ');
     const comp = customTitle || companyName || extractTargetCompany(targetJob, 'Target Company');
     const role = targetRole || extractTargetRole(targetJob, masterData, 'Specialist');
+    const baseLang = currentBaseLanguage || 'es';
 
-    // Duplicate prevention: if an identical version already exists, avoid creating a redundant clone
-    const existingDuplicate = savedVersions.find(
-      (v) =>
-        v.cvMarkdown.trim() === cvMarkdown.trim() &&
-        v.companyName.trim().toLowerCase() === comp.trim().toLowerCase() &&
-        v.targetRole.trim().toLowerCase() === role.trim().toLowerCase() &&
-        v.theme === theme &&
-        v.palette === palette &&
-        v.pageBudget === pageBudget
-    );
+    // If activeVersionId is loaded and matches an existing version, update that version
+    const existingIndex = activeVersionId ? savedVersions.findIndex((v) => v.id === activeVersionId) : -1;
 
-    if (existingDuplicate) {
-      return existingDuplicate.id;
+    // Duplicate prevention: if an identical version already exists and no activeVersionId, avoid creating a redundant clone
+    if (existingIndex === -1) {
+      const existingDuplicate = savedVersions.find(
+        (v) =>
+          v.cvMarkdown.trim() === cvMarkdown.trim() &&
+          v.companyName.trim().toLowerCase() === comp.trim().toLowerCase() &&
+          v.targetRole.trim().toLowerCase() === role.trim().toLowerCase() &&
+          v.theme === theme &&
+          v.palette === palette &&
+          v.pageBudget === pageBudget &&
+          JSON.stringify(v.translations || {}) === JSON.stringify(translations || {})
+      );
+
+      if (existingDuplicate) {
+        set({ activeVersionId: existingDuplicate.id });
+        return existingDuplicate.id;
+      }
     }
 
     const { matchScore } = extractGapInfo(gapMarkdown, targetJob);
-
     const audit = auditCvContent(cvMarkdown, targetJob, masterData);
-    const newVersionId = `cv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const versionId = existingIndex !== -1 && activeVersionId ? activeVersionId : `cv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
 
     const newVersion: GeneratedCvVersion = {
-      id: newVersionId,
-      createdAt: new Date().toISOString(),
+      id: versionId,
+      createdAt: existingIndex !== -1 ? savedVersions[existingIndex].createdAt : new Date().toISOString(),
       candidateName: candName,
       companyName: comp,
       targetRole: role,
@@ -68,18 +79,30 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
       gapMarkdown,
       targetJobSnippet: targetJob.slice(0, 280),
       photo: photo || undefined,
+      baseLanguage: baseLang,
+      translations: translations || {},
+      activeLanguage: activeLanguage || baseLang,
     };
 
-    set({
-      savedVersions: [newVersion, ...savedVersions.filter((v) => v.id !== newVersion.id)],
-    });
+    if (existingIndex !== -1) {
+      const updatedVersions = [...savedVersions];
+      updatedVersions[existingIndex] = newVersion;
+      set({ savedVersions: updatedVersions });
+    } else {
+      set({
+        savedVersions: [newVersion, ...savedVersions.filter((v) => v.id !== newVersion.id)],
+        activeVersionId: versionId,
+      });
+    }
 
-    return newVersionId;
+    return versionId;
   },
 
   handleLoadVersion: (id: string) => {
     const found = get().savedVersions.find((v) => v.id === id);
     if (found) {
+      const baseLang = found.baseLanguage || 'es';
+      const activeLang = found.activeLanguage || baseLang;
       set({
         cvMarkdown: found.cvMarkdown,
         ...(found.gapMarkdown ? { gapMarkdown: found.gapMarkdown } : {}),
@@ -89,6 +112,10 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
         ...(found.palette ? { palette: found.palette } : {}),
         ...(found.pageBudget ? { pageBudget: found.pageBudget } : {}),
         photo: found.photo || null,
+        currentBaseLanguage: baseLang,
+        activeLanguage: activeLang,
+        translations: found.translations || {},
+        activeVersionId: found.id,
         activeTab: 'wizard',
         wizardStep: 'preview',
       });
@@ -249,6 +276,50 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
             }
           : app
       ),
+    });
+  },
+
+  handleSetApplicationLanguage: (applicationId, language) => {
+    set({
+      applications: get().applications.map((app) =>
+        app.id === applicationId
+          ? {
+              ...app,
+              selectedLanguage: language,
+              updatedAt: new Date().toISOString(),
+            }
+          : app
+      ),
+    });
+  },
+
+  handleSaveVersionTranslation: (versionId, translation) => {
+    set({
+      savedVersions: get().savedVersions.map((v) => {
+        if (v.id !== versionId) return v;
+        const currentTrans = v.translations || {};
+        return {
+          ...v,
+          translations: {
+            ...currentTrans,
+            [translation.language]: translation,
+          },
+        };
+      }),
+    });
+  },
+
+  handleDeleteVersionTranslation: (versionId, language) => {
+    set({
+      savedVersions: get().savedVersions.map((v) => {
+        if (v.id !== versionId) return v;
+        const currentTrans = { ...(v.translations || {}) };
+        delete currentTrans[language];
+        return {
+          ...v,
+          translations: currentTrans,
+        };
+      }),
     });
   },
 

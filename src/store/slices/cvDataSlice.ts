@@ -17,6 +17,8 @@ import {
   extractTargetRole,
 } from '../../core/parser';
 import { downloadTextFile, buildTimestampedFileName } from '../../utils/fileUtils';
+import { CvTranslationVariant } from '../../types/cv';
+import { computeContentHash, detectOutdatedSections } from '../../core/ai/cv-translator';
 
 export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> = (set, get) => ({
   masterData: BLANK_MASTER_DATA,
@@ -28,6 +30,10 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
   rules: DEFAULT_RULES,
   companyName: '',
   targetRole: '',
+  currentBaseLanguage: 'es',
+  activeLanguage: 'es',
+  activeVersionId: null,
+  translations: {},
   lastBackupTimestamp: Date.now(),
   unsavedChangesCount: 0,
 
@@ -58,10 +64,53 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
   },
 
   setCvMarkdown: (val) => {
-    const nextVal = typeof val === 'function' ? val(get().cvMarkdown) : val;
-    const hasChanged = nextVal !== get().cvMarkdown;
+    const { cvMarkdown, activeLanguage, currentBaseLanguage, translations } = get();
+    const isEditingVariant = Boolean(activeLanguage && currentBaseLanguage && activeLanguage !== currentBaseLanguage);
+
+    if (isEditingVariant && translations[activeLanguage]) {
+      const currentVariantText = translations[activeLanguage].cvMarkdown;
+      const nextVariantText = typeof val === 'function' ? val(currentVariantText) : val;
+      const updatedVariant: CvTranslationVariant = {
+        ...translations[activeLanguage],
+        cvMarkdown: nextVariantText,
+        updatedAt: new Date().toISOString(),
+      };
+      set({
+        translations: {
+          ...translations,
+          [activeLanguage]: updatedVariant,
+        },
+        unsavedChangesCount: get().unsavedChangesCount + 1,
+      });
+      return;
+    }
+
+    const nextVal = typeof val === 'function' ? val(cvMarkdown) : val;
+    const hasChanged = nextVal !== cvMarkdown;
+
+    // Check existing translations to flag outdated status
+    const currentHash = computeContentHash(nextVal);
+    const updatedTranslations: Record<string, CvTranslationVariant> = {};
+    let translationsChanged = false;
+
+    for (const [lang, variant] of Object.entries(translations)) {
+      if (variant.baseMarkdownHash && variant.baseMarkdownHash !== currentHash) {
+        const diff = detectOutdatedSections(cvMarkdown, nextVal);
+        const mergedOutdatedSections = Array.from(new Set([...(variant.outdatedSections || []), ...diff.changedSections]));
+        updatedTranslations[lang] = {
+          ...variant,
+          isOutdated: true,
+          outdatedSections: mergedOutdatedSections,
+        };
+        translationsChanged = true;
+      } else {
+        updatedTranslations[lang] = variant;
+      }
+    }
+
     set({
       cvMarkdown: nextVal,
+      ...(translationsChanged ? { translations: updatedTranslations } : {}),
       ...(hasChanged ? { unsavedChangesCount: get().unsavedChangesCount + 1 } : {}),
     });
   },
@@ -93,6 +142,42 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
     set({ targetRole });
   },
 
+  setCurrentBaseLanguage: (currentBaseLanguage: string) => {
+    set({ currentBaseLanguage });
+  },
+
+  setActiveLanguage: (activeLanguage: string) => {
+    set({ activeLanguage });
+  },
+
+  setActiveVersionId: (activeVersionId: string | null) => {
+    set({ activeVersionId });
+  },
+
+  setTranslations: (translations: Record<string, CvTranslationVariant>) => {
+    set({ translations });
+  },
+
+  saveTranslationVariant: (variant: CvTranslationVariant) => {
+    const current = get().translations;
+    set({
+      translations: {
+        ...current,
+        [variant.language]: variant,
+      },
+      activeLanguage: variant.language,
+    });
+  },
+
+  deleteTranslationVariant: (language: string) => {
+    const next = { ...get().translations };
+    delete next[language];
+    set({
+      translations: next,
+      ...(get().activeLanguage === language ? { activeLanguage: get().currentBaseLanguage } : {}),
+    });
+  },
+
   handleLoadDemoProfile: () => {
     set({
       masterData: DEMO_MASTER_DATA,
@@ -101,6 +186,9 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
       gapMarkdown: DEMO_GAP_REPORT,
       companyName: 'Stripe',
       targetRole: 'Senior Frontend Engineer',
+      currentBaseLanguage: 'en',
+      activeLanguage: 'en',
+      translations: {},
     });
   },
 
@@ -112,14 +200,23 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
       gapMarkdown: BLANK_GAP_REPORT,
       companyName: '',
       targetRole: '',
+      currentBaseLanguage: 'es',
+      activeLanguage: 'es',
+      translations: {},
     });
   },
 
   handleResetWorkspace: () => {
-    get().handleStartBlank();
     set({
-      rules: DEFAULT_RULES,
-      pageBudget: 1,
+      masterData: BLANK_MASTER_DATA,
+      targetJob: BLANK_TARGET_JOB,
+      cvMarkdown: BLANK_TAILORED_CV,
+      gapMarkdown: BLANK_GAP_REPORT,
+      companyName: '',
+      targetRole: '',
+      currentBaseLanguage: 'es',
+      activeLanguage: 'es',
+      translations: {},
       theme: 'modern-tech',
       palette: 'corporate-blue',
       customColor: '#1d4ed8',
@@ -131,13 +228,16 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
   },
 
   handleDownloadCvMarkdown: () => {
-    const { masterData, targetJob, companyName, cvMarkdown } = get();
+    const { masterData, targetJob, companyName, cvMarkdown, activeLanguage, currentBaseLanguage, translations } = get();
     const candidateName = extractCandidateName(masterData, 'Candidate');
     const targetComp = companyName || extractTargetCompany(targetJob, 'Target');
-    const baseName = `CV_${candidateName}_${targetComp}`;
+    const isVariant = activeLanguage && currentBaseLanguage && activeLanguage !== currentBaseLanguage && translations[activeLanguage];
+    const content = isVariant ? translations[activeLanguage].cvMarkdown : cvMarkdown;
+    const langSuffix = isVariant ? `_${activeLanguage.toUpperCase()}` : '';
+    const baseName = `CV_${candidateName}_${targetComp}${langSuffix}`;
     const fileName = buildTimestampedFileName(baseName, 'md');
 
-    downloadTextFile(cvMarkdown, fileName);
+    downloadTextFile(content, fileName);
     get().recordBackup();
   },
 });

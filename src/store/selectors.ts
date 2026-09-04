@@ -24,7 +24,18 @@ export const checkHasGapReport = (gapMarkdown: string): boolean => {
  */
 export const useParsedCv = (): CVData => {
   const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
-  return useMemo(() => parseCvMarkdownToData(cvMarkdown), [cvMarkdown]);
+  const activeLanguage = useResumeStore((s) => s.activeLanguage);
+  const currentBaseLanguage = useResumeStore((s) => s.currentBaseLanguage);
+  const translations = useResumeStore((s) => s.translations);
+
+  const activeMarkdown = useMemo(() => {
+    if (activeLanguage && currentBaseLanguage && activeLanguage !== currentBaseLanguage && translations[activeLanguage]) {
+      return translations[activeLanguage].cvMarkdown;
+    }
+    return cvMarkdown;
+  }, [cvMarkdown, activeLanguage, currentBaseLanguage, translations]);
+
+  return useMemo(() => parseCvMarkdownToData(activeMarkdown), [activeMarkdown]);
 };
 
 /**

@@ -12,6 +12,7 @@ import {
   GeneratedCvVersion,
   KanbanColumn,
   ApplicationItem,
+  CvTranslationVariant,
 } from '../types/cv';
 
 export interface UiSlice {
@@ -46,6 +47,16 @@ export interface CvDataSlice {
   setRules: (val: string | ((prev: string) => string)) => void;
   setCompanyName: (val: string) => void;
   setTargetRole: (val: string) => void;
+  currentBaseLanguage: string;
+  activeLanguage: string;
+  activeVersionId: string | null;
+  translations: Record<string, CvTranslationVariant>;
+  setCurrentBaseLanguage: (lang: string) => void;
+  setActiveLanguage: (lang: string) => void;
+  setActiveVersionId: (id: string | null) => void;
+  setTranslations: (translations: Record<string, CvTranslationVariant>) => void;
+  saveTranslationVariant: (variant: CvTranslationVariant) => void;
+  deleteTranslationVariant: (language: string) => void;
   handleLoadDemoProfile: () => void;
   handleStartBlank: () => void;
   handleResetWorkspace: () => void;
@@ -116,6 +127,9 @@ export interface HistorySlice {
   handleUnarchiveApplication: (id: string) => void;
   handleArchiveColumn: (columnId: string) => void;
   handleSetAttachedVersion: (applicationId: string, versionId: string) => void;
+  handleSetApplicationLanguage: (applicationId: string, language: string) => void;
+  handleSaveVersionTranslation: (versionId: string, translation: CvTranslationVariant) => void;
+  handleDeleteVersionTranslation: (versionId: string, language: string) => void;
   handleAddColumn: (title: string, color?: string) => void;
   handleUpdateColumn: (columnId: string, updates: Partial<KanbanColumn>) => void;
   handleDeleteColumn: (columnId: string, fallbackColumnId?: string) => void;
