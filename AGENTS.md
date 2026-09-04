@@ -27,7 +27,7 @@ All agent operations in this repository must strictly adhere to the following ru
 2. **Component Architecture & Dumb Components**: See [component-architecture-rules.md](file:///.agents/rules/component-architecture-rules.md) for presentational/container separation, minimal components, and zero business logic in UI.
 3. **Design Tokens & Styling**: See [styling-rules.md](file:///.agents/rules/styling-rules.md) for theme tokens, responsive mobile-first layouts, and A4 page dimensions.
 4. **Internationalization (i18n)**: See [i18n-rules.md](file:///.agents/rules/i18n-rules.md) for multilingual synchronization across `src/i18n/locales/`.
-
+5. **Anti-Patterns & Code Hygiene**: See [anti-patterns-rules.md](file:///.agents/rules/anti-patterns-rules.md) for zero-tolerance on native alerts, burned dummy scores, raw hex/border radiuses in JSX, and direct SDK calls in UI.
 
 ---
 
@@ -37,6 +37,7 @@ The repository includes dedicated on-demand skills located in `.agents/skills/`:
 
 - 🎨 **`ui-ux-design-expert`**: UI components, design tokens, micro-interactions, responsive mobile layouts, a11y, and UX heuristics.
 - 🏗️ **`architecture-code-quality`**: Clean layer architecture, SOLID design, Zustand state slices, strict TypeScript typing, and memoization.
+- 🛡️ **`code-audit-compliance`**: Automated hygiene scanners, zero-dummy scores, anti-pattern eradication, and Atomic Design audits.
 - 📄 **`cv-templates-manager`**: ATS resume templates registry, color palettes, font pairings, and print CSS stylesheets.
 - ⚡ **`ai-tailoring-workflow`**: Gemini/OpenAI synthesis prompts, Google XYZ formula, integrity safeguards, and ATS gap scoring.
 - 🌐 **`i18n-workflow`**: 5-locale synchronization (`en`, `es`, `de`, `fr`, `it`), namespace organization, and fallback standards.
@@ -50,19 +51,23 @@ The repository includes dedicated on-demand skills located in `.agents/skills/`:
 ```text
 customs CVs/
 ├── .agents/                      # Customization system (rules & skills)
-│   ├── rules/                    # Granular project rules
+│   ├── rules/                    # Granular project rules (anti-patterns, styling, coding)
 │   └── skills/                   # On-demand agent runbooks & workflows
 ├── bin/                          # Built CLI binary (cli.mjs)
 ├── prompts/                      # System prompts & AI templates
+├── scripts/                      # Maintenance & compliance scripts (audit-codebase.mjs)
 ├── src/
 │   ├── app/                      # Main App container & wizard state
 │   ├── cli/                      # Command-line interface commands & wizard
-│   ├── components/               # React presentational & container components
+│   ├── components/               # Atomic Design components
+│   │   ├── atoms/                # Primitive UI elements (MatchScoreBadge, StatusDot, etc.)
+│   │   ├── molecules/            # Reusable interactive composites (SearchBarWithClear, etc.)
+│   │   ├── slots/                # Standardized CV document template slots
 │   │   ├── landing/              # Welcome & Master CV input views
-│   │   └── studio/               # 3-step Studio wizard & Preview Studio
-│   ├── constants/                # App links, defaults & global constants
+│   │   └── studio/               # 3-step Studio wizard, Preview Studio & pipeline
+│   ├── constants/                # App links, defaults, models & global constants
 │   ├── core/                     # AI services, markdown parser, audit logic
-│   ├── hooks/                    # Reusable stateful hooks
+│   ├── hooks/                    # Reusable stateful domain hooks
 │   ├── i18n/                     # i18next configuration & JSON locales
 │   ├── store/                    # Zustand state management
 │   ├── styles/                   # Design tokens (tokens.css), print & preview CSS
@@ -81,6 +86,7 @@ customs CVs/
 - `npm run dev`: Start local Vite development server with HMR.
 - `npm run build`: Typecheck with `tsc` and create optimized Vite production bundle in `dist/`.
 - `npm run typecheck`: Run TypeScript compiler without emitting files (`tsc --noEmit`).
+- `npm run check:compliance`: Run automated code hygiene, anti-patterns and i18n parity audit.
 - `npm run pdf`: Generate PDF from current `master-data.md` via Puppeteer CLI.
 - `npm run build:cli`: Bundle CLI executable with `esbuild`.
 
@@ -90,6 +96,7 @@ customs CVs/
 
 Before completing any task:
 1. Ensure TypeScript compiles cleanly (`npm run build` or `npm run typecheck` exits with code 0).
-2. Ensure no hardcoded non-English user-facing strings were introduced without i18n keys.
-3. Ensure mobile (`xs`) responsiveness remains intact without accidental button overflow or multi-line wrapping.
-4. Keep commit messages clear, following the Conventional Commits specification (`feat:`, `fix:`, `refactor:`, `style:`, `docs:`).
+2. Ensure compliance audit passes (`npm run check:compliance` exits with code 0).
+3. Ensure no hardcoded non-English user-facing strings were introduced without i18n keys.
+4. Ensure mobile (`xs`) responsiveness remains intact without accidental button overflow or multi-line wrapping.
+5. Keep commit messages clear, following the Conventional Commits specification (`feat:`, `fix:`, `refactor:`, `style:`, `docs:`).

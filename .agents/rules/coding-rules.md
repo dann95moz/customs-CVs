@@ -48,15 +48,22 @@ trigger: always_on
 ## 3. Layered Project Architecture
 
 Maintain clean layer separation across the codebase:
-- `components/` — Pure UI presentation and layout, devoid of direct API/SDK integration.
-- `hooks/` — Reusable stateful logic, browser APIs, and domain hooks.
+- `components/atoms/` — Primitive UI elements (`MatchScoreBadge`, `StatusDot`, `ActionIconButton`, `SectionHeader`). Pure presentational.
+- `components/molecules/` — Reusable interactive composites (`SearchBarWithClear`, `ColorPalettePicker`).
+- `components/slots/` — Standardized CV template document rendering slots.
+- `components/studio/` & `components/landing/` — Feature organisms, containers, and views.
+- `hooks/` — Reusable stateful domain workflows (`useXWorkflow`), browser APIs, and lifecycle orchestration.
 - `core/` / `services/` — AI engines, markdown parsers, print engines, external APIs.
 - `store/` — Zustand global application stores and domain selectors.
+- `constants/` — Model definitions (`models.ts`), palettes, links, and template defaults.
 - `utils/` / `lib/` — Pure utility functions without side effects.
 - `types/` — Shared interfaces, domain models, and prop contracts.
 - `theme/` / `styles/` — Design tokens, MUI theme configurations, dimensions, and global CSS.
 
-*Rule*: Presentational components must receive data and handlers via props or custom hooks, never by importing infrastructure services directly. Avoid "god object" files (e.g., a single 500-line `utils.ts`); split by domain.
+*Rules*:
+1. Presentational components must receive data and handlers via props or custom hooks, never by importing infrastructure services directly.
+2. Avoid "god object" files (keep components under 200 lines).
+3. Strictly follow [anti-patterns-rules.md](file:///.agents/rules/anti-patterns-rules.md) (zero native popups, zero dummy scores, zero untyped `any`).
 
 ---
 

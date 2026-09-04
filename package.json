@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
+    "check:compliance": "node scripts/audit-codebase.mjs",
     "pdf": "tsx src/cli/index.ts pdf",
     "pdf:all": "tsx src/cli/index.ts pdf:all",
     "pdf:modern": "tsx src/cli/index.ts pdf --theme modern-tech",
