@@ -12,6 +12,7 @@ import {
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
@@ -359,6 +360,29 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
               whiteSpace: 'nowrap',
             }}
           >
+            {/* Grid View */}
+            <Button
+              variant={activeView === 'grid' ? 'contained' : 'outlined'}
+              onClick={() => onViewChange('grid')}
+              startIcon={<GridViewRoundedIcon sx={{ fontSize: { xs: 14, sm: 16 } }} />}
+              sx={{
+                flex: { xs: 1, sm: 'none' },
+                fontWeight: 700,
+                fontSize: { xs: '0.68rem', sm: '0.78rem' },
+                px: { xs: 0.5, sm: 1.5 },
+                py: { xs: 0.6, sm: 0.8 },
+              }}
+            >
+              <Box component="span" sx={{ display: { xs: 'none', md: 'inline' } }}>
+                {t('history:views.grid', 'Applications Grid')}
+              </Box>
+              <Box component="span" sx={{ display: { xs: 'inline', md: 'none' } }}>
+                {t('history:views.gridShort', 'Grid')}
+              </Box>{' '}
+              ({totalActiveApplications})
+            </Button>
+
+            {/* Board View */}
             <Button
               variant={activeView === 'board' ? 'contained' : 'outlined'}
               onClick={() => onViewChange('board')}

@@ -25,7 +25,8 @@ export function useApplicationsHistory() {
   const setActiveTab = useResumeStore((s) => s.setActiveTab);
   const setWizardStep = useResumeStore((s) => s.setWizardStep);
 
-  const [activeView, setActiveView] = useState<'board' | 'archived' | 'versions'>('board');
+  const [activeView, setActiveView] = useState<'grid' | 'board' | 'archived' | 'versions'>('grid');
+  const [selectedStageFilter, setSelectedStageFilter] = useState<string | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [downloadingPdfId, setDownloadingPdfId] = useState<string | null>(null);
 
@@ -201,7 +202,7 @@ export function useApplicationsHistory() {
     setWizardStep('target');
   }, [setActiveTab, setWizardStep]);
 
-  const handleViewChange = useCallback((view: 'board' | 'archived' | 'versions') => {
+  const handleViewChange = useCallback((view: 'grid' | 'board' | 'archived' | 'versions') => {
     setActiveView(view);
     if (view !== 'versions' && isSelectionMode) {
       handleExitSelectionMode();
@@ -216,6 +217,8 @@ export function useApplicationsHistory() {
     archivedApplications,
     filteredVersions,
     activeView,
+    selectedStageFilter,
+    setSelectedStageFilter,
     searchQuery,
     setSearchQuery,
     downloadingPdfId,

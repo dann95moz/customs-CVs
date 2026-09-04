@@ -30,6 +30,7 @@ import DifferenceRoundedIcon from '@mui/icons-material/DifferenceRounded';
 import { useTranslation } from 'react-i18next';
 import { ApplicationsStatsHeader } from './history/ApplicationsStatsHeader';
 import { KanbanBoard } from './history/KanbanBoard';
+import { ApplicationsGridView } from './history/ApplicationsGridView';
 import { ArchivedApplicationsView } from './history/ArchivedApplicationsView';
 import { ApplicationCard } from './history/ApplicationCard';
 import { TrackApplicationDialog } from './history/TrackApplicationDialog';
@@ -50,6 +51,8 @@ export const ApplicationsHistoryView: React.FC = () => {
     archivedApplications,
     filteredVersions,
     activeView,
+    selectedStageFilter,
+    setSelectedStageFilter,
     searchQuery,
     setSearchQuery,
     downloadingPdfId,
@@ -124,7 +127,7 @@ export const ApplicationsHistoryView: React.FC = () => {
       <Box
         sx={{
           width: '100%',
-          maxWidth: activeView === 'board' && totalActive > 0 ? '100%' : 1000,
+          maxWidth: (activeView === 'board' || activeView === 'grid') && totalActive > 0 ? '100%' : 1000,
           display: 'flex',
           flexDirection: 'column',
           gap: 2.5,
@@ -148,7 +151,136 @@ export const ApplicationsHistoryView: React.FC = () => {
           savedVersionsCount={savedVersions.length}
         />
 
-        {/* 1. KANBAN BOARD VIEW */}
+        {/* 1. APPLICATIONS GRID VIEW (Primary) */}
+        {activeView === 'grid' && (
+          <>
+            {totalActive === 0 && savedVersions.length === 0 ? (
+              <Card
+                variant="outlined"
+                sx={{
+                  p: { xs: 3, sm: 5 },
+                  maxWidth: 720,
+                  mx: 'auto',
+                  width: '100%',
+                  textAlign: 'center',
+                  borderRadius: RADIUS_TOKENS.lg,
+                  borderStyle: 'dashed',
+                  bgcolor: 'background.paper',
+                }}
+              >
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, p: '0 !important' }}>
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: RADIUS_TOKENS.md,
+                      bgcolor: alpha(theme.palette.primary.main, 0.1),
+                      color: theme.palette.primary.main,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <ViewKanbanRoundedIcon fontSize="large" />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: 800 }}>
+                    {t('history:empty.title', 'No Applications Tracked Yet')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 460 }}>
+                    {t(
+                      'history:empty.desc',
+                      'Synthesize or save a tailored resume in Resume Studio, then click "Track Application" to organize your recruitment pipeline on the Kanban board.'
+                    )}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AutoAwesomeRoundedIcon />}
+                    onClick={handleStartNewResume}
+                    sx={{ mt: 1, fontWeight: 700, px: 2.5 }}
+                  >
+                    {t('history:empty.action', 'Start New Application')}
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : totalActive === 0 && savedVersions.length > 0 ? (
+              <Card
+                variant="outlined"
+                sx={{
+                  p: { xs: 3, sm: 4.5 },
+                  maxWidth: 720,
+                  mx: 'auto',
+                  width: '100%',
+                  textAlign: 'center',
+                  borderRadius: RADIUS_TOKENS.lg,
+                  bgcolor: 'background.paper',
+                  border: `1.5px dashed ${alpha(theme.palette.primary.main, 0.35)}`,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
+                }}
+              >
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, p: '0 !important' }}>
+                  <Box
+                    sx={{
+                      width: 52,
+                      height: 52,
+                      borderRadius: RADIUS_TOKENS.md,
+                      bgcolor: alpha(theme.palette.primary.main, 0.12),
+                      color: theme.palette.primary.main,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <AddRoundedIcon fontSize="medium" />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: 800 }}>
+                    {t('history:emptyBoardWithVersions.title', {
+                      count: savedVersions.length,
+                      defaultValue:
+                        savedVersions.length === 1
+                          ? 'You have 1 tailored CV ready to track'
+                          : `You have ${savedVersions.length} tailored CVs ready to track`,
+                    })}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 480, lineHeight: 1.5 }}>
+                    {t(
+                      'history:emptyBoardWithVersions.desc',
+                      'Select which CV version was actually submitted to an employer to add it to your active recruitment grid.'
+                    )}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddRoundedIcon />}
+                    onClick={() => handleOpenTrackModal()}
+                    sx={{ mt: 0.75, fontWeight: 700, px: 3, py: 1 }}
+                  >
+                    {t('history:actions.trackApp', 'Track Application')}
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <ApplicationsGridView
+                applications={applications}
+                columns={kanbanColumns}
+                savedVersions={savedVersions}
+                searchQuery={searchQuery}
+                selectedStageFilter={selectedStageFilter}
+                onStageFilterChange={setSelectedStageFilter}
+                onMoveToStage={handleMoveApplication}
+                onLoadVersionInStudio={handleLoadVersion}
+                onArchiveApplication={handleArchiveApplication}
+                onDeleteApplication={handleDeleteApplication}
+                onDownloadPdf={handleDownloadPdf}
+                isDownloadingPdfId={downloadingPdfId}
+                onManageStages={(col) => handleOpenEditColumn(col)}
+                onQuickAddApplication={handleOpenTrackModal}
+              />
+            )}
+          </>
+        )}
+
+        {/* 2. KANBAN BOARD VIEW */}
         {activeView === 'board' && (
           <>
             {totalActive === 0 && savedVersions.length === 0 ? (

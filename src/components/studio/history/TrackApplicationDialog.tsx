@@ -50,6 +50,10 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
 
   const [company, setCompany] = useState(prefillCompany);
   const [role, setRole] = useState(prefillRole);
+  const [cvSourceType, setCvSourceType] = useState<'internal' | 'external'>(
+    savedVersions.length > 0 ? 'internal' : 'external'
+  );
+  const [externalCvTitle, setExternalCvTitle] = useState('');
   const [selectedVersionId, setSelectedVersionId] = useState<string>('');
   const [columnId, setColumnId] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
@@ -68,6 +72,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
       setSalary('');
       setLocation('');
       setShowExtraDetails(false);
+      setExternalCvTitle('');
 
       const defaultCol = defaultColumnId || (columns.length > 0 ? columns[0].id : 'applied');
       setColumnId(defaultCol);
@@ -79,12 +84,16 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
 
       if (prefillVersionId && savedVersions.some((v) => v.id === prefillVersionId)) {
         setSelectedVersionId(prefillVersionId);
+        setCvSourceType('internal');
       } else if (matching.length > 0) {
         setSelectedVersionId(matching[0].id);
+        setCvSourceType('internal');
       } else if (savedVersions.length > 0) {
         setSelectedVersionId(savedVersions[0].id);
+        setCvSourceType('internal');
       } else {
         setSelectedVersionId('');
+        setCvSourceType('external');
       }
     }
   }, [open, prefillCompany, prefillRole, prefillVersionId, defaultColumnId, savedVersions, columns]);
@@ -124,13 +133,20 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
     }
   };
 
+  const isExternal = cvSourceType === 'external';
+  const isValid = Boolean(company.trim() && (isExternal || selectedVersionId));
+
   const handleConfirm = () => {
-    if (!company.trim() || !selectedVersionId) return;
+    if (!isValid) return;
 
     onConfirm({
       companyName: company.trim(),
       targetRole: role.trim() || 'Specialist',
-      appliedVersionId: selectedVersionId,
+      appliedVersionId: isExternal ? undefined : selectedVersionId,
+      isExternalCv: isExternal,
+      externalCvTitle: isExternal
+        ? externalCvTitle.trim() || t('history:externalCv.defaultTitle', 'Direct Contact / External CV')
+        : undefined,
       columnId: columnId || (columns[0]?.id ?? 'applied'),
       notes: notes.trim() || undefined,
       salary: salary.trim() || undefined,
@@ -223,94 +239,145 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
           />
         </Box>
 
-        {/* Multi-Version Selection Prompt */}
+        {/* CV Source Selector */}
         <Box sx={{ mt: 0.5 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.75, display: 'flex', alignItems: 'center', gap: 0.75 }}>
-            <CheckCircleRoundedIcon sx={{ fontSize: 16, color: 'primary.main' }} />
-            {matchingVersions.length > 1
-              ? t(
-                  'history:trackModal.multiVersionPrompt',
-                  'You have {{count}} versions for {{company}} — which one did you apply with?',
-                  { count: matchingVersions.length, company: company || 'this company' }
-                )
-              : t('history:trackModal.singleVersionPrompt', 'Attached CV Version:')}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: 0.75 }}>
+              <CheckCircleRoundedIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+              {t('history:trackModal.cvSourceTitle', 'Resume / CV Document')}
+            </Typography>
 
-          {matchingVersions.length === 0 ? (
+            <Box sx={{ display: 'flex', gap: 0.5 }}>
+              <Button
+                size="small"
+                variant={cvSourceType === 'internal' ? 'contained' : 'outlined'}
+                color={cvSourceType === 'internal' ? 'primary' : 'inherit'}
+                onClick={() => setCvSourceType('internal')}
+                sx={{ fontSize: '0.72rem', py: 0.25, px: 1, textTransform: 'none' }}
+              >
+                {t('history:trackModal.sourceStudio', 'Studio Resume')}
+              </Button>
+              <Button
+                size="small"
+                variant={cvSourceType === 'external' ? 'contained' : 'outlined'}
+                color={cvSourceType === 'external' ? 'primary' : 'inherit'}
+                onClick={() => setCvSourceType('external')}
+                sx={{ fontSize: '0.72rem', py: 0.25, px: 1, textTransform: 'none' }}
+              >
+                {t('history:trackModal.sourceExternal', 'External / Direct CV')}
+              </Button>
+            </Box>
+          </Box>
+
+          {cvSourceType === 'external' ? (
             <Paper
               variant="outlined"
-              sx={{ p: 2, textAlign: 'center', bgcolor: alpha(theme.palette.divider, 0.05) }}
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1.5,
+                bgcolor: alpha(theme.palette.primary.main, isDark ? 0.08 : 0.02),
+                borderColor: alpha(theme.palette.primary.main, 0.25),
+                borderRadius: 2,
+              }}
             >
               <Typography variant="body2" color="text.secondary">
-                {t('history:trackModal.noVersionsFound', 'No saved resume versions found for this company. Please save or synthesize a CV first.')}
+                {t(
+                  'history:trackModal.externalCvDesc',
+                  'Track direct submissions or recruiter contacts that did not use a tailored version from CV Studio.'
+                )}
               </Typography>
+              <TextField
+                label={t('history:trackModal.externalCvTitleField', 'Document Label or Source (Optional)')}
+                placeholder={t('history:trackModal.externalCvPlaceholder', 'e.g. LinkedIn Quick Apply, Master PDF, Referral via Email')}
+                value={externalCvTitle}
+                onChange={(e) => setExternalCvTitle(e.target.value)}
+                size="small"
+                fullWidth
+              />
             </Paper>
           ) : (
-            <RadioGroup
-              value={selectedVersionId}
-              onChange={(e) => setSelectedVersionId(e.target.value)}
-              sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
-            >
-              {matchingVersions.map((v: GeneratedCvVersion, index: number) => {
-                const isSelected = selectedVersionId === v.id;
-                return (
-                  <Paper
-                    key={v.id}
-                    variant="outlined"
-                    onClick={() => setSelectedVersionId(v.id)}
-                    sx={{
-                      p: 1.5,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      borderColor: isSelected ? 'primary.main' : 'divider',
-                      bgcolor: isSelected
-                        ? alpha(theme.palette.primary.main, isDark ? 0.12 : 0.04)
-                        : 'background.paper',
-                      transition: 'all 0.15s ease',
-                      '&:hover': {
-                        borderColor: 'primary.main',
-                        bgcolor: alpha(theme.palette.primary.main, 0.05),
-                      },
-                    }}
-                  >
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flex: 1, minWidth: 0 }}>
-                      <FormControlLabel
-                        value={v.id}
-                        control={<Radio size="small" />}
-                        label=""
-                        sx={{ m: 0, mr: -0.5 }}
-                      />
-                      <Box sx={{ minWidth: 0 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                            v{matchingVersions.length - index} • {v.targetRole || 'Specialist'}
-                          </Typography>
-                          {Boolean(v.matchScore) && (
-                            <MatchScoreBadge score={v.matchScore} />
-                          )}
-                          <Chip
-                            label={v.theme || 'modern-tech'}
-                            size="small"
-                            variant="outlined"
-                            sx={{ height: 20, fontSize: '0.68rem' }}
+            <>
+              {matchingVersions.length === 0 ? (
+                <Paper
+                  variant="outlined"
+                  sx={{ p: 2, textAlign: 'center', bgcolor: alpha(theme.palette.divider, 0.05) }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    {t(
+                      'history:trackModal.noVersionsFound',
+                      'No saved resume versions found for this company. You can switch to "External / Direct CV" or synthesize a version first.'
+                    )}
+                  </Typography>
+                </Paper>
+              ) : (
+                <RadioGroup
+                  value={selectedVersionId}
+                  onChange={(e) => setSelectedVersionId(e.target.value)}
+                  sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
+                >
+                  {matchingVersions.map((v: GeneratedCvVersion, index: number) => {
+                    const isSelected = selectedVersionId === v.id;
+                    return (
+                      <Paper
+                        key={v.id}
+                        variant="outlined"
+                        onClick={() => setSelectedVersionId(v.id)}
+                        sx={{
+                          p: 1.5,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          borderColor: isSelected ? 'primary.main' : 'divider',
+                          bgcolor: isSelected
+                            ? alpha(theme.palette.primary.main, isDark ? 0.12 : 0.04)
+                            : 'background.paper',
+                          transition: 'all 0.15s ease',
+                          '&:hover': {
+                            borderColor: 'primary.main',
+                            bgcolor: alpha(theme.palette.primary.main, 0.05),
+                          },
+                        }}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, flex: 1, minWidth: 0 }}>
+                          <FormControlLabel
+                            value={v.id}
+                            control={<Radio size="small" />}
+                            label=""
+                            sx={{ m: 0, mr: -0.5 }}
                           />
+                          <Box sx={{ minWidth: 0 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                              <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                                v{matchingVersions.length - index} • {v.targetRole || 'Specialist'}
+                              </Typography>
+                              {Boolean(v.matchScore) && (
+                                <MatchScoreBadge score={v.matchScore} />
+                              )}
+                              <Chip
+                                label={v.theme || 'modern-tech'}
+                                size="small"
+                                variant="outlined"
+                                sx={{ height: 20, fontSize: '0.68rem' }}
+                              />
+                            </Box>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.25 }}
+                            >
+                              <CalendarTodayRoundedIcon sx={{ fontSize: 11 }} /> {formatDate(v.createdAt)}
+                            </Typography>
+                          </Box>
                         </Box>
-                        <Typography
-                          variant="caption"
-                          color="text.secondary"
-                          sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.25 }}
-                        >
-                          <CalendarTodayRoundedIcon sx={{ fontSize: 11 }} /> {formatDate(v.createdAt)}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Paper>
-                );
-              })}
-            </RadioGroup>
+                      </Paper>
+                    );
+                  })}
+                </RadioGroup>
+              )}
+            </>
           )}
         </Box>
 
@@ -396,10 +463,10 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
           onClick={handleConfirm}
           variant="contained"
           color="primary"
-          disabled={!company.trim() || !selectedVersionId}
+          disabled={!isValid}
           sx={{ fontWeight: 700, px: 2.5 }}
         >
-          {t('history:trackModal.confirm', 'Track in Kanban Board')}
+          {t('history:trackModal.confirm', 'Track Application')}
         </Button>
       </DialogActions>
     </Dialog>

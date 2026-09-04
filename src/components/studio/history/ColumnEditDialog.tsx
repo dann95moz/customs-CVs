@@ -9,6 +9,9 @@ import {
   Box,
   Typography,
   IconButton,
+  Chip,
+  useTheme,
+  alpha,
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useTranslation } from 'react-i18next';
@@ -18,12 +21,15 @@ import { ColorPalettePicker } from '../../molecules';
 
 const PRESET_COLORS = [
   '#3b82f6', // Corporate Blue
-  '#0d9488', // Teal
-  '#8b5cf6', // Indigo/Purple
-  '#f59e0b', // Amber/Yellow
-  '#10b981', // Emerald/Green
-  '#ec4899', // Pink
+  '#10b981', // Emerald Green
+  '#8b5cf6', // Indigo / Purple
+  '#f59e0b', // Amber / Warm Yellow
+  '#ec4899', // Pink / Rose
+  '#06b6d4', // Cyan
+  '#f97316', // Orange
   '#64748b', // Slate Gray
+  '#14b8a6', // Teal
+  '#6366f1', // Violet
 ];
 
 export const ColumnEditDialog: React.FC<ColumnEditDialogProps> = ({
@@ -33,6 +39,7 @@ export const ColumnEditDialog: React.FC<ColumnEditDialogProps> = ({
   onSave,
 }) => {
   const { t } = useTranslation(['history', 'common']);
+  const theme = useTheme();
 
   const [title, setTitle] = useState('');
   const [color, setColor] = useState('#3b82f6');
@@ -101,6 +108,33 @@ export const ColumnEditDialog: React.FC<ColumnEditDialogProps> = ({
             selectedColor={color}
             onSelectColor={setColor}
             size="small"
+          />
+        </Box>
+
+        {/* Live Status Badge Preview */}
+        <Box
+          sx={{
+            p: 1.5,
+            borderRadius: 1.5,
+            bgcolor: alpha(theme.palette.divider, 0.05),
+            border: `1px dashed ${theme.palette.divider}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
+            {t('history:column.preview', 'Live Preview')}:
+          </Typography>
+          <Chip
+            label={title.trim() || t('history:column.defaultName', 'Sample Stage')}
+            size="small"
+            sx={{
+              fontWeight: 700,
+              bgcolor: alpha(color, 0.12),
+              color: color,
+              border: `1px solid ${alpha(color, 0.35)}`,
+            }}
           />
         </Box>
       </DialogContent>

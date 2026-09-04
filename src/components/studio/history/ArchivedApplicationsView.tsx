@@ -189,16 +189,18 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
                 {t('history:archived.restore', 'Restore to Board')}
               </Button>
 
-              <Button
-                size="small"
-                variant="text"
-                color="primary"
-                startIcon={<LaunchRoundedIcon />}
-                onClick={() => onLoadInStudio(app.appliedVersionId)}
-                sx={{ fontSize: '0.74rem', fontWeight: 700 }}
-              >
-                {t('history:card.openInStudio', 'View in Studio')}
-              </Button>
+              {app.appliedVersionId && (
+                <Button
+                  size="small"
+                  variant="text"
+                  color="primary"
+                  startIcon={<LaunchRoundedIcon />}
+                  onClick={() => onLoadInStudio(app.appliedVersionId!)}
+                  sx={{ fontSize: '0.74rem', fontWeight: 700 }}
+                >
+                  {t('history:card.openInStudio', 'View in Studio')}
+                </Button>
+              )}
 
               {attachedVersion && (
                 <Tooltip title={t('history:card.downloadPdfTip', 'Direct PDF Download')}>

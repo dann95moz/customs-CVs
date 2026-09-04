@@ -310,25 +310,27 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
             bgcolor: alpha(theme.palette.text.primary, isDark ? 0.015 : 0.01),
           }}
         >
-          <Button
-            size="small"
-            variant="text"
-            color="primary"
-            startIcon={<LaunchRoundedIcon sx={{ fontSize: 14 }} />}
-            onClick={(e) => {
-              e.stopPropagation();
-              onLoadInStudio(application.appliedVersionId);
-            }}
-            sx={{
-              fontWeight: 700,
-              fontSize: '0.72rem',
-              p: 0.4,
-              px: 1,
-              textTransform: 'none',
-            }}
-          >
-            {t('history:card.openInStudio', 'View & Edit')}
-          </Button>
+          {application.appliedVersionId && (
+            <Button
+              size="small"
+              variant="text"
+              color="primary"
+              startIcon={<LaunchRoundedIcon sx={{ fontSize: 14 }} />}
+              onClick={(e) => {
+                e.stopPropagation();
+                onLoadInStudio(application.appliedVersionId!);
+              }}
+              sx={{
+                fontWeight: 700,
+                fontSize: '0.72rem',
+                p: 0.4,
+                px: 1,
+                textTransform: 'none',
+              }}
+            >
+              {t('history:card.openInStudio', 'View & Edit')}
+            </Button>
+          )}
 
           {attachedVersion && (
             <Tooltip title={t('history:card.downloadPdfTip', 'Direct PDF Download')}>
@@ -369,18 +371,20 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         onClose={() => handleCloseMenu()}
 
       >
-        <MenuItem
-          onClick={(e) => {
-            handleCloseMenu(e);
-            onLoadInStudio(application.appliedVersionId);
-          }}
-          sx={{ fontSize: '0.8rem' }}
-        >
-          <ListItemIcon>
-            <LaunchRoundedIcon fontSize="small" color="primary" />
-          </ListItemIcon>
-          <ListItemText primary={t('history:card.openInStudio', 'View in Studio')} />
-        </MenuItem>
+        {application.appliedVersionId && (
+          <MenuItem
+            onClick={(e) => {
+              handleCloseMenu(e);
+              onLoadInStudio(application.appliedVersionId!);
+            }}
+            sx={{ fontSize: '0.8rem' }}
+          >
+            <ListItemIcon>
+              <LaunchRoundedIcon fontSize="small" color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('history:card.openInStudio', 'View in Studio')} />
+          </MenuItem>
+        )}
 
         {allColumns && allColumns.length > 1 && onMoveToColumn && (
           <MenuItem
