@@ -8,6 +8,7 @@
 export interface AuditSectionResult {
   sectionName: string;
   score: number; // Scale 1.0 - 10.0
+  targetScore?: number; // Target score calibrated for this vacancy (Scale 1.0 - 10.0)
   status: '🟢 Optimal' | '🟡 Solid with Headroom' | '🔴 Needs Attention';
   comment: string;
   identifiedGaps?: string[];

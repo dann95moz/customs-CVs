@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Box, Typography, Tooltip, useTheme, alpha } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export interface RadarDimension {
   key: string;
   label: string;
-  score: number; // 0 to 10
-  maxScore?: number; // default 10
+  score: number; // Actual candidate score (0 to 10)
+  targetScore?: number; // Calibrated target score for this specific vacancy (0 to 10)
+  maxScore?: number; // Default 10
   recommendation?: string;
 }
 
@@ -13,30 +15,43 @@ export interface HexagonRadarChartProps {
   dimensions: RadarDimension[];
   size?: number;
   className?: string;
+  actualLabel?: string;
+  targetLabel?: string;
+  targetShortLabel?: string;
 }
 
 /**
- * Native, lightweight SVG Hexagonal Radar Chart for multidimensional ATS affinity.
- * Zero external charting dependencies (no recharts bloat), 100% compatible with React 19 and MUI theming.
+ * High-fidelity 2-Layer Multidimensional Radar Chart (SVG Nativo).
+ * Displays:
+ *  - Blue solid line with vertex dots: Actual Candidate Score
+ *  - Orange dashed line with vertex dots: Calibrated Target for this specific vacancy
+ *  - Concentric polygonal grid with scale markers (2, 4, 6, 8, 10)
+ *  - Zero heavy external dependencies (no recharts bloat), 100% React 19 & MUI token compatible.
  */
 export const HexagonRadarChart: React.FC<HexagonRadarChartProps> = ({
   dimensions,
-  size = 320,
+  size = 340,
   className = '',
+  actualLabel,
+  targetLabel,
+  targetShortLabel,
 }) => {
+  const { t } = useTranslation(['audit', 'common']);
+  const displayActualLabel = actualLabel || t('audit:radar.actualLabel', 'Actual');
+  const displayTargetLabel = targetLabel || t('audit:radar.targetLabel', 'Objetivo para esta vacante');
+  const displayTargetShort = targetShortLabel || t('audit:radar.targetShort', 'Meta');
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // Must have at least 3 vertices to form a polygon (defaulting to 6 for standard hexagon)
   const numAxes = dimensions.length;
   if (numAxes < 3) return null;
 
   const center = size / 2;
-  const maxRadius = (size / 2) - 44; // leave margin for outer labels
+  const maxRadius = (size / 2) - 52; // margin for outer text labels
 
   const angleStep = (2 * Math.PI) / numAxes;
-  // Rotate so top vertex points vertically up (-PI/2)
-  const startAngle = -Math.PI / 2;
+  const startAngle = -Math.PI / 2; // Point top vertex straight up
 
   const getCoordinates = (index: number, radius: number) => {
     const angle = startAngle + index * angleStep;
@@ -46,32 +61,45 @@ export const HexagonRadarChart: React.FC<HexagonRadarChartProps> = ({
     };
   };
 
-  // Concentric grid levels (25%, 50%, 75%, 100%)
-  const gridLevels = [0.25, 0.5, 0.75, 1.0];
+  // Concentric grid levels (2, 4, 6, 8, 10 on a 10-point scale)
+  const gridLevels = [
+    { level: 0.2, label: '2' },
+    { level: 0.4, label: '4' },
+    { level: 0.6, label: '6' },
+    { level: 0.8, label: '8' },
+    { level: 1.0, label: '10' },
+  ];
 
-  const gridPolygons = gridLevels.map((level) => {
-    const points = Array.from({ length: numAxes })
+  const gridPolygons = gridLevels.map(({ level }) => {
+    return Array.from({ length: numAxes })
       .map((_, i) => {
         const { x, y } = getCoordinates(i, maxRadius * level);
-        return `${x},${y}`;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
       })
       .join(' ');
-    return points;
   });
 
-  // Calculate data polygon points
-  const dataPoints = dimensions
-    .map((dim, i) => {
-      const max = dim.maxScore || 10;
-      const normalizedScore = Math.max(0, Math.min(1, dim.score / max));
-      const { x, y } = getCoordinates(i, maxRadius * normalizedScore);
-      return `${x},${y}`;
-    })
-    .join(' ');
+  // Calculate coordinates for Actual scores
+  const actualCoords = dimensions.map((dim, i) => {
+    const max = dim.maxScore || 10;
+    const normalized = Math.max(0.08, Math.min(1, dim.score / max));
+    return getCoordinates(i, maxRadius * normalized);
+  });
+  const actualPoints = actualCoords.map(c => `${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(' ');
+
+  // Calculate coordinates for Target scores (calibrated per vacancy, default 9.0)
+  const targetCoords = dimensions.map((dim, i) => {
+    const max = dim.maxScore || 10;
+    const target = dim.targetScore !== undefined ? dim.targetScore : 9.0;
+    const normalized = Math.max(0.08, Math.min(1, target / max));
+    return getCoordinates(i, maxRadius * normalized);
+  });
+  const targetPoints = targetCoords.map(c => `${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(' ');
 
   const primaryColor = theme.palette.primary.main;
-  const secondaryColor = theme.palette.secondary.main;
-  const gridColor = theme.palette.divider;
+  const targetColor = theme.palette.mode === 'dark' ? '#fb923c' : '#ea580c'; // Vibrant warm orange
+  const gridStroke = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.12)';
+  const spokeStroke = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.08)';
 
   return (
     <Box
@@ -82,30 +110,75 @@ export const HexagonRadarChart: React.FC<HexagonRadarChartProps> = ({
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        maxWidth: size + 60,
+        maxWidth: size + 80,
         mx: 'auto',
         position: 'relative',
+        userSelect: 'none',
       }}
     >
+      {/* Top Legend Bar */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 3,
+          mb: 1.5,
+          flexWrap: 'wrap',
+        }}
+      >
+        {/* Actual Series Legend */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+          <Box
+            sx={{
+              width: 12,
+              height: 12,
+              borderRadius: 0.5,
+              bgcolor: primaryColor,
+              display: 'inline-block',
+            }}
+          />
+          <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.primary', fontSize: '0.82rem' }}>
+            {displayActualLabel}
+          </Typography>
+        </Box>
+
+        {/* Target Series Legend */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+          <Box
+            sx={{
+              width: 16,
+              height: 0,
+              borderTop: `2.5px dashed ${targetColor}`,
+              display: 'inline-block',
+            }}
+          />
+          <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', fontSize: '0.82rem' }}>
+            {displayTargetLabel}
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* SVG Canvas */}
       <svg
         viewBox={`0 0 ${size} ${size}`}
         width="100%"
         height="100%"
-        style={{ overflow: 'visible', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.06))' }}
+        style={{ overflow: 'visible' }}
       >
-        {/* Background Radial Spokes & Concentric Grid Polygons */}
+        {/* Concentric Grid Polygons */}
         {gridPolygons.map((pts, idx) => (
           <polygon
             key={`grid-${idx}`}
             points={pts}
-            fill={idx === gridPolygons.length - 1 ? alpha(primaryColor, 0.02) : 'none'}
-            stroke={gridColor}
+            fill="none"
+            stroke={gridStroke}
             strokeWidth={idx === gridPolygons.length - 1 ? '1.5' : '1'}
-            strokeDasharray={idx < gridPolygons.length - 1 ? '3 3' : undefined}
           />
         ))}
 
-        {dimensions.map((_, i) => {
+        {/* Radial Spokes from Center to outer vertices */}
+        {Array.from({ length: numAxes }).map((_, i) => {
           const outer = getCoordinates(i, maxRadius);
           return (
             <line
@@ -114,67 +187,92 @@ export const HexagonRadarChart: React.FC<HexagonRadarChartProps> = ({
               y1={center}
               x2={outer.x}
               y2={outer.y}
-              stroke={gridColor}
+              stroke={spokeStroke}
               strokeWidth="1"
             />
           );
         })}
 
-        {/* Shaded Data Polygon */}
-        <polygon
-          points={dataPoints}
-          fill={alpha(primaryColor, 0.22)}
-          stroke={primaryColor}
-          strokeWidth="2.5"
-          strokeLinejoin="round"
-          style={{
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          }}
-        />
-
-        {/* Vertex Dots with Hover Micro-interactions */}
-        {dimensions.map((dim, i) => {
-          const max = dim.maxScore || 10;
-          const normalizedScore = Math.max(0, Math.min(1, dim.score / max));
-          const { x, y } = getCoordinates(i, maxRadius * normalizedScore);
-          const isHovered = hoveredIndex === i;
-
+        {/* Scale Numbers on Vertical Top Axis (2, 4, 6, 8, 10) */}
+        {gridLevels.map(({ level, label }) => {
+          const yPos = center - maxRadius * level;
           return (
-            <g key={`vertex-${dim.key}`}>
-              {/* Invisible larger hit circle for touch/mouse */}
-              <circle
-                cx={x}
-                cy={y}
-                r="16"
-                fill="transparent"
-                style={{ cursor: 'pointer' }}
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              />
-              {/* Visible animated dot */}
-              <circle
-                cx={x}
-                cy={y}
-                r={isHovered ? 6 : 4}
-                fill={isHovered ? secondaryColor : primaryColor}
-                stroke={theme.palette.background.paper}
-                strokeWidth="2"
-                style={{
-                  transition: 'all 0.2s ease',
-                  cursor: 'pointer',
-                  filter: isHovered ? `drop-shadow(0 0 6px ${primaryColor})` : undefined,
-                }}
-              />
-            </g>
+            <text
+              key={`scale-${label}`}
+              x={center + 6}
+              y={yPos + 3}
+              fontSize="9"
+              fontWeight={600}
+              fill={theme.palette.text.disabled}
+              textAnchor="start"
+              style={{ pointerEvents: 'none' }}
+            >
+              {label}
+            </text>
           );
         })}
 
-        {/* Labels around the perimeter */}
+        {/* Series 2: TARGET FOR THIS VACANCY (Orange Dashed Outline, No fill to avoid noise) */}
+        <polygon
+          points={targetPoints}
+          fill="none"
+          stroke={targetColor}
+          strokeWidth="2"
+          strokeDasharray="5 4"
+          style={{ transition: 'all 0.3s ease' }}
+        />
+
+        {/* Target Dots on vertices */}
+        {targetCoords.map((coord, i) => (
+          <circle
+            key={`target-dot-${i}`}
+            cx={coord.x}
+            cy={coord.y}
+            r="4"
+            fill={targetColor}
+            stroke={theme.palette.background.paper}
+            strokeWidth="1.5"
+            style={{ pointerEvents: 'none' }}
+          />
+        ))}
+
+        {/* Series 1: ACTUAL SCORE (Blue Solid Outline with Light Blue Fill) */}
+        <polygon
+          points={actualPoints}
+          fill={alpha(primaryColor, 0.16)}
+          stroke={primaryColor}
+          strokeWidth="2.5"
+          style={{ transition: 'all 0.3s ease' }}
+        />
+
+        {/* Actual Dots on vertices */}
+        {actualCoords.map((coord, i) => {
+          const isHovered = hoveredIndex === i;
+          return (
+            <circle
+              key={`actual-dot-${i}`}
+              cx={coord.x}
+              cy={coord.y}
+              r={isHovered ? 7 : 5}
+              fill={primaryColor}
+              stroke={theme.palette.background.paper}
+              strokeWidth="2"
+              style={{
+                cursor: 'pointer',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                filter: isHovered ? `drop-shadow(0 0 6px ${alpha(primaryColor, 0.6)})` : undefined,
+              }}
+              onMouseEnter={() => setHoveredIndex(i)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            />
+          );
+        })}
+
+        {/* Outer Dimension Text Labels */}
         {dimensions.map((dim, i) => {
-          const labelCoord = getCoordinates(i, maxRadius + 24);
+          const labelCoord = getCoordinates(i, maxRadius + 22);
           const isHovered = hoveredIndex === i;
 
-          // Align text depending on position relative to center
           let textAnchor: 'middle' | 'start' | 'end' = 'middle';
           if (labelCoord.x > center + 15) textAnchor = 'start';
           if (labelCoord.x < center - 15) textAnchor = 'end';
@@ -187,7 +285,7 @@ export const HexagonRadarChart: React.FC<HexagonRadarChartProps> = ({
               textAnchor={textAnchor}
               dominantBaseline="central"
               fill={isHovered ? primaryColor : theme.palette.text.primary}
-              fontSize="11"
+              fontSize="11.5"
               fontWeight={isHovered ? 800 : 600}
               style={{
                 userSelect: 'none',
@@ -197,33 +295,47 @@ export const HexagonRadarChart: React.FC<HexagonRadarChartProps> = ({
               onMouseEnter={() => setHoveredIndex(i)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              {dim.label} ({dim.score})
+              {dim.label}
             </text>
           );
         })}
       </svg>
 
-      {/* Active Hover Dimension Hint / Recommendation Tooltip Pill */}
+      {/* Interactive Detail Card for Hovered Dimension */}
       {hoveredIndex !== null && dimensions[hoveredIndex] && (
         <Box
           sx={{
-            mt: 1.5,
-            p: 1.25,
+            mt: 2,
+            p: 1.5,
             px: 2,
+            width: '100%',
+            maxWidth: 360,
             borderRadius: 2,
-            bgcolor: alpha(primaryColor, 0.08),
-            border: `1px solid ${alpha(primaryColor, 0.25)}`,
-            textAlign: 'center',
-            maxWidth: 320,
+            bgcolor: isDark ? alpha(theme.palette.background.paper, 0.8) : alpha(primaryColor, 0.04),
+            border: `1px solid ${alpha(primaryColor, 0.3)}`,
+            backdropFilter: 'blur(8px)',
+            boxShadow: 2,
             transition: 'all 0.2s ease',
           }}
         >
-          <Typography variant="caption" sx={{ fontWeight: 800, color: 'primary.main', display: 'block' }}>
-            {dimensions[hoveredIndex].label} — {dimensions[hoveredIndex].score}/{dimensions[hoveredIndex].maxScore || 10}
-          </Typography>
-          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.25 }}>
-            {dimensions[hoveredIndex].recommendation || 'Dimensión optimizada para cumplimiento y escaneo ATS.'}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 800, color: 'text.primary' }}>
+              {dimensions[hoveredIndex].label}
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 700, color: primaryColor }}>
+                {displayActualLabel}: {dimensions[hoveredIndex].score}
+              </Typography>
+              <Typography variant="caption" sx={{ fontWeight: 700, color: targetColor }}>
+                • {displayTargetShort}: {dimensions[hoveredIndex].targetScore ?? 9.0}
+              </Typography>
+            </Box>
+          </Box>
+          {dimensions[hoveredIndex].recommendation && (
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.4 }}>
+              💡 {dimensions[hoveredIndex].recommendation}
+            </Typography>
+          )}
         </Box>
       )}
     </Box>

@@ -10,6 +10,49 @@ import {
 } from './parser';
 
 /**
+ * Calculates the calibrated target score (1-10) for each dimension based on specific vacancy requirements and emphasis.
+ */
+export function computeCalibratedTargetScore(sectionName: string, targetJobText: string = ''): number {
+  const text = targetJobText.toLowerCase();
+
+  if (sectionName.includes('Header')) {
+    const mentionsLinks = /github|linkedin|portfolio|web|blog|perfil|enlace/i.test(text);
+    return mentionsLinks ? 10.0 : 9.5;
+  }
+
+  if (sectionName.includes('Summary')) {
+    const isSenior = /senior|lead|director|vp|manager|head|jefe|responsable|estrateg/i.test(text);
+    return isSenior ? 9.5 : 9.0;
+  }
+
+  if (sectionName.includes('Skills')) {
+    const hasHeavyTech = /technolog|stack|requisitos|skills|herramientas|frameworks|librar/i.test(text);
+    return hasHeavyTech ? 10.0 : 9.0;
+  }
+
+  if (sectionName.includes('Experience')) {
+    const emphasizesLeadershipOrYears = /years|años|liderazgo|leadership|track record|experiencia|management/i.test(text);
+    return emphasizesLeadershipOrYears ? 10.0 : 9.0;
+  }
+
+  if (sectionName.includes('Education')) {
+    const mentionsDegreeOrCert = /degree|bachelor|master|máster|phd|doctor|certificad|certification|licenciatura|ingeniería|ingeniero|pmp|aws certified/i.test(text);
+    return mentionsDegreeOrCert ? 9.5 : 8.0;
+  }
+
+  if (sectionName.includes('Languages')) {
+    const mentionsLang = /english|inglés|alemán|german|french|francés|idioma|languages|bilingual|bilingüe|fluent|avanzado/i.test(text);
+    return mentionsLang ? 9.5 : 8.0;
+  }
+
+  if (sectionName.includes('Structure')) {
+    return 9.5;
+  }
+
+  return 9.0;
+}
+
+/**
  * Performs an objective, universal Executive Headhunter quality audit on CV content.
  * Evaluates ATS structure, impact metrics (Google XYZ formula), contact channels, and readability.
  */
@@ -48,6 +91,7 @@ export function auditCvContent(
   sections.push({
     sectionName: 'Header & Contact Information',
     score: headerScore,
+    targetScore: computeCalibratedTargetScore('Header & Contact Information', targetJobText),
     status: headerScore >= 9.0 ? '🟢 Optimal' : (headerScore >= 7.5 ? '🟡 Solid with Headroom' : '🔴 Needs Attention'),
     comment: headerComment,
     identifiedGaps: headerGaps.length > 0 ? headerGaps : undefined,
@@ -79,6 +123,7 @@ export function auditCvContent(
   sections.push({
     sectionName: 'Professional Summary',
     score: summaryScore,
+    targetScore: computeCalibratedTargetScore('Professional Summary', targetJobText),
     status: summaryScore >= 9.0 ? '🟢 Optimal' : (summaryScore >= 7.5 ? '🟡 Solid with Headroom' : '🔴 Needs Attention'),
     comment: summaryComment,
     identifiedGaps: summaryGaps.length > 0 ? summaryGaps : undefined,
@@ -108,6 +153,7 @@ export function auditCvContent(
   sections.push({
     sectionName: 'Skills & Competencies',
     score: skillsScore,
+    targetScore: computeCalibratedTargetScore('Skills & Competencies', targetJobText),
     status: skillsScore >= 9.0 ? '🟢 Optimal' : (skillsScore >= 7.5 ? '🟡 Solid with Headroom' : '🔴 Needs Attention'),
     comment: skillsComment,
     identifiedGaps: skillsGaps.length > 0 ? skillsGaps : undefined,
@@ -141,6 +187,7 @@ export function auditCvContent(
   sections.push({
     sectionName: 'Professional Experience',
     score: expScore,
+    targetScore: computeCalibratedTargetScore('Professional Experience', targetJobText),
     status: expScore >= 9.0 ? '🟢 Optimal' : (expScore >= 7.5 ? '🟡 Solid with Headroom' : '🔴 Needs Attention'),
     comment: expComment,
     identifiedGaps: expGaps.length > 0 ? expGaps : undefined,
@@ -166,6 +213,7 @@ export function auditCvContent(
   sections.push({
     sectionName: 'Education & Certifications',
     score: eduScore,
+    targetScore: computeCalibratedTargetScore('Education & Certifications', targetJobText),
     status: eduScore >= 9.0 ? '🟢 Optimal' : (eduScore >= 7.5 ? '🟡 Solid with Headroom' : '🔴 Needs Attention'),
     comment: eduComment,
     identifiedGaps: eduGaps.length > 0 ? eduGaps : undefined,
@@ -180,6 +228,7 @@ export function auditCvContent(
   sections.push({
     sectionName: 'Languages',
     score: langScore,
+    targetScore: computeCalibratedTargetScore('Languages', targetJobText),
     status: '🟢 Optimal',
     comment: langComment,
     actionToTen: langActions
@@ -193,6 +242,7 @@ export function auditCvContent(
   sections.push({
     sectionName: 'Overall Structure & ATS Legibility',
     score: structScore,
+    targetScore: computeCalibratedTargetScore('Overall Structure & ATS Legibility', targetJobText),
     status: '🟢 Optimal',
     comment: structComment,
     actionToTen: structActions

@@ -76,7 +76,7 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
     return theme.palette.error.main;
   };
 
-  const radarDimensions: RadarDimension[] = report.sections.slice(0, 6).map((sec) => {
+  const radarDimensions: RadarDimension[] = report.sections.map((sec) => {
     let shortLabel = sec.sectionName.split(' ')[0];
     if (sec.sectionName.includes('Header')) shortLabel = t('audit:dimensions.header', 'Contacto');
     else if (sec.sectionName.includes('Summary')) shortLabel = t('audit:dimensions.summary', 'Extracto');
@@ -84,11 +84,13 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
     else if (sec.sectionName.includes('Experience')) shortLabel = t('audit:dimensions.experience', 'Impacto');
     else if (sec.sectionName.includes('Education')) shortLabel = t('audit:dimensions.education', 'Educación');
     else if (sec.sectionName.includes('Languages')) shortLabel = t('audit:dimensions.languages', 'Idiomas');
+    else if (sec.sectionName.includes('Structure') || sec.sectionName.includes('Legibility')) shortLabel = t('audit:dimensions.structure', 'Estructura');
 
     return {
       key: sec.sectionName,
       label: shortLabel,
       score: sec.score,
+      targetScore: sec.targetScore ?? 9.0,
       maxScore: 10,
       recommendation: sec.actionToTen?.[0] || sec.comment,
     };
@@ -159,7 +161,7 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
               <Icon type="star" size={18} /> {t('audit:radar.title', 'Análisis Multidimensional de Afinidad')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
-              {t('audit:radar.desc', 'Radiografía ejecutiva de tus 6 dimensiones ATS. Pasa el cursor sobre los vértices para ver acciones concretas de mejora.')}
+              {t('audit:radar.desc', 'Radiografía ejecutiva de tus 7 dimensiones ATS. Pasa el cursor sobre los vértices para ver acciones concretas de mejora.')}
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
               <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>
@@ -175,7 +177,13 @@ export const QualityAuditView: React.FC<QualityAuditViewProps> = ({
           </Box>
 
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <HexagonRadarChart dimensions={radarDimensions} size={280} />
+            <HexagonRadarChart
+              dimensions={radarDimensions}
+              size={320}
+              actualLabel={t('audit:radar.actualLabel', 'Actual')}
+              targetLabel={t('audit:radar.targetLabel', 'Objetivo para esta vacante')}
+              targetShortLabel={t('audit:radar.targetShort', 'Meta')}
+            />
           </Box>
         </Paper>
       )}
