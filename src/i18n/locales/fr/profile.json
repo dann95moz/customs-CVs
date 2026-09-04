@@ -144,8 +144,11 @@
       "addProject": "Ajouter un Projet",
       "projectName": "Titre du Projet",
       "role": "Rôle / Technologie",
-      "date": "Date / Année",
+      "date": "Date / Année (optionnel)",
+      "datePlaceholder": "ex. 2024 (optionnel)",
       "link": "URL du Projet / Répertoire",
+      "demoUrl": "Démo en direct / URL du site",
+      "repoUrl": "URL du dépôt",
       "bullets": "Points Clés & Métriques",
       "remove": "Supprimer le Projet"
     }

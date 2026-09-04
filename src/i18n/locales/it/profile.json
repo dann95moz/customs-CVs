@@ -141,7 +141,8 @@
       "addProject": "Aggiungi Progetto",
       "projectName": "Titolo del Progetto",
       "role": "Ruolo / Tecnologia",
-      "date": "Data / Anno",
+      "date": "Data / Anno (opzionale)",
+      "datePlaceholder": "es. 2024 (opzionale)",
       "link": "URL del Progetto / Repository",
       "bullets": "Punti Chiave & Metriche",
       "remove": "Rimuovi Progetto"
@@ -338,8 +339,11 @@
       "addProject": "Aggiungi Progetto",
       "projectName": "Titolo del Progetto",
       "role": "Ruolo / Tecnologia",
-      "date": "Data / Anno",
+      "date": "Data / Anno (opzionale)",
+      "datePlaceholder": "es. 2024 (opzionale)",
       "link": "URL del Progetto / Repository",
+      "demoUrl": "Demo live / URL sito web",
+      "repoUrl": "URL repository",
       "bullets": "Punti Chiave & Metriche",
       "remove": "Rimuovi Progetto"
     }

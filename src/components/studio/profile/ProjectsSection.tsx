@@ -105,21 +105,29 @@ const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
         />
       </Box>
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 0.8fr' }, gap: 1.5 }}>
         <TextField
-          label={t('profile:sections.projects.link', 'Enlace / Repositorio URL')}
+          label={t('profile:sections.projects.demoUrl', 'Enlace Demo / Sitio Web')}
           size="small"
-          value={proj.location || ''}
-          onChange={(e) => onFieldChange(projIdx, 'location', e.target.value)}
-          placeholder="e.g. github.com/user/project"
+          value={proj.demoUrl || ''}
+          onChange={(e) => onFieldChange(projIdx, 'demoUrl', e.target.value)}
+          placeholder="e.g. https://my-app.vercel.app"
           fullWidth
         />
         <TextField
-          label={t('profile:sections.projects.date', 'Año / Fecha')}
+          label={t('profile:sections.projects.repoUrl', 'Repositorio URL')}
+          size="small"
+          value={proj.repoUrl || (proj.location && !proj.demoUrl ? proj.location : '')}
+          onChange={(e) => onFieldChange(projIdx, 'repoUrl', e.target.value)}
+          placeholder="e.g. https://github.com/user/project"
+          fullWidth
+        />
+        <TextField
+          label={t('profile:sections.projects.date', 'Año / Fecha (opcional)')}
           size="small"
           value={proj.date || ''}
           onChange={(e) => onFieldChange(projIdx, 'date', e.target.value)}
-          placeholder="e.g. 2024"
+          placeholder={t('profile:sections.projects.datePlaceholder', 'ej. 2024 (opcional)')}
           fullWidth
         />
       </Box>

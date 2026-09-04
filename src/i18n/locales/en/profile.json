@@ -144,8 +144,11 @@
       "addProject": "Add Project",
       "projectName": "Project Title",
       "role": "Role / Technology",
-      "date": "Date / Year",
+      "date": "Date / Year (optional)",
+      "datePlaceholder": "e.g. 2024 (optional)",
       "link": "Project URL / Repository",
+      "demoUrl": "Live Demo / Web URL",
+      "repoUrl": "Repository URL",
       "bullets": "Highlights & Metrics",
       "remove": "Remove Project"
     }
