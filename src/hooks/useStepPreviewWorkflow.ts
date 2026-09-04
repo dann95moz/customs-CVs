@@ -9,8 +9,16 @@ import { extractCandidateName, sanitizeFileName } from '../core/parser';
 import { getTemplateMetadata } from '../templates';
 import { usePrintPdf } from './usePrintPdf';
 import { useGitHubStarPrompt } from './useGitHubStarPrompt';
-import { PreviewSidePanelType } from '../types';
+import { PreviewSidePanelType, CvTranslationVariant } from '../types';
 import { getPageFormatConfig } from '../theme/dimensions';
+import {
+  translateFullCv,
+  translateCvSection,
+  parseCvIntoSections,
+  spliceTranslatedSection,
+  computeContentHash,
+} from '../core/ai/cv-translator';
+import { SupportedLanguage, LANGUAGE_DEFINITIONS } from '../core/ai/language-detector';
 
 export const useStepPreviewWorkflow = () => {
   const { isExportingPdf, handleDirectDownload } = usePrintPdf();
@@ -18,9 +26,17 @@ export const useStepPreviewWorkflow = () => {
 
   const [previewDocType, setPreviewDocType] = useState<'cv' | 'cover-letter'>('cv');
   const [isDiffModalOpen, setIsDiffModalOpen] = useState<boolean>(false);
+  const [isTranslateModalOpen, setIsTranslateModalOpen] = useState<boolean>(false);
+  const [isTranslating, setIsTranslating] = useState<boolean>(false);
 
   // Zustand Store selectors
   const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
+  const activeLanguage = useResumeStore((s) => s.activeLanguage);
+  const setActiveLanguage = useResumeStore((s) => s.setActiveLanguage);
+  const currentBaseLanguage = useResumeStore((s) => s.currentBaseLanguage);
+  const translations = useResumeStore((s) => s.translations);
+  const saveTranslationVariant = useResumeStore((s) => s.saveTranslationVariant);
+  const activeModelName = useResumeStore((s) => s.activeModelName);
   const theme = useResumeStore((s) => s.theme);
   const setTheme = useResumeStore((s) => s.setTheme);
   const palette = useResumeStore((s) => s.palette);
@@ -57,6 +73,93 @@ export const useStepPreviewWorkflow = () => {
   const parsedCv = useParsedCv();
   const auditReport = useAuditReport();
   const gapInfo = useGapInfo();
+
+  // Outdated translation detection for current active variant
+  const activeVariant = translations[activeLanguage];
+  const isLanguageOutdated = Boolean(
+    activeLanguage !== currentBaseLanguage && activeVariant?.isOutdated
+  );
+  const outdatedSectionsCount = activeVariant?.outdatedSections?.length || 0;
+
+  const handleOpenTranslateModal = () => setIsTranslateModalOpen(true);
+  const handleCloseTranslateModal = () => setIsTranslateModalOpen(false);
+
+  const handleTranslateFull = async (targetLang: SupportedLanguage) => {
+    setIsTranslating(true);
+    try {
+      const translated = await translateFullCv({
+        cvMarkdown,
+        targetLanguage: targetLang,
+        providerSettings,
+      });
+
+      const langDef = LANGUAGE_DEFINITIONS[targetLang] || LANGUAGE_DEFINITIONS.en;
+      const variant: CvTranslationVariant = {
+        language: targetLang,
+        languageLabel: langDef.nativeName,
+        cvMarkdown: translated,
+        updatedAt: new Date().toISOString(),
+        isOutdated: false,
+        baseMarkdownHash: computeContentHash(cvMarkdown),
+        outdatedSections: [],
+      };
+
+      saveTranslationVariant(variant);
+      setActiveLanguage(targetLang);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
+  const handleTranslateIncremental = async (targetLang: SupportedLanguage, sections: string[]) => {
+    setIsTranslating(true);
+    try {
+      const existing = translations[targetLang];
+      let currentTranslatedText = existing?.cvMarkdown || '';
+
+      const baseSections = parseCvIntoSections(cvMarkdown);
+      const sectionsMap = new Map(baseSections.sections.map((s) => [s.title.toLowerCase(), s]));
+
+      for (const secTitle of sections) {
+        const foundSec = sectionsMap.get(secTitle.toLowerCase());
+        if (foundSec) {
+          const translatedSection = await translateCvSection({
+            sectionTitle: foundSec.title,
+            sectionContent: foundSec.content,
+            targetLanguage: targetLang,
+            providerSettings,
+          });
+          currentTranslatedText = spliceTranslatedSection(
+            currentTranslatedText,
+            foundSec.title,
+            translatedSection
+          );
+        }
+      }
+
+      const langDef = LANGUAGE_DEFINITIONS[targetLang] || LANGUAGE_DEFINITIONS.en;
+      const updatedVariant: CvTranslationVariant = {
+        language: targetLang,
+        languageLabel: existing?.languageLabel || langDef.nativeName,
+        cvMarkdown: currentTranslatedText,
+        updatedAt: new Date().toISOString(),
+        isOutdated: false,
+        baseMarkdownHash: computeContentHash(cvMarkdown),
+        outdatedSections: [],
+      };
+
+      saveTranslationVariant(updatedVariant);
+      setActiveLanguage(targetLang);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
+  const handleQuickSyncOutdated = () => {
+    if (activeVariant && activeVariant.outdatedSections && activeVariant.outdatedSections.length > 0) {
+      handleTranslateIncremental(activeLanguage as SupportedLanguage, activeVariant.outdatedSections);
+    }
+  };
 
   const handleOpenFullAudit = () => {
     setActiveTab('audit');
@@ -308,5 +411,20 @@ export const useStepPreviewWorkflow = () => {
     isPromptOpen,
     dismissPrompt,
     openGitHubAndDismiss,
+    // Translation & Multi-language Variant System
+    activeLanguage,
+    setActiveLanguage,
+    currentBaseLanguage,
+    translations,
+    isLanguageOutdated,
+    outdatedSectionsCount,
+    isTranslateModalOpen,
+    isTranslating,
+    activeModelName,
+    handleOpenTranslateModal,
+    handleCloseTranslateModal,
+    handleTranslateFull,
+    handleTranslateIncremental,
+    handleQuickSyncOutdated,
   };
 };

@@ -46,6 +46,9 @@ const VersionDiffModal = React.lazy(() =>
 const GitHubStarToast = React.lazy(() =>
   import('./GitHubStarToast').then((m) => ({ default: m.GitHubStarToast }))
 );
+const CvTranslateModal = React.lazy(() =>
+  import('./preview/CvTranslateModal').then((m) => ({ default: m.CvTranslateModal }))
+);
 
 export type { StepPreviewProps };
 
@@ -126,6 +129,21 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     isPromptOpen,
     dismissPrompt,
     openGitHubAndDismiss,
+    // Translation & Multi-language Variant System
+    activeLanguage,
+    setActiveLanguage,
+    currentBaseLanguage,
+    translations,
+    isLanguageOutdated,
+    outdatedSectionsCount,
+    isTranslateModalOpen,
+    isTranslating,
+    activeModelName,
+    handleOpenTranslateModal,
+    handleCloseTranslateModal,
+    handleTranslateFull,
+    handleTranslateIncremental,
+    handleQuickSyncOutdated,
   } = useStepPreviewWorkflow();
 
   return (
@@ -153,6 +171,15 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         onAutoFit={handleMagicAutoFit}
         onTrackApplication={handleTrackApplication}
         isTracked={isTracked}
+        activeLanguage={activeLanguage}
+        baseLanguage={currentBaseLanguage}
+        translations={translations}
+        onLanguageChange={setActiveLanguage}
+        onOpenTranslateModal={handleOpenTranslateModal}
+        isLanguageOutdated={isLanguageOutdated}
+        outdatedSectionsCount={outdatedSectionsCount}
+        onQuickSyncOutdated={handleQuickSyncOutdated}
+        isTranslating={isTranslating}
       />
 
       {/* Main Studio Body: Vertical Left Rail + Side Drawer + Sheet Canvas + Right Audit/Gap Drawer */}
@@ -555,6 +582,23 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
           open={isDiffModalOpen}
           onClose={() => setIsDiffModalOpen(false)}
         />
+      </React.Suspense>
+
+      {/* CV AI Translation Modal */}
+      <React.Suspense fallback={null}>
+        {isTranslateModalOpen && (
+          <CvTranslateModal
+            open={isTranslateModalOpen}
+            onClose={handleCloseTranslateModal}
+            baseLanguage={currentBaseLanguage}
+            translations={translations}
+            activeProviderName={providerSettings.provider}
+            activeModelName={activeModelName}
+            isTranslating={isTranslating}
+            onTranslateFull={handleTranslateFull}
+            onTranslateIncremental={handleTranslateIncremental}
+          />
+        )}
       </React.Suspense>
 
       {/* Toast Feedback when application is tracked */}

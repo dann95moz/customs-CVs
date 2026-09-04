@@ -12,6 +12,7 @@ import {
   Menu,
   ListItemIcon,
   ListItemText,
+  Divider,
   CircularProgress,
   Typography,
   useTheme,
@@ -31,6 +32,9 @@ import AspectRatioRoundedIcon from '@mui/icons-material/AspectRatioRounded';
 import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { useTranslation } from 'react-i18next';
 import { StepPreviewToolbarProps, PageFormat } from '../../../types';
 import { useCvLiveEdit } from './CvLiveEditContext';
@@ -57,12 +61,22 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
   onAutoFit,
   onTrackApplication,
   isTracked = false,
+  activeLanguage = 'es',
+  baseLanguage = 'es',
+  translations = {},
+  onLanguageChange,
+  onOpenTranslateModal,
+  isLanguageOutdated = false,
+  outdatedSectionsCount = 0,
+  onQuickSyncOutdated,
+  isTranslating = false,
 }) => {
   const { t } = useTranslation(['preview', 'target', 'common']);
   const liveEdit = useCvLiveEdit();
   const theme = useTheme();
 
   const [pdfMenuAnchor, setPdfMenuAnchor] = useState<null | HTMLElement>(null);
+  const [langMenuAnchor, setLangMenuAnchor] = useState<null | HTMLElement>(null);
 
   const handleOpenPdfMenu = (e: React.MouseEvent<HTMLElement>) => {
     setPdfMenuAnchor(e.currentTarget);
@@ -70,6 +84,14 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
 
   const handleClosePdfMenu = () => {
     setPdfMenuAnchor(null);
+  };
+
+  const handleOpenLangMenu = (e: React.MouseEvent<HTMLElement>) => {
+    setLangMenuAnchor(e.currentTarget);
+  };
+
+  const handleCloseLangMenu = () => {
+    setLangMenuAnchor(null);
   };
 
   return (
@@ -92,7 +114,7 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
         zIndex: 20,
       }}
     >
-      {/* Left: Document Switcher (CV vs Cover Letter) & Active Template */}
+      {/* Left: Document Switcher (CV vs Cover Letter), Language Selector & Template */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
         {/* Document Type Switcher */}
         {onPreviewDocTypeChange && (
@@ -136,6 +158,153 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
               {t('preview:toolbar.docCoverLetter', 'Cover Letter')}
             </Button>
           </ButtonGroup>
+        )}
+
+        {/* CV Language Variant Selector & Translator */}
+        {previewDocType === 'cv' && onLanguageChange && (
+          <>
+            <Tooltip title={t('preview:toolbar.languageTooltip', 'CV Language Variant / Translations')}>
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={handleOpenLangMenu}
+                startIcon={<LanguageRoundedIcon sx={{ fontSize: '15px !important' }} />}
+                endIcon={<ArrowDropDownRoundedIcon sx={{ ml: -0.5, fontSize: 18 }} />}
+                sx={{
+                  height: 28,
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  textTransform: 'none',
+                  px: 1,
+                  borderColor: isLanguageOutdated ? 'warning.main' : 'divider',
+                  color: isLanguageOutdated ? 'warning.main' : 'text.primary',
+                  bgcolor: isLanguageOutdated ? alpha(theme.palette.warning.main, 0.08) : 'background.paper',
+                  '&:hover': {
+                    borderColor: isLanguageOutdated ? 'warning.dark' : 'primary.main',
+                  },
+                }}
+              >
+                {activeLanguage ? activeLanguage.toUpperCase() : 'ES'}
+                {isLanguageOutdated && (
+                  <WarningAmberRoundedIcon sx={{ fontSize: '14px !important', ml: 0.5, color: 'warning.main' }} />
+                )}
+              </Button>
+            </Tooltip>
+
+            <Menu
+              anchorEl={langMenuAnchor}
+              open={Boolean(langMenuAnchor)}
+              onClose={handleCloseLangMenu}
+              slotProps={{ paper: { sx: { mt: 0.75, minWidth: 220 } } }}
+            >
+              {/* Base Language Item */}
+              <MenuItem
+                selected={!activeLanguage || activeLanguage === baseLanguage}
+                onClick={() => {
+                  handleCloseLangMenu();
+                  onLanguageChange(baseLanguage || 'es');
+                }}
+              >
+                <ListItemIcon>
+                  {(!activeLanguage || activeLanguage === baseLanguage) ? (
+                    <CheckRoundedIcon fontSize="small" color="primary" />
+                  ) : (
+                    <Box sx={{ width: 20 }} />
+                  )}
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontSize: '0.8rem', fontWeight: 600 }}>
+                      {`${(baseLanguage || 'es').toUpperCase()} (${t('preview:translation.baseLang', 'Original')})`}
+                    </Typography>
+                  }
+                />
+              </MenuItem>
+
+              {/* Translated Variants */}
+              {translations && Object.values(translations).map((variant) => (
+                <MenuItem
+                  key={variant.language}
+                  selected={activeLanguage === variant.language}
+                  onClick={() => {
+                    handleCloseLangMenu();
+                    onLanguageChange(variant.language);
+                  }}
+                >
+                  <ListItemIcon>
+                    {activeLanguage === variant.language ? (
+                      <CheckRoundedIcon fontSize="small" color="primary" />
+                    ) : (
+                      <Box sx={{ width: 20 }} />
+                    )}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={
+                      <Typography sx={{ fontSize: '0.8rem', fontWeight: 600 }}>
+                        {`${variant.language.toUpperCase()} (${variant.languageLabel || variant.language})`}
+                      </Typography>
+                    }
+                  />
+                  {variant.isOutdated && (
+                    <Chip
+                      size="small"
+                      icon={<WarningAmberRoundedIcon sx={{ fontSize: '12px !important' }} />}
+                      label={t('preview:translation.outdatedBadge', 'Outdated')}
+                      color="warning"
+                      variant="outlined"
+                      sx={{ ml: 1, fontSize: '0.62rem', height: 18 }}
+                    />
+                  )}
+                </MenuItem>
+              ))}
+
+              <Divider sx={{ my: 0.5 }} />
+
+              <MenuItem
+                onClick={() => {
+                  handleCloseLangMenu();
+                  onOpenTranslateModal?.();
+                }}
+              >
+                <ListItemIcon>
+                  <AutoAwesomeRoundedIcon fontSize="small" color="primary" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: 'primary.main' }}>
+                      {t('preview:translation.translateNewAction', '+ Traducir a otro idioma...')}
+                    </Typography>
+                  }
+                />
+              </MenuItem>
+            </Menu>
+
+            {/* Quick-Sync diff button if active language is outdated */}
+            {isLanguageOutdated && onQuickSyncOutdated && (
+              <Tooltip title={t('preview:toolbar.syncDiffTooltip', 'Actualizar solo las secciones modificadas con IA para sincronizar y ahorrar tokens')}>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="warning"
+                  startIcon={isTranslating ? <CircularProgress size={12} color="inherit" /> : <BoltRoundedIcon sx={{ fontSize: '14px !important' }} />}
+                  onClick={onQuickSyncOutdated}
+                  disabled={isTranslating}
+                  sx={{
+                    height: 28,
+                    fontSize: '0.72rem',
+                    fontWeight: 800,
+                    textTransform: 'none',
+                    px: 1,
+                    display: { xs: 'none', sm: 'inline-flex' },
+                  }}
+                >
+                  {isTranslating
+                    ? t('preview:translation.syncing', 'Sincronizando...')
+                    : t('preview:toolbar.syncDiffBtn', 'Sincronizar cambios ({{count}})', { count: outdatedSectionsCount || 1 })}
+                </Button>
+              </Tooltip>
+            )}
+          </>
         )}
 
         {/* Active Template Chip (shown for CV mode) */}
