@@ -29,6 +29,15 @@
     "guidedTitle": "Guided Profile Form",
     "markdownTitle": "Freeform Text / Manual Mode"
   },
+  "completeness": {
+    "title": "Master Profile Completeness",
+    "levelComplete": "Robust profile! Ready to tailor with high ATS conversion.",
+    "levelGood": "Solid profile. You can start tailoring or add sections for greater affinity.",
+    "levelInitial": "Basic profile. We recommend adding more career details for best results.",
+    "sectionsDone": "sections",
+    "suggestedAdd": "Suggested to add:",
+    "clickToAdd": "Click to complete this section"
+  },
 
   "status": {
     "ready": "Career profile ready for tailoring",
@@ -187,6 +196,24 @@
       "conferences": "e.g. Speaker: \"Microfrontends at Scale\" – TechConf Latam (2023)",
       "custom": "Type an achievement, item, or detail for this section..."
     }
+  },
+  "visualEditor": {
+    "visual": "Visual (WYSIWYG)",
+    "visualShort": "Visual",
+    "markdown": "Markdown Code",
+    "markdownShort": "Code",
+    "bold": "Bold (Ctrl+B)",
+    "italic": "Italic (Ctrl+I)",
+    "h1": "Title (H1)",
+    "h2": "Section (H2)",
+    "h3": "Role / Subtitle (H3)",
+    "paragraph": "Normal Paragraph",
+    "bulletList": "Bullet List",
+    "divider": "Divider Line",
+    "clear": "Clear Formatting",
+    "undo": "Undo",
+    "redo": "Redo",
+    "placeholder": "Write your resume content here..."
   }
 }
 

@@ -38,6 +38,9 @@ import { StepMasterDataProps } from '../../types';
 import { StudioSkeleton } from './StudioSkeleton';
 import { ConfirmDeleteDialog } from './common/ConfirmDeleteDialog';
 import { useMasterDataWorkflow } from '../../hooks/useMasterDataWorkflow';
+import { useMasterProfileCompleteness } from '../../hooks/useMasterProfileCompleteness';
+import { ProfileCompletenessBar } from './profile/ProfileCompletenessBar';
+import { VisualMarkdownEditor } from './editor/VisualMarkdownEditor';
 
 const GuidedProfileForm = React.lazy(() =>
   import('./GuidedProfileForm').then((m) => ({ default: m.GuidedProfileForm }))
@@ -53,6 +56,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
+  const completeness = useMasterProfileCompleteness(content);
 
   const {
     editMode,
@@ -270,14 +274,17 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           </Stack>
         </Paper>
 
+        {/* Profile Completeness & Soft Guidance Bar */}
+        <ProfileCompletenessBar completeness={completeness} />
+
         {/* Mode Switcher & Dedicated Editor Area */}
         <Paper
           sx={{
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            minHeight: { xs: 'auto', md: 450 },
-            overflow: { xs: 'visible', md: 'hidden' },
+            minHeight: { xs: 450, md: 520 },
+            overflow: 'hidden',
             border: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
             borderRadius: 2,
@@ -342,35 +349,12 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               </React.Suspense>
             </Box>
           ) : (
-            <Box
-              sx={{
-                flex: 1,
-                position: 'relative',
-                p: 0,
-                display: 'flex',
-                minHeight: 350,
-              }}
-            >
-              <textarea
-                className="studio-textarea"
-                value={manualText}
-                onChange={(e) => handleManualTextChange(e.target.value)}
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+              <VisualMarkdownEditor
+                markdown={manualText}
+                onChange={handleManualTextChange}
                 onBlur={handleManualBlur}
                 placeholder="# [CANDIDATE FULL NAME]&#10;**Primary Professional Role / Specialization**&#10;City, Country • candidate.email@example.com • +1 234 567 8900&#10;&#10;## CAREER HISTORY & ACHIEVEMENTS&#10;Write your companies, roles, and achievements here..."
-                spellCheck={false}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: 'none',
-                  outline: 'none',
-                  padding: '16px',
-                  fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
-                  fontSize: '0.88rem',
-                  lineHeight: 1.65,
-                  resize: 'none',
-                  backgroundColor: 'transparent',
-                  color: theme.palette.text.primary,
-                }}
               />
             </Box>
           )}

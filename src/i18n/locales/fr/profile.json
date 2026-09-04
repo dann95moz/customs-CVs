@@ -29,6 +29,15 @@
     "guidedTitle": "Formulaire de Profil Guidé",
     "markdownTitle": "Mode Manuel / Texte Libre"
   },
+  "completeness": {
+    "title": "Complétude du Profil Principal",
+    "levelComplete": "Profil complet ! Prêt à être adapté avec une forte conversion ATS.",
+    "levelGood": "Profil solide. Vous pouvez commencer ou ajouter des sections pour plus de pertinence.",
+    "levelInitial": "Profil élémentaire. Nous recommandons d'ajouter des détails pour de meilleurs résultats.",
+    "sectionsDone": "sections",
+    "suggestedAdd": "Suggestions d'ajouts :",
+    "clickToAdd": "Cliquer pour compléter cette section"
+  },
 
   "status": {
     "ready": "Profil professionnel prêt pour l'adaptation",
@@ -186,6 +195,24 @@
       "conferences": "ex. Conférencier : \"Micro-frontends à Grande Échelle\" – TechConf (2023)",
       "custom": "Saisissez une réalisation, un détail ou un point pour cette section..."
     }
+  },
+  "visualEditor": {
+    "visual": "Visuel (WYSIWYG)",
+    "visualShort": "Visuel",
+    "markdown": "Code Markdown",
+    "markdownShort": "Code",
+    "bold": "Gras (Ctrl+B)",
+    "italic": "Italique (Ctrl+I)",
+    "h1": "Titre (H1)",
+    "h2": "Section (H2)",
+    "h3": "Rôle / Sous-titre (H3)",
+    "paragraph": "Paragraphe Normal",
+    "bulletList": "Liste à Puces",
+    "divider": "Ligne de Séparation",
+    "clear": "Effacer le Formatage",
+    "undo": "Annuler",
+    "redo": "Rétablir",
+    "placeholder": "Rédigez le contenu de votre CV ici..."
   }
 }
 

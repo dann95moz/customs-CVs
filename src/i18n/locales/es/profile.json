@@ -29,6 +29,15 @@
     "guidedTitle": "Formulario Guiado de Perfil",
     "markdownTitle": "Modo Manual / Texto Libre"
   },
+  "completeness": {
+    "title": "Completitud del Perfil Maestro",
+    "levelComplete": "¡Perfil robusto! Listo para adaptar con alto impacto ATS.",
+    "levelGood": "Perfil sólido. Puedes empezar a adaptar o completar secciones para mayor afinidad.",
+    "levelInitial": "Perfil básico. Te sugerimos agregar más detalles profesionales para un mejor resultado.",
+    "sectionsDone": "secciones",
+    "suggestedAdd": "Sugerido agregar:",
+    "clickToAdd": "Clic para completar esta sección"
+  },
 
   "status": {
     "ready": "Perfil profesional listo para adaptar",
@@ -187,6 +196,24 @@
       "conferences": "Ej. Speaker: \"Microfrontends a Gran Escala\" – TechConf Latam (2023)",
       "custom": "Escribe un logro, detalle o elemento para esta sección..."
     }
+  },
+  "visualEditor": {
+    "visual": "Visual (WYSIWYG)",
+    "visualShort": "Visual",
+    "markdown": "Código Markdown",
+    "markdownShort": "Código",
+    "bold": "Negrita (Ctrl+B)",
+    "italic": "Cursiva (Ctrl+I)",
+    "h1": "Título (H1)",
+    "h2": "Sección (H2)",
+    "h3": "Puesto / Subtítulo (H3)",
+    "paragraph": "Párrafo Normal",
+    "bulletList": "Lista con Viñetas",
+    "divider": "Línea Divisoria",
+    "clear": "Limpiar Formato",
+    "undo": "Deshacer",
+    "redo": "Rehacer",
+    "placeholder": "Escribe el contenido de tu currículum aquí..."
   }
 }
 

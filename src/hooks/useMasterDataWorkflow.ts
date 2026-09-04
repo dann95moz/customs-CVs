@@ -4,6 +4,7 @@ import { useFileUploader } from './useFileUploader';
 import { useTranslation } from 'react-i18next';
 import { downloadTextFile, buildTimestampedFileName } from '../utils/fileUtils';
 import { PdfImportResult } from '../core/pdf-extractor';
+import { useResumeStore } from '../store/useResumeStore';
 
 interface UseMasterDataWorkflowProps {
   content: string;
@@ -194,6 +195,7 @@ export const useMasterDataWorkflow = ({
     const baseName = candidateName ? `master-profile_${candidateName.replace(/\s+/g, '_')}` : 'master-profile';
     const fileName = buildTimestampedFileName(baseName, 'md');
     downloadTextFile(content, fileName);
+    useResumeStore.getState().recordBackup();
   };
 
   const handleContinue = () => {

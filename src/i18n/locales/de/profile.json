@@ -29,6 +29,15 @@
     "guidedTitle": "Geführtes Profilformular",
     "markdownTitle": "Manueller Modus / Freitext"
   },
+  "completeness": {
+    "title": "Vollständigkeit des Basis-Profils",
+    "levelComplete": "Starkes Profil! Bereit für die Anpassung mit hoher ATS-Passgenauigkeit.",
+    "levelGood": "Solides Profil. Sie können anpassen oder weitere Abschnitte ergänzen.",
+    "levelInitial": "Basis-Profil. Wir empfehlen weitere Details für bessere Ergebnisse.",
+    "sectionsDone": "Abschnitte",
+    "suggestedAdd": "Vorschläge zum Ergänzen:",
+    "clickToAdd": "Klicken, um diesen Abschnitt auszufüllen"
+  },
 
   "status": {
     "ready": "Karriereprofil bereit für die Anpassung",
@@ -187,6 +196,24 @@
       "conferences": "z. B. Speaker: \"Microfrontends im Praxiseinsatz\" – TechConf (2023)",
       "custom": "Tragen Sie einen Erfolg, ein Detail oder einen Punkt ein..."
     }
+  },
+  "visualEditor": {
+    "visual": "Visuell (WYSIWYG)",
+    "visualShort": "Visuell",
+    "markdown": "Markdown-Code",
+    "markdownShort": "Code",
+    "bold": "Fett (Ctrl+B)",
+    "italic": "Kursiv (Ctrl+I)",
+    "h1": "Titel (H1)",
+    "h2": "Abschnitt (H2)",
+    "h3": "Rolle / Untertitel (H3)",
+    "paragraph": "Normaler Absatz",
+    "bulletList": "Aufzählungsliste",
+    "divider": "Trennlinie",
+    "clear": "Formatierung löschen",
+    "undo": "Rückgängig",
+    "redo": "Wiederholen",
+    "placeholder": "Schreiben Sie Ihren Lebenslauf-Inhalt hier..."
   }
 }
 

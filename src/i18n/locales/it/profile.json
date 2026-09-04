@@ -29,6 +29,15 @@
     "guidedTitle": "Modulo di Profilo Guidato",
     "markdownTitle": "Modalità Manuale / Testo Libero"
   },
+  "completeness": {
+    "title": "Completezza del Profilo Base",
+    "levelComplete": "Profilo completo! Pronto per l'adattamento con alta conversione ATS.",
+    "levelGood": "Profilo solido. Puoi iniziare o aggiungere sezioni per una maggiore affinità.",
+    "levelInitial": "Profilo di base. Consigliamo di aggiungere più dettagli per risultati migliori.",
+    "sectionsDone": "sezioni",
+    "suggestedAdd": "Suggerimenti da aggiungere:",
+    "clickToAdd": "Clicca per completare questa sezione"
+  },
   "status": {
     "ready": "Profilo professionale pronto per l'adattamento",
 
@@ -185,6 +194,23 @@
       "conferences": "es. Speaker: \"Microfrontend su Larga Scala\" – TechConf Latam (2023)",
       "custom": "Inserisci un risultato, un dettaglio o una voce per questa sezione..."
     }
+  },
+  "visualEditor": {
+    "visual": "Visuale (WYSIWYG)",
+    "visualShort": "Visuale",
+    "markdown": "Codice Markdown",
+    "markdownShort": "Codice",
+    "bold": "Grassetto (Ctrl+B)",
+    "italic": "Corsivo (Ctrl+I)",
+    "h1": "Titolo (H1)",
+    "h2": "Sezione (H2)",
+    "h3": "Ruolo / Sottotitolo (H3)",
+    "paragraph": "Paragrafo Normale",
+    "bulletList": "Elenco Puntato",
+    "divider": "Linea Divisoria",
+    "clear": "Cancella Formattazione",
+    "undo": "Annulla",
+    "redo": "Ripristina",
+    "placeholder": "Scrivi il contenuto del tuo curriculum qui..."
   }
 }
-
