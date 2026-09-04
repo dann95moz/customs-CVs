@@ -40,7 +40,10 @@
     "zoomFit": "Ajuster largeur",
     "zoom100": "100% Zoom",
     "docCv": "Curriculum (CV)",
-    "docCoverLetter": "Lettre de Motivation"
+    "docCoverLetter": "Lettre de Motivation",
+    "languageTooltip": "Variante de langue / Traductions du CV",
+    "syncDiffBtn": "Synchroniser modifications ({{count}})",
+    "syncDiffTooltip": "Synchroniser uniquement les sections modifiées avec l'IA pour économiser des tokens"
   },
   "editor": {
     "sourceTitle": "Source Markdown du CV",
@@ -191,5 +194,28 @@
     "missingMetricSuggestion": "Quantifiez l'impact : quel % d'amélioration ou d'économie a été obtenu ?",
     "hintTitle": "Formule Google XYZ recommandée :",
     "optimizeWithAi": "Optimiser la réalisation avec l'IA"
+  },
+  "translation": {
+    "modalTitle": "Traduire le CV avec l'IA",
+    "modalSubtitle": "Créez des variantes multilingues liées à ce CV adapté sans dupliquer votre flux de travail.",
+    "providerNote": "Exécution sur votre IA configurée",
+    "rolesPreservedNote": "Les intitulés de postes techniques et les technologies sont protégés de toute traduction littérale.",
+    "selectTargetLanguage": "Sélectionnez la langue cible :",
+    "baseBadge": "Base",
+    "baseLang": "Original",
+    "outdatedBadge": "Obsolète",
+    "readyBadge": "À jour",
+    "outdatedTitle": "La traduction n'est plus synchronisée avec le CV de base",
+    "outdatedExplanation": "Le CV de base a été modifié après la génération de cette traduction.",
+    "modifiedSections": "Sections modifiées",
+    "diffAdvantage": "Vous pouvez synchroniser uniquement les sections modifiées pour économiser des tokens.",
+    "upToDateMessage": "Une traduction dans cette langue existe déjà et est synchronisée avec le CV de base.",
+    "errorGeneric": "Échec de la traduction. Veuillez vérifier la configuration de votre IA.",
+    "syncDiffBtn": "Synchroniser les sections modifiées",
+    "translatingInProgress": "Traduction en cours...",
+    "retranslateFullBtn": "Retraduire le CV complet",
+    "translateFullBtn": "Traduire le CV complet",
+    "translateNewAction": "+ Traduire dans une autre langue...",
+    "syncing": "Synchronisation..."
   }
 }

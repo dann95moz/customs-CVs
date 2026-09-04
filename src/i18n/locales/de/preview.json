@@ -40,7 +40,10 @@
     "zoomFit": "Breite anpassen",
     "zoom100": "100% Zoom",
     "docCv": "Lebenslauf (CV)",
-    "docCoverLetter": "Anschreiben"
+    "docCoverLetter": "Anschreiben",
+    "languageTooltip": "CV-Sprachvariante / Übersetzungen",
+    "syncDiffBtn": "Änderungen synchronisieren ({{count}})",
+    "syncDiffTooltip": "Nur geänderte Abschnitte mit KI synchronisieren, um Tokens zu sparen"
   },
   "editor": {
     "sourceTitle": "CV-Markdown-Quelle",
@@ -190,5 +193,28 @@
     "missingMetricSuggestion": "Quantifizieren Sie die Wirkung: Wie stark verbesserte sich die Leistung, welche Ersparnis wurde erzielt?",
     "hintTitle": "Empfohlene Google XYZ-Formel:",
     "optimizeWithAi": "Erfolg mit KI optimieren"
+  },
+  "translation": {
+    "modalTitle": "Lebenslauf mit KI übersetzen",
+    "modalSubtitle": "Erstellen Sie mehrsprachige Versionen, verknüpft mit diesem Lebenslauf, ohne den Workflow zu verdoppeln.",
+    "providerNote": "Läuft über Ihre konfigurierte KI",
+    "rolesPreservedNote": "Technische Berufsbezeichnungen und Technologien werden vor wörtlicher Übersetzung geschützt.",
+    "selectTargetLanguage": "Zielsprache auswählen:",
+    "baseBadge": "Basis",
+    "baseLang": "Original",
+    "outdatedBadge": "Veraltet",
+    "readyBadge": "Aktuell",
+    "outdatedTitle": "Übersetzung nicht synchron mit Basis-Lebenslauf",
+    "outdatedExplanation": "Der Basis-Lebenslauf wurde nach Erstellung dieser Übersetzung geändert.",
+    "modifiedSections": "Geänderte Abschnitte",
+    "diffAdvantage": "Sie können nur die geänderten Abschnitte synchronisieren, um Tokens zu sparen.",
+    "upToDateMessage": "Eine Übersetzung in dieser Sprache existiert bereits und ist auf dem neuesten Stand.",
+    "errorGeneric": "Übersetzungsfehler. Bitte überprüfen Sie Ihre KI-Anbietereinstellungen.",
+    "syncDiffBtn": "Geänderte Abschnitte synchronisieren",
+    "translatingInProgress": "Übersetzen mit KI...",
+    "retranslateFullBtn": "Vollständigen Lebenslauf neu übersetzen",
+    "translateFullBtn": "Vollständigen Lebenslauf übersetzen",
+    "translateNewAction": "+ In eine andere Sprache übersetzen...",
+    "syncing": "Synchronisieren..."
   }
 }

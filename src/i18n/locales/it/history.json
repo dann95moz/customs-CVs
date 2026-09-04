@@ -10,6 +10,7 @@
     "stagesShort": "Fasi",
     "openInStudio": "Apri in Studio",
     "downloadPdf": "Scarica PDF",
+    "downloadPdfWithLang": "Scarica PDF ({{lang}})",
     "archive": "Archivia candidatura"
   },
   "views": {
@@ -77,6 +78,12 @@
   "externalCv": {
     "badge": "CV Esterno",
     "defaultTitle": "Contatto Diretto / CV Esterno"
+  },
+  "language": {
+    "selectTooltip": "Seleziona la variante di lingua del CV per questa candidatura",
+    "baseOriginal": "Originale",
+    "outdated": "Non aggiornato",
+    "translateInStudio": "+ Traduci in Studio..."
   },
   "card": {
     "openInStudio": "Visualizza & Modifica in Studio",

@@ -40,7 +40,10 @@
     "zoomFit": "Fit width",
     "zoom100": "100% Zoom",
     "docCv": "Resume (CV)",
-    "docCoverLetter": "Cover Letter"
+    "docCoverLetter": "Cover Letter",
+    "languageTooltip": "CV Language Variant / Translations",
+    "syncDiffBtn": "Sync Changes ({{count}})",
+    "syncDiffTooltip": "Sync only modified sections with AI to save tokens and update translation"
   },
   "editor": {
     "sourceTitle": "CV Markdown Source",
@@ -190,5 +193,28 @@
     "missingMetricSuggestion": "Quantify impact: how much did performance improve, what % savings was achieved, or how many users were impacted?",
     "hintTitle": "Recommended Google XYZ Formula:",
     "optimizeWithAi": "Optimize achievement with AI"
+  },
+  "translation": {
+    "modalTitle": "Translate CV with AI",
+    "modalSubtitle": "Create multilingual variants linked to this tailored resume without duplicating your pipeline.",
+    "providerNote": "Running on your configured AI",
+    "rolesPreservedNote": "Technical job titles and technology names are protected from literal translation.",
+    "selectTargetLanguage": "Select Target Language:",
+    "baseBadge": "Base",
+    "baseLang": "Original",
+    "outdatedBadge": "Outdated",
+    "readyBadge": "Active",
+    "outdatedTitle": "Translation is out of sync with base CV",
+    "outdatedExplanation": "The base resume was modified after this translation was generated.",
+    "modifiedSections": "Modified sections",
+    "diffAdvantage": "You can sync only the modified sections to save tokens and preserve the rest.",
+    "upToDateMessage": "A translated version in this language already exists and is synchronized with the base CV.",
+    "errorGeneric": "Translation failed. Please verify AI provider configuration.",
+    "syncDiffBtn": "Sync Changed Sections",
+    "translatingInProgress": "Translating...",
+    "retranslateFullBtn": "Retranslate Full CV",
+    "translateFullBtn": "Translate Full CV",
+    "translateNewAction": "+ Translate to another language...",
+    "syncing": "Syncing..."
   }
 }

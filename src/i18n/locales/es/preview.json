@@ -40,7 +40,10 @@
     "zoomFit": "Ajustar ancho",
     "zoom100": "100% Real",
     "docCv": "Currículum (CV)",
-    "docCoverLetter": "Carta de Presentación"
+    "docCoverLetter": "Carta de Presentación",
+    "languageTooltip": "Variante de Idioma / Traducciones del CV",
+    "syncDiffBtn": "Sincronizar cambios ({{count}})",
+    "syncDiffTooltip": "Actualizar solo las secciones modificadas con IA para sincronizar y ahorrar tokens"
   },
   "editor": {
     "sourceTitle": "Fuente Markdown del CV",
@@ -191,5 +194,28 @@
     "missingMetricSuggestion": "Cuantifica el impacto: ¿cuánto mejoró el rendimiento, qué % de ahorro se logró o cuántos usuarios impactó?",
     "hintTitle": "Fórmula Google XYZ recomendada:",
     "optimizeWithAi": "Optimizar logro con IA"
+  },
+  "translation": {
+    "modalTitle": "Traducir CV con IA",
+    "modalSubtitle": "Crea variantes multilingües ligadas a este CV adaptado sin duplicar tu flujo.",
+    "providerNote": "Ejecutándose en tu IA configurada",
+    "rolesPreservedNote": "Los títulos de puestos técnicos y tecnologías se protegen de traducción literal.",
+    "selectTargetLanguage": "Selecciona el Idioma de Destino:",
+    "baseBadge": "Base",
+    "baseLang": "Original",
+    "outdatedBadge": "Desactualizado",
+    "readyBadge": "Al día",
+    "outdatedTitle": "La traducción está desincronizada con el CV base",
+    "outdatedExplanation": "El currículum base fue modificado después de generar esta traducción.",
+    "modifiedSections": "Secciones modificadas",
+    "diffAdvantage": "Puedes sincronizar solo las secciones modificadas para ahorrar tokens y mantener la coherencia.",
+    "upToDateMessage": "Ya existe una traducción en este idioma y está sincronizada con el CV base.",
+    "errorGeneric": "Error en la traducción. Por favor verifica la configuración de tu proveedor de IA.",
+    "syncDiffBtn": "Sincronizar Secciones Modificadas",
+    "translatingInProgress": "Traduciendo con IA...",
+    "retranslateFullBtn": "Retraducir CV Completo",
+    "translateFullBtn": "Traducir CV Completo",
+    "translateNewAction": "+ Traducir a otro idioma...",
+    "syncing": "Sincronizando..."
   }
 }

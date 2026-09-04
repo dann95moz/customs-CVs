@@ -10,6 +10,7 @@
     "stagesShort": "Phasen",
     "openInStudio": "In Studio öffnen",
     "downloadPdf": "PDF herunterladen",
+    "downloadPdfWithLang": "PDF herunterladen ({{lang}})",
     "archive": "Bewerbung archivieren"
   },
   "views": {
@@ -77,6 +78,12 @@
   "externalCv": {
     "badge": "Externer CV",
     "defaultTitle": "Direktkontakt / Externer CV"
+  },
+  "language": {
+    "selectTooltip": "CV-Sprachvariante für diese Bewerbung auswählen",
+    "baseOriginal": "Original",
+    "outdated": "Veraltet",
+    "translateInStudio": "+ In Studio übersetzen..."
   },
   "card": {
     "openInStudio": "Im Studio anzeigen & bearbeiten",

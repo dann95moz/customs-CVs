@@ -10,6 +10,7 @@
     "stagesShort": "Stages",
     "openInStudio": "Open Studio",
     "downloadPdf": "Download PDF",
+    "downloadPdfWithLang": "Download PDF ({{lang}})",
     "archive": "Archive Application"
   },
   "views": {
@@ -77,6 +78,12 @@
   "externalCv": {
     "badge": "External CV",
     "defaultTitle": "Direct Contact / External CV"
+  },
+  "language": {
+    "selectTooltip": "Select CV language variant for this application",
+    "baseOriginal": "Original",
+    "outdated": "Outdated",
+    "translateInStudio": "+ Translate in Studio..."
   },
   "card": {
     "openInStudio": "View & Edit in Studio",
