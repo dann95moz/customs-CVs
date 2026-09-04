@@ -146,11 +146,6 @@ export const EducationSection: React.FC<EducationSectionProps> = React.memo(({
   };
 
   const handleAddNewItem = () => {
-    const defaultNew = formatEducationString({
-      degree: 'Nuevo Título / Certificación',
-      institution: 'Institución / Universidad',
-      year: '2024'
-    });
     onAddEducation();
     // Start editing the newly added first item
     setEditingIndex(0);

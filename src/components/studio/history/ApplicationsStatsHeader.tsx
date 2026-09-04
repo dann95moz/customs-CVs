@@ -6,8 +6,6 @@ import {
   Chip,
   Button,
   ButtonGroup,
-  TextField,
-  InputAdornment,
   useTheme,
   alpha,
 } from '@mui/material';
@@ -19,7 +17,6 @@ import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
 import TrackChangesRoundedIcon from '@mui/icons-material/TrackChangesRounded';
 import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { useTranslation } from 'react-i18next';
 import { ApplicationsStatsHeaderProps } from '../../../types';
@@ -42,7 +39,6 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
 }) => {
   const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

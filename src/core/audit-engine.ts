@@ -30,7 +30,6 @@ export function auditCvContent(
 
   const hasEmail = cvData.contacts.some(c => c.type === 'email');
   const hasLinkedIn = cvData.contacts.some(c => c.type === 'linkedin');
-  const hasPhone = cvData.contacts.some(c => c.type === 'phone');
   const hasPortfolioOrProfile = cvData.contacts.some(c => c.type === 'globe' || c.type === 'github');
 
   if (!hasEmail || !cvData.name || !cvData.title) {

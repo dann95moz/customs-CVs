@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { extractCandidateName, extractTargetCompany, sanitizeFileName } from './parser';
+import { sanitizeFileName } from './parser';
 import { generatePdfFromMarkdown } from './pdf-generator';
 import { ThemeId, AuditSectionResult, StrategicGrowthPillar, QualityAuditReport } from '../types/cv';
 import { auditCvContent } from './audit-engine';

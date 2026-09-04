@@ -35,7 +35,6 @@ export const TargetJobMetadataBar: React.FC<TargetJobMetadataBarProps> = React.m
 }) => {
   const { t } = useTranslation(['target']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   return (
     <Paper

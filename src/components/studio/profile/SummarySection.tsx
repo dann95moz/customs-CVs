@@ -3,7 +3,6 @@ import {
   Box,
   Typography,
   TextField,
-  useTheme
 } from '@mui/material';
 import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +15,6 @@ export const SummarySection: React.FC<SummarySectionProps> = React.memo(({
   onSummaryChange
 }) => {
   const { t } = useTranslation(['profile', 'common']);
-  const theme = useTheme();
 
   const wordsCount = React.useMemo(() => {
     return summary ? summary.trim().split(/\s+/).filter(Boolean).length : 0;

@@ -3,11 +3,10 @@ import {
   Box,
   Typography,
   TextField,
-  useTheme
 } from '@mui/material';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { useTranslation } from 'react-i18next';
-import { ContactItem, ContactType, PersonalInfoSectionProps } from '../../../types';
+import { ContactType, PersonalInfoSectionProps } from '../../../types';
 
 export type { PersonalInfoSectionProps };
 
@@ -20,7 +19,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
   onContactChange
 }) => {
   const { t } = useTranslation(['profile', 'common']);
-  const theme = useTheme();
 
   const contactValues = React.useMemo(() => {
     const map: Partial<Record<ContactType, string>> = {};

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { parseCvMarkdownToData, serializeCvDataToMarkdown } from '../../core/parser';
 import { CVData, ContactItem, ContactType, ExperienceItem, SkillCategory } from '../../types/cv';
 import { ProfileNavRail, ProfileSectionKey } from './profile/ProfileNavRail';
@@ -19,7 +19,6 @@ import { GuidedProfileFormProps } from '../../types';
 
 export type { GuidedProfileFormProps };
 
-const EMPTY_SKILL_GROUPS: SkillCategory[] = [];
 const EMPTY_EXPERIENCE: ExperienceItem[] = [];
 const EMPTY_EDUCATION: string[] = [];
 const EMPTY_LANGUAGES: string[] = [];
@@ -36,7 +35,6 @@ export const GuidedProfileForm: React.FC<GuidedProfileFormProps> = ({
   onFlushRef,
 }) => {
   const { t } = useTranslation(['profile', 'common']);
-  const theme = useTheme();
   const [formData, setFormData] = useState<CVData>(() => parseCvMarkdownToData(markdownContent));
   const [activeSection, setActiveSection] = useState<ProfileSectionKey>('personal');
   

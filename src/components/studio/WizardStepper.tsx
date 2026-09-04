@@ -5,11 +5,9 @@ import {
   Typography,
   Chip,
   ButtonBase,
-  IconButton,
   useTheme,
   alpha
 } from '@mui/material';
-import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';

@@ -11,7 +11,6 @@ import {
   DialogActions,
   TextField,
   useTheme,
-  alpha,
 } from '@mui/material';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
@@ -49,7 +48,6 @@ export const StepPreviewMobileEdit: React.FC<StepPreviewMobileEditProps> = ({ pa
   const { t } = useTranslation(['preview', 'common']);
   const liveEdit = useCvLiveEdit();
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   // State for direct manual text edit modal
   const [editingItem, setEditingItem] = useState<ActiveEditItem | null>(null);

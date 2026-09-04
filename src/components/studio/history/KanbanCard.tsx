@@ -39,7 +39,7 @@ import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useTranslation } from 'react-i18next';
-import { KanbanCardProps, GeneratedCvVersion } from '../../../types';
+import { KanbanCardProps } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
 import { MatchScoreBadge } from '../../atoms';

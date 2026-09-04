@@ -61,7 +61,6 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
   const { t } = useTranslation(['preview', 'target', 'common']);
   const liveEdit = useCvLiveEdit();
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   const [pdfMenuAnchor, setPdfMenuAnchor] = useState<null | HTMLElement>(null);
 

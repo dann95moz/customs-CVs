@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icons';
-import { QualityAuditReport, QualityAuditViewProps } from '../../types';
+import { QualityAuditViewProps } from '../../types';
 import { downloadTextFile, buildTimestampedFileName } from '../../utils/fileUtils';
 import { AuditImprovementModal } from './audit/AuditImprovementModal';
 import { AuditSectionCard } from './audit/AuditSectionCard';

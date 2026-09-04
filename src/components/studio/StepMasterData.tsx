@@ -56,7 +56,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
 
   const {
     editMode,
-    setEditMode,
     handleSwitchMode,
     flushGuidedRef,
     manualText,

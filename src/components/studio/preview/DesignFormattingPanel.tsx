@@ -27,11 +27,9 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTranslation } from 'react-i18next';
 import {
-  PaletteId,
   FontFamilyId,
   SpacingDensity,
   PageFormat,
-  ProfilePhotoConfig,
   DesignFormattingPanelProps,
 } from '../../../types';
 import { getAllPalettes } from '../../../constants/palettes';

@@ -24,7 +24,6 @@ const getDesignTokens = (mode: ThemeMode): ThemeOptions => {
   const tokens = isDark ? DARK_THEME_TOKENS : LIGHT_THEME_TOKENS;
   const bodyFont = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
   const displayFont = "'Space Grotesk', 'Inter', sans-serif"; // headings only
-  const dataFont = "'JetBrains Mono', 'IBM Plex Mono', monospace"; // scores, %, counts
   return {
     palette: {
       mode,

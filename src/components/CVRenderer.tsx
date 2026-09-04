@@ -1,4 +1,4 @@
-import { CVData, ThemeId, PaletteId, FontFamilyId, SpacingDensity, CVRendererProps } from '../types';
+import { CVData, SpacingDensity, CVRendererProps } from '../types';
 import { getTemplate, mapDataToSlots } from '../templates';
 import { getPaletteConfig } from '../constants/palettes';
 import { FONT_FAMILY_CSS_MAP } from '../theme/typography';

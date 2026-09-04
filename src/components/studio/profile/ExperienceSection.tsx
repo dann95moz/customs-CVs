@@ -18,7 +18,6 @@ import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import { useTranslation } from 'react-i18next';
 import { ExperienceItem, ExperienceSectionProps } from '../../../types';
 
@@ -214,7 +213,6 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = React.memo(({
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 

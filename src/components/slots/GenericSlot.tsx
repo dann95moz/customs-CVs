@@ -1,5 +1,5 @@
 import React from 'react';
-import { GenericSlotData, GenericSlotProps } from '../../templates/types';
+import { GenericSlotProps } from '../../templates/types';
 import { safeMarkdown } from '../../utils/sanitize';
 import { EditableText } from '../studio/preview/EditableText';
 import { useCvLiveEdit } from '../studio/preview/CvLiveEditContext';

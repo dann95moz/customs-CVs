@@ -1,19 +1,16 @@
 #!/usr/bin/env node
 
-import path from 'path';
-import fs from 'fs';
 import { generatePdfFromMarkdown, generateAllPdfs } from '../core/pdf-generator';
 import { tailorCvWithGemini } from '../core/gemini';
 import { generateQualityAuditReport } from '../core/audit';
 import { ThemeId, PaletteId, FontFamilyId, SpacingDensity } from '../types/cv';
-import { getWorkspaceRoot, getOutputsDir, findLatestCvMarkdown, resolveCvPath } from '../core/workspace';
+import { getWorkspaceRoot, findLatestCvMarkdown, resolveCvPath } from '../core/workspace';
 import { getAllTemplates } from '../templates/registry';
 import { getAllPalettes, CURATED_PALETTES } from '../constants/palettes';
 import { AVAILABLE_AI_MODELS } from '../core/ai-service';
 import { startInteractiveWizard } from './wizard';
 
 const rootDir = getWorkspaceRoot();
-const outputsDir = getOutputsDir(rootDir);
 
 function parseArgs(args: string[]) {
   const flags: Record<string, string | boolean> = {};

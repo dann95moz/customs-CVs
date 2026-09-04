@@ -46,7 +46,6 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
 }) => {
   const { t } = useTranslation(['target', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
   const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
   const lastClickRef = useRef<number>(0);
 

@@ -99,7 +99,6 @@ export const LanguagesSection: React.FC<LanguagesSectionProps> = React.memo(({
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   const levelOptions = useMemo(() => [
     { value: 'Native', label: t('profile:sections.languages.levelNative', 'Nativo / Bilingüe') },

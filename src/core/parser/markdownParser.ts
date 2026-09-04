@@ -8,7 +8,6 @@ import {
   ExperienceItem,
   LanguageItem,
   CEFRLevel,
-  CustomSection,
   CustomSectionPresetType
 } from '../../types/cv';
 import { classifySectionType } from '../../constants/sectionKeywords';

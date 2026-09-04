@@ -28,7 +28,6 @@ import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 import DifferenceRoundedIcon from '@mui/icons-material/DifferenceRounded';
 import { useTranslation } from 'react-i18next';
-import { GeneratedCvVersion, KanbanColumn } from '../../types/cv';
 import { ApplicationsStatsHeader } from './history/ApplicationsStatsHeader';
 import { KanbanBoard } from './history/KanbanBoard';
 import { ArchivedApplicationsView } from './history/ArchivedApplicationsView';
@@ -48,7 +47,6 @@ export const ApplicationsHistoryView: React.FC = () => {
     savedVersions,
     applications,
     kanbanColumns,
-    activeApplications,
     archivedApplications,
     filteredVersions,
     activeView,

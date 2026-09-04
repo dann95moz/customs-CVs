@@ -5,21 +5,17 @@ import {
   Typography,
   Button,
   ButtonGroup,
-  Chip,
   CircularProgress,
-  Tooltip,
   Snackbar,
   useTheme,
   alpha,
 } from '@mui/material';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
-import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import { useTranslation } from 'react-i18next';
 import { safeMarkdown } from '../../../utils/sanitize';
 import { CVData, ThemeId, PaletteId, FontFamilyId } from '../../../types/cv';

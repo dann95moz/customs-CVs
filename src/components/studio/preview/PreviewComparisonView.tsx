@@ -3,7 +3,7 @@ import { Box, Typography, Chip, useTheme, alpha } from '@mui/material';
 import CompareArrowsRoundedIcon from '@mui/icons-material/CompareArrowsRounded';
 import { useTranslation } from 'react-i18next';
 import { CVRenderer } from '../../CVRenderer';
-import { CVData, ThemeId, PaletteId, FontFamilyId, SpacingDensity, PreviewComparisonViewProps } from '../../../types';
+import { PreviewComparisonViewProps } from '../../../types';
 
 export type { PreviewComparisonViewProps };
 

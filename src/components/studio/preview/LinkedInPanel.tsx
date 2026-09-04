@@ -19,7 +19,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import { useTranslation } from 'react-i18next';
 import { CVData } from '../../../types/cv';
-import { LinkedInProfileResult, LinkedInHeadline } from '../../../types/linkedin';
+import { LinkedInHeadline } from '../../../types/linkedin';
 import { AIProviderSettings } from '../../../types/ai';
 import { useLinkedInWorkflow } from '../../../hooks/useLinkedInWorkflow';
 
@@ -42,7 +42,6 @@ export const LinkedInPanel: React.FC<LinkedInPanelProps> = ({
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   const {
     loading,

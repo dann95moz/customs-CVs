@@ -3,8 +3,6 @@ import {
   Box,
   Typography,
   TextField,
-  Card,
-  CardContent,
   Stack,
   Button,
   IconButton,
@@ -152,7 +150,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = React.memo(({
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: { xs: 1.5, sm: 2.5 } }}>

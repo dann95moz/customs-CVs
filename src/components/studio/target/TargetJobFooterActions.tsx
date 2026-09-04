@@ -34,7 +34,6 @@ export const TargetJobFooterActions: React.FC<TargetJobFooterActionsProps> = Rea
 }) => {
   const { t } = useTranslation(['target', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   return (
     <Paper

@@ -1,4 +1,3 @@
-import { extractCandidateName } from '../parser';
 import { restoreOriginalHeader } from './privacy-guard';
 
 export interface ExtractedCvAndGap {

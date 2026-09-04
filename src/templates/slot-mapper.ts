@@ -1,4 +1,4 @@
-import { CVData, SectionType, ContactItem } from '../types/cv';
+import { CVData, ContactItem } from '../types/cv';
 import { 
   CVSlotMap, 
   HeaderSlotData, 

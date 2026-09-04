@@ -11,8 +11,6 @@ import {
   ContactItem,
   ContactType,
   ExperienceItem,
-  SkillCategory,
-  CVSection,
 } from './cv';
 import { ThemeId, PaletteId, FontFamilyId, SpacingDensity, PageFormat, ProfilePhotoConfig } from './theme';
 import { AIProviderId, AIProviderSettings } from './ai';

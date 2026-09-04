@@ -7,7 +7,6 @@ import {
   SummarySlot, 
   SkillsSlot, 
   ExperienceSlot, 
-  EducationSlot, 
   LanguagesSlot, 
   GenericSlot 
 } from '../components/slots';

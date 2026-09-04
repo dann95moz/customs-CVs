@@ -10,7 +10,7 @@ import {
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import FormatPaintRoundedIcon from '@mui/icons-material/FormatPaintRounded';
 import { useTranslation } from 'react-i18next';
-import { ThemeId, PaletteId, TemplatesPanelProps } from '../../../types';
+import { TemplatesPanelProps } from '../../../types';
 import { getAllPalettes } from '../../../constants/palettes';
 import { getAllTemplates } from '../../../templates';
 import { TemplateThumbnailMiniature } from '../TemplateThumbnailMiniature';
