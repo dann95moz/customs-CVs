@@ -7,6 +7,7 @@
   "matched": "Matched",
   "missing": "Mitigated / Gap",
   "downloadReport": "Export Gap Report (.md)",
+  "noKeywords": "No specific keyword gaps identified yet.",
   "lockedNoJob": {
     "title": "No Target Vacancy Entered Yet",
     "desc": "Gap Strategy cross-references your candidate background against specific employer requirements. Please paste or upload a target job posting in the wizard first.",

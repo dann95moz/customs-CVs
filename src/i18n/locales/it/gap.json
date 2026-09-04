@@ -7,6 +7,7 @@
   "matched": "Corrispondenti",
   "missing": "Mitigate / Gap",
   "downloadReport": "Esporta Report (.md)",
+  "noKeywords": "Nessuna lacuna specifica di parole chiave ancora identificata.",
   "lockedNoJob": {
     "title": "Nessuna offerta ancora inserita",
     "desc": "L'analisi dei gap confronta il tuo profilo con i requisiti specifici. Inserisci o carica prima una descrizione di lavoro nell'assistente.",

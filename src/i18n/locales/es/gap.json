@@ -7,6 +7,7 @@
   "matched": "Coincidentes",
   "missing": "Mitigadas / Brecha",
   "downloadReport": "Exportar Reporte de Brechas (.md)",
+  "noKeywords": "Aún no se han identificado brechas de palabras clave.",
   "lockedNoJob": {
     "title": "Aún no se ha ingresado una oferta objetivo",
     "desc": "El análisis de brechas cruza tu perfil con los requisitos específicos del empleador. Pega o sube una oferta laboral en el asistente primero.",

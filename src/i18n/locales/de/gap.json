@@ -7,6 +7,7 @@
   "matched": "Übereinstimmend",
   "missing": "Adressiert / Lücke",
   "downloadReport": "Lückenbericht exportieren (.md)",
+  "noKeywords": "Noch keine spezifischen Keyword-Lücken identifiziert.",
   "lockedNoJob": {
     "title": "Noch keine Ziel-Stelle erfasst",
     "desc": "Die Lückenanalyse gleicht Ihr Profil mit den spezifischen Anforderungen ab. Bitte fügen Sie zuerst eine Stellenanzeige im Assistenten ein.",
