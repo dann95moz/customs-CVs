@@ -11,7 +11,7 @@ import {
   DragOverlay,
   closestCorners,
   KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
@@ -48,17 +48,17 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   const theme = useTheme();
   const [activeApp, setActiveApp] = useState<ApplicationItem | null>(null);
 
-  // Configure sensors with activation constraints (8px drag threshold to prevent conflicting with clicks)
+  // Configure sensors: MouseSensor for desktop mouse, TouchSensor with long-press for mobile/touch devices
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: {
         distance: 8,
       },
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 200,
-        tolerance: 6,
+        delay: 180,
+        tolerance: 8,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -156,6 +156,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
             <KanbanColumnComponent
               key={column.id}
               column={column}
+              allColumns={columns}
               applications={colApps}
               savedVersions={savedVersions}
               onMoveApplication={onMoveApplication}
@@ -205,7 +206,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       {/* Drag Overlay with active card preview */}
       <DragOverlay dropAnimation={{ duration: 200, easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)' }}>
         {activeApp ? (
-          <Box sx={{ width: '310px', transform: 'rotate(2.5deg)', pointerEvents: 'none' }}>
+          <Box sx={{ width: { xs: '260px', sm: '290px', md: '310px' }, transform: 'rotate(2.5deg)', pointerEvents: 'none' }}>
             <KanbanCard
               application={activeApp}
               attachedVersion={activeAttachedVersion}

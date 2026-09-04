@@ -28,6 +28,7 @@ import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
   column,
+  allColumns,
   applications,
   savedVersions,
   onMoveApplication,
@@ -178,10 +179,12 @@ export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
               <KanbanCard
                 key={app.id}
                 application={app}
+                allColumns={allColumns}
                 attachedVersion={attachedVersion}
                 allMatchingVersions={allMatchingVersions.length > 0 ? allMatchingVersions : (attachedVersion ? [attachedVersion] : [])}
                 onLoadInStudio={onLoadVersionInStudio}
                 onSetAttachedVersion={onSetAttachedVersion}
+                onMoveToColumn={(targetColId) => onMoveApplication(app.id, targetColId)}
                 onArchive={onArchiveApplication}
                 onDelete={onDeleteApplication}
                 onDownloadPdf={onDownloadPdf}
