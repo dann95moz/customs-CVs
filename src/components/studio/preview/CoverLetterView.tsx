@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import {
   Box,
   Paper,
@@ -23,11 +23,9 @@ import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
 import { useTranslation } from 'react-i18next';
 import { safeMarkdown } from '../../../utils/sanitize';
 import { CVData, ThemeId, PaletteId, FontFamilyId } from '../../../types/cv';
-import { useResumeStore } from '../../../store';
-import { generateCoverLetter } from '../../../core/ai-service';
+import { useCoverLetterWorkflow } from '../../../hooks/useCoverLetterWorkflow';
 import { getPaletteConfig } from '../../../constants/palettes';
 import { FONT_FAMILY_CSS_MAP } from '../../../theme/typography';
-import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
 
 export interface CoverLetterViewProps {
@@ -55,60 +53,24 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
   const muiTheme = useTheme();
   const isDark = muiTheme.palette.mode === 'dark';
 
-  const providerSettings = useResumeStore((s) => s.providerSettings);
-  const targetJob = useResumeStore((s) => s.targetJob);
-  const coverLetterMarkdown = useResumeStore((s) => s.coverLetterMarkdown);
-  const setCoverLetterMarkdown = useResumeStore((s) => s.setCoverLetterMarkdown);
-  const coverLetterTone = useResumeStore((s) => s.coverLetterTone);
-  const setCoverLetterTone = useResumeStore((s) => s.setCoverLetterTone);
-
-  const [loading, setLoading] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [snackbar, setSnackbar] = useState<string | null>(null);
-  const { copied, copy } = useCopyToClipboard();
+  const {
+    coverLetterMarkdown,
+    setCoverLetterMarkdown,
+    coverLetterTone,
+    loading,
+    isEditing,
+    setIsEditing,
+    snackbar,
+    copied,
+    handleGenerateLetter,
+    handleToneChange,
+    handleCopyMarkdown,
+    handleCloseSnackbar,
+  } = useCoverLetterWorkflow({ cvData, companyName, targetRole });
 
   const palette = getPaletteConfig(paletteId, customColor);
   const primaryColor = palette.primaryColor;
   const fontCss = FONT_FAMILY_CSS_MAP[fontFamily] || FONT_FAMILY_CSS_MAP.inter;
-
-  // Generate initial cover letter if empty
-  useEffect(() => {
-    if (!coverLetterMarkdown || coverLetterMarkdown.trim().length === 0) {
-      handleGenerateLetter(coverLetterTone);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companyName, targetRole]);
-
-  const handleGenerateLetter = async (tone: typeof coverLetterTone) => {
-    setLoading(true);
-    try {
-      const generated = await generateCoverLetter(
-        cvData,
-        targetJob,
-        companyName,
-        targetRole,
-        tone,
-        providerSettings
-      );
-      setCoverLetterMarkdown(generated);
-      setSnackbar(t('preview:coverLetter.generatedSuccess', 'Cover letter generated successfully!'));
-    } catch (err) {
-      console.error('Failed to generate cover letter:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleToneChange = (tone: typeof coverLetterTone) => {
-    setCoverLetterTone(tone);
-    handleGenerateLetter(tone);
-  };
-
-  const handleCopyMarkdown = async () => {
-    if (!coverLetterMarkdown) return;
-    await copy(coverLetterMarkdown);
-    setSnackbar(t('common:actions.copied', 'Copied to clipboard!'));
-  };
 
   const formattedDate = formatLocalizedDate(new Date().toISOString(), i18n.language || 'en', {
     month: 'long',
@@ -329,7 +291,7 @@ export const CoverLetterView: React.FC<CoverLetterViewProps> = ({
       <Snackbar
         open={Boolean(snackbar)}
         autoHideDuration={2500}
-        onClose={() => setSnackbar(null)}
+        onClose={handleCloseSnackbar}
         message={snackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       />
