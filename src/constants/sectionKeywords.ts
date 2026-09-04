@@ -83,6 +83,18 @@ export const SECTION_KEYWORDS: Record<Exclude<SectionType, 'generic'>, string[]>
   ]
 };
 
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+const PERSONAL_KEYWORDS = [
+  'contact', 'contact info', 'contact information', 'personal info', 'personal information', 'personal details',
+  'contacto', 'contactos', 'datos personales', 'informacion de contacto', 'informacion personal',
+  'kontaktdaten', 'personliche daten', 'kontakt',
+  'coordonnees', 'informations personnelles',
+  'dati di contatto', 'informazioni personali', 'contatto'
+];
+
 /**
  * Classifies a raw section header into a standardized SectionType across all 5 locales.
  */
@@ -92,7 +104,18 @@ export function classifySectionType(rawTitle: string): SectionType {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // remove diacritics for uniform matching
     .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
+
+  if (!normalized) return 'generic';
+
+  // Guard: Personal and contact info sections should never be classified as education or others
+  for (const pKw of PERSONAL_KEYWORDS) {
+    const pRegex = new RegExp(`(?:^|\\s)${escapeRegex(pKw)}(?:$|\\s)`);
+    if (pRegex.test(normalized)) {
+      return 'generic';
+    }
+  }
 
   // Check categories in priority order
   const categories: Array<Exclude<SectionType, 'generic'>> = [
@@ -111,9 +134,11 @@ export function classifySectionType(rawTitle: string): SectionType {
         .toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, ' ')
         .trim();
 
-      if (normalized.includes(normalizedKw)) {
+      const regex = new RegExp(`(?:^|\\s)${escapeRegex(normalizedKw)}(?:$|\\s)`);
+      if (regex.test(normalized)) {
         return cat;
       }
     }
@@ -121,3 +146,4 @@ export function classifySectionType(rawTitle: string): SectionType {
 
   return 'generic';
 }
+
