@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Paper,
@@ -17,7 +17,7 @@ import {
   Snackbar,
   Alert,
   useTheme,
-  alpha
+  alpha,
 } from '@mui/material';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
@@ -33,15 +33,11 @@ import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBullete
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import { extractCandidateName } from '../../core/parser';
-import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
-import { downloadTextFile, buildTimestampedFileName } from '../../utils/fileUtils';
 import { StepMasterDataProps } from '../../types';
 import { StudioSkeleton } from './StudioSkeleton';
-import { PdfImportResult } from '../../core/pdf-extractor';
 import { ConfirmDeleteDialog } from './common/ConfirmDeleteDialog';
-
+import { useMasterDataWorkflow } from '../../hooks/useMasterDataWorkflow';
 
 const GuidedProfileForm = React.lazy(() =>
   import('./GuidedProfileForm').then((m) => ({ default: m.GuidedProfileForm }))
@@ -53,138 +49,29 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   content,
   onChange,
   onLoadSample,
-  onNextStep
+  onNextStep,
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
-
-  const [editMode, setEditMode] = React.useState<'guided' | 'markdown'>('guided');
-  const [manualText, setManualText] = useState(content);
-  const manualTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  React.useEffect(() => {
-    setManualText(content);
-  }, [content]);
-
-  React.useEffect(() => {
-    return () => {
-      if (manualTimerRef.current) {
-        clearTimeout(manualTimerRef.current);
-        manualTimerRef.current = null;
-      }
-    };
-  }, []);
-
-  const flushManual = React.useCallback(() => {
-    if (manualTimerRef.current) {
-      clearTimeout(manualTimerRef.current);
-      manualTimerRef.current = null;
-      onChange(manualText);
-    }
-  }, [manualText, onChange]);
-
-  const handleManualTextChange = (val: string) => {
-    setManualText(val);
-    if (manualTimerRef.current) {
-      clearTimeout(manualTimerRef.current);
-    }
-    manualTimerRef.current = setTimeout(() => {
-      manualTimerRef.current = null;
-      onChange(val);
-    }, 250);
-  };
-
-  const handleManualBlur = () => {
-    if (manualTimerRef.current) {
-      clearTimeout(manualTimerRef.current);
-      manualTimerRef.current = null;
-    }
-    if (manualText !== content) {
-      onChange(manualText);
-    }
-  };
-
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [showClearConfirmDialog, setShowClearConfirmDialog] = useState(false);
-  const [pendingFile, setPendingFile] = useState<{
-    content: string;
-    fileName: string;
-    isPdf?: boolean;
-    details?: PdfImportResult;
-  } | null>(null);
-
-  const [notification, setNotification] = useState<{
-    open: boolean;
-    message: string;
-    severity: 'success' | 'info' | 'error';
-    usedAI?: boolean;
-  }>({
-    open: false,
-    message: '',
-    severity: 'success'
-  });
-
-  const hasData = Boolean(content && content.trim().length > 20);
-
-  const handleApplyImportedData = (importedText: string, fileName: string, isPdf?: boolean, details?: PdfImportResult) => {
-    onChange(importedText);
-    const candidateName = extractCandidateName(importedText, fileName.replace(/\.pdf$/i, ''));
-
-    setNotification({
-      open: true,
-      message: t('profile:status.pdfSuccess', {
-        fileName,
-        defaultValue: `Successfully imported career profile for ${candidateName} from ${fileName}`
-      }),
-      severity: 'success',
-      usedAI: details?.usedAI
-    });
-  };
-
-  const handleFileLoaded = (
-    loadedContent: string,
-    fileName: string,
-    isPdf?: boolean,
-    details?: PdfImportResult
-  ) => {
-    if (hasData) {
-      setPendingFile({ content: loadedContent, fileName, isPdf, details });
-      setShowConfirmDialog(true);
-    } else {
-      handleApplyImportedData(loadedContent, fileName, isPdf, details);
-    }
-  };
-
-  const handleConfirmReplace = () => {
-    if (pendingFile) {
-      handleApplyImportedData(
-        pendingFile.content,
-        pendingFile.fileName,
-        pendingFile.isPdf,
-        pendingFile.details
-      );
-      setPendingFile(null);
-    }
-    setShowConfirmDialog(false);
-  };
-
-  const handleCancelReplace = () => {
-    setPendingFile(null);
-    setShowConfirmDialog(false);
-  };
-
-  const handleConfirmClear = () => {
-    onChange('');
-    setShowClearConfirmDialog(false);
-    setNotification({
-      open: true,
-      message: t('profile:status.clearedSuccess', 'Career profile cleared. You can start from a blank slate.'),
-      severity: 'info'
-    });
-  };
 
   const {
+    editMode,
+    setEditMode,
+    manualText,
+    handleManualTextChange,
+    handleManualBlur,
+    hasData,
+    showConfirmDialog,
+    showClearConfirmDialog,
+    setShowClearConfirmDialog,
+    pendingFile,
+    notification,
+    handleCloseNotification,
+    handleConfirmReplace,
+    handleCancelReplace,
+    handleConfirmClear,
+    handleDownload,
+    handleContinue,
     fileInputRef,
     isProcessing,
     isDragging,
@@ -192,24 +79,12 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
     handleDrop,
     handleDragOver,
     handleDragLeave,
-    openFileDialog
-  } = useFileUploader({
-    onFileLoaded: handleFileLoaded,
-    onError: (err) => {
-      setNotification({
-        open: true,
-        message: err.message || 'Error processing uploaded file',
-        severity: 'error'
-      });
-    }
+    openFileDialog,
+  } = useMasterDataWorkflow({
+    content,
+    onChange,
+    onNextStep,
   });
-
-  const handleDownload = () => {
-    const candidateName = extractCandidateName(content, '');
-    const baseName = candidateName ? `master-profile_${candidateName.replace(/\s+/g, '_')}` : 'master-profile';
-    const fileName = buildTimestampedFileName(baseName, 'md');
-    downloadTextFile(content, fileName);
-  };
 
   return (
     <Box
@@ -225,7 +100,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         position: 'relative',
         boxSizing: 'border-box',
       }}
-
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -335,7 +209,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               flexShrink: 0,
             }}
           >
-
             <Button
               variant="contained"
               color="primary"
@@ -468,8 +341,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               </React.Suspense>
             </Box>
           ) : (
-
-
             <Box
               sx={{
                 flex: 1,
@@ -521,7 +392,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             boxShadow: 2,
           }}
         >
-
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap', justifyContent: { xs: 'center', sm: 'flex-start' } }}>
             {hasData ? (
               <Chip
@@ -546,7 +416,6 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             {/* Contextual Backup Export only when there is actual profile data */}
             {hasData && (
               <Tooltip title={t('profile:actions.exportBackupTip', 'Download your career profile as Markdown (.md)')}>
-
                 <Button
                   size="small"
                   variant="text"
@@ -557,7 +426,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                     fontSize: '0.75rem',
                     color: 'text.secondary',
                     textTransform: 'none',
-                    '&:hover': { color: 'primary.main', bgcolor: alpha(theme.palette.primary.main, 0.06) }
+                    '&:hover': { color: 'primary.main', bgcolor: alpha(theme.palette.primary.main, 0.06) },
                   }}
                 >
                   {t('profile:actions.exportBackup', 'Export Backup (.md)')}
@@ -570,10 +439,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             variant="contained"
             color="primary"
             endIcon={<ArrowForwardRoundedIcon />}
-            onClick={() => {
-              flushManual();
-              onNextStep();
-            }}
+            onClick={handleContinue}
             sx={{
               fontWeight: 700,
               px: 3,
@@ -585,10 +451,9 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           </Button>
         </Paper>
 
-        {/* Dedicated End-of-Scroll Safe Spacer (Ensures card ending is 100% visible on mobile) */}
+        {/* Dedicated End-of-Scroll Safe Spacer */}
         <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 40px)', sm: 20 }, flexShrink: 0 }} />
       </Box>
-
 
       {/* Confirmation Dialog Before Overwriting Existing Profile */}
       <Dialog
@@ -655,10 +520,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
       <ConfirmDeleteDialog
         open={showClearConfirmDialog}
         onCancel={() => setShowClearConfirmDialog(false)}
-        onConfirm={() => {
-          setShowClearConfirmDialog(false);
-          handleConfirmClear();
-        }}
+        onConfirm={handleConfirmClear}
         title={t('profile:dialog.confirmClearTitle', 'Start from scratch?')}
         message={t(
           'profile:dialog.confirmClearDesc',
@@ -672,18 +534,17 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
       <Snackbar
         open={notification.open}
         autoHideDuration={6000}
-        onClose={() => setNotification((prev) => ({ ...prev, open: false }))}
+        onClose={handleCloseNotification}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert
           severity={notification.severity}
-          onClose={() => setNotification((prev) => ({ ...prev, open: false }))}
+          onClose={handleCloseNotification}
           sx={{ fontWeight: 600 }}
         >
           {notification.message}
         </Alert>
       </Snackbar>
-
     </Box>
   );
 };
