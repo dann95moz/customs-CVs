@@ -36,20 +36,24 @@ import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
 import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
+import DriveFileMoveRoundedIcon from '@mui/icons-material/DriveFileMoveRounded';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useTranslation } from 'react-i18next';
 import { KanbanCardProps } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
+import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
 import { MatchScoreBadge } from '../../atoms';
 
 export const KanbanCard: React.FC<KanbanCardProps> = ({
   application,
+  allColumns,
   attachedVersion,
   allMatchingVersions,
   onLoadInStudio,
   onSetAttachedVersion,
+  onMoveToColumn,
   onArchive,
   onDelete,
   onDownloadPdf,
@@ -62,6 +66,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
 
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isMoveDialogOpen, setIsMoveDialogOpen] = useState(false);
 
   const {
     attributes,
@@ -134,14 +139,25 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  color: 'text.disabled',
+                  justifyContent: 'center',
+                  color: 'text.secondary',
                   cursor: isDraggingOverlay ? 'grabbing' : 'grab',
-                  p: 0.25,
-                  borderRadius: 0.5,
-                  '&:hover': { color: 'text.primary', bgcolor: alpha(theme.palette.text.primary, 0.05) },
+                  touchAction: 'none',
+                  userSelect: 'none',
+                  WebkitUserSelect: 'none',
+                  p: { xs: 0.75, sm: 0.35 },
+                  minWidth: { xs: 34, sm: 24 },
+                  minHeight: { xs: 34, sm: 24 },
+                  borderRadius: 1,
+                  transition: 'background-color 0.15s ease, color 0.15s ease',
+                  '&:hover, &:active': {
+                    color: 'primary.main',
+                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                  },
                 }}
+                aria-label={t('history:card.dragHandle', 'Drag card to reorder or move between stages')}
               >
-                <DragIndicatorRoundedIcon sx={{ fontSize: 18 }} />
+                <DragIndicatorRoundedIcon sx={{ fontSize: { xs: 20, sm: 18 } }} />
               </Box>
 
               {/* Company Logo Icon */}
@@ -366,6 +382,21 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
           <ListItemText primary={t('history:card.openInStudio', 'View in Studio')} />
         </MenuItem>
 
+        {allColumns && allColumns.length > 1 && onMoveToColumn && (
+          <MenuItem
+            onClick={(e) => {
+              handleCloseMenu(e);
+              setIsMoveDialogOpen(true);
+            }}
+            sx={{ fontSize: '0.8rem' }}
+          >
+            <ListItemIcon>
+              <DriveFileMoveRoundedIcon fontSize="small" color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('history:card.moveToStage', 'Move to Stage...')} />
+          </MenuItem>
+        )}
+
         <MenuItem
           onClick={(e) => {
             handleCloseMenu(e);
@@ -392,6 +423,82 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
           <ListItemText primary={t('history:card.delete', 'Delete Card')} />
         </MenuItem>
       </Menu>
+
+      {/* Move Stage Dialog */}
+      <Dialog
+        open={isMoveDialogOpen}
+        onClose={() => setIsMoveDialogOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle sx={{ fontWeight: 800, pb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+          <DriveFileMoveRoundedIcon color="primary" />
+          {t('history:card.moveToStageTitle', 'Move Application')}
+        </DialogTitle>
+        <DialogContent sx={{ pb: 1 }}>
+          <DialogContentText sx={{ fontSize: '0.84rem', color: 'text.secondary', mb: 2 }}>
+            {application.companyName} • {application.targetRole}
+          </DialogContentText>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            {allColumns?.map((col) => {
+              const isCurrent = col.id === application.columnId;
+              const colColor = col.color || theme.palette.primary.main;
+              return (
+                <Button
+                  key={col.id}
+                  variant={isCurrent ? 'contained' : 'outlined'}
+                  color={isCurrent ? 'primary' : 'inherit'}
+                  disabled={isCurrent}
+                  onClick={() => {
+                    setIsMoveDialogOpen(false);
+                    onMoveToColumn?.(col.id);
+                  }}
+                  startIcon={
+                    <Box
+                      sx={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: '50%',
+                        bgcolor: colColor,
+                        flexShrink: 0,
+                      }}
+                    />
+                  }
+                  sx={{
+                    justifyContent: 'flex-start',
+                    py: 1,
+                    px: 1.5,
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    textTransform: 'none',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                    <span>{getLocalizedColumnTitle(col, t)}</span>
+                    {isCurrent && (
+                      <Typography variant="caption" sx={{ opacity: 0.8, fontSize: '0.7rem' }}>
+                        {t('history:card.currentStage', 'Current Stage')}
+                      </Typography>
+                    )}
+                  </Box>
+                </Button>
+              );
+            })}
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ px: 2, pb: 1.5 }}>
+          <Button
+            onClick={() => setIsMoveDialogOpen(false)}
+            color="inherit"
+            variant="text"
+            size="small"
+            sx={{ fontWeight: 700 }}
+          >
+            {t('common:actions.cancel', 'Cancel')}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Delete Card Confirmation Dialog */}
       <Dialog
