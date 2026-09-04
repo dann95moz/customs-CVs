@@ -36,9 +36,12 @@ export function extractCandidateInitials(name?: string): string {
  * Extracts candidate name from master-data.md or fallback
  */
 export function extractCandidateName(masterDataText: string, fallback: string = ''): string {
-  const match = masterDataText.match(/(?:Nombre Completo|Full Name|Candidate Name):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+  const match = masterDataText.match(
+    /(?:^|\n)\s*[-*•]?\s*\*{0,2}(?:Nombre Completo|Full Name|Candidate Name|Nombre)(?:\s*\/[^*:]*)?(?::\*{0,2}|\*{0,2}:)\s*(.+)$/im
+  );
   if (match) {
-    const raw = match[1].trim();
+    let raw = match[1].trim().replace(/^\s*\\?\[\s*|\s*\\?\]\s*$/g, '');
+    raw = raw.replace(/\\([\[\]+*`_~\\-])/g, '$1').replace(/^\\+|\\+$/g, '').trim();
     if (
       !raw.toLowerCase().includes('tu nombre') && 
       !raw.toLowerCase().includes('nombre y apellido') &&
@@ -123,9 +126,12 @@ export function extractTargetRole(targetJobText: string, masterDataText: string 
   // 3. Check explicit Primary Professional Title field from master-data.md
   let masterPrimaryTitle = '';
   if (masterDataText) {
-    const primaryTitleMatch = masterDataText.match(/(?:Primary Professional Title|Professional Title|Cargo Principal|Título Profesional):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+    const primaryTitleMatch = masterDataText.match(
+      /(?:^|\n)\s*[-*•]?\s*\*{0,2}(?:Primary Professional Title|Professional Title|Cargo Principal|Título Profesional|Target Role|Title|Cargo)(?:\s*\/[^*:]*)?(?::\*{0,2}|\*{0,2}:)\s*(.+)$/im
+    );
     if (primaryTitleMatch) {
-      const raw = primaryTitleMatch[1].trim();
+      let raw = primaryTitleMatch[1].trim().replace(/^\s*\\?\[\s*|\s*\\?\]\s*$/g, '');
+      raw = raw.replace(/\\([\[\]+*`_~\\-])/g, '$1').replace(/^\\+|\\+$/g, '').trim();
       if (
         raw &&
         !raw.toLowerCase().includes('primary professional title') &&

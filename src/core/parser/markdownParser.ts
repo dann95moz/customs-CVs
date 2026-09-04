@@ -729,10 +729,18 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
   // If no H1 line was found, rewind lineIdx to 0 so all lines and sections are parsed
   if (!foundH1) {
     lineIdx = 0;
-    const nameMatch = rawMarkdown.match(/(?:Nombre Completo|Full Name|Candidate Name):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+    const nameMatch = rawMarkdown.match(
+      /(?:^|\n)\s*[-*•]?\s*\*{0,2}(?:Nombre Completo|Full Name|Candidate Name|Nombre)(?:\s*\/[^*:]*)?(?::\*{0,2}|\*{0,2}:)\s*(.+)$/im
+    );
     if (nameMatch) {
-      const clean = cleanMarkdownFormatting(nameMatch[1]);
-      if (!clean.toLowerCase().includes('candidate') && !clean.toLowerCase().includes('tu nombre')) {
+      let rawVal = nameMatch[1].trim().replace(/^\s*\\?\[\s*|\s*\\?\]\s*$/g, '');
+      const clean = cleanMarkdownFormatting(rawVal);
+      if (
+        clean &&
+        !clean.toLowerCase().includes('candidate') &&
+        !clean.toLowerCase().includes('tu nombre') &&
+        !clean.toLowerCase().includes('nombre y apellido')
+      ) {
         name = clean;
       }
     }
@@ -766,10 +774,12 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
     if (!title && !line.includes('@') && !line.includes('http') && !line.includes('linkedin.com') && !line.includes('github.com')) {
       const cleanCandidate = cleanMarkdownFormatting(line);
       const isContactPattern = /(?:\+?\d{1,3}[\s.-]?)?\(?\d{2,4}\)?[\s.-]?\d{3,4}/.test(line);
+      const isHtmlOrBlank = /^&[a-z0-9#]+;$/i.test(cleanCandidate) || /^<[^>]+>$/i.test(cleanCandidate) || !/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(cleanCandidate);
       if (
         cleanCandidate &&
         cleanCandidate !== name &&
         !isContactPattern &&
+        !isHtmlOrBlank &&
         cleanCandidate.length <= 100 &&
         !cleanCandidate.toLowerCase().includes('dossier') &&
         !cleanCandidate.toLowerCase().includes('curriculum') &&
@@ -830,31 +840,51 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
   const fullTextToScan = [headerContactText.join('\n'), rawMarkdown].join('\n');
   const contacts = extractContactsFromBlock(fullTextToScan);
 
-
-
-  // If title wasn't found in header, inspect personal info section
-  if (!title) {
-    const titleMatch = rawMarkdown.match(/(?:Primary Professional Title|Target Role|Target Position|Title|Cargo|Headline|Puesto):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
-    if (titleMatch) {
-      const clean = cleanMarkdownFormatting(titleMatch[1]);
-      if (!clean.toLowerCase().includes('specialization') && !clean.toLowerCase().includes('primary') && !clean.toLowerCase().includes('target role')) {
-        title = clean;
-      }
+  // Check for explicit title / role declaration in personal info or entire document (takes priority over loose headers)
+  const explicitTitleMatch = rawMarkdown.match(
+    /(?:^|\n)\s*[-*•]?\s*\*{0,2}(?:Primary Professional Title|Professional Title|Target Role|Target Position|Job Title|Title|Cargo|Headline|Puesto|Rol)(?:\s*\/[^*:]*)?(?::\*{0,2}|\*{0,2}:)\s*(.+)$/im
+  );
+  if (explicitTitleMatch) {
+    let rawVal = explicitTitleMatch[1].trim().replace(/^\s*\\?\[\s*|\s*\\?\]\s*$/g, '');
+    const clean = cleanMarkdownFormatting(rawVal);
+    if (
+      clean &&
+      !clean.toLowerCase().includes('specialization') &&
+      !clean.toLowerCase().includes('primary professional title') &&
+      !clean.toLowerCase().includes('target role') &&
+      clean !== 'Candidate'
+    ) {
+      title = clean;
     }
   }
 
   // Extract optional European personal metadata
   let nationality: string | undefined;
-  const natMatch = rawMarkdown.match(/(?:Nationality|Nacionalidad|Nationalität|Nationalité|Nazionalità):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
-  if (natMatch) nationality = cleanMarkdownFormatting(natMatch[1]);
+  const natMatch = rawMarkdown.match(
+    /(?:^|\n)\s*[-*•]?\s*\*{0,2}(?:Nationality|Nacionalidad|Nationalität|Nationalité|Nazionalità)(?:\s*\/[^*:]*)?(?::\*{0,2}|\*{0,2}:)\s*(.+)$/im
+  );
+  if (natMatch) {
+    let rawVal = natMatch[1].trim().replace(/^\s*\\?\[\s*|\s*\\?\]\s*$/g, '');
+    nationality = cleanMarkdownFormatting(rawVal);
+  }
 
   let dateOfBirth: string | undefined;
-  const dobMatch = rawMarkdown.match(/(?:Date of Birth|Fecha de Nacimiento|Geburtsdatum|Date de naissance|Data di nascita|DOB):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
-  if (dobMatch) dateOfBirth = cleanMarkdownFormatting(dobMatch[1]);
+  const dobMatch = rawMarkdown.match(
+    /(?:^|\n)\s*[-*•]?\s*\*{0,2}(?:Date of Birth|Fecha de Nacimiento|Geburtsdatum|Date de naissance|Data di nascita|DOB)(?:\s*\/[^*:]*)?(?::\*{0,2}|\*{0,2}:)\s*(.+)$/im
+  );
+  if (dobMatch) {
+    let rawVal = dobMatch[1].trim().replace(/^\s*\\?\[\s*|\s*\\?\]\s*$/g, '');
+    dateOfBirth = cleanMarkdownFormatting(rawVal);
+  }
 
   let drivingLicense: string | undefined;
-  const dlMatch = rawMarkdown.match(/(?:Driving License|Driving Licence|Permiso de Conducir|Führerschein|Permis de conduire|Patente de guida):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
-  if (dlMatch) drivingLicense = cleanMarkdownFormatting(dlMatch[1]);
+  const dlMatch = rawMarkdown.match(
+    /(?:^|\n)\s*[-*•]?\s*\*{0,2}(?:Driving License|Driving Licence|Permiso de Conducir|Führerschein|Permis de conduire|Patente de guida)(?:\s*\/[^*:]*)?(?::\*{0,2}|\*{0,2}:)\s*(.+)$/im
+  );
+  if (dlMatch) {
+    let rawVal = dlMatch[1].trim().replace(/^\s*\\?\[\s*|\s*\\?\]\s*$/g, '');
+    drivingLicense = cleanMarkdownFormatting(rawVal);
+  }
 
   // Populate structured helper properties
   const cvData: CVData = {
