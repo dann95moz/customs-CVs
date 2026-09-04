@@ -42,6 +42,7 @@ export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
   onDeleteColumn,
   onArchiveColumn,
   onQuickAdd,
+  onSelectLanguage,
 }) => {
   const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
@@ -189,6 +190,7 @@ export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
                 onDelete={onDeleteApplication}
                 onDownloadPdf={onDownloadPdf}
                 isDownloadingPdf={isDownloadingPdfId === attachedVersion?.id}
+                onSelectLanguage={onSelectLanguage}
               />
             );
           })}

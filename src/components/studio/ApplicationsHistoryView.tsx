@@ -104,6 +104,7 @@ export const ApplicationsHistoryView: React.FC = () => {
     handleUnarchiveApplication,
     handleArchiveColumn,
     handleSetAttachedVersion,
+    handleSetApplicationLanguage,
     handleDeleteColumn,
   } = useApplicationsHistory();
 
@@ -275,6 +276,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                 isDownloadingPdfId={downloadingPdfId}
                 onManageStages={(col) => handleOpenEditColumn(col)}
                 onQuickAddApplication={handleOpenTrackModal}
+                onSelectLanguage={handleSetApplicationLanguage}
               />
             )}
           </>
@@ -406,6 +408,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                 onDeleteColumn={handleDeleteColumn}
                 onArchiveColumn={handleArchiveColumn}
                 onQuickAddApplication={handleOpenTrackModal}
+                onSelectLanguage={handleSetApplicationLanguage}
               />
             )}
           </>

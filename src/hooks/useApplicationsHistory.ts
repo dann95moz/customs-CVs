@@ -18,6 +18,7 @@ export function useApplicationsHistory() {
   const handleUnarchiveApplication = useResumeStore((s) => s.handleUnarchiveApplication);
   const handleArchiveColumn = useResumeStore((s) => s.handleArchiveColumn);
   const handleSetAttachedVersion = useResumeStore((s) => s.handleSetAttachedVersion);
+  const handleSetApplicationLanguage = useResumeStore((s) => s.handleSetApplicationLanguage);
   const handleAddColumn = useResumeStore((s) => s.handleAddColumn);
   const handleUpdateColumn = useResumeStore((s) => s.handleUpdateColumn);
   const handleDeleteColumn = useResumeStore((s) => s.handleDeleteColumn);
@@ -135,11 +136,11 @@ export function useApplicationsHistory() {
     downloadTextFile(v.cvMarkdown, fileName);
   }, []);
 
-  const handleDownloadPdf = useCallback(async (v: GeneratedCvVersion) => {
+  const handleDownloadPdf = useCallback(async (v: GeneratedCvVersion, language?: string) => {
     setDownloadingPdfId(v.id);
     try {
       const { generateVersionDirectPdf } = await import('../core/pdfGenerator');
-      await generateVersionDirectPdf(v);
+      await generateVersionDirectPdf(v, { language });
     } catch (error) {
       console.error('Failed to generate version PDF:', error);
     } finally {
@@ -270,6 +271,7 @@ export function useApplicationsHistory() {
     handleUnarchiveApplication,
     handleArchiveColumn,
     handleSetAttachedVersion,
+    handleSetApplicationLanguage,
     handleDeleteColumn,
   };
 }

@@ -32,6 +32,9 @@ import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded
 import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
 import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
+import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import { useTranslation } from 'react-i18next';
 import { ApplicationGridCardProps } from '../../../types';
 import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
@@ -51,13 +54,21 @@ export const ApplicationGridCard: React.FC<ApplicationGridCardProps> = React.mem
   onDownloadPdf,
   isDownloadingPdf = false,
   onManageStages,
+  onSelectLanguage,
 }) => {
   const { t, i18n } = useTranslation(['history', 'common']);
   const theme = useTheme();
 
   const [statusMenuAnchor, setStatusMenuAnchor] = useState<null | HTMLElement>(null);
   const [moreMenuAnchor, setMoreMenuAnchor] = useState<null | HTMLElement>(null);
+  const [langMenuAnchor, setLangMenuAnchor] = useState<null | HTMLElement>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  // Language Variant configuration
+  const baseLang = attachedVersion?.baseLanguage || 'es';
+  const currentLang = application.selectedLanguage || attachedVersion?.activeLanguage || baseLang;
+  const currentVariant = attachedVersion?.translations?.[currentLang];
+  const isLanguageOutdated = Boolean(currentLang !== baseLang && currentVariant?.isOutdated);
 
   // Find current column
   const currentColumn = allColumns.find((c) => c.id === application.columnId);
@@ -205,13 +216,123 @@ export const ApplicationGridCard: React.FC<ApplicationGridCardProps> = React.mem
                 sx={{ fontSize: '0.68rem', height: 22 }}
               />
             ) : attachedVersion ? (
-              <Chip
-                label={`v • ${attachedVersion.theme || 'modern'}`}
-                size="small"
-                variant="outlined"
-                color="primary"
-                sx={{ fontSize: '0.68rem', height: 22, fontWeight: 600 }}
-              />
+              <>
+                <Tooltip title={t('history:language.selectTooltip', 'Cambiar idioma del CV para esta postulación')}>
+                  <Chip
+                    icon={<LanguageRoundedIcon sx={{ fontSize: '13px !important' }} />}
+                    label={`${currentLang.toUpperCase()}${isLanguageOutdated ? ' ⚠️' : ''}`}
+                    size="small"
+                    variant="outlined"
+                    color={isLanguageOutdated ? 'warning' : 'primary'}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLangMenuAnchor(e.currentTarget);
+                    }}
+                    sx={{
+                      fontSize: '0.68rem',
+                      height: 22,
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      '&:hover': {
+                        bgcolor: alpha(isLanguageOutdated ? theme.palette.warning.main : theme.palette.primary.main, 0.08),
+                      },
+                    }}
+                  />
+                </Tooltip>
+
+                <Menu
+                  anchorEl={langMenuAnchor}
+                  open={Boolean(langMenuAnchor)}
+                  onClose={() => setLangMenuAnchor(null)}
+                  slotProps={{ paper: { sx: { minWidth: 190 } } }}
+                >
+                  {/* Base Language Option */}
+                  <MenuItem
+                    selected={currentLang === baseLang}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLangMenuAnchor(null);
+                      onSelectLanguage?.(application.id, baseLang);
+                    }}
+                  >
+                    <ListItemIcon>
+                      {currentLang === baseLang ? (
+                        <CheckRoundedIcon fontSize="small" color="primary" />
+                      ) : (
+                        <Box sx={{ width: 20 }} />
+                      )}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={
+                        <Typography sx={{ fontSize: '0.78rem', fontWeight: 600 }}>
+                          {`${baseLang.toUpperCase()} (${t('history:language.baseOriginal', 'Original')})`}
+                        </Typography>
+                      }
+                    />
+                  </MenuItem>
+
+                  {/* Available Translations */}
+                  {attachedVersion.translations && Object.values(attachedVersion.translations).map((variant) => (
+                    <MenuItem
+                      key={variant.language}
+                      selected={currentLang === variant.language}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLangMenuAnchor(null);
+                        onSelectLanguage?.(application.id, variant.language);
+                      }}
+                    >
+                      <ListItemIcon>
+                        {currentLang === variant.language ? (
+                          <CheckRoundedIcon fontSize="small" color="primary" />
+                        ) : (
+                          <Box sx={{ width: 20 }} />
+                        )}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <Typography sx={{ fontSize: '0.78rem', fontWeight: 600 }}>
+                            {`${variant.language.toUpperCase()} (${variant.languageLabel || variant.language})`}
+                          </Typography>
+                        }
+                      />
+                      {variant.isOutdated && (
+                        <Chip
+                          size="small"
+                          icon={<WarningAmberRoundedIcon sx={{ fontSize: '11px !important' }} />}
+                          label={t('history:language.outdated', 'Outdated')}
+                          color="warning"
+                          variant="outlined"
+                          sx={{ ml: 1, fontSize: '0.6rem', height: 18 }}
+                        />
+                      )}
+                    </MenuItem>
+                  ))}
+
+                  <Divider sx={{ my: 0.5 }} />
+
+                  {onLoadInStudio && (
+                    <MenuItem
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLangMenuAnchor(null);
+                        onLoadInStudio(attachedVersion.id);
+                      }}
+                    >
+                      <ListItemIcon>
+                        <TranslateRoundedIcon fontSize="small" color="primary" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <Typography sx={{ fontSize: '0.78rem', fontWeight: 700, color: 'primary.main' }}>
+                            {t('history:language.translateInStudio', '+ Traducir en Studio...')}
+                          </Typography>
+                        }
+                      />
+                    </MenuItem>
+                  )}
+                </Menu>
+              </>
             ) : null}
 
             {/* Location & Salary chips if present */}
@@ -301,10 +422,10 @@ export const ApplicationGridCard: React.FC<ApplicationGridCardProps> = React.mem
             )}
 
             {attachedVersion && onDownloadPdf && (
-              <Tooltip title={t('history:actions.downloadPdf', 'Download PDF')} arrow>
+              <Tooltip title={t('history:actions.downloadPdfWithLang', 'Descargar PDF ({{lang}})', { lang: currentLang.toUpperCase() })} arrow>
                 <IconButton
                   size="small"
-                  onClick={() => onDownloadPdf(attachedVersion)}
+                  onClick={() => onDownloadPdf(attachedVersion, currentLang)}
                   disabled={isDownloadingPdf}
                   sx={{
                     color: 'text.secondary',
