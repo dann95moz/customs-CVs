@@ -23,6 +23,7 @@ export const useMasterDataWorkflow = ({
   const [manualText, setManualText] = useState(content);
   const manualTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const flushGuidedRef = useRef<(() => void) | null>(null);
+  const flushManualRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     setManualText(content);
@@ -48,6 +49,7 @@ export const useMasterDataWorkflow = ({
   const handleSwitchMode = useCallback((newMode: 'guided' | 'markdown') => {
     if (newMode === editMode) return;
     if (editMode === 'markdown') {
+      flushManualRef.current?.();
       flushManual();
     } else if (editMode === 'guided') {
       flushGuidedRef.current?.();
@@ -57,13 +59,7 @@ export const useMasterDataWorkflow = ({
 
   const handleManualTextChange = (val: string) => {
     setManualText(val);
-    if (manualTimerRef.current) {
-      clearTimeout(manualTimerRef.current);
-    }
-    manualTimerRef.current = setTimeout(() => {
-      manualTimerRef.current = null;
-      onChange(val);
-    }, 250);
+    onChange(val);
   };
 
   const handleManualBlur = () => {
@@ -216,6 +212,7 @@ export const useMasterDataWorkflow = ({
     setEditMode,
     handleSwitchMode,
     flushGuidedRef,
+    flushManualRef,
     manualText,
     handleManualTextChange,
     handleManualBlur,

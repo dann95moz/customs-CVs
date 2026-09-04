@@ -62,6 +62,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
     editMode,
     handleSwitchMode,
     flushGuidedRef,
+    flushManualRef,
     manualText,
     handleManualTextChange,
     handleManualBlur,
@@ -342,22 +343,37 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
             </ButtonGroup>
           </Box>
 
-          {editMode === 'guided' ? (
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: { xs: 'auto', md: 520 }, overflow: { xs: 'visible', md: 'hidden' } }}>
-              <React.Suspense fallback={<StudioSkeleton variant="guidedForm" />}>
-                <GuidedProfileForm markdownContent={content} onChange={onChange} onFlushRef={flushGuidedRef} />
-              </React.Suspense>
-            </Box>
-          ) : (
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
-              <VisualMarkdownEditor
-                markdown={manualText}
-                onChange={handleManualTextChange}
-                onBlur={handleManualBlur}
-                placeholder="# [CANDIDATE FULL NAME]&#10;**Primary Professional Role / Specialization**&#10;City, Country • candidate.email@example.com • +1 234 567 8900&#10;&#10;## CAREER HISTORY & ACHIEVEMENTS&#10;Write your companies, roles, and achievements here..."
-              />
-            </Box>
-          )}
+          <Box
+            sx={{
+              display: editMode === 'guided' ? 'flex' : 'none',
+              flex: 1,
+              flexDirection: 'column',
+              minHeight: { xs: 'auto', md: 520 },
+              overflow: { xs: 'visible', md: 'hidden' },
+            }}
+          >
+            <React.Suspense fallback={<StudioSkeleton variant="guidedForm" />}>
+              <GuidedProfileForm markdownContent={content} onChange={onChange} onFlushRef={flushGuidedRef} />
+            </React.Suspense>
+          </Box>
+
+          <Box
+            sx={{
+              display: editMode === 'markdown' ? 'flex' : 'none',
+              flex: 1,
+              flexDirection: 'column',
+              minHeight: 0,
+              overflow: 'hidden',
+            }}
+          >
+            <VisualMarkdownEditor
+              markdown={content}
+              onChange={handleManualTextChange}
+              onBlur={handleManualBlur}
+              onFlushRef={flushManualRef}
+              placeholder="# [CANDIDATE FULL NAME]&#10;**Primary Professional Role / Specialization**&#10;City, Country • candidate.email@example.com • +1 234 567 8900&#10;&#10;## CAREER HISTORY & ACHIEVEMENTS&#10;Write your companies, roles, and achievements here..."
+            />
+          </Box>
         </Paper>
 
         {/* Navigation Footer */}

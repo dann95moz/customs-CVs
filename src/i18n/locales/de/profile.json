@@ -213,7 +213,8 @@
     "clear": "Formatierung löschen",
     "undo": "Rückgängig",
     "redo": "Wiederholen",
-    "placeholder": "Schreiben Sie Ihren Lebenslauf-Inhalt hier..."
+    "placeholder": "Schreiben Sie Ihren Lebenslauf-Inhalt hier...",
+    "autoFormatTip": "Smart Paste: formatiert Markdown automatisch"
   }
 }
 

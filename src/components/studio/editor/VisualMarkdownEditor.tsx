@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import {
   Box,
   Button,
-  ButtonGroup,
   IconButton,
   Tooltip,
   Divider,
+  Typography,
+  Chip,
   useTheme,
   alpha,
 } from '@mui/material';
-import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
-import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import FormatBoldRoundedIcon from '@mui/icons-material/FormatBoldRounded';
 import FormatItalicRoundedIcon from '@mui/icons-material/FormatItalicRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
@@ -18,6 +17,7 @@ import HorizontalRuleRoundedIcon from '@mui/icons-material/HorizontalRuleRounded
 import FormatClearRoundedIcon from '@mui/icons-material/FormatClearRounded';
 import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import RedoRoundedIcon from '@mui/icons-material/RedoRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { useTranslation } from 'react-i18next';
 import { safeMarkdown } from '../../../utils/sanitize';
 import { htmlToMarkdown } from '../../../core/parser';
@@ -26,6 +26,7 @@ export interface VisualMarkdownEditorProps {
   markdown: string;
   onChange: (markdown: string) => void;
   onBlur?: () => void;
+  onFlushRef?: React.MutableRefObject<(() => void) | null>;
   placeholder?: string;
   minHeight?: number | string;
 }
@@ -34,13 +35,12 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
   markdown,
   onChange,
   onBlur,
+  onFlushRef,
   placeholder,
-  minHeight = 380,
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
 
-  const [editorMode, setEditorMode] = useState<'visual' | 'code'>('visual');
   const visualRef = useRef<HTMLDivElement>(null);
   const isInternalChangeRef = useRef<boolean>(false);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -52,22 +52,51 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
       return;
     }
     if (visualRef.current) {
-      // Only sync if user is not actively focused/typing in the visual editor
       if (document.activeElement !== visualRef.current) {
         visualRef.current.innerHTML = safeMarkdown(markdown || '');
       }
     }
   }, [markdown]);
 
-  // Clean up timer on unmount
+  // Flush pending changes immediately
+  const flushChanges = useCallback(() => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = null;
+    }
+    if (visualRef.current) {
+      const html = visualRef.current.innerHTML;
+      const convertedMarkdown = htmlToMarkdown(html);
+      onChange(convertedMarkdown);
+    }
+  }, [onChange]);
+
+  // Connect onFlushRef for parent components
+  useEffect(() => {
+    if (onFlushRef) {
+      onFlushRef.current = flushChanges;
+    }
+    return () => {
+      if (onFlushRef) {
+        onFlushRef.current = null;
+      }
+    };
+  }, [flushChanges, onFlushRef]);
+
+  // Clean up and flush on unmount
   useEffect(() => {
     return () => {
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
         debounceTimerRef.current = null;
+        if (visualRef.current) {
+          const html = visualRef.current.innerHTML;
+          const convertedMarkdown = htmlToMarkdown(html);
+          onChange(convertedMarkdown);
+        }
       }
     };
-  }, []);
+  }, [onChange]);
 
   // Handle rich-text inputs in contentEditable surface
   const handleVisualInput = useCallback(() => {
@@ -83,8 +112,24 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
     debounceTimerRef.current = setTimeout(() => {
       debounceTimerRef.current = null;
       onChange(convertedMarkdown);
-    }, 250);
+    }, 200);
   }, [onChange]);
+
+  // Smart Paste Handler: Automatically converts pasted Markdown syntax into rich formatted text
+  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const text = e.clipboardData.getData('text/plain');
+    if (!text) return;
+
+    // Detect Markdown syntax: headers (#), bold (**), bullet lists (- or *), dividers (---), blockquotes (>)
+    const hasMarkdownSyntax = /(?:^|\n)(?:#{1,6}\s|\*{1,2}|- |\d+\. |---|\[.*\]\(.*\)|>)/m.test(text);
+
+    if (hasMarkdownSyntax) {
+      e.preventDefault();
+      const parsedHtml = safeMarkdown(text);
+      document.execCommand('insertHTML', false, parsedHtml);
+      handleVisualInput();
+    }
+  };
 
   // Execute standard formatting commands
   const executeCommand = (command: string, value: string | undefined = undefined) => {
@@ -93,31 +138,6 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
     }
     document.execCommand(command, false, value);
     handleVisualInput();
-  };
-
-  // Switch between Visual and Raw Code mode with 100% instant data persistence
-  const handleModeSwitch = (mode: 'visual' | 'code') => {
-    if (mode === editorMode) return;
-
-    if (mode === 'code') {
-      // Switching from Visual to Code: flush any pending visual changes to markdown
-      if (visualRef.current) {
-        const html = visualRef.current.innerHTML;
-        const convertedMarkdown = htmlToMarkdown(html);
-        if (debounceTimerRef.current) {
-          clearTimeout(debounceTimerRef.current);
-          debounceTimerRef.current = null;
-        }
-        onChange(convertedMarkdown);
-      }
-      setEditorMode('code');
-    } else {
-      // Switching from Code to Visual: convert markdown to HTML immediately
-      if (visualRef.current) {
-        visualRef.current.innerHTML = safeMarkdown(markdown || '');
-      }
-      setEditorMode('visual');
-    }
   };
 
   const handleVisualBlur = () => {
@@ -160,154 +180,123 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
           flexShrink: 0,
         }}
       >
-        {/* Left: View Mode Switcher */}
-        <ButtonGroup size="small" variant="outlined">
-          <Button
-            variant={editorMode === 'visual' ? 'contained' : 'outlined'}
-            color={editorMode === 'visual' ? 'primary' : 'inherit'}
-            startIcon={<VisibilityRoundedIcon fontSize="small" />}
-            onClick={() => handleModeSwitch('visual')}
-            sx={{
-              fontSize: '0.78rem',
-              fontWeight: editorMode === 'visual' ? 700 : 500,
-              textTransform: 'none',
-              px: 1.25,
-              py: 0.35,
-            }}
-          >
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
-              {t('profile:visualEditor.visual', 'Visual (WYSIWYG)')}
-            </Box>
-            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
-              {t('profile:visualEditor.visualShort', 'Visual')}
-            </Box>
-          </Button>
-          <Button
-            variant={editorMode === 'code' ? 'contained' : 'outlined'}
-            color={editorMode === 'code' ? 'primary' : 'inherit'}
-            startIcon={<CodeRoundedIcon fontSize="small" />}
-            onClick={() => handleModeSwitch('code')}
-            sx={{
-              fontSize: '0.78rem',
-              fontWeight: editorMode === 'code' ? 700 : 500,
-              textTransform: 'none',
-              px: 1.25,
-              py: 0.35,
-            }}
-          >
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
-              {t('profile:visualEditor.markdown', 'Markdown Code')}
-            </Box>
-            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
-              {t('profile:visualEditor.markdownShort', 'Code')}
-            </Box>
-          </Button>
-        </ButtonGroup>
+        {/* Left: Rich Formatting Controls */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+          {/* History actions */}
+          <Tooltip title={t('profile:visualEditor.undo', 'Undo (Ctrl+Z)')}>
+            <IconButton size="small" onClick={() => executeCommand('undo')} sx={{ p: 0.5 }}>
+              <UndoRoundedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={t('profile:visualEditor.redo', 'Redo (Ctrl+Y)')}>
+            <IconButton size="small" onClick={() => executeCommand('redo')} sx={{ p: 0.5 }}>
+              <RedoRoundedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
 
-        {/* Right: Rich Formatting Actions (visible in Visual Mode) */}
-        {editorMode === 'visual' && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
-            {/* History actions */}
-            <Tooltip title={t('profile:visualEditor.undo', 'Undo (Ctrl+Z)')}>
-              <IconButton size="small" onClick={() => executeCommand('undo')} sx={{ p: 0.5 }}>
-                <UndoRoundedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('profile:visualEditor.redo', 'Redo (Ctrl+Y)')}>
-              <IconButton size="small" onClick={() => executeCommand('redo')} sx={{ p: 0.5 }}>
-                <RedoRoundedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+          <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
 
-            <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
+          {/* Inline styles */}
+          <Tooltip title={t('profile:visualEditor.bold', 'Bold (Ctrl+B)')}>
+            <IconButton size="small" onClick={() => executeCommand('bold')} sx={{ p: 0.5 }}>
+              <FormatBoldRoundedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={t('profile:visualEditor.italic', 'Italic (Ctrl+I)')}>
+            <IconButton size="small" onClick={() => executeCommand('italic')} sx={{ p: 0.5 }}>
+              <FormatItalicRoundedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
 
-            {/* Inline styles */}
-            <Tooltip title={t('profile:visualEditor.bold', 'Bold (Ctrl+B)')}>
-              <IconButton size="small" onClick={() => executeCommand('bold')} sx={{ p: 0.5 }}>
-                <FormatBoldRoundedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('profile:visualEditor.italic', 'Italic (Ctrl+I)')}>
-              <IconButton size="small" onClick={() => executeCommand('italic')} sx={{ p: 0.5 }}>
-                <FormatItalicRoundedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+          <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
 
-            <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
+          {/* Headings */}
+          <Tooltip title={t('profile:visualEditor.h1', 'Title (H1)')}>
+            <Button
+              size="small"
+              variant="text"
+              color="inherit"
+              onClick={() => executeCommand('formatBlock', '<h1>')}
+              sx={{ minWidth: 32, px: 0.75, fontWeight: 800, fontSize: '0.8rem' }}
+            >
+              H1
+            </Button>
+          </Tooltip>
+          <Tooltip title={t('profile:visualEditor.h2', 'Section (H2)')}>
+            <Button
+              size="small"
+              variant="text"
+              color="inherit"
+              onClick={() => executeCommand('formatBlock', '<h2>')}
+              sx={{ minWidth: 32, px: 0.75, fontWeight: 700, fontSize: '0.8rem' }}
+            >
+              H2
+            </Button>
+          </Tooltip>
+          <Tooltip title={t('profile:visualEditor.h3', 'Role / Subtitle (H3)')}>
+            <Button
+              size="small"
+              variant="text"
+              color="inherit"
+              onClick={() => executeCommand('formatBlock', '<h3>')}
+              sx={{ minWidth: 32, px: 0.75, fontWeight: 600, fontSize: '0.78rem' }}
+            >
+              H3
+            </Button>
+          </Tooltip>
 
-            {/* Block formats */}
-            <Tooltip title={t('profile:visualEditor.h1', 'Title (H1)')}>
-              <Button
-                size="small"
-                variant="text"
-                color="inherit"
-                onClick={() => executeCommand('formatBlock', '<h1>')}
-                sx={{ minWidth: 32, px: 0.75, fontWeight: 800, fontSize: '0.8rem' }}
-              >
-                H1
-              </Button>
-            </Tooltip>
-            <Tooltip title={t('profile:visualEditor.h2', 'Section (H2)')}>
-              <Button
-                size="small"
-                variant="text"
-                color="inherit"
-                onClick={() => executeCommand('formatBlock', '<h2>')}
-                sx={{ minWidth: 32, px: 0.75, fontWeight: 700, fontSize: '0.8rem' }}
-              >
-                H2
-              </Button>
-            </Tooltip>
-            <Tooltip title={t('profile:visualEditor.h3', 'Role / Subtitle (H3)')}>
-              <Button
-                size="small"
-                variant="text"
-                color="inherit"
-                onClick={() => executeCommand('formatBlock', '<h3>')}
-                sx={{ minWidth: 32, px: 0.75, fontWeight: 600, fontSize: '0.78rem' }}
-              >
-                H3
-              </Button>
-            </Tooltip>
+          <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
 
-            <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
+          {/* Bullets & Dividers */}
+          <Tooltip title={t('profile:visualEditor.bulletList', 'Bullet List')}>
+            <IconButton size="small" onClick={() => executeCommand('insertUnorderedList')} sx={{ p: 0.5 }}>
+              <FormatListBulletedRoundedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={t('profile:visualEditor.divider', 'Divider Line (---)')}>
+            <IconButton size="small" onClick={() => executeCommand('insertHorizontalRule')} sx={{ p: 0.5 }}>
+              <HorizontalRuleRoundedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
 
-            {/* Bullets & Dividers */}
-            <Tooltip title={t('profile:visualEditor.bulletList', 'Bullet List')}>
-              <IconButton size="small" onClick={() => executeCommand('insertUnorderedList')} sx={{ p: 0.5 }}>
-                <FormatListBulletedRoundedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('profile:visualEditor.divider', 'Divider Line (---)')}>
-              <IconButton size="small" onClick={() => executeCommand('insertHorizontalRule')} sx={{ p: 0.5 }}>
-                <HorizontalRuleRoundedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+          <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
 
-            <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />
+          {/* Clear Format */}
+          <Tooltip title={t('profile:visualEditor.clear', 'Clear Formatting')}>
+            <IconButton size="small" onClick={() => executeCommand('removeFormat')} sx={{ p: 0.5 }}>
+              <FormatClearRoundedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
 
-            {/* Clear Format */}
-            <Tooltip title={t('profile:visualEditor.clear', 'Clear Formatting')}>
-              <IconButton size="small" onClick={() => executeCommand('removeFormat')} sx={{ p: 0.5 }}>
-                <FormatClearRoundedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
+        {/* Right: Smart Auto-format Indicator */}
+        <Chip
+          icon={<AutoAwesomeRoundedIcon sx={{ fontSize: '13px !important' }} />}
+          label={t('profile:visualEditor.autoFormatTip', 'Smart Paste: auto-formats Markdown')}
+          size="small"
+          variant="outlined"
+          color="default"
+          sx={{
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            display: { xs: 'none', sm: 'inline-flex' },
+            borderColor: alpha(theme.palette.divider, 0.8),
+            color: 'text.secondary',
+          }}
+        />
       </Box>
 
-      {/* Editor Surface Area: BOTH surfaces remain mounted to prevent DOM loss */}
+      {/* Editor Surface Area: Single Visual WYSIWYG Surface */}
       <Box sx={{ flex: 1, minHeight: 0, position: 'relative', display: 'flex', overflow: 'hidden', height: '100%' }}>
-        {/* 1. Visual WYSIWYG Surface */}
         <Box
           ref={visualRef}
           contentEditable
           suppressContentEditableWarning
           onInput={handleVisualInput}
+          onPaste={handlePaste}
           onBlur={handleVisualBlur}
           data-placeholder={placeholder || t('profile:visualEditor.placeholder', 'Write your resume content here...')}
           sx={{
-            display: editorMode === 'visual' ? 'block' : 'none',
             flex: 1,
             width: '100%',
             height: '100%',
@@ -381,33 +370,6 @@ export const VisualMarkdownEditor: React.FC<VisualMarkdownEditorProps> = ({
               color: 'primary.main',
               textDecoration: 'underline',
             },
-          }}
-        />
-
-        {/* 2. Raw Markdown Code Surface */}
-        <textarea
-          className="studio-textarea"
-          value={markdown}
-          onChange={(e) => onChange(e.target.value)}
-          onBlur={onBlur}
-          placeholder={placeholder}
-          spellCheck={false}
-          style={{
-            display: editorMode === 'code' ? 'block' : 'none',
-            width: '100%',
-            height: '100%',
-            minHeight: 0,
-            border: 'none',
-            outline: 'none',
-            padding: '16px',
-            fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
-            fontSize: '0.88rem',
-            lineHeight: 1.65,
-            resize: 'none',
-            backgroundColor: 'transparent',
-            color: theme.palette.text.primary,
-            overflowY: 'auto',
-            boxSizing: 'border-box',
           }}
         />
       </Box>

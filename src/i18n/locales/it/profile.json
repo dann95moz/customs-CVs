@@ -203,6 +203,201 @@
     "bold": "Grassetto (Ctrl+B)",
     "italic": "Corsivo (Ctrl+I)",
     "h1": "Titolo (H1)",
+    "exportBackup": "Esporta Backup (.md)",
+    "exportBackupTip": "Scarica il tuo profilo professionale in formato Markdown (.md)",
+    "continueToTarget": "Continua alla Posizione Obiettivo"
+  },
+  "dialog": {
+    "confirmReplaceTitle": "Sostituire il profilo corrente?",
+    "confirmReplaceDesc": "L'importazione di questo file sovrascriverà i dati del profilo corrente. Vuoi continuare?",
+    "confirm": "Importa e sostituisci",
+    "confirmClearTitle": "Iniziare da capo?",
+    "confirmClearDesc": "Sei sicuro di voler cancellare tutti i dati del profilo? Questa azione non può essere annullata.",
+    "confirmClear": "Conferma",
+    "cancel": "Annulla"
+  },
+  "modes": {
+    "guidedAssistant": "Modulo Guidato",
+    "guidedShort": "Guidato",
+    "markdownEditor": "Modalità Manuale",
+    "markdownShort": "Manuale",
+    "guidedTitle": "Modulo di Profilo Guidato",
+    "markdownTitle": "Modalità Manuale / Testo Libero"
+  },
+  "completeness": {
+    "title": "Completezza del Profilo Base",
+    "levelComplete": "Profilo completo! Pronto per l'adattamento con alta conversione ATS.",
+    "levelGood": "Profilo solido. Puoi iniziare o aggiungere sezioni per una maggiore affinità.",
+    "levelInitial": "Profilo di base. Consigliamo di aggiungere più dettagli per risultati migliori.",
+    "sectionsDone": "sezioni",
+    "suggestedAdd": "Suggerimenti da aggiungere:",
+    "clickToAdd": "Clicca per completare questa sezione"
+  },
+  "status": {
+    "ready": "Profilo professionale pronto per l'adattamento",
+
+    "tipLoadSample": "Suggerimento: Clicca su 'Carica Profilo di Esempio' per testare subito",
+    "importingPdf": "Lettura e strutturazione del tuo CV in PDF...",
+    "pdfSuccess": "Profilo professionale importato con successo da {{fileName}}",
+    "importedAi": "Strutturato tramite motore IA",
+    "importedLocal": "Strutturato tramite parser locale client"
+  },
+  "dropzone": {
+    "dropToImport": "Trascina qui il tuo file PDF, .md o .txt per importarlo"
+  },
+  "nav": {
+    "personal": "Info personali",
+    "summary": "Riepilogo",
+    "skills": "Competenze",
+    "experience": "Esperienza",
+    "education": "Istruzione",
+    "languages": "Lingue",
+    "projects": "Progetti"
+  },
+  "sections": {
+    "personalInfo": {
+      "title": "Informazioni Personali & Contatti",
+      "fullName": "Nome Completo",
+      "jobTitle": "Titolo Professionale / Ruolo",
+      "email": "Indirizzo Email",
+      "phone": "Numero di Telefono",
+      "location": "Località / Città, Paese",
+      "linkedin": "Profilo LinkedIn",
+      "github": "Profilo GitHub",
+      "portfolio": "Portfolio / Sito Web"
+    },
+    "summary": {
+      "title": "Riepilogo Professionale",
+      "label": "Sintesi Esecutiva & Proposta di Valore",
+      "placeholder": "Scrivi 3-4 frasi incisive che evidenzino le tue competenze tecniche principali, i punti di forza nell'architettura software e i risultati quantificabili..."
+    },
+    "experience": {
+      "title": "Esperienza Lavorativa",
+      "addRole": "Aggiungi Posizione",
+      "company": "Azienda / Organizzazione",
+      "role": "Ruolo / Titolo",
+      "dates": "Date (es. 2021 – Presente)",
+      "location": "Località",
+      "bullets": "Risultati & Responsabilità (Formula XYZ)",
+      "logros": "Risultati principali",
+      "addBullet": "Aggiungi Punto di Risultato",
+      "removeRole": "Rimuovi Posizione"
+    },
+    "skills": {
+      "title": "Competenze Tecniche",
+      "desc": "Organizza le tue competenze in categorie chiare. Digita una competenza e premi Invio.",
+      "empty": "Nessuna competenza aggiunta. Digita qui sotto o scegli un suggerimento.",
+      "addPlaceholder": "Digita e premi Invio...",
+      "inputPlaceholder": "Digita e premi Invio",
+      "quickSuggestions": "Suggeriti:",
+      "addGroup": "Aggiungi Categoria",
+      "groupName": "Nome Categoria",
+      "defaultCore": "Competenze di Base & Linguaggi",
+      "defaultArchitecture": "Architettura & Framework",
+      "defaultTooling": "Strumenti, Cloud & CI/CD",
+      "skillsList": "Competenze (separate da virgola)",
+      "removeGroup": "Rimuovi Categoria"
+    },
+    "education": {
+      "title": "Istruzione & Certificazioni",
+      "addEducation": "Aggiungi Titolo / Certificazione",
+      "degree": "Titolo di Studio / Certificazione",
+      "institution": "Istituto / Università / Ente",
+      "year": "Anno o Periodo (es. 2018 – 2022)",
+      "degreePlaceholder": "es. Laurea in Informatica",
+      "institutionPlaceholder": "es. Università di Bologna / Udemy",
+      "yearPlaceholder": "es. 2018 – 2022",
+      "location": "Luogo (opzionale)",
+      "edit": "Modifica",
+      "cancel": "Annulla",
+      "save": "Salva",
+      "moreEntries": "+ {{count}} altre voci",
+      "remove": "Rimuovi"
+    },
+    "languages": {
+      "title": "Lingue",
+      "addLanguage": "Aggiungi Lingua",
+      "language": "Lingua",
+      "proficiency": "Livello di Competenza",
+      "languagePlaceholder": "es. Italiano, Inglese, Spagnolo...",
+      "levelNative": "Madrelingua / Bilingue",
+      "levelC2": "C2 • Padronanza completa",
+      "levelC1": "C1 • Avanzato / Fluente professionale",
+      "levelB2": "B2 • Intermedio superiore / Professionale",
+      "levelB1": "B1 • Intermedio",
+      "levelA2": "A2 • Elementare",
+      "levelA1": "A1 • Principiante",
+      "empty": "Nessuna lingua aggiunta.",
+      "remove": "Rimuovi"
+    },
+    "projects": {
+      "title": "Progetti in Evidenza",
+      "desc": "Aggiungi progetti personali, open-source o iniziative principali.",
+      "addProject": "Aggiungi Progetto",
+      "projectName": "Titolo del Progetto",
+      "role": "Ruolo / Tecnologia",
+      "date": "Data / Anno",
+      "link": "URL del Progetto / Repository",
+      "bullets": "Punti Chiave & Metriche",
+      "remove": "Rimuovi Progetto"
+    }
+  },
+  "stepper": {
+    "profileLabel": "Profilo del Candidato",
+    "profileShortLabel": "Profilo",
+    "profileSubtitle": "Percorso e competenze",
+    "targetLabel": "Posizione Obiettivo",
+    "targetShortLabel": "Offerta",
+    "targetSubtitle": "Offerta di lavoro e adattamento",
+    "previewLabel": "CV dal Vivo ed Esportazione",
+    "previewShortLabel": "CV e PDF",
+    "previewSubtitle": "Anteprima e download PDF"
+  },
+  "customSections": {
+    "addSectionBtn": "Aggiungi Sezione",
+    "addSectionBtnShort": "Sezione +",
+    "addTitle": "Aggiungi Sezione Personalizzata",
+    "addSubtitle": "Seleziona una categoria consigliata per ottimizzare l'ATS o definisci un titolo personalizzato.",
+    "inputLabel": "Titolo della Sezione",
+    "inputPlaceholder": "es. Certificazioni & Licenze",
+    "errorRequired": "Il titolo è obbligatorio",
+    "createAction": "Crea Sezione",
+    "deleteSectionTip": "Elimina questa intera sezione",
+    "deleteTitle": "Eliminare la sezione?",
+    "deleteConfirm": "Questa azione eliminerà \"{{title}}\" e tutti i suoi elementi dal tuo profilo.",
+    "emptyList": "Nessun elemento aggiunto a questa sezione per il momento.",
+    "emptyListSub": "Usa il campo sopra per inserire le tue certificazioni, premi o risultati.",
+    "presets": {
+      "certifications": "Certificazioni & Licenze",
+      "certificationsDesc": "AWS, Azure, CISSP, PMP, Scrum Master, abilitazioni professionali",
+      "awards": "Premi & Riconoscimenti",
+      "awardsDesc": "Hackathon, onorificenze accademiche, dipendente dell'anno, borse di studio",
+      "publications": "Pubblicazioni & Brevetti",
+      "publicationsDesc": "Articoli scientifici, libri, paper tecnici, brevetti registrati",
+      "volunteering": "Volontariato & Impatto Sociale",
+      "volunteeringDesc": "Leadership comunitaria, ONG, tutoraggio e cause sociali",
+      "conferences": "Conferenze & Interventi",
+      "conferencesDesc": "Keynote, interventi a convegni di settore, workshop condotti",
+      "custom": "Altra Sezione Personalizzata...",
+      "customDesc": "Definisci un titolo personalizzato adatto al tuo settore specifico"
+    },
+    "placeholders": {
+      "certifications": "es. AWS Certified Solutions Architect – Associate (2024) • Amazon Web Services",
+      "awards": "es. 1° Posto – Hackathon Nazionale di Intelligenza Artificiale (2023)",
+      "publications": "es. \"Architetture Reattive nei Sistemi Distribuiti\", Conferenza IEEE (2022)",
+      "volunteering": "es. Mentor in Sviluppo Web – Iniziativa Open Code (2021 – Presente)",
+      "conferences": "es. Speaker: \"Microfrontend su Larga Scala\" – TechConf Latam (2023)",
+      "custom": "Inserisci un risultato, un dettaglio o una voce per questa sezione..."
+    }
+  },
+  "visualEditor": {
+    "visual": "Visuale (WYSIWYG)",
+    "visualShort": "Visuale",
+    "markdown": "Codice Markdown",
+    "markdownShort": "Codice",
+    "bold": "Grassetto (Ctrl+B)",
+    "italic": "Corsivo (Ctrl+I)",
+    "h1": "Titolo (H1)",
     "h2": "Sezione (H2)",
     "h3": "Ruolo / Sottotitolo (H3)",
     "paragraph": "Paragrafo Normale",
@@ -211,6 +406,7 @@
     "clear": "Cancella Formattazione",
     "undo": "Annulla",
     "redo": "Ripristina",
-    "placeholder": "Scrivi il contenuto del tuo curriculum qui..."
+    "placeholder": "Scrivi il contenuto del tuo curriculum qui...",
+    "autoFormatTip": "Incolla intelligente: formatta automaticamente Markdown"
   }
 }

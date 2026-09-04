@@ -213,7 +213,8 @@
     "clear": "Limpiar Formato",
     "undo": "Deshacer",
     "redo": "Rehacer",
-    "placeholder": "Escribe el contenido de tu currículum aquí..."
+    "placeholder": "Escribe el contenido de tu currículum aquí...",
+    "autoFormatTip": "Pegado inteligente: auto-formatea Markdown"
   }
 }
 

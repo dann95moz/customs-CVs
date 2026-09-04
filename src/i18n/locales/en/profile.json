@@ -213,7 +213,8 @@
     "clear": "Clear Formatting",
     "undo": "Undo",
     "redo": "Redo",
-    "placeholder": "Write your resume content here..."
+    "placeholder": "Write your resume content here...",
+    "autoFormatTip": "Smart Paste: auto-formats Markdown"
   }
 }
 

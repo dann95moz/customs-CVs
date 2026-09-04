@@ -212,7 +212,8 @@
     "clear": "Effacer le Formatage",
     "undo": "Annuler",
     "redo": "Rétablir",
-    "placeholder": "Rédigez le contenu de votre CV ici..."
+    "placeholder": "Rédigez le contenu de votre CV ici...",
+    "autoFormatTip": "Collage intelligent : formate automatiquement le Markdown"
   }
 }
 
