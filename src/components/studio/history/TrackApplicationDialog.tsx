@@ -30,6 +30,7 @@ import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
 import { useTranslation } from 'react-i18next';
 import { TrackApplicationDialogProps, GeneratedCvVersion } from '../../../types';
 import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
+import { MatchScoreBadge } from '../../atoms';
 
 export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
   open,
@@ -288,12 +289,7 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
                             v{matchingVersions.length - index} • {v.targetRole || 'Specialist'}
                           </Typography>
                           {Boolean(v.matchScore) && (
-                            <Chip
-                              label={`${v.matchScore}% ${t('gap:matchScore', 'Match')}`}
-                              size="small"
-                              color="success"
-                              sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
-                            />
+                            <MatchScoreBadge score={v.matchScore} />
                           )}
                           <Chip
                             label={v.theme || 'modern-tech'}

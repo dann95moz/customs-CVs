@@ -15,6 +15,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useTranslation } from 'react-i18next';
 import { ColumnEditDialogProps } from '../../../types';
 import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
+import { ColorPalettePicker } from '../../molecules';
 
 const PRESET_COLORS = [
   '#3b82f6', // Blue
@@ -99,33 +100,12 @@ export const ColumnEditDialog: React.FC<ColumnEditDialogProps> = ({
           <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', mb: 1 }}>
             {t('history:column.colorTheme', 'Accent Color')}
           </Typography>
-          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-            {PRESET_COLORS.map((preset) => {
-              const isSelected = color === preset;
-              return (
-                <Box
-                  key={preset}
-                  onClick={() => setColor(preset)}
-                  sx={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: '50%',
-                    bgcolor: preset,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    border: isSelected ? `2px solid ${theme.palette.background.paper}` : 'none',
-                    outline: isSelected ? `2px solid ${preset}` : 'none',
-                    transition: 'transform 0.15s ease',
-                    '&:hover': {
-                      transform: 'scale(1.15)',
-                    },
-                  }}
-                />
-              );
-            })}
-          </Box>
+          <ColorPalettePicker
+            swatches={PRESET_COLORS}
+            selectedColor={color}
+            onSelectColor={setColor}
+            size="small"
+          />
         </Box>
       </DialogContent>
 

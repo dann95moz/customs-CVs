@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 import { ArchivedApplicationsViewProps, ApplicationItem, GeneratedCvVersion } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
+import { MatchScoreBadge } from '../../atoms';
 
 export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> = ({
   archivedApplications,
@@ -154,11 +155,8 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
                     {app.companyName}
                   </Typography>
                   {Boolean(app.matchScore || attachedVersion?.matchScore) && (
-                    <Chip
-                      label={`${app.matchScore || attachedVersion?.matchScore}% ${t('gap:matchScore', 'Match')}`}
-                      size="small"
-                      color="success"
-                      sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
+                    <MatchScoreBadge
+                      score={app.matchScore || attachedVersion?.matchScore}
                     />
                   )}
                   <Chip

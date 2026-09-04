@@ -35,6 +35,7 @@ import { extractSummaryExcerpt } from '../../../core/parser';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard';
 import { ConfirmDeleteDialog } from '../common/ConfirmDeleteDialog';
+import { MatchScoreBadge } from '../../atoms';
 
 
 export type { ApplicationCardProps };
@@ -234,12 +235,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
               </Tooltip>
             )}
             {Boolean(version.matchScore) && (
-              <Chip
-                label={`${version.matchScore}% ${t('gap:matchScore', 'Match')}`}
-                size="small"
-                color="success"
-                sx={{ fontWeight: 700, fontSize: '0.72rem' }}
-              />
+              <MatchScoreBadge score={version.matchScore} />
             )}
             {Boolean(version.qualityScore) && (
               <Chip

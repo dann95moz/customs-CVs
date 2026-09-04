@@ -42,6 +42,7 @@ import { useTranslation } from 'react-i18next';
 import { KanbanCardProps, GeneratedCvVersion } from '../../../types';
 import { getPaletteConfig } from '../../../constants/palettes';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
+import { MatchScoreBadge } from '../../atoms';
 
 export const KanbanCard: React.FC<KanbanCardProps> = ({
   application,
@@ -207,11 +208,8 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
           {/* Badges: Match Score & Attached Version Dropdown */}
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap', mb: 1 }}>
             {Boolean(application.matchScore || attachedVersion?.matchScore) && (
-              <Chip
-                label={`${application.matchScore || attachedVersion?.matchScore}% ${t('gap:matchScore', 'Match')}`}
-                size="small"
-                color="success"
-                sx={{ height: 22, fontSize: '0.7rem', fontWeight: 700 }}
+              <MatchScoreBadge
+                score={application.matchScore || attachedVersion?.matchScore}
               />
             )}
 
@@ -226,7 +224,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
                     height: 22,
                     fontSize: '0.68rem',
                     fontWeight: 700,
-                    borderRadius: '6px',
+                    borderRadius: 1,
                     bgcolor: alpha(theme.palette.primary.main, 0.06),
                     '& .MuiSelect-select': { py: 0.2, px: 0.8 },
                   }}

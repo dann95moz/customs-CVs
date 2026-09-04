@@ -23,6 +23,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { useTranslation } from 'react-i18next';
 import { ApplicationsStatsHeaderProps } from '../../../types';
+import { SearchBarWithClear } from '../../molecules';
 
 export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = ({
   totalActiveApplications,
@@ -428,20 +429,11 @@ export const ApplicationsStatsHeader: React.FC<ApplicationsStatsHeaderProps> = (
 
         {/* Filter Search Input (Only show when there are items to filter in the active database) */}
         {(totalActiveApplications > 0 || totalArchived > 0 || savedVersionsCount > 0 || searchQuery.length > 0) && (
-          <TextField
+          <SearchBarWithClear
             size="small"
             placeholder={t('history:searchPlaceholder', 'Filter by company name or target role...')}
             value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchRoundedIcon fontSize="small" sx={{ color: 'text.secondary' }} />
-                  </InputAdornment>
-                ),
-              },
-            }}
+            onChange={onSearchChange}
             sx={{ maxWidth: { sm: 320 }, width: { xs: '100%', sm: 'auto' } }}
           />
         )}
