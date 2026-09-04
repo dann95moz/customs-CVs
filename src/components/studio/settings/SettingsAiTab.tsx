@@ -14,7 +14,7 @@ import CloudQueueRoundedIcon from '@mui/icons-material/CloudQueueRounded';
 import { useTranslation } from 'react-i18next';
 import { SettingsAiTabProps } from '../../../types';
 import { AiConfigForm } from '../ai/AiConfigForm';
-import { testAIConnection } from '../../../core/ai-service';
+import { useAiConnectionTest } from '../../../hooks/useAiConnectionTest';
 
 export type { SettingsAiTabProps };
 
@@ -28,23 +28,12 @@ export const SettingsAiTab: React.FC<SettingsAiTabProps> = ({
 }) => {
   const { t } = useTranslation(['settings', 'common']);
   const muiTheme = useTheme();
-  const [testingConnection, setTestingConnection] = React.useState(false);
-  const [statusMessage, setStatusMessage] = React.useState<string | null>(null);
+  const { testingConnection, statusMessage, runConnectionTest } = useAiConnectionTest();
 
   const isLocal = settings.provider === 'local';
 
-  const handleRunQuickTest = async () => {
-    setTestingConnection(true);
-    setStatusMessage(null);
-    try {
-      const result = await testAIConnection(settings);
-      setStatusMessage(result.message);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      setStatusMessage(msg);
-    } finally {
-      setTestingConnection(false);
-    }
+  const handleRunQuickTest = () => {
+    runConnectionTest(settings);
   };
 
   return (

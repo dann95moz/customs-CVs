@@ -36,7 +36,8 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import { useTranslation } from 'react-i18next';
 import { AIProviderId, AIProviderSettings } from '../../../types';
-import { AVAILABLE_AI_MODELS, testAIConnection } from '../../../core/ai-service';
+import { AVAILABLE_AI_MODELS } from '../../../constants/models';
+import { useAiConnectionTest } from '../../../hooks/useAiConnectionTest';
 
 export interface AiConfigFormProps {
   settings: AIProviderSettings;
@@ -69,8 +70,12 @@ export const AiConfigForm: React.FC<AiConfigFormProps> = ({
 
   const [showKey, setShowKey] = useState(false);
   const [showOtherProviders, setShowOtherProviders] = useState(false);
-  const [testingConnection, setTestingConnection] = useState(false);
-  const [testResult, setTestResult] = useState<{ success: boolean; message: string; detectedModels?: string[] } | null>(null);
+  const {
+    testingConnection,
+    testResult,
+    setTestResult,
+    runConnectionTest,
+  } = useAiConnectionTest();
 
   const isLocal = settings.provider === 'local';
 
@@ -125,21 +130,8 @@ export const AiConfigForm: React.FC<AiConfigFormProps> = ({
     setTestResult(null);
   };
 
-  const handleRunTest = async () => {
-    setTestingConnection(true);
-    setTestResult(null);
-    try {
-      const result = await testAIConnection(settings);
-      setTestResult(result);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      setTestResult({
-        success: false,
-        message: `Failed: ${msg}`,
-      });
-    } finally {
-      setTestingConnection(false);
-    }
+  const handleRunTest = () => {
+    runConnectionTest(settings);
   };
 
   const getKeyHelper = (provider: AIProviderId) => {
@@ -513,7 +505,7 @@ export const AiConfigForm: React.FC<AiConfigFormProps> = ({
               <Typography variant="caption" sx={{ fontWeight: 700 }}>
                 {t('settings:providers.detectedModels', 'Detected Models:')}
               </Typography>
-              {testResult.detectedModels.slice(0, 6).map((dm) => (
+              {testResult.detectedModels.slice(0, 6).map((dm: string) => (
                 <Chip
                   key={dm}
                   label={dm}
