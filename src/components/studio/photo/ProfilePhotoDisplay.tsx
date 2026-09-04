@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import {
   Box,
   Typography,
@@ -24,9 +24,8 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import { useTranslation } from 'react-i18next';
 import { ProfilePhotoConfig, ThemeId } from '../../../types/cv';
-import { useResumeStore } from '../../../store';
 import { PhotoCropperModal } from './PhotoCropperModal';
-import { usePhotoUpload } from '../../../hooks/usePhotoUpload';
+import { useProfilePhotoEditor } from '../../../hooks/useProfilePhotoEditor';
 
 export interface ProfilePhotoDisplayProps {
   photo?: ProfilePhotoConfig | null;
@@ -40,6 +39,7 @@ export interface ProfilePhotoDisplayProps {
   fallbackIcon?: 'diamond' | 'monogram' | 'none';
   editable?: boolean;
   activeTheme?: ThemeId;
+  onPhotoChange?: (updated: ProfilePhotoConfig | null) => void;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -56,21 +56,40 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
   fallbackIcon = 'monogram',
   editable = true,
   activeTheme,
+  onPhotoChange,
   className,
   style,
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const muiTheme = useTheme();
 
-  const [cropperOpen, setCropperOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
-  const storePhoto = useResumeStore((s) => s.photo);
-  const setProfilePhoto = useResumeStore((s) => s.setProfilePhoto);
-  const storeTheme = useResumeStore((s) => s.theme);
-
-  const currentPhoto = propPhoto !== undefined ? propPhoto : storePhoto;
-  const currentTheme = activeTheme || storeTheme;
+  const {
+    currentPhoto,
+    currentTheme,
+    hasActivePhoto,
+    clampedSize,
+    minSafeSize,
+    maxSafeSize,
+    anchorEl,
+    isPopoverOpen,
+    cropperOpen,
+    fileInputRef,
+    uploadError,
+    clearError,
+    handleFileUpload,
+    handleContainerClick,
+    handleClosePopover,
+    handleOpenCropper,
+    handleCloseCropper,
+    handleLiveSizeChange,
+    handleSavePhoto,
+    handleDeletePhoto,
+  } = useProfilePhotoEditor({
+    photo: propPhoto,
+    activeTheme,
+    editable,
+    onPhotoChange,
+  });
 
   const getBorderRadius = () => {
     switch (maskShape) {
@@ -88,60 +107,14 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
   const explicitWidth = width !== undefined ? width : (size !== undefined ? size : null);
   const explicitHeight = height !== undefined ? height : (size !== undefined ? size : null);
 
-  // If no explicit dimensions are given, compute template-safe size from photo.size or default 108px
-  const templateConfiguredSize = currentPhoto?.size || 108;
-  const maxSafeSize = currentTheme === 'executive' ? 120 : currentTheme === 'designer-uiux' ? 132 : 144;
-  const minSafeSize = 80;
-  const clampedSize = Math.max(minSafeSize, Math.min(maxSafeSize, templateConfiguredSize));
-
   const finalWidth = explicitWidth !== null ? explicitWidth : clampedSize;
   const finalHeight = explicitHeight !== null ? explicitHeight : clampedSize;
 
   const borderRadius = getBorderRadius();
-  const hasActivePhoto = Boolean(currentPhoto && currentPhoto.enabled && currentPhoto.url);
-
-  const handleContainerClick = (e: React.MouseEvent<HTMLElement>) => {
-    if (!editable) return;
-    e.stopPropagation();
-
-    if (hasActivePhoto) {
-      setAnchorEl(e.currentTarget);
-    } else {
-      fileInputRef.current?.click();
-    }
-  };
-
-  const handleClosePopover = () => {
-    setAnchorEl(null);
-  };
-
-  const {
-    fileInputRef,
-    handleFileInputChange: handleFileUpload,
-    uploadError,
-    clearError,
-  } = usePhotoUpload({
-    defaultSize: currentPhoto?.size || 108,
-    onPhotoLoaded: (newPhoto) => {
-      setProfilePhoto(newPhoto);
-      setCropperOpen(true);
-    },
-  });
-
-  const handleLiveSizeChange = (newSize: number) => {
-    if (!currentPhoto) return;
-    const bounded = Math.max(minSafeSize, Math.min(maxSafeSize, newSize));
-    setProfilePhoto({
-      ...currentPhoto,
-      size: bounded,
-    });
-  };
 
   const tooltipTitle = hasActivePhoto
     ? t('preview:panels.design.photoEditTooltip', 'Click to adjust framing or change photo')
     : t('preview:panels.design.photoUploadTooltip', 'Click to upload profile photo');
-
-  const isPopoverOpen = Boolean(anchorEl);
 
   return (
     <>
@@ -439,10 +412,7 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
             color="primary"
             size="small"
             startIcon={<CropRoundedIcon />}
-            onClick={() => {
-              handleClosePopover();
-              setCropperOpen(true);
-            }}
+            onClick={handleOpenCropper}
             fullWidth
             sx={{ fontSize: '0.78rem', textTransform: 'none', py: 0.6, whiteSpace: 'nowrap' }}
           >
@@ -468,10 +438,7 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
               color="error"
               size="small"
               startIcon={<DeleteOutlineRoundedIcon />}
-              onClick={() => {
-                handleClosePopover();
-                setProfilePhoto(null);
-              }}
+              onClick={handleDeletePhoto}
               sx={{ flex: 0.8, fontSize: '0.72rem', textTransform: 'none', py: 0.5, whiteSpace: 'nowrap' }}
             >
               {t('preview:panels.design.photoDeleteAction', 'Remove')}
@@ -484,11 +451,9 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
       {cropperOpen && (
         <PhotoCropperModal
           open={cropperOpen}
-          onClose={() => setCropperOpen(false)}
+          onClose={handleCloseCropper}
           photo={currentPhoto || null}
-          onSave={(updatedPhoto) => {
-            setProfilePhoto(updatedPhoto);
-          }}
+          onSave={handleSavePhoto}
           activeTheme={currentTheme}
         />
       )}
