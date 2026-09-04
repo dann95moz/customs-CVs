@@ -114,7 +114,37 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
   const results: ContactItem[] = [];
   const addedTypes = new Set<string>();
 
-  // 1. Check for structured key-value pairs like '- **Email:** foo@bar.com'
+  // 1. First extract all explicit markdown links [Label](URL) to preserve URLs
+  const mdLinkRegex = /\[(.*?)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g;
+  let linkMatch: RegExpExecArray | null;
+  while ((linkMatch = mdLinkRegex.exec(text)) !== null) {
+    const rawLabel = linkMatch[1].trim();
+    const rawUrl = linkMatch[2].trim();
+    const cleanLabel = cleanMarkdownFormatting(rawLabel);
+
+    if (rawUrl.includes('linkedin.com') || cleanLabel.toLowerCase().includes('linkedin')) {
+      if (!addedTypes.has('linkedin')) {
+        results.push({ type: 'linkedin', label: cleanLabel || 'LinkedIn', url: rawUrl });
+        addedTypes.add('linkedin');
+      }
+    } else if (rawUrl.includes('github.com') || cleanLabel.toLowerCase().includes('github')) {
+      if (!addedTypes.has('github')) {
+        results.push({ type: 'github', label: cleanLabel || 'GitHub', url: rawUrl });
+        addedTypes.add('github');
+      }
+    } else if (rawUrl.startsWith('mailto:') || rawUrl.includes('@')) {
+      const email = rawUrl.replace(/^mailto:/i, '');
+      if (!addedTypes.has('email')) {
+        results.push({ type: 'email', label: email, url: `mailto:${email}` });
+        addedTypes.add('email');
+      }
+    } else if (!addedTypes.has('globe')) {
+      results.push({ type: 'globe', label: cleanLabel || 'Portfolio', url: rawUrl });
+      addedTypes.add('globe');
+    }
+  }
+
+  // 2. Check for structured key-value pairs like '- **Email:** foo@bar.com'
   const lines = text.split(/\r?\n/);
   for (const line of lines) {
     const trimmed = line.trim();
@@ -123,43 +153,47 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
     const kvMatch = trimmed.match(/^[-*•]?\s*\*{0,2}(Full Name|Nombre Completo|Primary Professional Title|Title|Cargo|Location|Ubicación|Email|Correo|Phone|Teléfono|WhatsApp|LinkedIn|GitHub|Portfolio|Portafolio|Website)(?:\s*\/[^*:]*)?:\*{0,2}\s*(.+)$/i);
     if (kvMatch) {
       const key = kvMatch[1].toLowerCase();
-      const val = cleanMarkdownFormatting(kvMatch[2]);
-      if (!val || val.startsWith('[')) continue;
+      const rawVal = kvMatch[2].trim();
 
-      if (key.includes('email') || key.includes('correo')) {
-        results.push({ type: 'email', label: val, url: `mailto:${val}` });
+      // Check if value contains a markdown link [Label](url)
+      const innerLink = rawVal.match(/\[(.*?)\]\((.*?)\)/);
+      const val = innerLink ? innerLink[2].trim() : cleanMarkdownFormatting(rawVal);
+      const label = innerLink ? cleanMarkdownFormatting(innerLink[1]) : val;
+      if (!val) continue;
+
+      if ((key.includes('email') || key.includes('correo')) && !addedTypes.has('email')) {
+        const cleanEmail = val.replace(/^mailto:/i, '');
+        results.push({ type: 'email', label: cleanEmail, url: `mailto:${cleanEmail}` });
         addedTypes.add('email');
-      } else if (key.includes('phone') || key.includes('tel') || key.includes('whatsapp')) {
+      } else if ((key.includes('phone') || key.includes('tel') || key.includes('whatsapp')) && !addedTypes.has('phone')) {
         results.push({ type: 'phone', label: val });
         addedTypes.add('phone');
-      } else if (key.includes('locat') || key.includes('ubicac')) {
+      } else if ((key.includes('locat') || key.includes('ubicac')) && !addedTypes.has('location')) {
         results.push({ type: 'location', label: val });
         addedTypes.add('location');
-      } else if (key.includes('linkedin')) {
+      } else if (key.includes('linkedin') && !addedTypes.has('linkedin')) {
         const url = val.startsWith('http') ? val : `https://${val}`;
-        results.push({ type: 'linkedin', label: 'LinkedIn', url });
+        results.push({ type: 'linkedin', label: label || 'LinkedIn', url });
         addedTypes.add('linkedin');
-      } else if (key.includes('github')) {
+      } else if (key.includes('github') && !addedTypes.has('github')) {
         const url = val.startsWith('http') ? val : `https://${val}`;
-        results.push({ type: 'github', label: 'GitHub', url });
+        results.push({ type: 'github', label: label || 'GitHub', url });
         addedTypes.add('github');
-      } else if (key.includes('portfol') || key.includes('web')) {
+      } else if ((key.includes('portfol') || key.includes('web')) && !addedTypes.has('globe')) {
         const url = val.startsWith('http') ? val : `https://${val}`;
-        results.push({ type: 'globe', label: 'Portfolio', url });
+        results.push({ type: 'globe', label: label || 'Portfolio', url });
         addedTypes.add('globe');
       }
     }
   }
 
-  // 2. Extract embedded entities from inline text (split by •, |, ·, \n)
-  // Clean string and split on delimiters
+  // 3. Extract embedded entities from inline text (split by •, |, ·, \n)
   const rawParts = text
     .split(/[\r\n•|·\u00B7\u2022;]+/)
-    .map(cleanMarkdownFormatting)
+    .map(p => p.trim())
     .filter(Boolean);
 
   for (const part of rawParts) {
-    // Check if the part has embedded email + phone + location lumped together
     const emailMatch = part.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
     const linkedinMatch = part.match(/(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+/i);
     const githubMatch = part.match(/(?:https?:\/\/)?(?:www\.)?github\.com\/[a-zA-Z0-9_-]+/i);
@@ -626,6 +660,7 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
   const sections: CVSection[] = [];
 
   let lineIdx = 0;
+  let foundH1 = false;
 
   // 1. Extract Name from Top Header or Search
   while (lineIdx < cvLines.length) {
@@ -642,16 +677,50 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
         name = clean;
       }
       lineIdx++;
+      foundH1 = true;
+      break;
+    }
+    // If we encounter a section header before any H1, stop scanning so sections aren't consumed
+    if (line.startsWith('## ')) {
       break;
     }
     lineIdx++;
   }
 
+  // If no H1 line was found, rewind lineIdx to 0 so all lines and sections are parsed
+  if (!foundH1) {
+    lineIdx = 0;
+    const nameMatch = rawMarkdown.match(/(?:Nombre Completo|Full Name|Candidate Name):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
+    if (nameMatch) {
+      const clean = cleanMarkdownFormatting(nameMatch[1]);
+      if (!clean.toLowerCase().includes('candidate') && !clean.toLowerCase().includes('tu nombre')) {
+        name = clean;
+      }
+    }
+    if (!name && cvLines.length > 0) {
+      for (let i = 0; i < Math.min(cvLines.length, 5); i++) {
+        const l = cvLines[i].trim();
+        if (!l || l.startsWith('#') || l.startsWith('---') || l.startsWith('*') || l.startsWith('-')) continue;
+        if (!l.includes('@') && !l.includes('http') && !l.includes('|') && l.length >= 2 && l.length <= 50) {
+          name = cleanMarkdownFormatting(l);
+          if (i === 0) {
+            lineIdx = 1;
+          }
+          break;
+        }
+      }
+    }
+  }
+
   // 2. Extract Subtitle / Role & Header Contacts
   while (lineIdx < cvLines.length) {
     const line = cvLines[lineIdx].trim();
-    if (line.startsWith('---') || line.startsWith('## ')) {
+    if (line.startsWith('## ')) {
       break;
+    }
+    if (line.startsWith('---')) {
+      lineIdx++;
+      continue;
     }
 
     // Check if line is professional title: **Frontend Engineer | React Specialist**
@@ -660,6 +729,7 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
       const isContactPattern = /(?:\+?\d{1,3}[\s.-]?)?\(?\d{2,4}\)?[\s.-]?\d{3,4}/.test(line);
       if (
         cleanCandidate &&
+        cleanCandidate !== name &&
         !isContactPattern &&
         cleanCandidate.length <= 100 &&
         !cleanCandidate.toLowerCase().includes('dossier') &&
@@ -699,7 +769,6 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
       flushSection();
       const rawTitle = trimmed;
       const cleanTitle = cleanSectionTitle(rawTitle);
-      const upper = cleanTitle.toUpperCase();
 
       const type: SectionType = classifySectionType(cleanTitle);
 
@@ -710,7 +779,7 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
         rawContent: ''
       };
     } else if (trimmed.startsWith('---')) {
-      // separator
+      // separator between blocks within section
     } else if (currentSec) {
       secContent.push(line);
     }
@@ -722,16 +791,7 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
   const fullTextToScan = [headerContactText.join('\n'), rawMarkdown].join('\n');
   const contacts = extractContactsFromBlock(fullTextToScan);
 
-  // If candidate name wasn't found in H1, inspect personal info section
-  if (!name) {
-    const nameMatch = rawMarkdown.match(/(?:Nombre Completo|Full Name|Candidate Name):\*{0,2}\s*\[?([^\]\r\n*]+)\]?/i);
-    if (nameMatch) {
-      const clean = cleanMarkdownFormatting(nameMatch[1]);
-      if (!clean.toLowerCase().includes('candidate') && !clean.toLowerCase().includes('tu nombre')) {
-        name = clean;
-      }
-    }
-  }
+
 
   // If title wasn't found in header, inspect personal info section
   if (!title) {
@@ -770,7 +830,9 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
   };
 
   for (const s of sections) {
-    if (s.type === 'summary') cvData.summary = s.rawContent;
+    if (s.type === 'summary') {
+      cvData.summary = cvData.summary ? `${cvData.summary}\n\n${s.rawContent.trim()}` : s.rawContent.trim();
+    }
     if (s.type === 'skills') {
       const parsedGroups = parseSkillGroups(s.rawContent);
       if (!cvData.skillGroups || cvData.skillGroups.length === 0) {
@@ -796,15 +858,23 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
         }
       }
     }
-    if (s.type === 'experience') cvData.experience = parseExperienceItems(s.rawContent, false);
-    if (s.type === 'projects') cvData.projects = parseExperienceItems(s.rawContent, true);
+    if (s.type === 'experience') {
+      const parsedExp = parseExperienceItems(s.rawContent, false);
+      cvData.experience = cvData.experience && cvData.experience.length > 0 ? [...cvData.experience, ...parsedExp] : parsedExp;
+    }
+    if (s.type === 'projects') {
+      const parsedProj = parseExperienceItems(s.rawContent, true);
+      cvData.projects = cvData.projects && cvData.projects.length > 0 ? [...cvData.projects, ...parsedProj] : parsedProj;
+    }
     if (s.type === 'education') {
       const items = parseListItems(s.rawContent);
       cvData.education = cvData.education && cvData.education.length > 0 ? [...cvData.education, ...items] : items;
     }
     if (s.type === 'languages') {
-      cvData.languages = parseListItems(s.rawContent);
-      cvData.languageItems = parseLanguageItems(s.rawContent);
+      const items = parseListItems(s.rawContent);
+      cvData.languages = cvData.languages && cvData.languages.length > 0 ? [...cvData.languages, ...items] : items;
+      const langItems = parseLanguageItems(s.rawContent);
+      cvData.languageItems = cvData.languageItems && cvData.languageItems.length > 0 ? [...cvData.languageItems, ...langItems] : langItems;
     }
     if (s.type === 'generic' && s.rawContent && s.rawContent.trim()) {
       if (!cvData.customSections) cvData.customSections = [];

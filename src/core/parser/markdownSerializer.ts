@@ -15,6 +15,7 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     (data.education && data.education.length > 0) ||
     (data.languages && data.languages.length > 0) ||
     (data.projects && data.projects.length > 0) ||
+    (data.customSections && data.customSections.length > 0) ||
     (data.sections && data.sections.length > 0)
   );
 
