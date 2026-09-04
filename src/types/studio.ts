@@ -36,6 +36,16 @@ export interface StepMeta {
   icon?: React.ReactNode;
 }
 
+export interface CvTranslationVariant {
+  language: string; // 'en' | 'es' | 'de' | 'fr' | 'it'
+  languageLabel: string;
+  cvMarkdown: string;
+  updatedAt: string; // ISO string
+  isOutdated?: boolean;
+  baseMarkdownHash?: string;
+  outdatedSections?: string[];
+}
+
 export interface GeneratedCvVersion {
   id: string;
   createdAt: string; // ISO string
@@ -51,6 +61,9 @@ export interface GeneratedCvVersion {
   gapMarkdown?: string;
   targetJobSnippet?: string;
   photo?: ProfilePhotoConfig | null;
+  baseLanguage?: string;
+  translations?: Record<string, CvTranslationVariant>;
+  activeLanguage?: string;
 }
 
 export interface KanbanColumn {
@@ -66,6 +79,7 @@ export interface ApplicationItem {
   targetRole: string;
   columnId: string;
   appliedVersionId?: string;
+  selectedLanguage?: string;
   isExternalCv?: boolean;
   externalCvTitle?: string;
   createdAt: string; // ISO string

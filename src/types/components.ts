@@ -21,6 +21,7 @@ import {
   GeneratedCvVersion,
   KanbanColumn,
   ApplicationItem,
+  CvTranslationVariant,
 } from './studio';
 import {
   AuditSectionResult,
@@ -258,6 +259,15 @@ export interface StepPreviewToolbarProps {
   onAutoFit?: () => void;
   onTrackApplication?: () => void;
   isTracked?: boolean;
+  activeLanguage?: string;
+  baseLanguage?: string;
+  translations?: Record<string, CvTranslationVariant>;
+  onLanguageChange?: (lang: string) => void;
+  onOpenTranslateModal?: () => void;
+  isLanguageOutdated?: boolean;
+  outdatedSectionsCount?: number;
+  onQuickSyncOutdated?: () => void;
+  isTranslating?: boolean;
 }
 
 export interface StepPreviewNavRailProps {
@@ -425,9 +435,10 @@ export interface ApplicationGridCardProps {
   onMoveToStage: (appId: string, targetColId: string) => void;
   onArchive: (appId: string) => void;
   onDelete: (appId: string) => void;
-  onDownloadPdf?: (version: GeneratedCvVersion) => void;
+  onDownloadPdf?: (version: GeneratedCvVersion, language?: string) => void;
   isDownloadingPdf?: boolean;
   onManageStages?: () => void;
+  onSelectLanguage?: (appId: string, language: string) => void;
 }
 
 export interface ApplicationsGridViewProps {
@@ -441,10 +452,11 @@ export interface ApplicationsGridViewProps {
   onLoadVersionInStudio: (versionId: string) => void;
   onArchiveApplication: (appId: string) => void;
   onDeleteApplication: (appId: string) => void;
-  onDownloadPdf?: (version: GeneratedCvVersion) => void;
+  onDownloadPdf?: (version: GeneratedCvVersion, language?: string) => void;
   isDownloadingPdfId?: string | null;
   onManageStages: (column?: KanbanColumn) => void;
   onQuickAddApplication: (columnId?: string) => void;
+  onSelectLanguage?: (appId: string, language: string) => void;
 }
 
 export interface ApplicationCardProps {
@@ -452,7 +464,7 @@ export interface ApplicationCardProps {
   onLoad: (id: string) => void;
   onDelete: (id: string) => void;
   onDownload: (v: GeneratedCvVersion) => void;
-  onDownloadPdf?: (v: GeneratedCvVersion) => void;
+  onDownloadPdf?: (v: GeneratedCvVersion, language?: string) => void;
   onTrack?: (v: GeneratedCvVersion) => void;
   isDownloadingPdf?: boolean;
   selectionMode?: boolean;
@@ -472,13 +484,14 @@ export interface KanbanBoardProps {
   onSetAttachedVersion: (appId: string, versionId: string) => void;
   onArchiveApplication: (appId: string) => void;
   onDeleteApplication: (appId: string) => void;
-  onDownloadPdf: (version: GeneratedCvVersion) => void;
+  onDownloadPdf: (version: GeneratedCvVersion, language?: string) => void;
   isDownloadingPdfId: string | null;
   onAddColumn: () => void;
   onEditColumn: (column: KanbanColumn) => void;
   onDeleteColumn: (columnId: string) => void;
   onArchiveColumn: (columnId: string) => void;
   onQuickAddApplication: (columnId: string) => void;
+  onSelectLanguage?: (appId: string, language: string) => void;
 }
 
 export interface KanbanColumnProps {
@@ -491,12 +504,13 @@ export interface KanbanColumnProps {
   onSetAttachedVersion: (appId: string, versionId: string) => void;
   onArchiveApplication: (appId: string) => void;
   onDeleteApplication: (appId: string) => void;
-  onDownloadPdf: (version: GeneratedCvVersion) => void;
+  onDownloadPdf: (version: GeneratedCvVersion, language?: string) => void;
   isDownloadingPdfId: string | null;
   onEditColumn: (column: KanbanColumn) => void;
   onDeleteColumn: (columnId: string) => void;
   onArchiveColumn: (columnId: string) => void;
   onQuickAdd: (columnId: string) => void;
+  onSelectLanguage?: (appId: string, language: string) => void;
 }
 
 export interface KanbanCardProps {
@@ -509,9 +523,10 @@ export interface KanbanCardProps {
   onMoveToColumn?: (targetColumnId: string) => void;
   onArchive: (appId: string) => void;
   onDelete: (appId: string) => void;
-  onDownloadPdf: (version: GeneratedCvVersion) => void;
+  onDownloadPdf: (version: GeneratedCvVersion, language?: string) => void;
   isDownloadingPdf?: boolean;
   isDraggingOverlay?: boolean;
+  onSelectLanguage?: (appId: string, language: string) => void;
 }
 
 export interface TrackApplicationDialogProps {

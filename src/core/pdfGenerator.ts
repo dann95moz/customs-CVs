@@ -185,15 +185,22 @@ export async function generateDirectPdf(
  */
 export async function generateVersionDirectPdf(
   version: GeneratedCvVersion,
-  options: { pageFormat?: PageFormat; qualityScale?: number } = {}
+  options: { pageFormat?: PageFormat; qualityScale?: number; language?: string } = {}
 ): Promise<void> {
   const pageFormat = options.pageFormat || 'a4';
   const formatConfig = getPageFormatConfig(pageFormat);
 
-  const cvData = parseCvMarkdownToData(version.cvMarkdown);
+  const requestedLang = options.language || version.activeLanguage;
+  const isVariant = Boolean(requestedLang && version.translations && version.translations[requestedLang]);
+  const markdownToRender = isVariant
+    ? version.translations![requestedLang!].cvMarkdown
+    : version.cvMarkdown;
+
+  const cvData = parseCvMarkdownToData(markdownToRender);
   const candidateName = sanitizeFileName(version.candidateName || cvData.name || 'Candidate');
   const cleanCompany = sanitizeFileName(version.companyName || 'Application');
-  const fileName = `CV_${candidateName}_${cleanCompany}.pdf`;
+  const langSuffix = isVariant ? `_${requestedLang!.toUpperCase()}` : '';
+  const fileName = `CV_${candidateName}_${cleanCompany}${langSuffix}.pdf`;
 
   // Create isolated off-screen render container
   const container = document.createElement('div');
