@@ -377,9 +377,19 @@ function parseExperienceItems(rawContent: string, isProjects: boolean = false): 
 
     const isBullet = trimmed.startsWith('- ') || trimmed.startsWith('* ') || trimmed.startsWith('• ');
     const isHeading = trimmed.startsWith('### ') || trimmed.startsWith('#### ');
+
+    // Check if the current line is a subtitle (role / date / location) for the existing currentItem
+    // A line is a subtitle if currentItem exists, has no bullets yet, and this line is not an H3/H4 heading
+    const isSubtitleForCurrent =
+      currentItem !== null &&
+      currentItem.bullets.length === 0 &&
+      !isHeading;
+
+    // A bold line (**...**) is only a NEW item header if it's NOT a subtitle for currentItem
     const isBoldHeader =
+      !isSubtitleForCurrent &&
       trimmed.startsWith('**') &&
-      (trimmed.includes('|') || currentItem === null || (currentItem && currentItem.bullets.length > 0));
+      (currentItem === null || (currentItem && currentItem.bullets.length > 0));
 
     if (isHeading || isBoldHeader) {
       flush();
@@ -389,7 +399,6 @@ function parseExperienceItems(rawContent: string, isProjects: boolean = false): 
 
       const companyPart = cleanMarkdownFormatting(rawParts[0]);
       let rolePart = rawParts.slice(1).join(' | ').trim() || undefined;
-      let locationPart: string | undefined = undefined;
 
       if (isProjects) {
         // Personal projects do not have physical locations or employment tenure dates
@@ -403,30 +412,34 @@ function parseExperienceItems(rawContent: string, isProjects: boolean = false): 
         };
       } else {
         const parts = cleanLine.split('|').map(cleanMarkdownFormatting);
-        rolePart = parts[1] || undefined;
-        locationPart = parts[2] || undefined;
+        let detectedRole: string | undefined = undefined;
+        let detectedLocation: string | undefined = undefined;
+        let detectedDate: string | undefined = undefined;
 
-        if (
-          rolePart &&
-          (rolePart.toLowerCase().includes('remoto') ||
-            rolePart.toLowerCase().includes('remote') ||
-            rolePart.includes(','))
-        ) {
-          locationPart = rolePart;
-          rolePart = undefined;
+        for (let pIdx = 1; pIdx < parts.length; pIdx++) {
+          const p = parts[pIdx].trim();
+          if (!p) continue;
+          if (/\d{4}|present|presente|actual/i.test(p)) {
+            detectedDate = p;
+          } else if (/remot[eo]|hybrid|h[íi]brido|onsite|presencial|,/i.test(p)) {
+            detectedLocation = p;
+          } else if (!detectedRole) {
+            detectedRole = p;
+          }
         }
 
         currentItem = {
           company: companyPart,
-          location: locationPart,
-          role: rolePart,
-          date: undefined,
+          location: detectedLocation,
+          role: detectedRole,
+          date: detectedDate,
           bullets: []
         };
       }
     } else if (isBullet) {
-      // Strip leading bullet marker without removing markdown bold (**) or links ([...](...))
-      const bulletText = trimmed.replace(/^(?:[-*•·]|\*(?!\*))\s*/, '').trim();
+      // Strip leading bullet marker and clean markdown formatting markers (bold, italics, brackets) for clean plain text
+      const rawBullet = trimmed.replace(/^(?:[-*•·]|\*(?!\*))\s*/, '').trim();
+      const bulletText = cleanMarkdownFormatting(rawBullet);
       if (!currentItem) {
         currentItem = {
           company: '',
@@ -465,7 +478,7 @@ function parseExperienceItems(rawContent: string, isProjects: boolean = false): 
 }
 
 /**
- * Parses education/languages bullet items (supports discrete bullets and auto-splits inline certifications)
+ * Parses education/languages bullet items (supports discrete bullets, indented sub-bullets, and auto-splits inline certifications)
  */
 function parseListItems(rawContent: string): string[] {
   const lines = rawContent.split(/\r?\n/);
@@ -475,11 +488,36 @@ function parseListItems(rawContent: string): string[] {
     const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith('#') || trimmed.startsWith('---')) continue;
 
-    // Check if multiple items are joined on a single line with bullets (• or · or ;)
+    // Check if line is indented under the previous item (sub-bullet or description)
+    const isIndented = /^(?:\s{2,}|\t)/.test(line);
+    if (isIndented && items.length > 0) {
+      const cleanSub = trimmed.replace(/^(?:[-*•·]|\*(?!\*))\s*/, '').trim();
+      if (cleanSub) {
+        items[items.length - 1] = `${items[items.length - 1]}\n  - ${cleanSub}`;
+      }
+      continue;
+    }
+
+    // Check if multiple items are joined on a single line with bullets (• or ·)
     // e.g. 'API Development Apigee · 2024 • API Documentation · 2024 • Leadership & Team Mgmt · 2023'
-    if (trimmed.includes('•') || trimmed.includes('·') || (trimmed.includes(';') && !trimmed.includes('&'))) {
-      const subParts = trimmed.split(/\s*[•;]\s*/).filter(Boolean);
+    if (trimmed.includes('•') || trimmed.includes('·')) {
+      const subParts = trimmed.split(/\s*[•·]\s*/).filter(Boolean);
       if (subParts.length > 1) {
+        for (const part of subParts) {
+          const cleanPart = part.replace(/^(?:[-•·]|\*(?!\*))\s*/, '').trim();
+          if (cleanPart) {
+            items.push(cleanPart);
+          }
+        }
+        continue;
+      }
+    }
+
+    // If joined with semicolons, only split if it looks like multiple credential entries (e.g. each part has a year or credential pattern)
+    if (trimmed.includes(';') && !trimmed.includes('&')) {
+      const subParts = trimmed.split(/\s*;\s*/).filter(Boolean);
+      const allLookLikeItems = subParts.length >= 2 && subParts.every(p => /\d{4}|certif|degree|diplom|curso|course/i.test(p));
+      if (allLookLikeItems) {
         for (const part of subParts) {
           const cleanPart = part.replace(/^(?:[-•·]|\*(?!\*))\s*/, '').trim();
           if (cleanPart) {
