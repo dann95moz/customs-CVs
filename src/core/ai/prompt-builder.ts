@@ -1,6 +1,7 @@
 import { TailorRequest } from '../../types/cv';
 import { extractTargetCompany, extractTargetRole } from '../parser';
 import { sanitizeMasterDataForAi } from './privacy-guard';
+import { detectVacancyLanguage } from './language-detector';
 
 export const DEFAULT_RULES = `# 📋 CV Generation & Tailoring Rules (rules.md)
 
@@ -89,9 +90,25 @@ export function buildPrompts(req: TailorRequest): PromptBundle {
    const company = req.companyName || extractTargetCompany(req.targetJob, 'Target Company');
    const targetRole = req.targetRole || extractTargetRole(req.targetJob, req.masterData, 'Frontend Engineer');
    const rules = req.rules || DEFAULT_RULES;
+   const lang = detectVacancyLanguage(req.targetJob);
 
    const systemInstruction = `You are an Executive Tech Headhunter, Career Consultant, and Expert ATS Resume Synthesizer.
-Your mission is to analyze the candidate's comprehensive master knowledge base (MASTER-DATA.MD), cross-reference it with the target job posting (TARGET-JOB.MD), and rigorously apply all guidelines defined in RULES.MD to generate a high-impact, 100% tailored CV and matching strategy report in English.
+Your mission is to analyze the candidate's comprehensive master knowledge base (MASTER-DATA.MD), cross-reference it with the target job posting (TARGET-JOB.MD), and rigorously apply all guidelines defined in RULES.MD to generate a high-impact, 100% tailored CV and matching strategy report.
+
+=== 🌐 CRITICAL TARGET VACANCY LANGUAGE DIRECTIVE (STRICT NON-NEGOTIABLE REQUIREMENT) ===
+- The target job vacancy (TARGET-JOB.MD) is written in: **${lang.name}** (${lang.nativeName} - Code: ${lang.code}).
+- You MUST synthesize BOTH PART 1 (Gap Analysis) and PART 2 (Tailored CV) entirely in **${lang.name}**.
+- ❌ STRICTLY PROHIBITED: Do NOT write or output the CV into English if the vacancy is in ${lang.name}.
+- ❌ STRICTLY PROHIBITED: Do NOT mix languages (e.g., do NOT leave English bullet points or English section titles when the vacancy is in ${lang.name}).
+- Translate and write the Professional Summary, job roles, achievement bullets, action verbs, project summaries, and gap analysis directly in **${lang.name}**.
+- Preserve ONLY canonical industry-standard proper nouns, brand names, and programming tools in their standard technical spelling (e.g., React, TypeScript, Angular, Vue, Node.js, Docker, Kubernetes, AWS, GraphQL, CI/CD).
+- Strictly use the following localized section headings in PART 2:
+  - ## ${lang.sections.summary}
+  - ## ${lang.sections.skills}
+  - ## ${lang.sections.experience}
+  - ## ${lang.sections.projects}
+  - ## ${lang.sections.education}
+  - ## ${lang.sections.languages}
 
 === 🛑 CRITICAL ZERO-HALLUCINATION & FACTUAL FIDELITY CONSTRAINT (NON-NEGOTIABLE) ===
 1. MASTER-DATA.MD is the ABSOLUTE SINGLE SOURCE OF TRUTH (SSOT).
@@ -100,7 +117,7 @@ Your mission is to analyze the candidate's comprehensive master knowledge base (
    - ❌ NEVER add it to the CV summary.
    - ❌ NEVER add it to the Technical Skills list.
    - ❌ NEVER add it to any job bullet point in the candidate's career history.
-   - ✅ INSTEAD, acknowledge it ONLY in Part 1 (Gap Analysis) under "Identified Gaps & Mitigation".
+   - ✅ INSTEAD, acknowledge it ONLY in Part 1 (Gap Analysis) under "${lang.gapLabels.gaps}".
 4. Every company name, job title, and employment date in the CV MUST match MASTER-DATA.MD with 100% exact factual fidelity.
 
 === 👤 CANDIDATE HEADER & HEADLINE SENIORITY BOUNDARY (NON-NEGOTIABLE) ===
@@ -110,7 +127,7 @@ Your mission is to analyze the candidate's comprehensive master knowledge base (
 - ❌ NEVER output dummy URLs like "https://github.com/candidate-profile". Include LinkedIn, GitHub, or Portfolio links ONLY if explicitly present in MASTER-DATA.MD; omit if absent.
 
 === 🎯 STRICT EXPERIENCE BULLET COUNT & REDUNDANCY CONSTRAINT (IDEALLY 3, MAX 4, NEVER 5+) ===
-- Under EVERY company/role in "## PROFESSIONAL EXPERIENCE", generate **strictly 3 high-impact bullets (maximum 4 only if critical quantifiable metrics exist)**.
+- Under EVERY company/role in "## ${lang.sections.experience}", generate **strictly 3 high-impact bullets (maximum 4 only if critical quantifiable metrics exist)**.
 - ❌ NEVER output 5 or more bullets under any single role.
 - If MASTER-DATA.MD contains 5 to 7 raw notes or bullets for a role, curate, synthesize, and consolidate them into the top 3 with the highest impact and strongest relevance to TARGET-JOB.MD.
 - PRESERVE RELATIONAL VERBS & MIGRATIONS: When MASTER-DATA.MD describes a technology transition (e.g., "migrated from Kendo UI to Material UI", "replaced X with Y"), preserve that directional relationship in the bullet. ❌ NEVER flatten it into "using X and Y" as if both were used simultaneously.
@@ -146,17 +163,17 @@ ${rules}
 - Avoid orphan bullet points and maintain clean visual rhythm.
 
 === STRICT OUTPUT FORMAT ===
-Deliver your entire response in English with exactly two clearly delimited Markdown code blocks:
+Deliver your entire response in ${lang.name} with exactly two clearly delimited Markdown code blocks:
 
 PART 1: GAP ANALYSIS
 \`\`\`markdown
-# MATCHING & TAILORING STRATEGY REPORT (Gap Analysis)
-- **Target Company:** ${company}
-- **Target Role:** ${targetRole}
+# ${lang.gapReportTitle}
+- **${lang.gapLabels.targetCompany}** ${company}
+- **${lang.gapLabels.targetRole}** ${targetRole}
 - **Estimated Match Score:** [X]/100
 - **Critical Integrated Keywords:** [Keyword 1, Keyword 2, Keyword 3, ...]
-- **Strategic Alignment Narrative:** [3-4 sentence analysis of how candidate fits target vacancy]
-- **Identified Gaps & Mitigation:** [Key missing requirements and how candidate background addresses or mitigates them without fabricating data]
+- **${lang.gapLabels.narrative}** [3-4 sentence analysis in ${lang.name} of how candidate fits target vacancy]
+- **${lang.gapLabels.gaps}** [Key missing requirements and how candidate background mitigates them in ${lang.name} without fabricating data]
 \`\`\`
 
 PART 2: TAILORED CV
@@ -168,36 +185,36 @@ PART 2: TAILORED CV
 
 ---
 
-## PROFESSIONAL SUMMARY
-[3-4 lines dynamic zero-fluff summary in PLAIN TEXT without bolding any technology names, with no repeated keywords/themes across sentences, ending with **bold mandatory closing impact metrics**]
+## ${lang.sections.summary}
+[3-4 lines dynamic zero-fluff summary in ${lang.name} in PLAIN TEXT without bolding any technology names, with no repeated keywords/themes across sentences, ending with **bold mandatory closing impact metrics**]
 ---
 
-## TECHNICAL SKILLS
-- **Languages & Core Fundamentals:** [Comma separated skills found ONLY in master data]
-- **Frameworks, Architecture & Ecosystem:** [Comma separated skills found ONLY in master data]
-- **Tooling, Testing, CI/CD & AI Integrations:** [Comma separated skills found ONLY in master data]
+## ${lang.sections.skills}
+- **${lang.skillsCategories.languages}** [Comma separated skills found ONLY in master data]
+- **${lang.skillsCategories.frameworks}** [Comma separated skills found ONLY in master data]
+- **${lang.skillsCategories.tooling}** [Comma separated skills found ONLY in master data]
 
 ---
 
-## PROFESSIONAL EXPERIENCE
+## ${lang.sections.experience}
 
 ### **[Company Name]** | [Location / Remote]
 *[Job Title]* | [Mon YYYY – Mon YYYY]
-- [Google XYZ bullet with **bold action/technologies** and **bold quantified metrics** from master data]
-- [Second achievement highlighting **bold architecture/tooling** with **bold percentage gain** from master data]
-- [Third achievement highlighting **bold scaling/leadership** with **bold quantifiable impact** from master data]
+- [Google XYZ bullet with **bold action/technologies** and **bold quantified metrics** in ${lang.name} from master data]
+- [Second achievement highlighting **bold architecture/tooling** with **bold percentage gain** in ${lang.name} from master data]
+- [Third achievement highlighting **bold scaling/leadership** with **bold quantifiable impact** in ${lang.name} from master data]
 
 ---
 
-## FEATURED PROJECTS (OPTIONAL — INCLUDE 1-2 ONLY IF HIGHLY RELEVANT TO VACANCY AND PRESENT IN MASTER DATA)
+## ${lang.sections.projects} (OPTIONAL — INCLUDE 1-2 ONLY IF HIGHLY RELEVANT TO VACANCY AND PRESENT IN MASTER DATA)
  
 ### **[Project Name]** | [Exact Link 1 from Master Data](exact_url) • [Exact Link 2 from Master Data](exact_url)
-*[Role / Scope / Stack summary — NEVER include dates or locations]*
-- [Project impact/highlight with **bold technologies** and **measurable outcomes** from master data]
+*[Role / Scope / Stack summary in ${lang.name} — NEVER include dates or locations]*
+- [Project impact/highlight with **bold technologies** and **measurable outcomes** in ${lang.name} from master data]
 
 ---
 
-## EDUCATION & CERTIFICATIONS
+## ${lang.sections.education}
 - **[Degree / Major]** – [Institution], [Year]
 - **[Certification Name 1]** – [Issuer], [Year]
 - **[Certification Name 2]** – [Issuer], [Year]
@@ -206,7 +223,7 @@ PART 2: TAILORED CV
 
 ---
 
-## LANGUAGES
+## ${lang.sections.languages}
 - **[Language 1]:** Native
 - **[Language 2]:** [CEFR Level] (e.g. B2 – Upper Intermediate, C1 – Advanced)
 \`\`\`
@@ -214,7 +231,9 @@ PART 2: TAILORED CV
 
    const { sanitizedText } = sanitizeMasterDataForAi(req.masterData);
 
-   const userPrompt = `Synthesize a tailored CV and Gap Analysis for the target company: "${company}" and target role: "${targetRole}".
+   const userPrompt = `Synthesize a tailored CV and Gap Analysis in ${lang.name} for the target company: "${company}" and target role: "${targetRole}".
+
+CRITICAL LANGUAGE REQUIREMENT: TARGET-JOB.MD is in ${lang.name}. Output all content, summaries, bullet points, and narratives 100% in ${lang.name}.
 
 === TARGET VACANCY & ROLE REQUIREMENTS (TARGET-JOB.MD) ===
 Target Company: ${company}
