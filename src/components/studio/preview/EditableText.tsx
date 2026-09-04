@@ -1,12 +1,10 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Tooltip, Box, Button, IconButton, Typography, alpha, useTheme } from '@mui/material';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import { useCvLiveEdit } from './CvLiveEditContext';
 import { markdownToHtml, htmlToMarkdown } from '../../../utils/textFormatting';
 import { CvSelectionBubble } from './CvSelectionBubble';
 import { AiRegeneratePopover } from './AiRegeneratePopover';
+import { AiHoverActionsPill } from './AiHoverActionsPill';
 
 export interface AiRegenerateConfig {
   type: 'bullet' | 'summary';
@@ -51,7 +49,6 @@ export const EditableText: React.FC<EditableTextProps> = ({
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const liveEdit = useCvLiveEdit();
-  const theme = useTheme();
   const isEditingEnabled = Boolean(liveEdit?.isLiveEditing);
   const elementRef = useRef<HTMLElement>(null);
   const isFocusedRef = useRef(false);
@@ -61,6 +58,16 @@ export const EditableText: React.FC<EditableTextProps> = ({
   const [isBoldActive, setIsBoldActive] = useState(false);
   const [isItalicActive, setIsItalicActive] = useState(false);
   const [aiPopoverAnchor, setAiPopoverAnchor] = useState<HTMLElement | null>(null);
+  const [isRecentlyRegenerated, setIsRecentlyRegenerated] = useState(false);
+  const regenTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (regenTimeoutRef.current) {
+        clearTimeout(regenTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const undoValue = aiConfig ? liveEdit?.undoMap[aiConfig.fieldKey] : undefined;
 
@@ -374,8 +381,9 @@ export const EditableText: React.FC<EditableTextProps> = ({
   const handleRegenerateWithAi = async (guidance: string) => {
     if (!aiConfig || !liveEdit) return;
 
+    let newText = '';
     if (aiConfig.type === 'bullet') {
-      const newText = await liveEdit.regenerateExperienceBullet({
+      newText = await liveEdit.regenerateExperienceBullet({
         fieldKey: aiConfig.fieldKey,
         sectionType: aiConfig.sectionType || 'experience',
         itemIndex: aiConfig.itemIndex ?? 0,
@@ -389,7 +397,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
         elementRef.current.innerHTML = markdownToHtml(newText);
       }
     } else if (aiConfig.type === 'summary') {
-      const newText = await liveEdit.regenerateSummaryBlock({
+      newText = await liveEdit.regenerateSummaryBlock({
         fieldKey: aiConfig.fieldKey,
         currentSummary: value,
         userGuidance: guidance,
@@ -398,9 +406,41 @@ export const EditableText: React.FC<EditableTextProps> = ({
         elementRef.current.innerHTML = markdownToHtml(newText);
       }
     }
+
+    if (newText) {
+      setIsRecentlyRegenerated(true);
+      if (regenTimeoutRef.current) {
+        clearTimeout(regenTimeoutRef.current);
+      }
+      regenTimeoutRef.current = setTimeout(() => {
+        setIsRecentlyRegenerated(false);
+      }, 3000);
+    }
   };
 
-  const handleUndo = () => {
+  const handleAccept = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (regenTimeoutRef.current) {
+      clearTimeout(regenTimeoutRef.current);
+      regenTimeoutRef.current = null;
+    }
+    setIsRecentlyRegenerated(false);
+    if (aiConfig && liveEdit) {
+      liveEdit.clearUndo(aiConfig.fieldKey);
+    }
+  };
+
+  const handleUndo = (e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    if (regenTimeoutRef.current) {
+      clearTimeout(regenTimeoutRef.current);
+      regenTimeoutRef.current = null;
+    }
+    setIsRecentlyRegenerated(false);
     if (!aiConfig || !liveEdit) return;
     liveEdit.undoItem(aiConfig.fieldKey, (previousValue) => {
       onSave(previousValue);
@@ -464,82 +504,13 @@ export const EditableText: React.FC<EditableTextProps> = ({
 
         {/* Floating Absolute Action Pill: Floats over the item without altering layout */}
         {hasAiAction && (
-          <span
-            className={`no-print cv-ai-hover-actions ${undoValue !== undefined ? 'has-undo' : ''}`}
-            style={{
-              position: 'absolute',
-              top: '-12px',
-              right: 0,
-              zIndex: 25,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-            }}
-          >
-            <Box
-              sx={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 0.6,
-                bgcolor: 'background.paper',
-                border: `1px solid ${theme.palette.divider}`,
-                borderRadius: '64px',
-                boxShadow: 2,
-              }}
-            >
-              {undoValue !== undefined && (
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={handleUndo}
-                  startIcon={<UndoRoundedIcon sx={{ fontSize: '13px !important' }} />}
-                  sx={{
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    textTransform: 'none',
-                    py: 0.1,
-                    px: 0.8,
-                    minHeight: 22,
-                    height: 22,
-                    borderRadius: '64px',
-                    borderColor: 'divider',
-                    color: 'text.primary',
-                    whiteSpace: 'nowrap',
-                    '&:hover': {
-                      bgcolor: alpha(theme.palette.primary.main, 0.08),
-                      borderColor: 'primary.main',
-                    },
-                  }}
-                >
-                  {t('preview:aiRegen.undo', 'Undo')}
-                </Button>
-              )}
-
-              <Tooltip title={t('preview:aiRegen.tooltip', 'Regenerate with AI')} arrow placement="top">
-                <IconButton
-                  size="small"
-                  onClick={handleOpenAiPopover}
-                  className="cv-ai-sparkle-btn"
-                  sx={{
-                    width: 24,
-                    height: 24,
-                    bgcolor: alpha(theme.palette.primary.main, 0.1),
-                    color: 'primary.main',
-                    borderRadius: '50%',
-                    border: `1px solid ${alpha(theme.palette.primary.main, 0.25)}`,
-                    transition: 'all 0.15s ease',
-                    '&:hover': {
-                      bgcolor: 'primary.main',
-                      color: 'primary.contrastText',
-                      transform: 'scale(1.1)',
-                    },
-                  }}
-                >
-                  <AutoAwesomeRoundedIcon sx={{ fontSize: 13 }} />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          </span>
+          <AiHoverActionsPill
+            hasUndo={undoValue !== undefined}
+            isRecentlyRegenerated={isRecentlyRegenerated}
+            onAccept={handleAccept}
+            onUndo={handleUndo}
+            onOpenAiPopover={handleOpenAiPopover}
+          />
         )}
 
         {/* Selection Toolbar for Bold/Formatting */}
@@ -595,83 +566,13 @@ export const EditableText: React.FC<EditableTextProps> = ({
         />
 
         {/* Floating Absolute Action Pill */}
-        <span
-          className={`no-print cv-ai-hover-actions ${undoValue !== undefined ? 'has-undo' : ''}`}
-          style={{
-            position: 'absolute',
-            top: '-12px',
-            right: 0,
-            zIndex: 25,
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '4px',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 0.6,
-              bgcolor: 'background.paper',
-              border: `1px solid ${theme.palette.divider}`,
-              borderRadius: '64px',
-              boxShadow: 2,
-
-            }}
-          >
-            {undoValue !== undefined && (
-              <Button
-                size="small"
-                variant="outlined"
-                onClick={handleUndo}
-                startIcon={<UndoRoundedIcon sx={{ fontSize: '13px !important' }} />}
-                sx={{
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
-                  textTransform: 'none',
-                  py: 0.1,
-                  px: 0.8,
-                  minHeight: 22,
-                  height: 22,
-                  borderRadius: '64px',
-                  borderColor: 'divider',
-                  color: 'text.primary',
-                  whiteSpace: 'nowrap',
-                  '&:hover': {
-                    bgcolor: alpha(theme.palette.primary.main, 0.08),
-                    borderColor: 'primary.main',
-                  },
-                }}
-              >
-                {t('preview:aiRegen.undo', 'Undo')}
-              </Button>
-            )}
-
-            <Tooltip title={t('preview:aiRegen.tooltip', 'Regenerate with AI')} arrow placement="top">
-              <IconButton
-                size="small"
-                onClick={handleOpenAiPopover}
-                className="cv-ai-sparkle-btn"
-                sx={{
-                  width: 24,
-                  height: 24,
-                  bgcolor: alpha(theme.palette.primary.main, 0.1),
-                  color: 'primary.main',
-                  borderRadius: '50%',
-                  border: `1px solid ${alpha(theme.palette.primary.main, 0.25)}`,
-                  transition: 'all 0.15s ease',
-                  '&:hover': {
-                    bgcolor: 'primary.main',
-                    color: 'primary.contrastText',
-                    transform: 'scale(1.1)',
-                  },
-                }}
-              >
-                <AutoAwesomeRoundedIcon sx={{ fontSize: 13 }} />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </span>
+        <AiHoverActionsPill
+          hasUndo={undoValue !== undefined}
+          isRecentlyRegenerated={isRecentlyRegenerated}
+          onAccept={handleAccept}
+          onUndo={handleUndo}
+          onOpenAiPopover={handleOpenAiPopover}
+        />
 
         {/* Selection Toolbar for Bold/Formatting */}
         <CvSelectionBubble
