@@ -66,5 +66,23 @@
   },
   "ai": {
     "liveSynthesis": "Live-KI-Synthese"
+  },
+  "quickScore": {
+    "title": "Passgenauigkeits-Quick-Score",
+    "highFit": "Hohe Übereinstimmung",
+    "moderateFit": "Moderate Übereinstimmung",
+    "lowFit": "Erste Übereinstimmung",
+    "summary": "{{matched}} von {{total}} Schlüsselanforderungen in Ihrem Profil erkannt",
+    "matchedSkills": "Übereinstimmende Fähigkeiten in Ihrem Profil:",
+    "missingSkills": "In der Stelle gefordert, aber noch nicht in Ihrem Profil:",
+    "missingTooltip": "Wenn Sie hier Erfahrung haben, ergänzen Sie diese in Ihrem Profil, um die Passgenauigkeit zu erhöhen."
+  },
+  "highlighter": {
+    "viewTitle": "Analysierte Ansicht",
+    "summary": "{{total}} Anforderungen erkannt: {{covered}} abgedeckt, {{missing}} ausstehend",
+    "coveredLabel": "Im Profil abgedeckt",
+    "missingLabel": "Noch abzudecken",
+    "coveredTooltip": "✓ Anforderung in Ihrem Profil vorhanden",
+    "missingTooltip": "⚡ Lücke: Noch nicht in Ihrem Profil gefunden"
   }
 }

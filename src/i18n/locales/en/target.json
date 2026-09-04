@@ -66,5 +66,23 @@
   },
   "ai": {
     "liveSynthesis": "Live AI Synthesis"
+  },
+  "quickScore": {
+    "title": "Compatibility Quick Score",
+    "highFit": "High Match",
+    "moderateFit": "Moderate Match",
+    "lowFit": "Initial Match",
+    "summary": "{{matched}} of {{total}} key requirements detected in your Career Profile",
+    "matchedSkills": "Matching skills found in your profile:",
+    "missingSkills": "Vacancy skills not yet found in your profile:",
+    "missingTooltip": "If you have experience in this, add it to your Master CV to boost your match score."
+  },
+  "highlighter": {
+    "viewTitle": "Analyzed View",
+    "summary": "{{total}} requirements detected: {{covered}} covered, {{missing}} pending",
+    "coveredLabel": "Covered in profile",
+    "missingLabel": "Pending to cover",
+    "coveredTooltip": "✓ Skill present in your Career Profile",
+    "missingTooltip": "⚡ Detected gap: Not found in your Career Profile"
   }
 }

@@ -13,6 +13,7 @@ import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
+import HighlightRoundedIcon from '@mui/icons-material/HighlightRounded';
 import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +21,10 @@ import { StepTargetJobProps } from '../../types';
 import { TargetJobProgressBanner } from './target/TargetJobProgressBanner';
 import { TargetJobMetadataBar } from './target/TargetJobMetadataBar';
 import { TargetJobFooterActions } from './target/TargetJobFooterActions';
+import { QuickScoreBadge } from './target/QuickScoreBadge';
+import { JobKeywordsHighlighter } from './target/JobKeywordsHighlighter';
+import { calculateQuickScore } from '../../core/matching/quickMatcher';
+import { useResumeStore } from '../../store/useResumeStore';
 
 const ContextualAiModal = React.lazy(() =>
   import('./ai/ContextualAiModal').then((m) => ({ default: m.ContextualAiModal }))
@@ -47,11 +52,17 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   const { t } = useTranslation(['target', 'common']);
   const theme = useTheme();
   const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
+  const [editorViewMode, setEditorViewMode] = useState<'edit' | 'analyzed'>('edit');
   const lastClickRef = useRef<number>(0);
 
   const [localContent, setLocalContent] = useState(content);
   const [localCompany, setLocalCompany] = useState(companyName);
   const [localRole, setLocalRole] = useState(targetRole);
+
+  const masterData = useResumeStore((s) => s.masterData);
+  const quickMatchResult = React.useMemo(() => {
+    return calculateQuickScore(localContent, masterData);
+  }, [localContent, masterData]);
 
   const contentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const companyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -269,6 +280,11 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
           wordCount={wordCount}
         />
 
+        {/* 3.5. Instant Pre-generation Quick Score Match */}
+        {quickMatchResult.totalKeywords > 0 && (
+          <QuickScoreBadge result={quickMatchResult} />
+        )}
+
         {/* 4. Spacious Direct Job Description Editor Area */}
         <Paper
           sx={{
@@ -283,10 +299,10 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             overflow: 'hidden',
           }}
         >
-          {/* Editor Header Toolbar with Attachment Action */}
+          {/* Editor Header Toolbar with View Mode Toggle and Attachment Action */}
           <Box
             sx={{
-              py: 1,
+              py: 0.75,
               px: { xs: 1.5, sm: 2 },
               display: 'flex',
               alignItems: 'center',
@@ -294,13 +310,44 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               borderBottom: `1px solid ${theme.palette.divider}`,
               bgcolor: alpha(theme.palette.text.primary, 0.02),
               flexShrink: 0,
+              gap: 1,
+              flexWrap: 'wrap',
             }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <EditNoteRoundedIcon fontSize="small" color="secondary" />
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: { xs: '0.82rem', sm: '0.875rem' } }}>
-                {t('target:editor.editModeTitle', 'Job Description (Plain Text / Raw Posting)')}
-              </Typography>
+            {/* View Mode Toggle: Edit Plain Text vs Analyzed Keywords View */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+              <Button
+                size="small"
+                variant={editorViewMode === 'edit' ? 'contained' : 'text'}
+                color={editorViewMode === 'edit' ? 'primary' : 'inherit'}
+                startIcon={<EditNoteRoundedIcon fontSize="small" />}
+                onClick={() => setEditorViewMode('edit')}
+                sx={{
+                  fontSize: '0.78rem',
+                  textTransform: 'none',
+                  px: 1.25,
+                  py: 0.35,
+                  fontWeight: editorViewMode === 'edit' ? 700 : 500,
+                }}
+              >
+                {t('target:editor.editText', 'Edit Text')}
+              </Button>
+              <Button
+                size="small"
+                variant={editorViewMode === 'analyzed' ? 'contained' : 'text'}
+                color={editorViewMode === 'analyzed' ? 'secondary' : 'inherit'}
+                startIcon={<HighlightRoundedIcon fontSize="small" />}
+                onClick={() => setEditorViewMode('analyzed')}
+                sx={{
+                  fontSize: '0.78rem',
+                  textTransform: 'none',
+                  px: 1.25,
+                  py: 0.35,
+                  fontWeight: editorViewMode === 'analyzed' ? 700 : 500,
+                }}
+              >
+                {t('target:highlighter.viewTitle', 'Analyzed View')}
+              </Button>
             </Box>
 
             <Tooltip title={t('target:actions.uploadFileTip', 'Upload job description file (.txt, .md)')}>
@@ -338,28 +385,32 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               minHeight: 280,
             }}
           >
-            <textarea
-              className="studio-textarea"
-              value={localContent}
-              onChange={(e) => handleContentChange(e.target.value)}
-              onBlur={() => onChange(localContent)}
-              placeholder="# Job Title / Target Role&#10;Company Name • Location / Remote&#10;&#10;## About the Role&#10;Paste the full vacancy responsibilities, requirements, and tech stack here..."
-              spellCheck={false}
-              style={{
-                width: '100%',
-                height: '100%',
-                minHeight: '280px',
-                border: 'none',
-                outline: 'none',
-                padding: '16px',
-                fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
-                fontSize: '0.88rem',
-                lineHeight: 1.65,
-                resize: 'vertical',
-                backgroundColor: 'transparent',
-                color: theme.palette.text.primary,
-              }}
-            />
+            {editorViewMode === 'edit' ? (
+              <textarea
+                className="studio-textarea"
+                value={localContent}
+                onChange={(e) => handleContentChange(e.target.value)}
+                onBlur={() => onChange(localContent)}
+                placeholder="# Job Title / Target Role&#10;Company Name • Location / Remote&#10;&#10;## About the Role&#10;Paste the full vacancy responsibilities, requirements, and tech stack here..."
+                spellCheck={false}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  minHeight: '280px',
+                  border: 'none',
+                  outline: 'none',
+                  padding: '16px',
+                  fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
+                  fontSize: '0.88rem',
+                  lineHeight: 1.65,
+                  resize: 'vertical',
+                  backgroundColor: 'transparent',
+                  color: theme.palette.text.primary,
+                }}
+              />
+            ) : (
+              <JobKeywordsHighlighter jobText={localContent} masterData={masterData} />
+            )}
           </Box>
         </Paper>
 

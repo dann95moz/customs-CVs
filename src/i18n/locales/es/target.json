@@ -66,5 +66,23 @@
   },
   "ai": {
     "liveSynthesis": "Síntesis de IA en Vivo"
+  },
+  "quickScore": {
+    "title": "Quick Score de Compatibilidad",
+    "highFit": "Alto Encaje",
+    "moderateFit": "Encaje Moderado",
+    "lowFit": "Encaje Inicial",
+    "summary": "{{matched}} de {{total}} requerimientos clave detectados en tu Perfil Maestro",
+    "matchedSkills": "Habilidades coincidentes encontradas en tu perfil:",
+    "missingSkills": "Habilidades de la vacante no detectadas en tu perfil:",
+    "missingTooltip": "Si tienes experiencia en esto, agrégalo a tu Master CV para mejorar tu puntuación."
+  },
+  "highlighter": {
+    "viewTitle": "Vista Analizada",
+    "summary": "{{total}} requerimientos detectados: {{covered}} cubiertos, {{missing}} pendientes",
+    "coveredLabel": "Cubierta en tu perfil",
+    "missingLabel": "Pendiente por cubrir",
+    "coveredTooltip": "✓ Habilidad presente en tu Perfil Maestro",
+    "missingTooltip": "⚡ Brecha detectada: No encontrada en tu Perfil Maestro"
   }
 }

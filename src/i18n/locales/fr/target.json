@@ -66,5 +66,23 @@
   },
   "ai": {
     "liveSynthesis": "Synthèse IA en Direct"
+  },
+  "quickScore": {
+    "title": "Quick Score de Compatibilité",
+    "highFit": "Forte Adéquation",
+    "moderateFit": "Adéquation Modérée",
+    "lowFit": "Adéquation Initiale",
+    "summary": "{{matched}} exigences clés sur {{total}} identifiées dans votre profil",
+    "matchedSkills": "Compétences correspondantes détectées dans votre profil :",
+    "missingSkills": "Compétences demandées non encore trouvées dans votre profil :",
+    "missingTooltip": "Si vous avez de l'expérience dans ce domaine, ajoutez-la à votre profil pour améliorer votre score."
+  },
+  "highlighter": {
+    "viewTitle": "Vue Analysée",
+    "summary": "{{total}} exigences détectées : {{covered}} couvertes, {{missing}} en attente",
+    "coveredLabel": "Présente dans votre profil",
+    "missingLabel": "À couvrir",
+    "coveredTooltip": "✓ Compétence trouvée dans votre profil",
+    "missingTooltip": "⚡ Lacune : Non trouvée dans votre profil"
   }
 }
