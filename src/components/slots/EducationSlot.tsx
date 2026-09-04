@@ -34,13 +34,17 @@ export const EducationSlot: React.FC<EducationSlotProps> = ({
             item = item.replace(/^([A-Za-z0-9\s.,/&()-]+?)\s+([–—\-])\s+/, '**$1** $2 ');
           }
 
+          const htmlContent = item.includes('\n')
+            ? (marked.parse(item) as string).replace(/^<p>([\s\S]*?)<\/p>/, '$1')
+            : (marked.parseInline(item) as string);
+
           return (
             <EditableText
               key={idx}
               tagName="li"
               value={item}
               onSave={(newVal) => liveEdit?.updateEducationItem(idx, newVal)}
-              htmlContent={marked.parseInline(item) as string}
+              htmlContent={htmlContent}
               placeholder="Degree, Institution, Dates..."
             />
           );

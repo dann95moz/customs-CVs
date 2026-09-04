@@ -83,12 +83,12 @@ export const EditableText: React.FC<EditableTextProps> = ({
   // Initialize and synchronize innerHTML when external value changes and element is NOT focused
   useEffect(() => {
     if (elementRef.current && !isFocusedRef.current) {
-      const formatted = markdownToHtml(value || '');
+      const formatted = htmlContent || markdownToHtml(value || '');
       if (elementRef.current.innerHTML !== formatted) {
         elementRef.current.innerHTML = formatted;
       }
     }
-  }, [value]);
+  }, [value, htmlContent]);
 
   const saveCurrentContent = useCallback(() => {
     if (!elementRef.current) return;
