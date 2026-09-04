@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import {
   Box,
   Typography,
@@ -28,180 +28,82 @@ import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 import DifferenceRoundedIcon from '@mui/icons-material/DifferenceRounded';
 import { useTranslation } from 'react-i18next';
-import { useResumeStore } from '../../store';
 import { GeneratedCvVersion, KanbanColumn } from '../../types/cv';
 import { ApplicationsStatsHeader } from './history/ApplicationsStatsHeader';
 import { KanbanBoard } from './history/KanbanBoard';
 import { ArchivedApplicationsView } from './history/ArchivedApplicationsView';
 import { ApplicationCard } from './history/ApplicationCard';
 import { TrackApplicationDialog } from './history/TrackApplicationDialog';
-import { downloadTextFile, buildTimestampedFileName } from '../../utils/fileUtils';
 import { ColumnEditDialog } from './history/ColumnEditDialog';
 import { VersionDiffModal } from './history/VersionDiffModal';
+import { useApplicationsHistory } from '../../hooks/useApplicationsHistory';
 
 export const ApplicationsHistoryView: React.FC = () => {
   const { t } = useTranslation(['history', 'common']);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
-  const [isDiffModalOpen, setIsDiffModalOpen] = useState<boolean>(false);
-  const [diffSelectedVersionId, setDiffSelectedVersionId] = useState<string | undefined>(undefined);
-
-  const savedVersions = useResumeStore((s) => s.savedVersions);
-  const applications = useResumeStore((s) => s.applications || []);
-  const kanbanColumns = useResumeStore((s) => s.kanbanColumns || []);
-
-  const handleLoadVersion = useResumeStore((s) => s.handleLoadVersion);
-  const handleDeleteVersion = useResumeStore((s) => s.handleDeleteVersion);
-  const handleDeleteMultipleVersions = useResumeStore((s) => s.handleDeleteMultipleVersions);
-  const handleAddApplication = useResumeStore((s) => s.handleAddApplication);
-  const handleDeleteApplication = useResumeStore((s) => s.handleDeleteApplication);
-  const handleMoveApplication = useResumeStore((s) => s.handleMoveApplication);
-  const handleArchiveApplication = useResumeStore((s) => s.handleArchiveApplication);
-  const handleUnarchiveApplication = useResumeStore((s) => s.handleUnarchiveApplication);
-  const handleArchiveColumn = useResumeStore((s) => s.handleArchiveColumn);
-  const handleSetAttachedVersion = useResumeStore((s) => s.handleSetAttachedVersion);
-  const handleAddColumn = useResumeStore((s) => s.handleAddColumn);
-  const handleUpdateColumn = useResumeStore((s) => s.handleUpdateColumn);
-  const handleDeleteColumn = useResumeStore((s) => s.handleDeleteColumn);
-
-  const setActiveTab = useResumeStore((s) => s.setActiveTab);
-  const setWizardStep = useResumeStore((s) => s.setWizardStep);
-
-  const [activeView, setActiveView] = useState<'board' | 'archived' | 'versions'>('board');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [downloadingPdfId, setDownloadingPdfId] = useState<string | null>(null);
-
-  // Selection mode states for version history
-  const [isSelectionMode, setIsSelectionMode] = useState<boolean>(false);
-  const [selectedVersionIds, setSelectedVersionIds] = useState<string[]>([]);
-  const [isBulkDeleteDialogOpen, setIsBulkDeleteDialogOpen] = useState<boolean>(false);
-
-  // Dialog states
-  const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
-  const [trackPrefillColumnId, setTrackPrefillColumnId] = useState<string | undefined>();
-  const [trackPrefillVersion, setTrackPrefillVersion] = useState<GeneratedCvVersion | undefined>();
-  const [isColumnEditOpen, setIsColumnEditOpen] = useState(false);
-  const [editingColumn, setEditingColumn] = useState<KanbanColumn | null>(null);
-
-  // Filtered lists and stats
-  const activeApplications = applications.filter((app) => !app.isArchived);
-  const archivedApplications = applications.filter((app) => app.isArchived);
-
-  const totalActive = activeApplications.length;
-  const totalArchived = archivedApplications.length;
-  const totalInterviews = activeApplications.filter(
-    (a) => a.columnId === 'interview' || a.columnId === 'tech_test'
-  ).length;
-  const totalOffers = activeApplications.filter((a) => a.columnId === 'offer').length;
-
-  const avgMatchScore =
-    totalActive > 0
-      ? Math.round(
-          activeApplications.reduce((acc, curr) => acc + (curr.matchScore || 0), 0) / totalActive
-        )
-      : 0;
-
-  // Filtered saved versions for the "versions" tab
-  const filteredVersions = savedVersions.filter(
-    (v) =>
-      v.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      v.targetRole.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // Set of version IDs linked to active (non-archived) Kanban applications
-  const activeLinkedVersionIds = useMemo(() => {
-    return new Set(
-      activeApplications
-        .map((app) => app.appliedVersionId)
-        .filter((id): id is string => Boolean(id))
-    );
-  }, [activeApplications]);
-
-  // Visible version IDs based on search filter
-  const visibleVersionIds = useMemo(() => filteredVersions.map((v) => v.id), [filteredVersions]);
-
-  // Selected counts
-  const selectedTotalCount = selectedVersionIds.length;
-  const selectedProtectedCount = useMemo(() => {
-    return selectedVersionIds.filter((id) => activeLinkedVersionIds.has(id)).length;
-  }, [selectedVersionIds, activeLinkedVersionIds]);
-  const selectedDeletableCount = selectedTotalCount - selectedProtectedCount;
-
-  const isAllVisibleSelected =
-    visibleVersionIds.length > 0 &&
-    visibleVersionIds.every((id) => selectedVersionIds.includes(id));
-
-  const handleToggleSelect = (id: string) => {
-    setSelectedVersionIds((prev) =>
-      prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]
-    );
-  };
-
-  const handleToggleSelectAllVisible = () => {
-    if (isAllVisibleSelected) {
-      setSelectedVersionIds((prev) => prev.filter((id) => !visibleVersionIds.includes(id)));
-    } else {
-      setSelectedVersionIds((prev) => Array.from(new Set([...prev, ...visibleVersionIds])));
-    }
-  };
-
-  const handleStartSelectionMode = () => {
-    setIsSelectionMode(true);
-  };
-
-  const handleExitSelectionMode = () => {
-    setIsSelectionMode(false);
-    setSelectedVersionIds([]);
-  };
-
-  const handleConfirmBulkDelete = () => {
-    handleDeleteMultipleVersions(selectedVersionIds);
-    setIsBulkDeleteDialogOpen(false);
-    handleExitSelectionMode();
-  };
-
-  const handleDownloadMarkdown = (v: GeneratedCvVersion) => {
-    const candidate = v.candidateName.replace(/\s+/g, '_');
-    const company = v.companyName.replace(/\s+/g, '_');
-    const versionDate = v.createdAt ? new Date(v.createdAt) : undefined;
-    const baseName = `CV_${candidate}_${company}`;
-    const fileName = buildTimestampedFileName(baseName, 'md', versionDate);
-    downloadTextFile(v.cvMarkdown, fileName);
-  };
-
-  const handleDownloadPdf = async (v: GeneratedCvVersion) => {
-    setDownloadingPdfId(v.id);
-    try {
-      const { generateVersionDirectPdf } = await import('../../core/pdfGenerator');
-      await generateVersionDirectPdf(v);
-    } catch (error) {
-      console.error('Failed to generate version PDF:', error);
-    } finally {
-      setDownloadingPdfId(null);
-    }
-  };
-
-  const handleOpenTrackModal = (columnId?: string, version?: GeneratedCvVersion) => {
-    setTrackPrefillColumnId(columnId);
-    setTrackPrefillVersion(version);
-    setIsTrackModalOpen(true);
-  };
-
-  const handleOpenEditColumn = (col?: KanbanColumn) => {
-    setEditingColumn(col || null);
-    setIsColumnEditOpen(true);
-  };
-
-  const handleSaveColumn = (title: string, color: string) => {
-    if (editingColumn) {
-      handleUpdateColumn(editingColumn.id, { title, color });
-    } else {
-      handleAddColumn(title, color);
-    }
-    setIsColumnEditOpen(false);
-    setEditingColumn(null);
-  };
+  const {
+    savedVersions,
+    applications,
+    kanbanColumns,
+    activeApplications,
+    archivedApplications,
+    filteredVersions,
+    activeView,
+    searchQuery,
+    setSearchQuery,
+    downloadingPdfId,
+    isSelectionMode,
+    selectedVersionIds,
+    isBulkDeleteDialogOpen,
+    isTrackModalOpen,
+    trackPrefillColumnId,
+    trackPrefillVersion,
+    isColumnEditOpen,
+    editingColumn,
+    isDiffModalOpen,
+    diffSelectedVersionId,
+    totalActive,
+    totalArchived,
+    totalInterviews,
+    totalOffers,
+    avgMatchScore,
+    activeLinkedVersionIds,
+    selectedTotalCount,
+    selectedProtectedCount,
+    selectedDeletableCount,
+    visibleVersionIds,
+    isAllVisibleSelected,
+    handleToggleSelect,
+    handleToggleSelectAllVisible,
+    handleStartSelectionMode,
+    handleExitSelectionMode,
+    handleConfirmBulkDelete,
+    handleDownloadMarkdown,
+    handleDownloadPdf,
+    handleOpenTrackModal,
+    handleCloseTrackModal,
+    handleOpenEditColumn,
+    handleCloseEditColumn,
+    handleSaveColumn,
+    handleOpenDiffModal,
+    handleCloseDiffModal,
+    handleOpenBulkDeleteModal,
+    handleCloseBulkDeleteModal,
+    handleStartNewResume,
+    handleViewChange,
+    handleLoadVersion,
+    handleDeleteVersion,
+    handleAddApplication,
+    handleDeleteApplication,
+    handleMoveApplication,
+    handleArchiveApplication,
+    handleUnarchiveApplication,
+    handleArchiveColumn,
+    handleSetAttachedVersion,
+    handleDeleteColumn,
+  } = useApplicationsHistory();
 
   return (
     <Box
@@ -241,17 +143,9 @@ export const ApplicationsHistoryView: React.FC = () => {
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
           onTrackNewApplication={() => handleOpenTrackModal()}
-          onStartNewResume={() => {
-            setActiveTab('wizard');
-            setWizardStep('target');
-          }}
+          onStartNewResume={handleStartNewResume}
           activeView={activeView}
-          onViewChange={(view) => {
-            setActiveView(view);
-            if (view !== 'versions' && isSelectionMode) {
-              handleExitSelectionMode();
-            }
-          }}
+          onViewChange={handleViewChange}
           savedVersionsCount={savedVersions.length}
         />
 
@@ -300,10 +194,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                     variant="contained"
                     color="primary"
                     startIcon={<AutoAwesomeRoundedIcon />}
-                    onClick={() => {
-                      setActiveTab('wizard');
-                      setWizardStep('target');
-                    }}
+                    onClick={handleStartNewResume}
                     sx={{ mt: 1, fontWeight: 700, px: 2.5 }}
                   >
                     {t('history:empty.action', 'Start New Application')}
@@ -479,7 +370,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                       variant="contained"
                       color="error"
                       disabled={selectedDeletableCount === 0}
-                      onClick={() => setIsBulkDeleteDialogOpen(true)}
+                      onClick={handleOpenBulkDeleteModal}
                       startIcon={<DeleteOutlineRoundedIcon sx={{ fontSize: 16 }} />}
                       sx={{ fontWeight: 700, fontSize: '0.78rem' }}
                     >
@@ -522,10 +413,7 @@ export const ApplicationsHistoryView: React.FC = () => {
                       variant="outlined"
                       color="secondary"
                       disabled={savedVersions.length === 0}
-                      onClick={() => {
-                        setDiffSelectedVersionId(undefined);
-                        setIsDiffModalOpen(true);
-                      }}
+                      onClick={() => handleOpenDiffModal()}
                       startIcon={<DifferenceRoundedIcon sx={{ fontSize: 16 }} />}
                       sx={{ fontWeight: 700, fontSize: '0.78rem' }}
                     >
@@ -609,7 +497,7 @@ export const ApplicationsHistoryView: React.FC = () => {
       {/* Bulk Delete Confirmation Dialog with Exact Counts & Kanban Protection Notice */}
       <Dialog
         open={isBulkDeleteDialogOpen}
-        onClose={() => setIsBulkDeleteDialogOpen(false)}
+        onClose={handleCloseBulkDeleteModal}
         maxWidth="xs"
         fullWidth
         slotProps={{
@@ -681,7 +569,7 @@ export const ApplicationsHistoryView: React.FC = () => {
 
         <DialogActions sx={{ px: 2, pb: 1.5, gap: 1 }}>
           <Button
-            onClick={() => setIsBulkDeleteDialogOpen(false)}
+            onClick={handleCloseBulkDeleteModal}
             color="inherit"
             variant="outlined"
             size="small"
@@ -712,10 +600,7 @@ export const ApplicationsHistoryView: React.FC = () => {
       {/* Opt-in Track Application Dialog */}
       <TrackApplicationDialog
         open={isTrackModalOpen}
-        onClose={() => {
-          setIsTrackModalOpen(false);
-          setTrackPrefillVersion(undefined);
-        }}
+        onClose={handleCloseTrackModal}
         onConfirm={handleAddApplication}
         prefillCompany={trackPrefillVersion?.companyName}
         prefillRole={trackPrefillVersion?.targetRole}
@@ -730,20 +615,14 @@ export const ApplicationsHistoryView: React.FC = () => {
       <ColumnEditDialog
         open={isColumnEditOpen}
         column={editingColumn}
-        onClose={() => {
-          setIsColumnEditOpen(false);
-          setEditingColumn(null);
-        }}
+        onClose={handleCloseEditColumn}
         onSave={handleSaveColumn}
       />
 
       {/* Visual Version Diff Modal */}
       <VersionDiffModal
         open={isDiffModalOpen}
-        onClose={() => {
-          setIsDiffModalOpen(false);
-          setDiffSelectedVersionId(undefined);
-        }}
+        onClose={handleCloseDiffModal}
         initialVersionBId={diffSelectedVersionId}
       />
     </Box>
