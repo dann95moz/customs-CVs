@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography, useTheme, alpha } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export interface AuditScoreHeroProps {
   score: number;
@@ -22,7 +23,7 @@ export const AuditScoreHero: React.FC<AuditScoreHeroProps> = React.memo(({ score
         sx={{
           width: 48,
           height: 48,
-          borderRadius: '12px',
+          borderRadius: RADIUS_TOKENS.lg,
           bgcolor: alpha(theme.palette.success.main, 0.15),
           border: `1.5px solid ${theme.palette.success.main}`,
           display: 'flex',

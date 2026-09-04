@@ -232,7 +232,7 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#ffffff',
+                color: 'common.white',
                 opacity: 0,
                 transition: 'opacity 0.18s ease-in-out',
                 '&:hover': {
@@ -262,14 +262,15 @@ export const ProfilePhotoDisplay: React.FC<ProfilePhotoDisplayProps> = ({
                 bottom: 2,
                 right: 2,
                 bgcolor: 'primary.main',
-                color: '#ffffff',
+                color: 'primary.contrastText',
                 borderRadius: '50%',
                 width: 18,
                 height: 18,
                 alignItems: 'center',
                 justifyContent: 'center',
                 boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
-                border: '1px solid #ffffff',
+                border: '1px solid',
+                borderColor: 'common.white',
                 zIndex: 2,
               }}
             >

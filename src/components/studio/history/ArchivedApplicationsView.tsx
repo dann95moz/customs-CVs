@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Card,
-  CardContent,
   Box,
   Typography,
   Chip,
@@ -30,6 +29,7 @@ import { ArchivedApplicationsViewProps, ApplicationItem, GeneratedCvVersion } fr
 import { getPaletteConfig } from '../../../constants/palettes';
 import { formatLocalizedDate } from '../../../utils/dateUtils';
 import { MatchScoreBadge } from '../../atoms';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> = ({
   archivedApplications,
@@ -69,7 +69,7 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
         sx={{
           p: 6,
           textAlign: 'center',
-          borderRadius: '16px',
+          borderRadius: RADIUS_TOKENS.xl,
           borderStyle: 'dashed',
           bgcolor: 'background.paper',
         }}
@@ -118,7 +118,7 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
             key={app.id}
             variant="outlined"
             sx={{
-              borderRadius: '14px',
+              borderRadius: RADIUS_TOKENS.lg,
               display: 'flex',
               flexDirection: { xs: 'column', sm: 'row' },
               alignItems: { xs: 'flex-start', sm: 'center' },
@@ -137,7 +137,7 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
                 sx={{
                   width: 42,
                   height: 42,
-                  borderRadius: '10px',
+                  borderRadius: RADIUS_TOKENS.md,
                   bgcolor: alpha(palConfig.accentColor || theme.palette.primary.main, 0.12),
                   color: palConfig.accentColor || theme.palette.primary.main,
                   display: 'flex',
@@ -210,7 +210,7 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
                       sx={{
                         p: 0.75,
                         border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: '8px',
+                        borderRadius: RADIUS_TOKENS.md,
                       }}
                     >
                       {isDownloadingPdfId === attachedVersion.id ? (
@@ -247,9 +247,7 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
         slotProps={{
           paper: {
             sx: {
-              borderRadius: '16px',
               p: 1,
-              bgcolor: 'background.paper',
             },
           },
         }}
@@ -273,7 +271,7 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
             color="inherit"
             variant="outlined"
             size="small"
-            sx={{ fontWeight: 700, borderRadius: '8px' }}
+            sx={{ fontWeight: 700 }}
           >
             {t('common:actions.cancel', 'Cancel')}
           </Button>
@@ -288,7 +286,7 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
             variant="contained"
             size="small"
             startIcon={<DeleteOutlineRoundedIcon />}
-            sx={{ fontWeight: 700, borderRadius: '8px' }}
+            sx={{ fontWeight: 700 }}
           >
             {t('common:actions.delete', 'Delete Permanently')}
           </Button>

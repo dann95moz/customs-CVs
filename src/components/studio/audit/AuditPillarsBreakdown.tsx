@@ -12,6 +12,7 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import { useTranslation } from 'react-i18next';
 import { QualityAuditReport, StrategicGrowthPillar } from '../../../types/audit';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export interface AuditPillarsBreakdownProps {
   auditReport: QualityAuditReport;
@@ -38,8 +39,8 @@ export const AuditPillarsBreakdown: React.FC<AuditPillarsBreakdownProps> = React
           variant="outlined"
           sx={{
             p: 1.5,
-            borderRadius: '12px',
-            bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
+            borderRadius: RADIUS_TOKENS.lg,
+            bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : alpha(theme.palette.action.hover, 0.04),
             display: 'flex',
             flexDirection: 'column',
             gap: 0.75,
@@ -61,7 +62,7 @@ export const AuditPillarsBreakdown: React.FC<AuditPillarsBreakdownProps> = React
             />
           </Box>
           <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5 }}>
-            {t('audit:drawerCards.summaryDesc', 'Concise 3-line hook balancing candidate scope, technical seniority, and target role relevance.')}
+            {t('audit:drawerCards.summaryDesc', 'Concise 3-4 sentence hook establishing core value, domain expertise, and quantified achievements.')}
           </Typography>
         </Paper>
 
@@ -70,8 +71,8 @@ export const AuditPillarsBreakdown: React.FC<AuditPillarsBreakdownProps> = React
           variant="outlined"
           sx={{
             p: 1.5,
-            borderRadius: '12px',
-            bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
+            borderRadius: RADIUS_TOKENS.lg,
+            bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : alpha(theme.palette.action.hover, 0.04),
             display: 'flex',
             flexDirection: 'column',
             gap: 0.75,
@@ -102,8 +103,8 @@ export const AuditPillarsBreakdown: React.FC<AuditPillarsBreakdownProps> = React
           variant="outlined"
           sx={{
             p: 1.5,
-            borderRadius: '12px',
-            bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : '#fbfcfd',
+            borderRadius: RADIUS_TOKENS.lg,
+            bgcolor: isDark ? alpha(theme.palette.background.default, 0.4) : alpha(theme.palette.action.hover, 0.04),
             display: 'flex',
             flexDirection: 'column',
             gap: 0.75,
@@ -140,21 +141,19 @@ export const AuditPillarsBreakdown: React.FC<AuditPillarsBreakdownProps> = React
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
             {auditReport.strategicPillars.slice(0, 3).map((pillar: StrategicGrowthPillar, idx: number) => (
               <Paper
-
                 key={idx}
                 variant="outlined"
                 sx={{
                   p: 1.5,
-                  borderRadius: '12px',
+                  borderRadius: RADIUS_TOKENS.lg,
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 1,
-                  bgcolor: isDark ? alpha(theme.palette.background.default, 0.3) : '#ffffff',
+                  bgcolor: isDark ? alpha(theme.palette.background.default, 0.3) : 'background.paper',
                   boxSizing: 'border-box',
                   transition: 'all 0.2s ease',
                   '&:hover': {
                     borderColor: 'primary.main',
-                    boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
                   },
                 }}
               >

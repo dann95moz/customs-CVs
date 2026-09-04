@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { KanbanColumnProps } from '../../../types';
 import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
 import { KanbanCard } from './KanbanCard';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
   column,
@@ -198,7 +199,7 @@ export const KanbanColumnComponent: React.FC<KanbanColumnProps> = ({
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              borderRadius: '12px',
+              borderRadius: RADIUS_TOKENS.lg,
               border: `1.5px dashed ${alpha(theme.palette.divider, 0.8)}`,
               color: 'text.secondary',
               height: '100%',

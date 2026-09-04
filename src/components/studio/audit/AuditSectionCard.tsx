@@ -4,7 +4,7 @@ import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { useTranslation } from 'react-i18next';
-import { AuditSectionResult, AuditSectionCardProps } from '../../../types';
+import { AuditSectionCardProps } from '../../../types';
 
 export type { AuditSectionCardProps };
 
@@ -78,10 +78,28 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
           )}
 
           {section.actionToTen && section.actionToTen.length > 0 && (
-            <div className="metric-action-box" style={{ background: 'rgba(56, 189, 248, 0.05)', borderRadius: 8, padding: 12 }}>
-              <span className="action-title" style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, marginBottom: 8 }}>
-                <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: '#0284c7' }} /> {t('audit:actionLevers', 'Strategic Levers to Reach 10/10')}:
-              </span>
+            <Box
+              className="metric-action-box"
+              sx={{
+                bgcolor: (th) => (th.palette.mode === 'dark' ? 'rgba(56, 189, 248, 0.08)' : 'rgba(56, 189, 248, 0.05)'),
+                borderRadius: 'inherit',
+                p: 1.5,
+              }}
+            >
+              <Typography
+                component="span"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.75,
+                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  mb: 1,
+                  color: 'text.primary',
+                }}
+              >
+                <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: 'primary.main' }} /> {t('audit:actionLevers', 'Strategic Levers to Reach 10/10')}:
+              </Typography>
               <Stack spacing={1.5}>
                 {section.actionToTen.map((a, i) => (
                   <Box key={i} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -103,7 +121,6 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
                         fontWeight: 700,
                         py: 0.5,
                         px: 1.5,
-                        borderRadius: '8px'
                       }}
                     >
                       {getActionButtonLabel(a)}
@@ -111,7 +128,7 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
                   </Box>
                 ))}
               </Stack>
-            </div>
+            </Box>
           )}
         </div>
       </Collapse>

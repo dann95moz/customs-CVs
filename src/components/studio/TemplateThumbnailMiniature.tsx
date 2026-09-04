@@ -51,13 +51,13 @@ export const TemplateThumbnailMiniature: React.FC<TemplateThumbnailMiniatureProp
           sx={{
             width: '100%',
             aspectRatio: '1 / 1.414',
-            bgcolor: '#ffffff',
+            bgcolor: 'common.white',
             borderRadius: 1,
             overflow: 'hidden',
             position: 'relative',
             border: isSelected
               ? `2.5px solid ${muiTheme.palette.primary.main}`
-              : `1px solid ${isDark ? 'rgba(255,255,255,0.14)' : '#e2e8f0'}`,
+              : `1px solid ${muiTheme.palette.divider}`,
             boxShadow: isSelected
               ? `0 0 0 2px ${alpha(muiTheme.palette.primary.main, 0.25)}, 0 8px 24px ${alpha(pal.accentColor, 0.25)}`
               : isDark
@@ -81,7 +81,7 @@ export const TemplateThumbnailMiniature: React.FC<TemplateThumbnailMiniatureProp
                 top: 6,
                 right: 6,
                 bgcolor: 'primary.main',
-                color: '#ffffff',
+                color: 'common.white',
                 borderRadius: '50%',
                 width: 20,
                 height: 20,

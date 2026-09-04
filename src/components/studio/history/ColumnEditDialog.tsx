@@ -9,7 +9,6 @@ import {
   Box,
   Typography,
   IconButton,
-  useTheme,
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useTranslation } from 'react-i18next';
@@ -18,14 +17,13 @@ import { getLocalizedColumnTitle } from '../../../utils/kanbanUtils';
 import { ColorPalettePicker } from '../../molecules';
 
 const PRESET_COLORS = [
-  '#3b82f6', // Blue
-  '#8b5cf6', // Purple
+  '#3b82f6', // Corporate Blue
+  '#0d9488', // Teal
+  '#8b5cf6', // Indigo/Purple
+  '#f59e0b', // Amber/Yellow
+  '#10b981', // Emerald/Green
   '#ec4899', // Pink
-  '#f59e0b', // Amber
-  '#10b981', // Emerald
-  '#06b6d4', // Cyan
-  '#ef4444', // Red
-  '#64748b', // Slate
+  '#64748b', // Slate Gray
 ];
 
 export const ColumnEditDialog: React.FC<ColumnEditDialogProps> = ({
@@ -35,7 +33,6 @@ export const ColumnEditDialog: React.FC<ColumnEditDialogProps> = ({
   onSave,
 }) => {
   const { t } = useTranslation(['history', 'common']);
-  const theme = useTheme();
 
   const [title, setTitle] = useState('');
   const [color, setColor] = useState('#3b82f6');
@@ -67,7 +64,6 @@ export const ColumnEditDialog: React.FC<ColumnEditDialogProps> = ({
       slotProps={{
         paper: {
           sx: {
-            borderRadius: '16px',
             p: 1,
           },
         },

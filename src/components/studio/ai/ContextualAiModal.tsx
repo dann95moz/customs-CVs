@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next';
 import { ContextualAiModalProps, AIProviderSettings } from '../../../types';
 import { AiConfigForm } from './AiConfigForm';
 
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
+
 export type { ContextualAiModalProps };
 
 /**
@@ -29,7 +31,6 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
 }) => {
   const { t } = useTranslation(['settings', 'target', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   const [localSettings, setLocalSettings] = useState<AIProviderSettings>(settings);
 
@@ -54,13 +55,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
       slotProps={{
         paper: {
           sx: {
-            borderRadius: '20px',
             p: { xs: 1.5, sm: 2.5 },
-            bgcolor: 'background.paper',
-            border: `1px solid ${theme.palette.divider}`,
-            boxShadow: isDark
-              ? '0 24px 64px rgba(0, 0, 0, 0.8), 0 0 1px rgba(255, 255, 255, 0.15)'
-              : '0 20px 50px rgba(0, 0, 0, 0.12)',
           },
         },
       }}
@@ -79,7 +74,7 @@ export const ContextualAiModal: React.FC<ContextualAiModalProps> = ({
             sx={{
               width: 44,
               height: 44,
-              borderRadius: '12px',
+              borderRadius: RADIUS_TOKENS.lg,
               bgcolor: alpha(theme.palette.primary.main, 0.12),
               color: theme.palette.primary.main,
               display: 'flex',

@@ -110,7 +110,7 @@ export const HorizontalScrollContainer: React.FC<HorizontalScrollContainerProps>
                 transition: 'all 0.15s ease',
                 '&:hover': {
                   bgcolor: 'primary.main',
-                  color: '#ffffff',
+                  color: 'primary.contrastText',
                   transform: 'scale(1.05)',
                 },
               }}
@@ -178,7 +178,7 @@ export const HorizontalScrollContainer: React.FC<HorizontalScrollContainerProps>
                 transition: 'all 0.15s ease',
                 '&:hover': {
                   bgcolor: 'primary.main',
-                  color: '#ffffff',
+                  color: 'primary.contrastText',
                   transform: 'scale(1.05)',
                 },
               }}

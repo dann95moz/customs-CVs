@@ -24,6 +24,7 @@ import { KanbanBoardProps, ApplicationItem } from '../../../types';
 import { HorizontalScrollContainer } from '../common/HorizontalScrollContainer';
 import { KanbanColumnComponent } from './KanbanColumn';
 import { KanbanCard } from './KanbanCard';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   columns,
@@ -183,7 +184,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
               height: '100%',
               minHeight: '120px',
               borderStyle: 'dashed',
-              borderRadius: '16px',
+              borderRadius: RADIUS_TOKENS.xl,
               borderWidth: '1.5px',
               borderColor: alpha(theme.palette.divider, 0.8),
               color: 'text.secondary',

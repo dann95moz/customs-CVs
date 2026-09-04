@@ -24,6 +24,7 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { useTranslation } from 'react-i18next';
 import { FeedbackModalProps, FeedbackRating } from '../../types/feedback';
 import { useFeedbackSubmit } from '../../hooks/useFeedbackSubmit';
+import { RADIUS_TOKENS } from '../../theme/dimensions';
 
 const MAX_MESSAGE_LENGTH = 2000;
 
@@ -189,9 +190,9 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
                   sx={{
                     width: 44,
                     height: 44,
-                    borderRadius: '14px',
+                    borderRadius: RADIUS_TOKENS.lg,
                     background: 'var(--gradient-badge)',
-                    color: '#ffffff',
+                    color: 'common.white',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -199,7 +200,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
                     boxShadow: 'var(--pill-shadow)',
                   }}
                 >
-                  <RateReviewRoundedIcon sx={{ fontSize: 24, color: '#ffffff' }} />
+                  <RateReviewRoundedIcon sx={{ fontSize: 24, color: 'common.white' }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.2, color: 'text.primary' }}>
@@ -239,7 +240,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
                   </Button>
                 }
                 sx={{
-                  borderRadius: '12px',
+                  borderRadius: RADIUS_TOKENS.lg,
                   fontSize: '0.85rem',
                   alignItems: 'center',
                 }}

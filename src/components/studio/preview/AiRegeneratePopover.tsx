@@ -16,6 +16,7 @@ import {
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useTranslation } from 'react-i18next';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export interface AiRegeneratePopoverProps {
   open: boolean;
@@ -34,7 +35,6 @@ export const AiRegeneratePopover: React.FC<AiRegeneratePopoverProps> = ({
 }) => {
   const { t } = useTranslation(['preview', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [guidance, setGuidance] = useState<string>('');
@@ -109,7 +109,7 @@ export const AiRegeneratePopover: React.FC<AiRegeneratePopoverProps> = ({
             width: 40,
             height: 4,
             bgcolor: 'divider',
-            borderRadius: '999px',
+            borderRadius: RADIUS_TOKENS.full,
             mx: 'auto',
             mb: 2,
           }}
@@ -123,7 +123,7 @@ export const AiRegeneratePopover: React.FC<AiRegeneratePopoverProps> = ({
             sx={{
               width: 28,
               height: 28,
-              borderRadius: '8px',
+              borderRadius: RADIUS_TOKENS.md,
               bgcolor: alpha(theme.palette.primary.main, 0.12),
               color: 'primary.main',
               display: 'flex',
@@ -202,7 +202,7 @@ export const AiRegeneratePopover: React.FC<AiRegeneratePopoverProps> = ({
           mb: 2,
           '& .MuiOutlinedInput-root': {
             fontSize: { xs: '0.88rem', sm: '0.82rem' },
-            borderRadius: '10px',
+            borderRadius: RADIUS_TOKENS.md,
             bgcolor: alpha(theme.palette.background.default, 0.6),
           },
         }}
@@ -213,7 +213,7 @@ export const AiRegeneratePopover: React.FC<AiRegeneratePopoverProps> = ({
         <Alert
           severity="error"
           variant="outlined"
-          sx={{ mb: 2, py: 0.5, fontSize: '0.78rem', borderRadius: '8px' }}
+          sx={{ mb: 2, py: 0.5, fontSize: '0.78rem', borderRadius: RADIUS_TOKENS.md }}
         >
           {errorMessage}
         </Alert>

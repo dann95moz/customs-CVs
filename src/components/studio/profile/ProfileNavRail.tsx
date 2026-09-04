@@ -23,6 +23,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import { useTranslation } from 'react-i18next';
 import { CustomSection } from '../../../types/cv';
 import { getPresetIcon } from './CustomSectionPanel';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export type ProfileSectionKey =
   | 'personal'
@@ -306,7 +307,7 @@ export const ProfileNavRail: React.FC<ProfileNavRailProps> = ({
             minWidth: 0,
             minHeight: 40,
             '& .MuiTabs-indicator': {
-              borderRadius: '3px',
+              borderRadius: RADIUS_TOKENS.full,
               height: 3
             },
             '& .MuiTab-root': {

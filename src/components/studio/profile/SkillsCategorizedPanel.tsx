@@ -8,7 +8,6 @@ import {
   Chip,
   Tabs,
   Tab,
-  Stack,
   Tooltip,
   useTheme,
   alpha,
@@ -23,6 +22,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { useTranslation } from 'react-i18next';
 import { SkillCategory } from '../../../types/cv';
+import { RADIUS_TOKENS } from '../../../theme/dimensions';
 
 export interface SkillsCategorizedPanelProps {
   skillGroups: SkillCategory[];
@@ -48,7 +48,6 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
 }) => {
   const { t } = useTranslation(['profile', 'common']);
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   const [activeTab, setActiveTab] = useState(0);
   const [newSkillInput, setNewSkillInput] = useState('');
@@ -142,7 +141,7 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
           sx={{
             minHeight: 38,
             '& .MuiTabs-indicator': {
-              borderRadius: '3px',
+              borderRadius: RADIUS_TOKENS.full,
               height: 3
             },
             '& .MuiTab-root': {
@@ -219,12 +218,12 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
             p: 1.5,
             bgcolor: alpha(theme.palette.text.primary, 0.02),
             border: `1px solid ${theme.palette.divider}`,
-            borderRadius: 1.5
+            borderRadius: RADIUS_TOKENS.md,
           }}
         >
           {currentGroup.skills.length === 0 ? (
             <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', py: 0.5 }}>
-              {t('profile:sections.skills.empty', 'No hay habilidades agregadas en este grupo. Escribe abajo o elige una sugerencia.')}
+              {t('profile:sections.skills.empty', 'No skills added in this group yet. Type below or select a suggestion.')}
             </Typography>
           ) : (
             currentGroup.skills.map((skill, sIdx) => (
@@ -244,7 +243,7 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
         <TextField
           fullWidth
           size="small"
-          placeholder={t('profile:sections.skills.inputPlaceholder', 'Escribe y presiona Enter')}
+          placeholder={t('profile:sections.skills.inputPlaceholder', 'Type skill and press Enter...')}
           value={newSkillInput}
           onChange={(e) => setNewSkillInput(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -252,13 +251,12 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
         <Button
           size="small"
           variant="contained"
-
           color="primary"
           onClick={() => handleAddSkill()}
           disabled={!newSkillInput.trim()}
           startIcon={<AddRoundedIcon sx={{ fontSize: 16 }} />}
         >
-          {t('common:actions.add', 'Agregar')}
+          {t('common:actions.add', 'Add')}
         </Button>
       </Box>
 
@@ -276,7 +274,7 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
             }}
           >
             <AutoAwesomeRoundedIcon sx={{ fontSize: 13, color: 'primary.main' }} />
-            {t('profile:sections.skills.quickSuggestions', 'Sugeridas:')}
+            {t('profile:sections.skills.quickSuggestions', 'Suggested:')}
           </Typography>
           {unselectedSuggestions.map((sug, i) => (
             <Chip
@@ -295,7 +293,7 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
       {/* Edit Category Dialog */}
       <Dialog open={editCategoryIdx !== null} onClose={() => setEditCategoryIdx(null)} maxWidth="xs" fullWidth>
         <DialogTitle sx={{ fontWeight: 700, fontSize: '1.05rem' }}>
-          {t('profile:sections.skills.groupName', 'Nombre de Categoría')}
+          {t('profile:sections.skills.groupName', 'Category Name')}
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -308,8 +306,8 @@ export const SkillsCategorizedPanel: React.FC<SkillsCategorizedPanelProps> = ({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setEditCategoryIdx(null)}>{t('common:actions.cancel', 'Cancelar')}</Button>
-          <Button variant="contained" onClick={handleSaveCategoryName}>{t('common:actions.save', 'Guardar')}</Button>
+          <Button onClick={() => setEditCategoryIdx(null)}>{t('common:actions.cancel', 'Cancel')}</Button>
+          <Button variant="contained" onClick={handleSaveCategoryName}>{t('common:actions.save', 'Save')}</Button>
         </DialogActions>
       </Dialog>
     </Box>
