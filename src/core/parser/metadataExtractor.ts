@@ -230,7 +230,7 @@ export function extractGapInfo(
   gapMarkdown: string,
   targetJobText: string = ''
 ): { matchScore: number; keywords: string[] } {
-  let matchScore = 92;
+  let matchScore = 0;
   if (gapMarkdown) {
     const scoreMatch = gapMarkdown.match(/Estimated Match Score:\*{0,2}\s*(\d{1,3})/i);
     if (scoreMatch) {

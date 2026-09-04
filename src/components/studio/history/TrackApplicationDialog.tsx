@@ -287,12 +287,14 @@ export const TrackApplicationDialog: React.FC<TrackApplicationDialogProps> = ({
                           <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
                             v{matchingVersions.length - index} • {v.targetRole || 'Specialist'}
                           </Typography>
-                          <Chip
-                            label={`${v.matchScore || 92}% ${t('gap:matchScore', 'Match')}`}
-                            size="small"
-                            color="success"
-                            sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
-                          />
+                          {Boolean(v.matchScore) && (
+                            <Chip
+                              label={`${v.matchScore}% ${t('gap:matchScore', 'Match')}`}
+                              size="small"
+                              color="success"
+                              sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
+                            />
+                          )}
                           <Chip
                             label={v.theme || 'modern-tech'}
                             size="small"

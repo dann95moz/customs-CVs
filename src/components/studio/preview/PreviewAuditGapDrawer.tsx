@@ -71,8 +71,8 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
     getActionButtonLabel,
   } = useAuditActions();
 
-  const auditScore = auditReport.overallScore || 9;
-  const matchScore = gapInfo.matchScore || 92;
+  const auditScore = auditReport.overallScore ?? 0;
+  const matchScore = gapInfo.matchScore ?? 0;
 
   const [scoreUpdated, setScoreUpdated] = useState(false);
   const prevScoreRef = React.useRef(auditScore);
@@ -87,9 +87,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
   }, [auditScore]);
 
   // Split keywords into matched and missing/suggested
-  const keywords = gapInfo.keywords && gapInfo.keywords.length > 0
-    ? gapInfo.keywords
-    : ['React', 'TypeScript', 'State Management', 'CI/CD', 'Jest', 'Performance Optimization'];
+  const keywords = gapInfo.keywords && gapInfo.keywords.length > 0 ? gapInfo.keywords : [];
 
   const matchedKeywords = keywords.slice(0, Math.ceil(keywords.length * 0.7));
   const missingKeywords = keywords.slice(Math.ceil(keywords.length * 0.7));
@@ -155,7 +153,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
                     : 'success.main',
                 }}
               >
-                {auditScore}
+                {auditScore > 0 ? auditScore : '--'}
               </Typography>
               <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.62rem', letterSpacing: 0.5, color: 'text.secondary', textTransform: 'uppercase', mt: 0.35 }}>
                 {t('preview:drawer.shortScore', 'Score')}
@@ -189,7 +187,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
               }}
             >
               <Typography variant="h6" sx={{ fontWeight: 900, fontSize: '1.15rem', lineHeight: 1, color: 'primary.main' }}>
-                {matchScore}%
+                {matchScore > 0 ? `${matchScore}%` : '--'}
               </Typography>
               <Typography variant="caption" sx={{ fontWeight: 800, fontSize: '0.62rem', letterSpacing: 0.5, color: 'text.secondary', textTransform: 'uppercase', mt: 0.35 }}>
                 {t('preview:drawer.shortMatch', 'Match')}
@@ -287,7 +285,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
                   textOverflow: 'ellipsis',
                 }}
               >
-                {t('preview:drawer.shortScore', 'Audit')} {auditScore}/10
+                {t('preview:drawer.shortScore', 'Audit')} {auditScore > 0 ? `${auditScore}/10` : '--'}
               </Button>
               <Button
                 variant={activeTab === 'gap' ? 'contained' : 'outlined'}
@@ -305,7 +303,7 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
                   textOverflow: 'ellipsis',
                 }}
               >
-                {t('preview:drawer.shortMatch', 'Match')} {matchScore}%
+                {t('preview:drawer.shortMatch', 'Match')} {matchScore > 0 ? `${matchScore}%` : '--'}
               </Button>
               <Button
                 variant={activeTab === 'interview' ? 'contained' : 'outlined'}

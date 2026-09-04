@@ -233,19 +233,23 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
                 />
               </Tooltip>
             )}
-            <Chip
-              label={`${version.matchScore || 92}% ${t('gap:matchScore', 'Match')}`}
-              size="small"
-              color="success"
-              sx={{ fontWeight: 700, fontSize: '0.72rem' }}
-            />
-            <Chip
-              label={`${t('audit:score', 'Score')}: ${version.qualityScore || 9.0}/10`}
-              size="small"
-              color="primary"
-              variant="outlined"
-              sx={{ fontWeight: 700, fontSize: '0.72rem' }}
-            />
+            {Boolean(version.matchScore) && (
+              <Chip
+                label={`${version.matchScore}% ${t('gap:matchScore', 'Match')}`}
+                size="small"
+                color="success"
+                sx={{ fontWeight: 700, fontSize: '0.72rem' }}
+              />
+            )}
+            {Boolean(version.qualityScore) && (
+              <Chip
+                label={`${t('audit:score', 'Score')}: ${version.qualityScore}/10`}
+                size="small"
+                color="primary"
+                variant="outlined"
+                sx={{ fontWeight: 700, fontSize: '0.72rem' }}
+              />
+            )}
             <Chip
               label={`${version.pageBudget || 1} ${t('preview:toolbar.page', 'Page')}`}
               size="small"

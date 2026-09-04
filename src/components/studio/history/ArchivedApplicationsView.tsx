@@ -153,12 +153,14 @@ export const ArchivedApplicationsView: React.FC<ArchivedApplicationsViewProps> =
                   <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
                     {app.companyName}
                   </Typography>
-                  <Chip
-                    label={`${app.matchScore || attachedVersion?.matchScore || 92}% ${t('gap:matchScore', 'Match')}`}
-                    size="small"
-                    color="success"
-                    sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
-                  />
+                  {Boolean(app.matchScore || attachedVersion?.matchScore) && (
+                    <Chip
+                      label={`${app.matchScore || attachedVersion?.matchScore}% ${t('gap:matchScore', 'Match')}`}
+                      size="small"
+                      color="success"
+                      sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
+                    />
+                  )}
                   <Chip
                     label={t('history:status.archived', 'Archived')}
                     size="small"

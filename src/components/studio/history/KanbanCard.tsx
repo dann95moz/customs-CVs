@@ -206,12 +206,14 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
 
           {/* Badges: Match Score & Attached Version Dropdown */}
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, flexWrap: 'wrap', mb: 1 }}>
-            <Chip
-              label={`${application.matchScore || attachedVersion?.matchScore || 92}% ${t('gap:matchScore', 'Match')}`}
-              size="small"
-              color="success"
-              sx={{ height: 22, fontSize: '0.7rem', fontWeight: 700 }}
-            />
+            {Boolean(application.matchScore || attachedVersion?.matchScore) && (
+              <Chip
+                label={`${application.matchScore || attachedVersion?.matchScore}% ${t('gap:matchScore', 'Match')}`}
+                size="small"
+                color="success"
+                sx={{ height: 22, fontSize: '0.7rem', fontWeight: 700 }}
+              />
+            )}
 
             {/* Attached Version Switcher Dropdown */}
             {allMatchingVersions.length > 1 ? (

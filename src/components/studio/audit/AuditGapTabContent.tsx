@@ -45,7 +45,7 @@ export const AuditGapTabContent: React.FC<AuditGapTabContentProps> = React.memo(
           sx={{
             width: 48,
             height: 48,
-            borderRadius: '12px',
+            borderRadius: 1.5,
             bgcolor: alpha(theme.palette.primary.main, 0.15),
             border: `1.5px solid ${theme.palette.primary.main}`,
             display: 'flex',
@@ -55,7 +55,7 @@ export const AuditGapTabContent: React.FC<AuditGapTabContentProps> = React.memo(
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 900, color: theme.palette.primary.main }}>
-            {matchScore}%
+            {matchScore > 0 ? `${matchScore}%` : '--'}
           </Typography>
         </Box>
         <Box>
@@ -74,28 +74,36 @@ export const AuditGapTabContent: React.FC<AuditGapTabContentProps> = React.memo(
           {t('gap:integratedKeywords', 'Aligned Keywords & Competencies')}:
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 1.5 }}>
-          {matchedKeywords.map((kw: string) => (
-            <Chip
-              key={kw}
-              icon={<CheckCircleRoundedIcon sx={{ fontSize: '13px !important' }} />}
-              label={kw}
-              size="small"
-              color="success"
-              variant="outlined"
-              sx={{ fontWeight: 600 }}
-            />
-          ))}
-          {missingKeywords.map((kw: string) => (
-            <Chip
-              key={kw}
-              icon={<WarningAmberRoundedIcon sx={{ fontSize: '13px !important' }} />}
-              label={kw}
-              size="small"
-              color="warning"
-              variant="outlined"
-              sx={{ fontWeight: 600 }}
-            />
-          ))}
+          {matchedKeywords.length === 0 && missingKeywords.length === 0 ? (
+            <Typography variant="caption" color="text.secondary" sx={{ fontStyle: 'italic', py: 0.5 }}>
+              {t('gap:noKeywords', 'No specific keyword gaps identified yet.')}
+            </Typography>
+          ) : (
+            <>
+              {matchedKeywords.map((kw: string) => (
+                <Chip
+                  key={kw}
+                  icon={<CheckCircleRoundedIcon sx={{ fontSize: '13px !important' }} />}
+                  label={kw}
+                  size="small"
+                  color="success"
+                  variant="outlined"
+                  sx={{ fontWeight: 600 }}
+                />
+              ))}
+              {missingKeywords.map((kw: string) => (
+                <Chip
+                  key={kw}
+                  icon={<WarningAmberRoundedIcon sx={{ fontSize: '13px !important' }} />}
+                  label={kw}
+                  size="small"
+                  color="warning"
+                  variant="outlined"
+                  sx={{ fontWeight: 600 }}
+                />
+              ))}
+            </>
+          )}
         </Box>
       </Box>
 
