@@ -21,6 +21,7 @@ export const useMasterDataWorkflow = ({
   const [editMode, setEditMode] = useState<'guided' | 'markdown'>('guided');
   const [manualText, setManualText] = useState(content);
   const manualTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const flushGuidedRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     setManualText(content);
@@ -42,6 +43,16 @@ export const useMasterDataWorkflow = ({
       onChange(manualText);
     }
   }, [manualText, onChange]);
+
+  const handleSwitchMode = useCallback((newMode: 'guided' | 'markdown') => {
+    if (newMode === editMode) return;
+    if (editMode === 'markdown') {
+      flushManual();
+    } else if (editMode === 'guided') {
+      flushGuidedRef.current?.();
+    }
+    setEditMode(newMode);
+  }, [editMode, flushManual]);
 
   const handleManualTextChange = (val: string) => {
     setManualText(val);
@@ -92,6 +103,11 @@ export const useMasterDataWorkflow = ({
     isPdf?: boolean,
     details?: PdfImportResult
   ) => {
+    if (manualTimerRef.current) {
+      clearTimeout(manualTimerRef.current);
+      manualTimerRef.current = null;
+    }
+    setManualText(importedText);
     onChange(importedText);
     const candidateName = extractCandidateName(importedText, fileName.replace(/\.pdf$/i, ''));
 
@@ -139,6 +155,11 @@ export const useMasterDataWorkflow = ({
   };
 
   const handleConfirmClear = () => {
+    if (manualTimerRef.current) {
+      clearTimeout(manualTimerRef.current);
+      manualTimerRef.current = null;
+    }
+    setManualText('');
     onChange('');
     setShowClearConfirmDialog(false);
     setNotification({
@@ -176,7 +197,11 @@ export const useMasterDataWorkflow = ({
   };
 
   const handleContinue = () => {
-    flushManual();
+    if (editMode === 'markdown') {
+      flushManual();
+    } else {
+      flushGuidedRef.current?.();
+    }
     onNextStep();
   };
 
@@ -187,6 +212,8 @@ export const useMasterDataWorkflow = ({
   return {
     editMode,
     setEditMode,
+    handleSwitchMode,
+    flushGuidedRef,
     manualText,
     handleManualTextChange,
     handleManualBlur,

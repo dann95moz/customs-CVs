@@ -57,6 +57,8 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   const {
     editMode,
     setEditMode,
+    handleSwitchMode,
+    flushGuidedRef,
     manualText,
     handleManualTextChange,
     handleManualBlur,
@@ -308,7 +310,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               <Button
                 variant={editMode === 'guided' ? 'contained' : 'outlined'}
                 startIcon={<FormatListBulletedRoundedIcon />}
-                onClick={() => setEditMode('guided')}
+                onClick={() => handleSwitchMode('guided')}
                 sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' }, whiteSpace: 'nowrap' }}
               >
                 <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
@@ -321,7 +323,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               <Button
                 variant={editMode === 'markdown' ? 'contained' : 'outlined'}
                 startIcon={<CodeRoundedIcon />}
-                onClick={() => setEditMode('markdown')}
+                onClick={() => handleSwitchMode('markdown')}
                 sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' }, whiteSpace: 'nowrap' }}
               >
                 <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
@@ -337,7 +339,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
           {editMode === 'guided' ? (
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: { xs: 'auto', md: 520 }, overflow: { xs: 'visible', md: 'hidden' } }}>
               <React.Suspense fallback={<StudioSkeleton variant="guidedForm" />}>
-                <GuidedProfileForm markdownContent={content} onChange={onChange} />
+                <GuidedProfileForm markdownContent={content} onChange={onChange} onFlushRef={flushGuidedRef} />
               </React.Suspense>
             </Box>
           ) : (
