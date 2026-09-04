@@ -17,7 +17,10 @@
     "experience": "Esperienza Lavorativa",
     "skills": "Competenze Tecniche",
     "education": "Istruzione e Formazione",
-    "ats": "Conformità ATS"
+    "ats": "Conformità ATS",
+    "header": "Contatti & Dati Personali",
+    "languages": "Lingue",
+    "structure": "Struttura & Leggibilità ATS"
   },
   "metrics": {
     "achievementDensity": "Densità dei Risultati",
@@ -129,5 +132,49 @@
     "reorganizeCategories": "Riorganizza in 3 Categorie",
     "applyAction": "Applica Azione"
   },
-  "appliedSuccess": "\"{{title}}\" applicato con successo al tuo CV adattato!"
+  "appliedSuccess": "\"{{title}}\" applicato con successo al tuo CV adattato!",
+  "status": {
+    "optimal": "Ottimale",
+    "solid": "Solido con margine di miglioramento",
+    "needsAttention": "Richiede attenzione"
+  },
+  "recommendations": {
+    "header": {
+      "reachTen": "Per raggiungere 10/10, aggiungi un profilo LinkedIn curato o un link al portfolio per la verifica professionale.",
+      "gap": "Assicurati che siano presenti nome completo, titolo professionale allineato e indirizzo email diretto."
+    },
+    "summary": {
+      "reachTen": "Per raggiungere 10/10, includi almeno 1 metrica misurabile che rifletta l'impatto aziendale (efficienza, entrate o crescita).",
+      "gap": "Scrivi un riepilogo incisivo di 3-4 frasi che sintetizzi competenze, leadership e principali traguardi."
+    },
+    "skills": {
+      "reachTen": "Per raggiungere 10/10, allinea le competenze chiave ai termini e alle parole chiave della posizione desiderata.",
+      "gap": "Organizza le competenze in gruppi tematici strutturati per una scansione immediata da parte dei recruiter."
+    },
+    "experience": {
+      "reachTen": "Per raggiungere 10/10, contestualizza i traguardi con la dimensione organizzativa (budget, volume clienti, team).",
+      "gap": "Quantifica i traguardi con risultati misurabili (percentuali, riduzione costi, scala) usando la formula Google XYZ."
+    },
+    "education": {
+      "reachTen": "Per raggiungere 10/10, mantieni aggiornate le certificazioni con l'ente di rilascio e le date di accreditamento.",
+      "gap": "Inserisci i titoli di studio più elevati, gli istituti accademici e le certificazioni riconosciute nel settore."
+    },
+    "languages": {
+      "reachTen": "Per raggiungere 10/10, supporta le competenze linguistiche con standard ufficiali o esperienza lavorativa internazionale.",
+      "gap": "Standardizza i livelli linguistici secondo il quadro QCER (Madrelingua, Avanzato C1/C2, Professionale B2)."
+    },
+    "structure": {
+      "reachTen": "Mantieni la disciplina di 1 o 2 pagine con margini coerenti per la massima leggibilità ATS e recruiter.",
+      "gap": "Ottimizza la gerarchia tipografica e la densità visiva per garantire la totale compatibilità con i sistemi ATS."
+    }
+  },
+  "comments": {
+    "header": "Intestazione completa con canali di contatto diretti e presenza professionale digitale.",
+    "summary": "Proposta di valore solida e concisa, che evidenzia competenze chiave e risultati quantitativi.",
+    "skills": "Competenze strutturate e ad alta densità organizzate in categorie tematiche scansionabili.",
+    "experience": "Risultati chiari che dimostrano leadership e traguardi misurabili con la formula Google XYZ.",
+    "education": "Istruzione formale contestualizzata con titoli pertinenti e certificazioni professionali.",
+    "languages": "Livelli standardizzati secondo il quadro QCER (Madrelingua, Avanzato / Fluente, Professionale).",
+    "structure": "Gerarchia visiva pulita, densità tipografica ottimale e compatibilità ATS al 100%."
+  }
 }

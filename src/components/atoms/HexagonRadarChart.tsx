@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, Tooltip, useTheme, alpha } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { getLocalizedAuditRecommendation } from '../../utils/auditUtils';
 
 export interface RadarDimension {
   key: string;
@@ -331,11 +332,24 @@ export const HexagonRadarChart: React.FC<HexagonRadarChartProps> = ({
               </Typography>
             </Box>
           </Box>
-          {dimensions[hoveredIndex].recommendation && (
-            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.4 }}>
-              💡 {dimensions[hoveredIndex].recommendation}
-            </Typography>
-          )}
+          {(() => {
+            const rawRec = dimensions[hoveredIndex].recommendation;
+            const localizedRec = rawRec
+              ? getLocalizedAuditRecommendation(
+                  {
+                    sectionName: dimensions[hoveredIndex].key || dimensions[hoveredIndex].label,
+                    score: dimensions[hoveredIndex].score,
+                    comment: rawRec,
+                  },
+                  t
+                )
+              : '';
+            return localizedRec || rawRec ? (
+              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.4 }}>
+                💡 {localizedRec || rawRec}
+              </Typography>
+            ) : null;
+          })()}
         </Box>
       )}
     </Box>

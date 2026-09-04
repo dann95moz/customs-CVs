@@ -17,7 +17,10 @@
     "experience": "Expérience Professionnelle",
     "skills": "Compétences Techniques",
     "education": "Formation et Diplômes",
-    "ats": "Conformité ATS"
+    "ats": "Conformité ATS",
+    "header": "Contact & Coordonnées",
+    "languages": "Langues",
+    "structure": "Structure & Lisibilité ATS"
   },
   "metrics": {
     "achievementDensity": "Densité des Réalisations",
@@ -129,5 +132,49 @@
     "reorganizeCategories": "Réorganiser en 3 catégories",
     "applyAction": "Appliquer l'action"
   },
-  "appliedSuccess": "\"{{title}}\" a été appliqué avec succès à votre CV adapté !"
+  "appliedSuccess": "\"{{title}}\" a été appliqué avec succès à votre CV adapté !",
+  "status": {
+    "optimal": "Optimal",
+    "solid": "Solide avec marge de progression",
+    "needsAttention": "Nécessite une attention"
+  },
+  "recommendations": {
+    "header": {
+      "reachTen": "Pour atteindre 10/10, ajoutez un profil LinkedIn soigné ou un lien portfolio pour une validation professionnelle.",
+      "gap": "Assurez-vous que le nom complet, le titre professionnel aligné et l'adresse e-mail directe sont présents."
+    },
+    "summary": {
+      "reachTen": "Pour atteindre 10/10, incluez au moins 1 métrique mesurable reflétant un impact clé (efficacité, revenus ou croissance).",
+      "gap": "Rédigez un résumé percutant de 3 à 4 phrases synthétisant expertise, leadership et réalisations clés."
+    },
+    "skills": {
+      "reachTen": "Pour atteindre 10/10, alignez précisément vos compétences clés sur les mots-clés du poste ciblé.",
+      "gap": "Organisez vos compétences en groupes thématiques structurés pour une lecture rapide par les recruteurs."
+    },
+    "experience": {
+      "reachTen": "Pour atteindre 10/10, contextualisez vos réalisations avec l'envergure organisationnelle (budgets, volume de clients, taille d'équipe).",
+      "gap": "Quantifiez vos réussites avec des indicateurs mesurables (pourcentages, réductions de coûts, échelle) via la formule Google XYZ."
+    },
+    "education": {
+      "reachTen": "Pour atteindre 10/10, maintenez vos certifications à jour avec l'organisme émetteur et les dates d'accréditation.",
+      "gap": "Indiquez les diplômes les plus élevés obtenus, les établissements et les certifications reconnues du secteur."
+    },
+    "languages": {
+      "reachTen": "Pour atteindre 10/10, appuyez vos niveaux de langue sur des tests officiels ou une expérience professionnelle internationale.",
+      "gap": "Harmonisez les niveaux de langue selon le cadre CECRL (Langue maternelle, Avancé C1/C2, Professionnel B2)."
+    },
+    "structure": {
+      "reachTen": "Conservez une discipline de 1 ou 2 pages avec des marges cohérentes pour une lisibilité ATS maximale.",
+      "gap": "Optimisez la hiérarchie typographique et la densité visuelle pour garantir une compatibilité ATS à 100%."
+    }
+  },
+  "comments": {
+    "header": "En-tête complet avec canaux de contact directs et présence professionnelle vérifiée.",
+    "summary": "Proposition de valeur forte et concise, mettant en avant les points forts et des résultats quantitatifs.",
+    "skills": "Compétences structurées et denses organisées en catégories thématiques lisibles.",
+    "experience": "Réalisations claires démontrant leadership et résultats mesurables avec la formule Google XYZ.",
+    "education": "Formation académique contextualisée avec diplômes et certifications professionnelles.",
+    "languages": "Niveaux standardisés selon le cadre CECRL (Langue maternelle, Avancé / Courant, Professionnel).",
+    "structure": "Hiérarchie visuelle claire, densité typographique optimale et compatibilité ATS à 100%."
+  }
 }

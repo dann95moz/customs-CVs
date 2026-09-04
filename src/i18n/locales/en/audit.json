@@ -17,7 +17,10 @@
     "experience": "Work Experience",
     "skills": "Technical Skills",
     "education": "Education & Format",
-    "ats": "ATS Compatibility"
+    "ats": "ATS Compatibility",
+    "header": "Contact & Personal Details",
+    "languages": "Languages",
+    "structure": "Structure & ATS Legibility"
   },
   "metrics": {
     "achievementDensity": "Achievement Density",
@@ -129,5 +132,49 @@
     "reorganizeCategories": "Reorganize into 3 Categories",
     "applyAction": "Apply Action"
   },
-  "appliedSuccess": "Successfully applied \"{{title}}\" to your tailored CV!"
+  "appliedSuccess": "Successfully applied \"{{title}}\" to your tailored CV!",
+  "status": {
+    "optimal": "Optimal",
+    "solid": "Solid with Headroom",
+    "needsAttention": "Needs Attention"
+  },
+  "recommendations": {
+    "header": {
+      "reachTen": "To reach 10/10, add a curated LinkedIn profile or portfolio link to provide verifiable background proof.",
+      "gap": "Ensure full name, aligned professional headline, and direct email address are present."
+    },
+    "summary": {
+      "reachTen": "To reach 10/10, include at least 1 measurable metric reflecting high-level career impact (efficiency, revenue, or growth).",
+      "gap": "Author a dense 3-4 sentence summary synthesizing domain expertise, leadership scope, and top career achievements."
+    },
+    "skills": {
+      "reachTen": "To reach 10/10, ensure key skills directly match target role keywords and industry-standard terminology.",
+      "gap": "Categorize core competencies into structured thematic groups for instant recruiter scanning."
+    },
+    "experience": {
+      "reachTen": "To reach 10/10, anchor achievements with organizational scope context (e.g. annual budgets, client volume, or cross-functional team headcount).",
+      "gap": "Quantify career achievements with measurable gains (percentages, cost reductions, team scale, or turnaround times) on every core bullet."
+    },
+    "education": {
+      "reachTen": "To reach 10/10, keep certifications updated with issuing body and accreditation dates.",
+      "gap": "Add highest degrees obtained, academic institutions, and industry-recognized certifications."
+    },
+    "languages": {
+      "reachTen": "To reach 10/10, back language proficiencies with official test standards or international work experience.",
+      "gap": "Standardize language proficiency levels using CEFR framework (Native, Advanced C1/C2, Professional B2)."
+    },
+    "structure": {
+      "reachTen": "Maintain single or two-page discipline with consistent margins and bullet lengths for maximum recruiter readability.",
+      "gap": "Optimize visual hierarchy and typographical density to guarantee 100% ATS parser compatibility."
+    }
+  },
+  "comments": {
+    "header": "Complete header with verified direct channels and digital professional presence.",
+    "summary": "Strong value proposition free of clichés, highlighting core domain strengths and quantitative outcomes.",
+    "skills": "Structured, high-density competencies organized into scannable thematic categories.",
+    "experience": "Clear achievement framing demonstrating leadership and measurable outcomes using the Google XYZ formula.",
+    "education": "Formal education contextualized with relevant credentials and professional certifications.",
+    "languages": "Standardized CEFR proficiency levels (Native, Advanced / Fluent, Professional Working).",
+    "structure": "Clean visual hierarchy, optimal typographical density for standard page limits, and 100% ATS parseability."
+  }
 }

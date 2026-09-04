@@ -17,7 +17,10 @@
     "experience": "Berufserfahrung",
     "skills": "Fachliche Kompetenzen",
     "education": "Ausbildung & Format",
-    "ats": "ATS-Kompatibilität"
+    "ats": "ATS-Kompatibilität",
+    "header": "Kontakt & Persönliche Angaben",
+    "languages": "Sprachen",
+    "structure": "Struktur & ATS-Lesbarkeit"
   },
   "metrics": {
     "achievementDensity": "Erfolgsdichte",
@@ -129,5 +132,49 @@
     "reorganizeCategories": "In 3 Kategorien umstrukturieren",
     "applyAction": "Aktion anwenden"
   },
-  "appliedSuccess": "\"{{title}}\" wurde erfolgreich auf Ihren angepassten Lebenslauf angewendet!"
+  "appliedSuccess": "\"{{title}}\" wurde erfolgreich auf Ihren angepassten Lebenslauf angewendet!",
+  "status": {
+    "optimal": "Optimal",
+    "solid": "Solide mit Potenzial",
+    "needsAttention": "Verbesserungswürdig"
+  },
+  "recommendations": {
+    "header": {
+      "reachTen": "Um 10/10 zu erreichen, fügen Sie ein LinkedIn-Profil oder Portfolio zur Überprüfung hinzu.",
+      "gap": "Stellen Sie sicher, dass vollständiger Name, passende Berufsbezeichnung und E-Mail vorhanden sind."
+    },
+    "summary": {
+      "reachTen": "Um 10/10 zu erreichen, fügen Sie mindestens 1 messbare Kennzahl hinzu (Effizienz, Umsatz oder Wachstum).",
+      "gap": "Verfassen Sie ein prägnantes Profil von 3-4 Sätzen mit Fachwissen, Führungsumfang und wichtigsten Erfolgen."
+    },
+    "skills": {
+      "reachTen": "Um 10/10 zu erreichen, stimmen Sie Schlüsselkompetenzen genau auf die Begriffe der Zielstelle ab.",
+      "gap": "Gliedern Sie Kernkompetenzen in strukturierte thematische Gruppen für sofortige Lesbarkeit."
+    },
+    "experience": {
+      "reachTen": "Um 10/10 zu erreichen, verankern Sie Erfolge im Unternehmenskontext (Budgets, Kundenvolumen oder Teamgröße).",
+      "gap": "Quantifizieren Sie Erfolge mit messbaren Zuwächsen (Prozente, Kostensenkung, Skalierung) mit der Google-XYZ-Formel."
+    },
+    "education": {
+      "reachTen": "Um 10/10 zu erreichen, halten Sie Zertifizierungen mit Aussteller und Gültigkeitsdaten aktuell.",
+      "gap": "Geben Sie höchste Bildungsabschlüsse, Institutionen und branchenweit anerkannte Zertifikate an."
+    },
+    "languages": {
+      "reachTen": "Um 10/10 zu erreichen, belegen Sie Sprachkenntnisse mit offiziellen Tests oder internationaler Berufserfahrung.",
+      "gap": "Standardisieren Sie Sprachniveaus nach dem GER-Rahmen (Muttersprache, Fließend C1/C2, Verhandlungssicher B2)."
+    },
+    "structure": {
+      "reachTen": "Achten Sie auf 1 bis 2 Seiten mit einheitlichen Abständen und Aufzählungslängen für optimale ATS-Lesbarkeit.",
+      "gap": "Optimieren Sie Hierarchie und visuelle Dichte für 100 % Kompatibilität mit ATS-Systemen."
+    }
+  },
+  "comments": {
+    "header": "Vollständiger Kopfbereich mit direkten Kontaktwegen und professioneller digitaler Präsenz.",
+    "summary": "Aussagekräftiges Profil ohne Klischees, mit Schwerpunkt auf Kernstärken und messbaren Ergebnissen.",
+    "skills": "Strukturierte Kompetenzen in thematischen Kategorien für schnelle Erfassbarkeit.",
+    "experience": "Erfolge mit Führungsqualitäten und messbaren Resultaten nach der Google-XYZ-Formel.",
+    "education": "Formale Ausbildung mit relevanten Qualifikationen und Fachzertifikaten.",
+    "languages": "Standardisierte GER-Sprachstufen (Muttersprache, Fließend, Verhandlungssicher).",
+    "structure": "Klare visuelle Hierarchie, optimale typografische Dichte und 100 % ATS-Kompatibilität."
+  }
 }

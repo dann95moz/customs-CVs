@@ -17,7 +17,10 @@
     "experience": "Experiencia Laboral",
     "skills": "Habilidades Técnicas",
     "education": "Educación y Formato",
-    "ats": "Compatibilidad ATS"
+    "ats": "Compatibilidad ATS",
+    "header": "Contacto e Información Personal",
+    "languages": "Idiomas",
+    "structure": "Estructura General y Legibilidad ATS"
   },
   "metrics": {
     "achievementDensity": "Densidad de Logros",
@@ -126,8 +129,52 @@
     "addMetric": "Añadir Métrica de Impacto",
     "linkPortfolio": "Enlazar GitHub / Portafolio",
     "addCertification": "Añadir Certificación Oficial",
-    "reorganizeCategories": "Reorganizar en 3 Categorías",
+    "reorganizeCategories": "Reorganize en 3 Categorías",
     "applyAction": "Aplicar Acción"
   },
-  "appliedSuccess": "¡Se aplicó con éxito \"{{title}}\" a tu CV adaptado!"
+  "appliedSuccess": "¡Se aplicó con éxito \"{{title}}\" a tu CV adaptado!",
+  "status": {
+    "optimal": "Óptimo",
+    "solid": "Sólido con margen de mejora",
+    "needsAttention": "Requiere Atención"
+  },
+  "recommendations": {
+    "header": {
+      "reachTen": "Para alcanzar 10/10, añade un perfil de LinkedIn curado o enlace al portafolio para validación profesional.",
+      "gap": "Asegúrate de incluir nombre completo, titular profesional alineado y correo electrónico directo."
+    },
+    "summary": {
+      "reachTen": "Para alcanzar 10/10, incluye al menos 1 métrica cuantificable que refleje impacto de negocio (eficiencia, ingresos o crecimiento).",
+      "gap": "Redacta un extracto conciso de 3-4 frases sintetizando experiencia clave, alcance y logros destacados."
+    },
+    "skills": {
+      "reachTen": "Para alcanzar 10/10, alinea las habilidades clave directamente con las palabras clave de la vacante y terminología del sector.",
+      "gap": "Organiza las competencias en grupos temáticos estructurados para un escaneo inmediato por reclutadores."
+    },
+    "experience": {
+      "reachTen": "Para alcanzar 10/10, contextualiza logros con magnitud organizacional (presupuestos, volumen de clientes o tamaño de equipo).",
+      "gap": "Cuantifica los logros con métricas medibles (porcentajes, ahorros o escala) en cada viñeta principal usando la fórmula Google XYZ."
+    },
+    "education": {
+      "reachTen": "Para alcanzar 10/10, mantén las certificaciones actualizadas con la entidad emisora y fechas de acreditación.",
+      "gap": "Añade los títulos académicos más altos obtenidos, instituciones y certificaciones reconocidas de la industria."
+    },
+    "languages": {
+      "reachTen": "Para alcanzar 10/10, respalda los niveles de idioma con estándares oficiales (MCER) o experiencia profesional internacional.",
+      "gap": "Estandariza los niveles de idioma según el marco MCER (Nativo, Avanzado C1/C2, Profesional B2)."
+    },
+    "structure": {
+      "reachTen": "Mantén disciplina de 1 o 2 páginas con márgenes consistentes y longitud de viñetas uniforme para máxima legibilidad ATS.",
+      "gap": "Optimiza la jerarquía tipográfica y densidad visual para garantizar 100% de compatibilidad con filtros ATS."
+    }
+  },
+  "comments": {
+    "header": "Encabezado completo con canales directos verificados y presencia profesional digital.",
+    "summary": "Propuesta de valor sólida y concisa, destacando fortalezas clave y resultados cuantitativos.",
+    "skills": "Competencias estructuradas y de alta densidad organizadas en categorías temáticas escaneables.",
+    "experience": "Logros claros que demuestran liderazgo y resultados medibles usando la fórmula Google XYZ.",
+    "education": "Educación formal contextualizada con credenciales relevantes y certificaciones profesionales.",
+    "languages": "Niveles estandarizados según el marco MCER (Nativo, Avanzado / Fluido, Profesional).",
+    "structure": "Jerarquía visual limpia, densidad tipográfica óptima para límites de página y 100% legibilidad ATS."
+  }
 }

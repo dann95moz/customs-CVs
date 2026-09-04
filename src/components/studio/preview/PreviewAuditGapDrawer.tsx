@@ -28,6 +28,7 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { useTranslation } from 'react-i18next';
 import { safeMarkdown } from '../../../utils/sanitize';
+import { buildRadarDimensions } from '../../../utils/auditUtils';
 import { PreviewAuditGapDrawerProps } from '../../../types';
 import { HexagonRadarChart, RadarDimension } from '../../atoms/HexagonRadarChart';
 import { useAuditActions } from '../../../hooks/useAuditActions';
@@ -65,25 +66,10 @@ export const PreviewAuditGapDrawer: React.FC<PreviewAuditGapDrawerProps> = React
   const [fullReportModalOpen, setFullReportModalOpen] = useState(false);
   const { copied: isReportCopied, copy: copyReport } = useCopyToClipboard();
 
-  const radarDimensions: RadarDimension[] = (auditReport.sections || []).map((sec) => {
-    let shortLabel = sec.sectionName.split(' ')[0];
-    if (sec.sectionName.includes('Header')) shortLabel = t('audit:dimensions.header', 'Contacto');
-    else if (sec.sectionName.includes('Summary')) shortLabel = t('audit:dimensions.summary', 'Extracto');
-    else if (sec.sectionName.includes('Skills')) shortLabel = t('audit:dimensions.skills', 'Habilidades');
-    else if (sec.sectionName.includes('Experience')) shortLabel = t('audit:dimensions.experience', 'Impacto');
-    else if (sec.sectionName.includes('Education')) shortLabel = t('audit:dimensions.education', 'Educación');
-    else if (sec.sectionName.includes('Languages')) shortLabel = t('audit:dimensions.languages', 'Idiomas');
-    else if (sec.sectionName.includes('Structure') || sec.sectionName.includes('Legibility')) shortLabel = t('audit:dimensions.structure', 'Estructura');
-
-    return {
-      key: sec.sectionName,
-      label: shortLabel,
-      score: sec.score,
-      targetScore: sec.targetScore ?? 9.0,
-      maxScore: 10,
-      recommendation: sec.actionToTen?.[0] || sec.comment,
-    };
-  });
+  const radarDimensions: RadarDimension[] = React.useMemo(
+    () => buildRadarDimensions(auditReport.sections || [], t),
+    [auditReport.sections, t]
+  );
 
   const {
     modalState,

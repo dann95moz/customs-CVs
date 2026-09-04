@@ -5,6 +5,12 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { useTranslation } from 'react-i18next';
 import { AuditSectionCardProps } from '../../../types';
+import {
+  getLocalizedSectionName,
+  getLocalizedStatus,
+  getLocalizedComment,
+  getLocalizedAuditRecommendation,
+} from '../../../utils/auditUtils';
 
 export type { AuditSectionCardProps };
 
@@ -32,9 +38,11 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleExpanded(); } }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-          <h4 className="metric-section-name" style={{ margin: 0 }}>{section.sectionName}</h4>
+          <h4 className="metric-section-name" style={{ margin: 0 }}>
+            {getLocalizedSectionName(section.sectionName, t)}
+          </h4>
           <span className="metric-status-tag" style={{ margin: 0 }}>
-            {section.status}
+            {getLocalizedStatus(section.status, t)}
           </span>
         </div>
 
@@ -64,7 +72,7 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
 
       <Collapse in={isExpanded} timeout="auto" unmountOnExit>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10 }}>
-          <p className="metric-comment">{section.comment}</p>
+          <p className="metric-comment">{getLocalizedComment(section, t)}</p>
 
           {section.identifiedGaps && section.identifiedGaps.length > 0 && (
             <div className="metric-gaps-box">
@@ -101,11 +109,13 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
                 <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: 'primary.main' }} /> {t('audit:actionLevers', 'Strategic Levers to Reach 10/10')}:
               </Typography>
               <Stack spacing={1.5}>
-                {section.actionToTen.map((a, i) => (
-                  <Box key={i} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    <Typography variant="body2" sx={{ fontSize: '0.82rem', color: 'text.secondary' }}>
-                      {a}
-                    </Typography>
+                {section.actionToTen.map((a, i) => {
+                  const localizedAction = getLocalizedAuditRecommendation(section, t) || a;
+                  return (
+                    <Box key={i} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Typography variant="body2" sx={{ fontSize: '0.82rem', color: 'text.secondary' }}>
+                        {localizedAction}
+                      </Typography>
                     <Button
                       variant="contained"
                       size="small"
@@ -126,8 +136,9 @@ export const AuditSectionCard: React.FC<AuditSectionCardProps> = ({
                       {getActionButtonLabel(a)}
                     </Button>
                   </Box>
-                ))}
-              </Stack>
+                );
+              })}
+            </Stack>
             </Box>
           )}
         </div>
