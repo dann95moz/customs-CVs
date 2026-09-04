@@ -101,7 +101,9 @@ export interface HistorySlice {
   handleAddApplication: (appData: {
     companyName: string;
     targetRole: string;
-    appliedVersionId: string;
+    appliedVersionId?: string;
+    isExternalCv?: boolean;
+    externalCvTitle?: string;
     columnId?: string;
     notes?: string;
     salary?: string;

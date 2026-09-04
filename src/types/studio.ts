@@ -65,7 +65,9 @@ export interface ApplicationItem {
   companyName: string;
   targetRole: string;
   columnId: string;
-  appliedVersionId: string;
+  appliedVersionId?: string;
+  isExternalCv?: boolean;
+  externalCvTitle?: string;
   createdAt: string; // ISO string
   updatedAt: string; // ISO string
   appliedDate?: string;

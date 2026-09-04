@@ -118,7 +118,9 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
   handleAddApplication: (appData) => {
     const { savedVersions, applications, kanbanColumns } = get();
     const appId = `app_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-    const attachedVersion = savedVersions.find((v) => v.id === appData.appliedVersionId);
+    const attachedVersion = appData.appliedVersionId
+      ? savedVersions.find((v) => v.id === appData.appliedVersionId)
+      : undefined;
     const targetColId = appData.columnId || (kanbanColumns[0]?.id ?? 'applied');
 
     const newApp: ApplicationItem = {
@@ -127,6 +129,8 @@ export const createHistorySlice: StateCreator<ResumeStore, [], [], HistorySlice>
       targetRole: appData.targetRole.trim(),
       columnId: targetColId,
       appliedVersionId: appData.appliedVersionId,
+      isExternalCv: appData.isExternalCv ?? (!appData.appliedVersionId),
+      externalCvTitle: appData.externalCvTitle,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       appliedDate: new Date().toISOString(),

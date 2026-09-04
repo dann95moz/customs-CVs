@@ -412,11 +412,40 @@ export interface ApplicationsStatsHeaderProps {
   onSearchChange: (query: string) => void;
   onTrackNewApplication: () => void;
   onStartNewResume: () => void;
-  activeView: 'board' | 'archived' | 'versions';
-  onViewChange: (view: 'board' | 'archived' | 'versions') => void;
+  activeView: 'grid' | 'board' | 'archived' | 'versions';
+  onViewChange: (view: 'grid' | 'board' | 'archived' | 'versions') => void;
   savedVersionsCount: number;
 }
 
+export interface ApplicationGridCardProps {
+  application: ApplicationItem;
+  allColumns: KanbanColumn[];
+  attachedVersion?: GeneratedCvVersion;
+  onLoadInStudio?: (versionId: string) => void;
+  onMoveToStage: (appId: string, targetColId: string) => void;
+  onArchive: (appId: string) => void;
+  onDelete: (appId: string) => void;
+  onDownloadPdf?: (version: GeneratedCvVersion) => void;
+  isDownloadingPdf?: boolean;
+  onManageStages?: () => void;
+}
+
+export interface ApplicationsGridViewProps {
+  applications: ApplicationItem[];
+  columns: KanbanColumn[];
+  savedVersions: GeneratedCvVersion[];
+  searchQuery: string;
+  selectedStageFilter: string | 'all';
+  onStageFilterChange: (stageId: string | 'all') => void;
+  onMoveToStage: (appId: string, targetColId: string) => void;
+  onLoadVersionInStudio: (versionId: string) => void;
+  onArchiveApplication: (appId: string) => void;
+  onDeleteApplication: (appId: string) => void;
+  onDownloadPdf?: (version: GeneratedCvVersion) => void;
+  isDownloadingPdfId?: string | null;
+  onManageStages: (column?: KanbanColumn) => void;
+  onQuickAddApplication: (columnId?: string) => void;
+}
 
 export interface ApplicationCardProps {
   version: GeneratedCvVersion;
@@ -491,7 +520,9 @@ export interface TrackApplicationDialogProps {
   onConfirm: (data: {
     companyName: string;
     targetRole: string;
-    appliedVersionId: string;
+    appliedVersionId?: string;
+    isExternalCv?: boolean;
+    externalCvTitle?: string;
     columnId: string;
     notes?: string;
     salary?: string;
