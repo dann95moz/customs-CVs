@@ -30,7 +30,8 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
-import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
+import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { useTranslation } from 'react-i18next';
@@ -41,6 +42,8 @@ import { useMasterDataWorkflow } from '../../hooks/useMasterDataWorkflow';
 import { useMasterProfileCompleteness } from '../../hooks/useMasterProfileCompleteness';
 import { ProfileCompletenessBar } from './profile/ProfileCompletenessBar';
 import { VisualMarkdownEditor } from './editor/VisualMarkdownEditor';
+
+import { MasterDataChoiceView } from './profile/MasterDataChoiceView';
 
 const GuidedProfileForm = React.lazy(() =>
   import('./GuidedProfileForm').then((m) => ({ default: m.GuidedProfileForm }))
@@ -61,6 +64,8 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
   const {
     editMode,
     handleSwitchMode,
+    handleSelectMode,
+    handleResetToChoice,
     flushGuidedRef,
     flushManualRef,
     manualText,
@@ -139,113 +144,109 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         </Box>
       )}
 
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: 1200,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2.5,
-        }}
-      >
-        {/* Hidden File Input for .pdf, .md, .txt uploads */}
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          accept=".pdf,.md,.txt,application/pdf,text/plain,text/markdown"
-          onChange={handleFileUpload}
+      {/* VIEW 1: Onboarding Choice Mode (When no profile data yet or explicitly selected) */}
+      {editMode === 'choice' ? (
+        <MasterDataChoiceView
+          onSelectFreeText={() => handleSelectMode('freeText')}
+          onSelectGuided={() => handleSelectMode('guided')}
+          onLoadSample={onLoadSample}
+          onUploadFile={handleFileUpload}
+          openFileDialog={openFileDialog}
+          fileInputRef={fileInputRef}
+          isProcessing={isProcessing}
         />
-
-        {/* Guiding Hero Banner with Clear Initial Actions */}
-        <Paper
+      ) : (
+        <Box
           sx={{
-            p: { xs: 2, md: 2.5 },
+            width: '100%',
+            maxWidth: 1200,
             display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
-            alignItems: { xs: 'flex-start', sm: 'center' },
-            justifyContent: 'space-between',
-            gap: 2,
-            bgcolor: 'background.paper',
-            border: `1px solid ${theme.palette.divider}`,
+            flexDirection: 'column',
+            gap: 2.5,
           }}
         >
-          <Box sx={{ maxWidth: 780 }}>
-            <Chip
-              icon={<PersonRoundedIcon sx={{ fontSize: '16px !important' }} />}
-              label={t('profile:stepBadge', 'Step 1 of 3 • Candidate Profile')}
-              size="small"
-              color="primary"
-              variant="outlined"
-              sx={{ mb: 1, fontWeight: 700 }}
-            />
-            <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
-              {t('profile:title', 'Your Master Career Profile')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t('profile:subtitleShort', 'Your master career database. Fill in your achievements below or import directly from an existing PDF or Markdown resume.')}
-              {' '}
-              <Tooltip
-                title={t('common:safeguard.integrityPromise', 'Zero AI Invention: The AI tailors exclusively using achievements explicitly present in this career profile, strictly obeying the Google XYZ formula.')}
-                arrow
-              >
-                <IconButton
-                  size="small"
-                  aria-label={t('common:safeguard.ariaLabel', 'Career Authenticity Promise')}
-                  sx={{
-                    p: 0.35,
-                    color: theme.palette.success.main,
-                    bgcolor: alpha(theme.palette.success.main, 0.08),
-                    '&:hover': { bgcolor: alpha(theme.palette.success.main, 0.16) },
-                  }}
-                >
-                  <ShieldRoundedIcon sx={{ fontSize: '0.95rem' }} />
-                </IconButton>
-              </Tooltip>
-            </Typography>
-          </Box>
+          {/* Hidden File Input for uploads */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            accept=".pdf,.md,.txt,application/pdf,text/plain,text/markdown"
+            onChange={handleFileUpload}
+          />
 
-          {/* Unified clean action buttons responsive layout */}
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={1}
+          {/* Dedicated Header for Active Mode */}
+          <Paper
             sx={{
-              width: { xs: '100%', sm: 'auto' },
-              alignItems: { xs: 'stretch', sm: 'center' },
-              flexShrink: 0,
+              p: { xs: 2, md: 2.5 },
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { xs: 'flex-start', sm: 'center' },
+              justifyContent: 'space-between',
+              gap: 2,
+              bgcolor: 'background.paper',
+              border: `1px solid ${theme.palette.divider}`,
+              borderRadius: 2,
             }}
           >
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              startIcon={<CloudUploadRoundedIcon />}
-              onClick={openFileDialog}
-              disabled={isProcessing}
+            <Box sx={{ maxWidth: 720 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                <Chip
+                  icon={editMode === 'freeText' ? <EditNoteRoundedIcon sx={{ fontSize: 16 }} /> : <FormatListBulletedRoundedIcon sx={{ fontSize: 16 }} />}
+                  label={editMode === 'freeText' ? t('profile:modes.freeTextShort', 'Free Text Mode') : t('profile:modes.guidedShort', 'Guided Mode')}
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  sx={{ fontWeight: 700 }}
+                />
+                <Button
+                  size="small"
+                  variant="text"
+                  color="inherit"
+                  onClick={handleResetToChoice}
+                  sx={{ fontSize: '0.75rem', color: 'text.secondary', textTransform: 'none' }}
+                >
+                  {t('profile:choice.switchMethod', 'Change Method')}
+                </Button>
+              </Box>
+              <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5 }}>
+                {editMode === 'freeText'
+                  ? t('profile:modes.freeTextTitle', 'Free Text & Career Notes')
+                  : t('profile:modes.guidedTitle', 'Guided Profile Form')}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {editMode === 'freeText'
+                  ? t(
+                      'profile:modes.freeTextHint',
+                      'Paste raw text, LinkedIn summary, or unformatted notes. No Markdown syntax required—the AI synthesizes and structures everything automatically.'
+                    )
+                  : t(
+                      'profile:subtitle',
+                      'Add your career history and skills once. We will automatically adapt it for every job you apply to.'
+                    )}
+              </Typography>
+            </Box>
+
+            {/* Mode Actions */}
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
               sx={{
-                fontWeight: 700,
-                whiteSpace: 'nowrap',
                 width: { xs: '100%', sm: 'auto' },
+                alignItems: { xs: 'stretch', sm: 'center' },
+                flexShrink: 0,
               }}
             >
-              {t('profile:actions.importResume', 'Import Resume (PDF, .md)')}
-            </Button>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: { xs: '100%', sm: 'auto' } }}>
               <Button
-                variant="outlined"
+                variant="contained"
+                color="primary"
                 size="small"
-                startIcon={<RefreshRoundedIcon />}
-                onClick={onLoadSample}
+                startIcon={<CloudUploadRoundedIcon />}
+                onClick={openFileDialog}
                 disabled={isProcessing}
-                sx={{
-                  fontWeight: 700,
-                  whiteSpace: 'nowrap',
-                  flex: { xs: 1, sm: 'initial' },
-                  width: { xs: '100%', sm: 'auto' },
-                }}
+                sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}
               >
-                {t('profile:actions.loadSample', 'Load Sample Profile')}
+                {t('profile:actions.importResume', 'Import File')}
               </Button>
 
               {hasData && (
@@ -271,110 +272,74 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                   </IconButton>
                 </Tooltip>
               )}
-            </Box>
-          </Stack>
-        </Paper>
+            </Stack>
+          </Paper>
 
-        {/* Profile Completeness & Soft Guidance Bar */}
-        <ProfileCompletenessBar completeness={completeness} />
-
-        {/* Mode Switcher & Dedicated Editor Area */}
-        <Paper
-          sx={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: { xs: 450, md: 520 },
-            overflow: 'hidden',
-            border: `1px solid ${theme.palette.divider}`,
-            bgcolor: 'background.paper',
-            borderRadius: 2,
-          }}
-        >
-          <Box
-            sx={{
-              py: 1,
-              px: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: 1,
-              borderBottom: `1px solid ${theme.palette.divider}`,
-              bgcolor: alpha(theme.palette.text.primary, 0.02),
-            }}
-          >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <EditNoteRoundedIcon fontSize="small" color="primary" />
-              <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                {editMode === 'markdown'
-                  ? t('profile:modes.markdownTitle', 'Freeform Text / Manual Mode')
-                  : t('profile:modes.guidedTitle', 'Guided Profile Form')}
-              </Typography>
-            </Box>
-
-            <ButtonGroup size="small" variant="outlined" sx={{ width: { xs: '100%', sm: 'auto' } }}>
-              <Button
-                variant={editMode === 'guided' ? 'contained' : 'outlined'}
-                startIcon={<FormatListBulletedRoundedIcon />}
-                onClick={() => handleSwitchMode('guided')}
-                sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' }, whiteSpace: 'nowrap' }}
+          {/* VIEW 2: Pure Guided Form (When in guided mode) */}
+          {editMode === 'guided' && (
+            <>
+              <ProfileCompletenessBar completeness={completeness} />
+              <Paper
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minHeight: { xs: 'auto', md: 520 },
+                  overflow: { xs: 'visible', md: 'hidden' },
+                  border: `1px solid ${theme.palette.divider}`,
+                  bgcolor: 'background.paper',
+                  borderRadius: 2,
+                }}
               >
-                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
-                  {t('profile:modes.guidedAssistant', 'Guided Form')}
-                </Box>
-                <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
-                  {t('profile:modes.guidedShort', 'Guided')}
-                </Box>
-              </Button>
-              <Button
-                variant={editMode === 'markdown' ? 'contained' : 'outlined'}
-                startIcon={<CodeRoundedIcon />}
-                onClick={() => handleSwitchMode('markdown')}
-                sx={{ fontWeight: 600, fontSize: '0.8rem', flex: { xs: 1, sm: 'initial' }, whiteSpace: 'nowrap' }}
+                <React.Suspense fallback={<StudioSkeleton variant="guidedForm" />}>
+                  <GuidedProfileForm markdownContent={content} onChange={onChange} onFlushRef={flushGuidedRef} />
+                </React.Suspense>
+              </Paper>
+            </>
+          )}
+
+          {/* VIEW 3: Pure Free Text / Notes Editor (When in freeText mode - ZERO guided form mounted) */}
+          {editMode === 'freeText' && (
+            <Paper
+              sx={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: { xs: 450, md: 520 },
+                overflow: 'hidden',
+                border: `1px solid ${theme.palette.divider}`,
+                bgcolor: 'background.paper',
+                borderRadius: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  px: 2,
+                  py: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  bgcolor: alpha(theme.palette.primary.main, 0.04),
+                  borderBottom: `1px solid ${theme.palette.divider}`,
+                }}
               >
-                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
-                  {t('profile:modes.markdownEditor', 'Manual Mode')}
-                </Box>
-                <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
-                  {t('profile:modes.markdownShort', 'Manual')}
-                </Box>
-              </Button>
-            </ButtonGroup>
-          </Box>
-
-          <Box
-            sx={{
-              display: editMode === 'guided' ? 'flex' : 'none',
-              flex: 1,
-              flexDirection: 'column',
-              minHeight: { xs: 'auto', md: 520 },
-              overflow: { xs: 'visible', md: 'hidden' },
-            }}
-          >
-            <React.Suspense fallback={<StudioSkeleton variant="guidedForm" />}>
-              <GuidedProfileForm markdownContent={content} onChange={onChange} onFlushRef={flushGuidedRef} />
-            </React.Suspense>
-          </Box>
-
-          <Box
-            sx={{
-              display: editMode === 'markdown' ? 'flex' : 'none',
-              flex: 1,
-              flexDirection: 'column',
-              minHeight: 0,
-              overflow: 'hidden',
-            }}
-          >
-            <VisualMarkdownEditor
-              markdown={content}
-              onChange={handleManualTextChange}
-              onBlur={handleManualBlur}
-              onFlushRef={flushManualRef}
-              placeholder="# [CANDIDATE FULL NAME]&#10;**Primary Professional Role / Specialization**&#10;City, Country • candidate.email@example.com • +1 234 567 8900&#10;&#10;## CAREER HISTORY & ACHIEVEMENTS&#10;Write your companies, roles, and achievements here..."
-            />
-          </Box>
-        </Paper>
+                <AutoAwesomeRoundedIcon sx={{ fontSize: 16, color: 'primary.main', flexShrink: 0 }} />
+                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+                  {t(
+                    'profile:modes.freeTextHint',
+                    'Paste raw text, LinkedIn summary, or unformatted notes. No Markdown syntax required—the AI synthesizes and structures everything automatically.'
+                  )}
+                </Typography>
+              </Box>
+              <VisualMarkdownEditor
+                markdown={content}
+                onChange={handleManualTextChange}
+                onBlur={handleManualBlur}
+                onFlushRef={flushManualRef}
+                placeholder="Candidate Name&#10;Role or Specialization&#10;Location • Email • Phone&#10;&#10;EXPERIENCE & ACHIEVEMENTS&#10;Write or paste your career notes, company names, projects, roles, and achievements in free text or bullet points..."
+              />
+            </Paper>
+          )}
 
         {/* Navigation Footer */}
         <Paper
@@ -455,6 +420,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
         {/* Dedicated End-of-Scroll Safe Spacer */}
         <Box sx={{ height: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 40px)', sm: 20 }, flexShrink: 0 }} />
       </Box>
+      )}
 
       {/* Confirmation Dialog Before Overwriting Existing Profile */}
       <Dialog
@@ -489,7 +455,7 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               {pendingFile.isPdf ? (
                 <PictureAsPdfRoundedIcon color="primary" />
               ) : (
-                <CodeRoundedIcon color="primary" />
+                <DescriptionRoundedIcon color="primary" />
               )}
               <Box>
                 <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>

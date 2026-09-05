@@ -60,8 +60,10 @@ export const useMasterProfileCompleteness = (masterData: string): ProfileComplet
       (lower.includes('experience') ||
         lower.includes('experiencia') ||
         lower.includes('work history') ||
-        lower.includes('trayectoria')) &&
-      (/•|-|\*/.test(masterData) && masterData.length > 150);
+        lower.includes('trayectoria') ||
+        lower.includes('empleo') ||
+        lower.includes('puesto')) &&
+      ((/•|-|\*/.test(masterData) || /\b(19\d\d|20\d\d)\b/.test(masterData)) && masterData.length > 100);
 
     // 4. Skills (15 pts)
     const hasSkills =
