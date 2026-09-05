@@ -13,6 +13,31 @@ const turndownService = new TurndownService({
   hr: '---',
 });
 
+// Ignore non-print or hover action UI elements inside contentEditable
+turndownService.addRule('ignoreActionElements', {
+  filter: (node) => {
+    return (
+      node.nodeType === 1 &&
+      ((node as HTMLElement).classList.contains('no-print') ||
+        (node as HTMLElement).classList.contains('cv-ai-hover-actions'))
+    );
+  },
+  replacement: () => '',
+});
+
+// Preserve ++keyword++ highlights
+turndownService.addRule('highlightKeywords', {
+  filter: (node) => {
+    return (
+      node.nodeName === 'MARK' ||
+      (node.nodeType === 1 &&
+        ((node as HTMLElement).classList.contains('cv-highlight-keyword') ||
+          (node as HTMLElement).classList.contains('cv-keyword-highlight')))
+    );
+  },
+  replacement: (content) => `++${content.trim()}++`,
+});
+
 // Remove unnecessary elements or inline spans with empty text
 turndownService.addRule('cleanSpans', {
   filter: ['span'],

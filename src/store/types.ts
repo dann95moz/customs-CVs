@@ -13,6 +13,7 @@ import {
   KanbanColumn,
   ApplicationItem,
   CvTranslationVariant,
+  CVData,
 } from '../types/cv';
 
 export interface GlobalNotification {
@@ -40,6 +41,7 @@ export interface CvDataSlice {
   masterData: string;
   targetJob: string;
   cvMarkdown: string;
+  activeCvData: CVData | null;
   gapMarkdown: string;
   coverLetterMarkdown: string;
   coverLetterTone: 'corporate' | 'startup' | 'leadership';
@@ -52,6 +54,7 @@ export interface CvDataSlice {
   setMasterData: (val: string | ((prev: string) => string)) => void;
   setTargetJob: (val: string | ((prev: string) => string)) => void;
   setCvMarkdown: (val: string | ((prev: string) => string)) => void;
+  setActiveCvData: (data: CVData | null) => void;
   setGapMarkdown: (val: string | ((prev: string) => string)) => void;
   setCoverLetterMarkdown: (val: string | ((prev: string) => string)) => void;
   setCoverLetterTone: (val: 'corporate' | 'startup' | 'leadership') => void;

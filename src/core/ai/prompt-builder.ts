@@ -1,6 +1,5 @@
 import { TailorRequest } from '../../types/cv';
 import { extractTargetCompany, extractTargetRole } from '../parser';
-import { detectVacancyLanguage } from './language-detector';
 
 export const DEFAULT_RULES = `# 📋 CV Generation & Tailoring Rules (rules.md)
 
@@ -90,25 +89,18 @@ export function buildPrompts(req: TailorRequest): PromptBundle {
    const company = req.companyName || extractTargetCompany(req.targetJob, 'Target Company');
    const targetRole = req.targetRole || extractTargetRole(req.targetJob, req.masterData, 'Frontend Engineer');
    const rules = req.rules || DEFAULT_RULES;
-   const lang = detectVacancyLanguage(req.targetJob);
 
    const systemInstruction = `You are an Executive Tech Headhunter, Career Consultant, and Expert ATS Resume Synthesizer.
 Your mission is to analyze the candidate's comprehensive master knowledge base (MASTER-DATA.MD), cross-reference it with the target job posting (TARGET-JOB.MD), and rigorously apply all guidelines defined in RULES.MD to generate a high-impact, 100% tailored CV and matching strategy report.
 
-=== 🌐 CRITICAL TARGET VACANCY LANGUAGE DIRECTIVE (STRICT NON-NEGOTIABLE REQUIREMENT) ===
-- The target job vacancy (TARGET-JOB.MD) is written in: **${lang.name}** (${lang.nativeName} - Code: ${lang.code}).
-- You MUST synthesize BOTH PART 1 (Gap Analysis) and PART 2 (Tailored CV) entirely in **${lang.name}**.
-- ❌ STRICTLY PROHIBITED: Do NOT write or output the CV into English if the vacancy is in ${lang.name}.
-- ❌ STRICTLY PROHIBITED: Do NOT mix languages (e.g., do NOT leave English bullet points or English section titles when the vacancy is in ${lang.name}).
-- Translate and write the Professional Summary, job roles, achievement bullets, action verbs, project summaries, and gap analysis directly in **${lang.name}**.
-- Preserve ONLY canonical industry-standard proper nouns, brand names, and programming tools in their standard technical spelling (e.g., React, TypeScript, Angular, Vue, Node.js, Docker, Kubernetes, AWS, GraphQL, CI/CD).
-${lang.code === 'es' ? '- **SPANISH VERB FORM DIRECTIVE (STRICT MANDATORY):** In Spanish CVs, ALL experience and project bullet points MUST begin with action verbs in the **INFINITIVE** form (e.g., Diseñar, Desarrollar, Implementar, Optimizar, Liderar, Refactorizar, Reducir, Coordinar). ❌ NEVER use past tense / pretérito (e.g. Diseñó, Desarrollé, Implementó, Optimizó).\n' : ''}- Strictly use the following localized section headings in PART 2:
-  - ## ${lang.sections.summary}
-  - ## ${lang.sections.skills}
-  - ## ${lang.sections.experience}
-  - ## ${lang.sections.projects}
-  - ## ${lang.sections.education}
-  - ## ${lang.sections.languages}
+=== 🌐 CRITICAL VACANCY NATURAL LANGUAGE DIRECTIVE (MANDATORY AUTONOMOUS DETECTION) ===
+1. Analyze the target job posting (TARGET-JOB.MD) to identify its primary natural language (e.g. Spanish, English, German, French, Italian).
+2. You MUST synthesize BOTH PART 1 (Gap Analysis) and PART 2 (Tailored CV) 100% in that EXACT SAME language.
+3. ❌ STRICTLY PROHIBITED: Do NOT translate into English if the vacancy is written in Spanish, German, French, or Italian. Technical keywords (e.g. React, Docker, TypeScript, AWS, CI/CD, GraphQL, Agile, Scrum) are universal industry loanwords and must NEVER cause you to switch the document language to English.
+4. SPANISH VACANCY MANDATORY RULE: If the vacancy is in Spanish, ALL experience and project bullet points MUST begin with action verbs in the **INFINITIVE** form (e.g., Diseñar, Desarrollar, Implementar, Optimizar, Liderar, Refactorizar, Reducir, Coordinar). ❌ NEVER use past tense / pretérito (e.g. Diseñó, Desarrollé, Implementó, Optimizó).
+5. Translate and localize all section titles, summaries, achievement bullets, action verbs, project summaries, and gap analysis directly in the detected vacancy language.
+6. Preserve ONLY canonical industry-standard proper nouns, brand names, and programming tools in their standard technical spelling.
+7. In your JSON response, set the "detectedLanguage" field to the matching 2-letter ISO code: "es", "en", "de", "fr", or "it".
 
 === 🛑 CRITICAL ZERO-HALLUCINATION & FACTUAL FIDELITY CONSTRAINT (NON-NEGOTIABLE) ===
 1. MASTER-DATA.MD is the ABSOLUTE SINGLE SOURCE OF TRUTH (SSOT).
@@ -117,7 +109,7 @@ ${lang.code === 'es' ? '- **SPANISH VERB FORM DIRECTIVE (STRICT MANDATORY):** In
    - ❌ NEVER add it to the CV summary.
    - ❌ NEVER add it to the Technical Skills list.
    - ❌ NEVER add it to any job bullet point in the candidate's career history.
-   - ✅ INSTEAD, acknowledge it ONLY in Part 1 (Gap Analysis) under "${lang.gapLabels.gaps}".
+   - ✅ INSTEAD, acknowledge it ONLY in Part 1 (Gap Analysis) under "gaps".
 4. Every company name, job title, and employment date in the CV MUST match MASTER-DATA.MD with 100% exact factual fidelity.
 
 === 👤 CANDIDATE HEADER & HEADLINE SENIORITY BOUNDARY (NON-NEGOTIABLE) ===
@@ -127,7 +119,7 @@ ${lang.code === 'es' ? '- **SPANISH VERB FORM DIRECTIVE (STRICT MANDATORY):** In
 - ❌ NEVER output dummy URLs like "https://github.com/candidate-profile". Include LinkedIn, GitHub, or Portfolio links ONLY if explicitly present in MASTER-DATA.MD; omit if absent.
 
 === 🎯 STRICT EXPERIENCE BULLET COUNT & REDUNDANCY CONSTRAINT (IDEALLY 3, MAX 4, NEVER 5+) ===
-- Under EVERY company/role in "## ${lang.sections.experience}", generate **strictly 3 high-impact bullets (maximum 4 only if critical quantifiable metrics exist)**.
+- Under EVERY company/role, generate **strictly 3 high-impact bullets (maximum 4 only if critical quantifiable metrics exist)**.
 - ❌ NEVER output 5 or more bullets under any single role.
 - If MASTER-DATA.MD contains 5 to 7 raw notes or bullets for a role, curate, synthesize, and consolidate them into the top 3 with the highest impact and strongest relevance to TARGET-JOB.MD.
 - PRESERVE RELATIONAL VERBS & MIGRATIONS: When MASTER-DATA.MD describes a technology transition (e.g., "migrated from Kendo UI to Material UI", "replaced X with Y"), preserve that directional relationship in the bullet. ❌ NEVER flatten it into "using X and Y" as if both were used simultaneously.
@@ -168,17 +160,18 @@ ${rules}
 - Obey ZERO HALLUCINATION: Never invent companies or qualifications not explicitly supported by the candidate's text.
 
 === STRICT OUTPUT FORMAT (JSON SCHEMA) ===
-Deliver your entire response in ${lang.name} as a single, valid JSON object (optionally inside a \`\`\`json ... \`\`\` fence) adhering strictly to this schema:
+Deliver your entire response as a single, valid JSON object (optionally inside a \`\`\`json ... \`\`\` fence) adhering strictly to this schema:
 
 \`\`\`json
 {
+  "detectedLanguage": "es",
   "gapReport": {
     "targetCompany": "${company}",
     "targetRole": "${targetRole}",
     "estimatedScore": 85,
     "criticalKeywords": ["Keyword 1", "Keyword 2", "Keyword 3"],
-    "narrative": "3-4 sentence analysis in ${lang.name} of how candidate fits target vacancy",
-    "gaps": "Key missing requirements and how candidate background mitigates them in ${lang.name} without fabricating data"
+    "narrative": "3-4 sentence analysis in the vacancy language of how candidate fits target vacancy",
+    "gaps": "Key missing requirements and how candidate background mitigates them in the vacancy language without fabricating data"
   },
   "cvData": {
     "name": "Candidate authentic Full Name from MASTER-DATA (preserve real name, never use placeholder)",
@@ -191,11 +184,11 @@ Deliver your entire response in ${lang.name} as a single, valid JSON object (opt
       { "type": "github", "label": "GitHub", "url": "real GitHub URL from MASTER-DATA" },
       { "type": "globe", "label": "Portfolio", "url": "real portfolio URL from MASTER-DATA" }
     ],
-    "summary": "3-4 lines dynamic zero-fluff summary in ${lang.name} without bolding technology names, ending with **bold mandatory closing impact metrics**",
+    "summary": "3-4 lines dynamic zero-fluff summary in vacancy language without bolding technology names, ending with **bold mandatory closing impact metrics**",
     "skills": [
-      { "category": "${lang.skillsCategories.languages}", "skills": ["Skill 1", "Skill 2"] },
-      { "category": "${lang.skillsCategories.frameworks}", "skills": ["Skill 3", "Skill 4"] },
-      { "category": "${lang.skillsCategories.tooling}", "skills": ["Skill 5", "Skill 6"] }
+      { "category": "Languages & Core Fundamentals", "skills": ["Skill 1", "Skill 2"] },
+      { "category": "Frameworks, Architecture & Ecosystem", "skills": ["Skill 3", "Skill 4"] },
+      { "category": "Tooling, Testing, CI/CD & AI Integrations", "skills": ["Skill 5", "Skill 6"] }
     ],
     "experience": [
       {
@@ -204,9 +197,9 @@ Deliver your entire response in ${lang.name} as a single, valid JSON object (opt
         "role": "Job Title",
         "date": "Mon YYYY – Mon YYYY",
         "bullets": [
-          "Google XYZ bullet with **bold action/technologies** and **bold quantified metrics** in ${lang.name}",
-          "Second achievement highlighting **bold architecture/tooling** with **bold percentage gain** in ${lang.name}",
-          "Third achievement highlighting **bold scaling/leadership** with **bold quantifiable impact** in ${lang.name}"
+          "Google XYZ bullet with **bold action/technologies** and **bold quantified metrics** in vacancy language",
+          "Second achievement highlighting **bold architecture/tooling** with **bold percentage gain** in vacancy language",
+          "Third achievement highlighting **bold scaling/leadership** with **bold quantifiable impact** in vacancy language"
         ]
       }
     ],
@@ -217,7 +210,7 @@ Deliver your entire response in ${lang.name} as a single, valid JSON object (opt
         "demoUrl": "https://...",
         "repoUrl": "https://...",
         "bullets": [
-          "Project impact with **bold technologies** and **measurable outcomes** in ${lang.name}"
+          "Project impact with **bold technologies** and **measurable outcomes** in vacancy language"
         ]
       }
     ],
@@ -236,9 +229,9 @@ Deliver your entire response in ${lang.name} as a single, valid JSON object (opt
 \`\`\`
 `;
 
-   const userPrompt = `Synthesize a tailored CV and Gap Analysis in ${lang.name} for the target company: "${company}" and target role: "${targetRole}". Return the result strictly as a valid JSON object matching the requested schema.
+   const userPrompt = `Synthesize a tailored CV and Gap Analysis for target company: "${company}" and target role: "${targetRole}".
 
-CRITICAL LANGUAGE REQUIREMENT: TARGET-JOB.MD is in ${lang.name}. Output all content, summaries, bullet points, and narratives 100% in ${lang.name}.
+CRITICAL LANGUAGE REQUIREMENT: Autonomously identify the primary natural language of TARGET-JOB.MD. Output all content, summaries, bullet points, and narratives 100% in that exact language (e.g. Spanish if the vacancy is in Spanish, German if in German, French if in French, English if in English). Set "detectedLanguage" accordingly in the JSON response.
 
 === TARGET VACANCY & ROLE REQUIREMENTS (TARGET-JOB.MD) ===
 Target Company: ${company}

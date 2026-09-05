@@ -4,6 +4,7 @@ import {
 } from '../parser/metadataExtractor';
 import { extractJobKeywords } from '../matching/quickMatcher';
 import { CVData } from '../../types/cv';
+import { SupportedLanguage } from '../../constants/languages';
 import { serializeCvDataToMarkdown } from '../parser/markdownSerializer';
 import { extractCandidateName } from '../parser/metadataExtractor';
 
@@ -13,9 +14,11 @@ export interface ExtractedCvAndGap {
   score: number;
   keywords: string[];
   cvData?: CVData;
+  detectedLanguage?: SupportedLanguage;
 }
 
 interface JsonCvOutput {
+  detectedLanguage?: string;
   gapReport?: {
     targetCompany?: string;
     targetRole?: string;
@@ -128,12 +131,17 @@ function tryParseJsonCv(
       `- **Addressed Gaps:** ${gaps}`,
     ].join('\n');
 
+    const detectedLang = parsed.detectedLanguage && ['es', 'en', 'de', 'fr', 'it'].includes(parsed.detectedLanguage.toLowerCase())
+      ? (parsed.detectedLanguage.toLowerCase() as SupportedLanguage)
+      : undefined;
+
     return {
       cvMarkdown,
       gapMarkdown,
       score,
       keywords,
       cvData,
+      detectedLanguage: detectedLang,
     };
   } catch {
     return null;

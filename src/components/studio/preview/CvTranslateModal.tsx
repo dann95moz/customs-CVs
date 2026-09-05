@@ -23,7 +23,7 @@ import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import { useTranslation } from 'react-i18next';
-import { SupportedLanguage, LANGUAGE_DEFINITIONS } from '../../../core/ai/language-detector';
+import { SupportedLanguage, LANGUAGE_DEFINITIONS } from '../../../constants/languages';
 import { CvTranslationVariant } from '../../../types/cv';
 
 export interface CvTranslateModalProps {

@@ -2,7 +2,6 @@ import { CVData } from '../../types/cv';
 import { AIProviderSettings } from '../../types/cv';
 import { getAIStrategy } from './strategies';
 import { PromptBundle } from './prompt-builder';
-import { detectVacancyLanguage } from './language-detector';
 
 export type CoverLetterTone = 'corporate' | 'startup' | 'leadership';
 
@@ -27,13 +26,11 @@ export async function generateCoverLetter(
     leadership: 'Strategic, vision-aligned, architectural-impact, and team-multiplier tone suitable for senior/staff/principal roles.'
   }[tone];
 
-  const lang = detectVacancyLanguage(targetJob);
-
   const systemInstruction = `You are an elite Executive Career Coach and Technical Recruiter.
 Your task is to write a compelling, tailored 3-paragraph cover letter for ${candidateName} applying for the position of "${role}" at "${company}".
 
 LANGUAGE REQUIREMENT:
-The cover letter MUST be written 100% in ${lang.name} (${lang.nativeName}) matching the target job posting language.
+Analyze the target job vacancy. The cover letter MUST be written 100% in the exact same natural language as the target job vacancy (e.g. Spanish if the vacancy is in Spanish, German if in German, English if in English). Do NOT switch to English if the vacancy is in another language.
 
 TONE REQUIREMENT:
 ${toneGuidelines}

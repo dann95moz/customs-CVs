@@ -249,5 +249,6 @@ export async function tailorResume(
     rawResponse: result.text,
     modelUsed: result.modelUsed,
     cvData: extracted.cvData,
+    detectedLanguage: extracted.detectedLanguage,
   };
 }

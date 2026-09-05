@@ -16,6 +16,7 @@ import {
   DialogActions,
   Snackbar,
   Alert,
+  TextField,
   useTheme,
   alpha,
 } from '@mui/material';
@@ -41,7 +42,6 @@ import { ConfirmDeleteDialog } from './common/ConfirmDeleteDialog';
 import { useMasterDataWorkflow } from '../../hooks/useMasterDataWorkflow';
 import { useMasterProfileCompleteness } from '../../hooks/useMasterProfileCompleteness';
 import { ProfileCompletenessBar } from './profile/ProfileCompletenessBar';
-import { VisualMarkdownEditor } from './editor/VisualMarkdownEditor';
 
 import { MasterDataChoiceView } from './profile/MasterDataChoiceView';
 
@@ -332,12 +332,34 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
                   )}
                 </Typography>
               </Box>
-              <VisualMarkdownEditor
-                markdown={content}
-                onChange={handleManualTextChange}
+              <TextField
+                multiline
+                fullWidth
+                value={content}
+                onChange={(e) => handleManualTextChange(e.target.value)}
                 onBlur={handleManualBlur}
-                onFlushRef={flushManualRef}
-                placeholder="Candidate Name&#10;Role or Specialization&#10;Location • Email • Phone&#10;&#10;EXPERIENCE & ACHIEVEMENTS&#10;Write or paste your career notes, company names, projects, roles, and achievements in free text or bullet points..."
+                placeholder={t(
+                  'profile:modes.freeTextPlaceholder',
+                  'Candidate Name\nRole or Specialization\nLocation • Email • Phone\n\nEXPERIENCE & ACHIEVEMENTS\nWrite or paste your career notes, company names, projects, roles, and achievements in plain text or bullet points...'
+                )}
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  '& .MuiOutlinedInput-root': {
+                    p: 2,
+                    height: '100%',
+                    alignItems: 'flex-start',
+                    fontFamily: 'monospace',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.6,
+                    border: 'none',
+                    '& fieldset': { border: 'none' },
+                  },
+                  '& .MuiInputBase-inputMultiline': {
+                    height: '100% !important',
+                    overflowY: 'auto !important',
+                  },
+                }}
               />
             </Paper>
           )}

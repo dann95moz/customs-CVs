@@ -68,4 +68,5 @@ export interface TailorResponse {
   rawResponse?: string;
   modelUsed: string;
   cvData?: CVData;
+  detectedLanguage?: string;
 }

@@ -21,7 +21,7 @@ import {
   spliceTranslatedSection,
   computeContentHash,
 } from '../core/ai/cv-translator';
-import { SupportedLanguage, LANGUAGE_DEFINITIONS } from '../core/ai/language-detector';
+import { SupportedLanguage, LANGUAGE_DEFINITIONS } from '../constants/languages';
 
 export const useStepPreviewWorkflow = () => {
   const { isExportingPdf, handleDirectDownload } = usePrintPdf();

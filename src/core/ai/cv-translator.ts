@@ -1,5 +1,5 @@
 import { AIProviderSettings } from '../../types/cv';
-import { SupportedLanguage, LANGUAGE_DEFINITIONS } from './language-detector';
+import { SupportedLanguage, LANGUAGE_DEFINITIONS } from '../../constants/languages';
 import { getAIStrategy } from './strategies';
 import { PromptBundle } from './prompt-builder';
 

@@ -24,6 +24,7 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
   masterData: BLANK_MASTER_DATA,
   targetJob: BLANK_TARGET_JOB,
   cvMarkdown: BLANK_TAILORED_CV,
+  activeCvData: null,
   gapMarkdown: BLANK_GAP_REPORT,
   coverLetterMarkdown: '',
   coverLetterTone: 'corporate',
@@ -111,8 +112,12 @@ export const createCvDataSlice: StateCreator<ResumeStore, [], [], CvDataSlice> =
     set({
       cvMarkdown: nextVal,
       ...(translationsChanged ? { translations: updatedTranslations } : {}),
-      ...(hasChanged ? { unsavedChangesCount: get().unsavedChangesCount + 1 } : {}),
+      ...(hasChanged ? { activeCvData: null, unsavedChangesCount: get().unsavedChangesCount + 1 } : {}),
     });
+  },
+
+  setActiveCvData: (data) => {
+    set({ activeCvData: data });
   },
 
   setGapMarkdown: (val) => {

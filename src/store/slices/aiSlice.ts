@@ -2,7 +2,6 @@ import { StateCreator } from 'zustand';
 import { ResumeStore, AiSlice } from '../types';
 import { AIProviderSettings, GeneratedCvVersion } from '../../types/cv';
 import { tailorResume } from '../../core/ai-service';
-import { detectVacancyLanguage } from '../../core/ai/language-detector';
 import {
   extractCandidateName,
   extractTargetCompany,
@@ -136,7 +135,7 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
           v.pageBudget === pageBudget
       );
 
-      const detectedLang = detectVacancyLanguage(targetJob).code || 'es';
+      const detectedLang = response.detectedLanguage || 'es';
       let nextSavedVersions = savedVersions;
       let targetVersionId = existingDuplicate?.id;
 
@@ -175,6 +174,7 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
       set({
         masterData: nextMasterData,
         cvMarkdown: tailoredCv,
+        activeCvData: response.cvData || null,
         gapMarkdown: gapReport,
         currentBaseLanguage: detectedLang,
         activeLanguage: detectedLang,

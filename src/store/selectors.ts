@@ -23,6 +23,7 @@ export const checkHasGapReport = (gapMarkdown: string): boolean => {
  * Hook to get memoized parsed CV data from current tailored Markdown
  */
 export const useParsedCv = (): CVData => {
+  const activeCvData = useResumeStore((s) => s.activeCvData);
   const cvMarkdown = useResumeStore((s) => s.cvMarkdown);
   const activeLanguage = useResumeStore((s) => s.activeLanguage);
   const currentBaseLanguage = useResumeStore((s) => s.currentBaseLanguage);
@@ -35,7 +36,12 @@ export const useParsedCv = (): CVData => {
     return cvMarkdown;
   }, [cvMarkdown, activeLanguage, currentBaseLanguage, translations]);
 
-  return useMemo(() => parseCvMarkdownToData(activeMarkdown), [activeMarkdown]);
+  return useMemo(() => {
+    if (activeCvData && (!activeLanguage || activeLanguage === currentBaseLanguage)) {
+      return activeCvData;
+    }
+    return parseCvMarkdownToData(activeMarkdown);
+  }, [activeCvData, activeMarkdown, activeLanguage, currentBaseLanguage]);
 };
 
 /**
