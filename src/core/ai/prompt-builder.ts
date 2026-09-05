@@ -1,6 +1,5 @@
 import { TailorRequest } from '../../types/cv';
 import { extractTargetCompany, extractTargetRole } from '../parser';
-import { sanitizeMasterDataForAi } from './privacy-guard';
 import { detectVacancyLanguage } from './language-detector';
 
 export const DEFAULT_RULES = `# 📋 CV Generation & Tailoring Rules (rules.md)
@@ -182,13 +181,15 @@ Deliver your entire response in ${lang.name} as a single, valid JSON object (opt
     "gaps": "Key missing requirements and how candidate background mitigates them in ${lang.name} without fabricating data"
   },
   "cvData": {
-    "name": "CANDIDATE FULL NAME",
+    "name": "Candidate authentic Full Name from MASTER-DATA (preserve real name, never use placeholder)",
     "title": "${targetRole}",
     "contacts": [
       { "type": "location", "label": "Candidate Location from MASTER-DATA (omit if not in source)" },
-      { "type": "email", "label": "candidate email from MASTER-DATA" },
-      { "type": "phone", "label": "phone from MASTER-DATA" },
-      { "type": "linkedin", "label": "LinkedIn", "url": "url from MASTER-DATA" }
+      { "type": "email", "label": "real candidate email from MASTER-DATA" },
+      { "type": "phone", "label": "real candidate phone from MASTER-DATA" },
+      { "type": "linkedin", "label": "LinkedIn", "url": "real LinkedIn URL from MASTER-DATA" },
+      { "type": "github", "label": "GitHub", "url": "real GitHub URL from MASTER-DATA" },
+      { "type": "globe", "label": "Portfolio", "url": "real portfolio URL from MASTER-DATA" }
     ],
     "summary": "3-4 lines dynamic zero-fluff summary in ${lang.name} without bolding technology names, ending with **bold mandatory closing impact metrics**",
     "skills": [
@@ -235,8 +236,6 @@ Deliver your entire response in ${lang.name} as a single, valid JSON object (opt
 \`\`\`
 `;
 
-   const { sanitizedText } = sanitizeMasterDataForAi(req.masterData);
-
    const userPrompt = `Synthesize a tailored CV and Gap Analysis in ${lang.name} for the target company: "${company}" and target role: "${targetRole}". Return the result strictly as a valid JSON object matching the requested schema.
 
 CRITICAL LANGUAGE REQUIREMENT: TARGET-JOB.MD is in ${lang.name}. Output all content, summaries, bullet points, and narratives 100% in ${lang.name}.
@@ -248,7 +247,7 @@ Target Role: ${targetRole}
 ${req.targetJob}
 
 === CANDIDATE KNOWLEDGE BASE (MASTER-DATA - ABSOLUTE SSOT - PLAIN TEXT COMPATIBLE) ===
-${sanitizedText || req.masterData}
+${req.masterData}
 `;
 
    return {

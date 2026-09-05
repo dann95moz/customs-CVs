@@ -237,17 +237,18 @@ export const StepMasterData: React.FC<StepMasterDataProps> = ({
               }}
             >
 
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                startIcon={<CloudUploadRoundedIcon />}
-                onClick={openFileDialog}
-                disabled={isProcessing}
-                sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}
-              >
-                {t('profile:actions.importResume', 'Import File')}
-              </Button>
+              {editMode === 'freeText' && (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  startIcon={<CloudUploadRoundedIcon />}
+                  onClick={openFileDialog}
+                  disabled={isProcessing}
+                  sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}
+                >
+                  {t('profile:actions.importResume', 'Import File')}
+                </Button>
+              )}
 
               {hasData && (
                 <Tooltip title={t('profile:actions.clearProfileTip', 'Clear all profile fields and start from a blank slate')}>

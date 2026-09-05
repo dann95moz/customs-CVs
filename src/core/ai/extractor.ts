@@ -1,4 +1,3 @@
-import { restoreOriginalHeader } from './privacy-guard';
 import {
   MULTILINGUAL_MATCH_SCORE_REGEX,
   MULTILINGUAL_KEYWORDS_REGEX
@@ -66,13 +65,23 @@ function tryParseJsonCv(
     const parsed = JSON.parse(candidateJson) as JsonCvOutput;
     if (!parsed || !parsed.cvData) return null;
 
-    const candidateName = parsed.cvData.name || extractCandidateName(masterData, 'Candidate');
+    const rawName = parsed.cvData.name?.trim() || '';
+    const isPlaceholder = !rawName || rawName.includes('[') || rawName.toLowerCase().includes('candidate full name') || rawName.toLowerCase() === 'candidate';
+    const candidateName = !isPlaceholder ? rawName : extractCandidateName(masterData, 'Candidate');
     const role = parsed.cvData.title || targetRole || '';
+
+    const contacts = (parsed.cvData.contacts || [])
+      .filter((c) => c && c.label && !c.label.includes('[candidate') && !c.label.includes('[+1 (555)'))
+      .map((c) => ({
+        type: c.type || 'globe',
+        label: c.label.replace(/\\/g, '').trim(),
+        url: c.url?.replace(/\\/g, '').trim(),
+      }));
 
     const cvData: CVData = {
       name: candidateName,
       title: role,
-      contacts: parsed.cvData.contacts || [],
+      contacts,
       sections: [],
       summary: parsed.cvData.summary || '',
       skillGroups: (parsed.cvData.skills || []).map((sg) => ({
@@ -178,9 +187,6 @@ export function extractCvAndGap(
     .replace(/```markdown\s*/gi, '')
     .replace(/```\s*/g, '')
     .trim();
-
-  // Restore candidate real header deterministically (name, target role, contacts)
-  cvContent = restoreOriginalHeader(cvContent, masterData, targetRole);
 
   // Extract Match Score (supports multilingual label matching; defaults to 0 if unparsed, per anti-patterns rules)
   let score = 0;

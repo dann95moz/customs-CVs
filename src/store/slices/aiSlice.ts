@@ -119,7 +119,9 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
       const tailoredCv = response.tailoredCvMarkdown || get().cvMarkdown;
       const gapReport = response.gapAnalysisMarkdown || get().gapMarkdown;
 
-      const candName = extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ');
+      const candName = (response.cvData?.name && !response.cvData.name.includes('[') && response.cvData.name.toLowerCase() !== 'candidate')
+        ? response.cvData.name
+        : extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ');
       const comp = companyName || extractTargetCompany(targetJob, 'Target Company');
       const role = targetRole || extractTargetRole(targetJob, masterData, '') || '';
 
