@@ -28,7 +28,11 @@
     "placeholder": "Paste the job description from LinkedIn, Indeed, or the careers page here...\n\nAbout the Role:\nWe are looking for an experienced engineer...\n\nKey Requirements:\n• Experience with modern web technologies\n• Proven problem solving track record",
     "noJobPasted": "*No job description pasted yet. Switch to Edit Text to add one.*",
     "uploadHint": "Have a job posting file instead of text?",
-    "uploadAction": "Upload it here"
+    "uploadAction": "Upload it here",
+    "highlightsOn": "Highlights: ON",
+    "highlightsOff": "Highlights: OFF",
+    "coveredCount": "{{count}} covered",
+    "missingCount": "{{count}} gaps"
   },
   "progress": {
     "title": "Synthesizing Tailored Resume with AI...",

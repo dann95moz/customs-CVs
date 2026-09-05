@@ -28,7 +28,11 @@
     "placeholder": "Collez la description de l'offre d'emploi ici...\n\nÀ propos du poste :\nNous recherchons un ingénieur expérimenté...\n\nCompétences requises :\n• Expérience avec les technologies web modernes",
     "noJobPasted": "*Aucune description collée pour le moment.*",
     "uploadHint": "Vous avez un fichier au lieu du texte ?",
-    "uploadAction": "Importez-le ici"
+    "uploadAction": "Importez-le ici",
+    "highlightsOn": "Surlignage : ACTIF",
+    "highlightsOff": "Surlignage : INACTIF",
+    "coveredCount": "{{count}} couvertes",
+    "missingCount": "{{count}} manquantes"
   },
   "progress": {
     "title": "Synthèse du CV adapté avec l'IA...",

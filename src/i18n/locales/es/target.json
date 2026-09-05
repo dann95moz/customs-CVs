@@ -28,7 +28,11 @@
     "placeholder": "Pega aquí la descripción del puesto de LinkedIn, Indeed o la página de empleo...\n\nAcerca del Puesto:\nBuscamos un ingeniero con experiencia...\n\nRequisitos Clave:\n• Experiencia con tecnologías web modernas\n• Historial comprobado de resolución de problemas",
     "noJobPasted": "*Aún no se ha pegado ninguna descripción del puesto. Cambia a Editar Texto para agregar una.*",
     "uploadHint": "¿Tienes un archivo de la oferta en vez de texto?",
-    "uploadAction": "Súbelo aquí"
+    "uploadAction": "Súbelo aquí",
+    "highlightsOn": "Resaltado: ACTIVO",
+    "highlightsOff": "Resaltado: INACTIVO",
+    "coveredCount": "{{count}} cubiertas",
+    "missingCount": "{{count}} pendientes"
   },
   "progress": {
     "title": "Sintetizando Currículum Adaptado con IA...",

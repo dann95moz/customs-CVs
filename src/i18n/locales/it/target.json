@@ -28,7 +28,11 @@
     "placeholder": "Incolla qui la descrizione del lavoro da LinkedIn, Indeed o dal sito aziendale...\n\nInformazioni sul ruolo:\nCerchiamo un ingegnere esperto...\n\nRequisiti principali:\n• Esperienza con le moderne tecnologie web",
     "noJobPasted": "*Nessuna offerta incollata al momento.*",
     "uploadHint": "Hai un file invece del testo?",
-    "uploadAction": "Caricalo qui"
+    "uploadAction": "Caricalo qui",
+    "highlightsOn": "Evidenziazione: ATTIVA",
+    "highlightsOff": "Evidenziazione: DISATTIVA",
+    "coveredCount": "{{count}} coperte",
+    "missingCount": "{{count}} mancanti"
   },
   "progress": {
     "title": "Sintesi del curriculum personalizzato con IA...",

@@ -28,7 +28,11 @@
     "placeholder": "Fügen Sie hier die Stellenbeschreibung ein...\n\nÜber die Stelle:\nWir suchen einen erfahrenen Entwickler...\n\nAnforderungen:\n• Erfahrung mit modernen Webtechnologien",
     "noJobPasted": "*Noch keine Stellenbeschreibung eingefügt.*",
     "uploadHint": "Haben Sie eine Stellendatei statt Text?",
-    "uploadAction": "Hier hochladen"
+    "uploadAction": "Hier hochladen",
+    "highlightsOn": "Hervorhebung: AN",
+    "highlightsOff": "Hervorhebung: AUS",
+    "coveredCount": "{{count}} abgedeckt",
+    "missingCount": "{{count}} offen"
   },
   "progress": {
     "title": "Lebenslauf wird mit KI angepasst...",

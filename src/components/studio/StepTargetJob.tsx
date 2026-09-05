@@ -12,8 +12,7 @@ import {
 import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
-import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
-import HighlightRoundedIcon from '@mui/icons-material/HighlightRounded';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { extractTargetCompany } from '../../core/parser';
 import { useFileUploader } from '../../hooks/useFileUploader';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +21,7 @@ import { TargetJobProgressBanner } from './target/TargetJobProgressBanner';
 import { TargetJobMetadataBar } from './target/TargetJobMetadataBar';
 import { TargetJobFooterActions } from './target/TargetJobFooterActions';
 import { QuickScoreBadge } from './target/QuickScoreBadge';
-import { JobKeywordsHighlighter } from './target/JobKeywordsHighlighter';
+import { LiveJobDescriptionEditor } from './target/LiveJobDescriptionEditor';
 import { calculateQuickScore } from '../../core/matching/quickMatcher';
 import { useResumeStore } from '../../store/useResumeStore';
 
@@ -52,7 +51,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
   const { t } = useTranslation(['target', 'common']);
   const theme = useTheme();
   const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
-  const [editorViewMode, setEditorViewMode] = useState<'edit' | 'analyzed'>('edit');
+  const [highlightsEnabled, setHighlightsEnabled] = useState<boolean>(true);
   const lastClickRef = useRef<number>(0);
 
   const [localContent, setLocalContent] = useState(content);
@@ -299,7 +298,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             overflow: 'hidden',
           }}
         >
-          {/* Editor Header Toolbar with View Mode Toggle and Attachment Action */}
+          {/* Editor Header Toolbar with Highlights Toggle and Attachment Action */}
           <Box
             sx={{
               py: 0.75,
@@ -314,40 +313,61 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               flexWrap: 'wrap',
             }}
           >
-            {/* View Mode Toggle: Edit Plain Text vs Analyzed Keywords View */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+            {/* Live Highlights Toggle and Real-time Keyword Metrics */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Button
                 size="small"
-                variant={editorViewMode === 'edit' ? 'contained' : 'text'}
-                color={editorViewMode === 'edit' ? 'primary' : 'inherit'}
-                startIcon={<EditNoteRoundedIcon fontSize="small" />}
-                onClick={() => setEditorViewMode('edit')}
+                variant={highlightsEnabled ? 'contained' : 'outlined'}
+                color={highlightsEnabled ? 'primary' : 'inherit'}
+                startIcon={<AutoAwesomeRoundedIcon sx={{ fontSize: 16 }} />}
+                onClick={() => setHighlightsEnabled((prev) => !prev)}
                 sx={{
                   fontSize: '0.78rem',
                   textTransform: 'none',
                   px: 1.25,
                   py: 0.35,
-                  fontWeight: editorViewMode === 'edit' ? 700 : 500,
+                  fontWeight: highlightsEnabled ? 700 : 500,
                 }}
               >
-                {t('target:editor.editText', 'Edit Text')}
+                {highlightsEnabled
+                  ? t('target:editor.highlightsOn', 'Highlights: ON')
+                  : t('target:editor.highlightsOff', 'Highlights: OFF')}
               </Button>
-              <Button
-                size="small"
-                variant={editorViewMode === 'analyzed' ? 'contained' : 'text'}
-                color={editorViewMode === 'analyzed' ? 'secondary' : 'inherit'}
-                startIcon={<HighlightRoundedIcon fontSize="small" />}
-                onClick={() => setEditorViewMode('analyzed')}
-                sx={{
-                  fontSize: '0.78rem',
-                  textTransform: 'none',
-                  px: 1.25,
-                  py: 0.35,
-                  fontWeight: editorViewMode === 'analyzed' ? 700 : 500,
-                }}
-              >
-                {t('target:highlighter.viewTitle', 'Analyzed View')}
-              </Button>
+
+              {quickMatchResult.totalKeywords > 0 && (
+                <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: 1.25, ml: 0.5 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Box
+                      sx={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        bgcolor: 'success.main',
+                      }}
+                    />
+                    <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                      {t('target:editor.coveredCount', '{{count}} covered', {
+                        count: quickMatchResult.matchedKeywords.length,
+                      })}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Box
+                      sx={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        bgcolor: 'warning.main',
+                      }}
+                    />
+                    <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                      {t('target:editor.missingCount', '{{count}} gaps', {
+                        count: quickMatchResult.missingKeywords.length,
+                      })}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
             </Box>
 
             <Tooltip title={t('target:actions.uploadFileTip', 'Upload job description file (.txt, .md)')}>
@@ -365,8 +385,8 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
                   px: 1,
                   '&:hover': {
                     color: 'primary.main',
-                    bgcolor: alpha(theme.palette.primary.main, 0.08)
-                  }
+                    bgcolor: alpha(theme.palette.primary.main, 0.08),
+                  },
                 }}
               >
                 {t('target:actions.uploadFileInline', 'Attach file (.txt, .md)')}
@@ -374,6 +394,7 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
             </Tooltip>
           </Box>
 
+          {/* Unified Live Interactive Editor with Backdrop Highlighting */}
           <Box
             onDragOver={handleDragOver}
             onDrop={handleDrop}
@@ -385,32 +406,14 @@ export const StepTargetJob: React.FC<StepTargetJobProps> = ({
               minHeight: 280,
             }}
           >
-            {editorViewMode === 'edit' ? (
-              <textarea
-                className="studio-textarea"
-                value={localContent}
-                onChange={(e) => handleContentChange(e.target.value)}
-                onBlur={() => onChange(localContent)}
-                placeholder="# Job Title / Target Role&#10;Company Name • Location / Remote&#10;&#10;## About the Role&#10;Paste the full vacancy responsibilities, requirements, and tech stack here..."
-                spellCheck={false}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  minHeight: '280px',
-                  border: 'none',
-                  outline: 'none',
-                  padding: '16px',
-                  fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
-                  fontSize: '0.88rem',
-                  lineHeight: 1.65,
-                  resize: 'vertical',
-                  backgroundColor: 'transparent',
-                  color: theme.palette.text.primary,
-                }}
-              />
-            ) : (
-              <JobKeywordsHighlighter jobText={localContent} masterData={masterData} />
-            )}
+            <LiveJobDescriptionEditor
+              value={localContent}
+              onChange={handleContentChange}
+              onBlur={() => onChange(localContent)}
+              masterData={masterData}
+              highlightsEnabled={highlightsEnabled}
+              placeholder="# Job Title / Target Role&#10;Company Name • Location / Remote&#10;&#10;## About the Role&#10;Paste the full vacancy responsibilities, requirements, and tech stack here..."
+            />
           </Box>
         </Paper>
 
