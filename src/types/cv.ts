@@ -96,6 +96,7 @@ export interface CVData {
   experience?: ExperienceItem[];
   projects?: ExperienceItem[];
   education?: string[];
+  certifications?: string[];
   languages?: string[];
   languageItems?: LanguageItem[];
   customSections?: CustomSection[];

@@ -4,16 +4,136 @@ import {
   MULTILINGUAL_KEYWORDS_REGEX
 } from '../parser/metadataExtractor';
 import { extractJobKeywords } from '../matching/quickMatcher';
+import { CVData } from '../../types/cv';
+import { serializeCvDataToMarkdown } from '../parser/markdownSerializer';
+import { extractCandidateName } from '../parser/metadataExtractor';
 
 export interface ExtractedCvAndGap {
   cvMarkdown: string;
   gapMarkdown: string;
   score: number;
   keywords: string[];
+  cvData?: CVData;
+}
+
+interface JsonCvOutput {
+  gapReport?: {
+    targetCompany?: string;
+    targetRole?: string;
+    estimatedScore?: number;
+    estimatedMatchScore?: number;
+    criticalKeywords?: string[];
+    criticalIntegratedKeywords?: string[];
+    narrative?: string;
+    gaps?: string;
+  };
+  cvData?: {
+    name?: string;
+    title?: string;
+    contacts?: Array<{ type: any; label: string; url?: string }>;
+    summary?: string;
+    skills?: Array<{ category: string; skills: string[] }>;
+    experience?: Array<{ company: string; role?: string; date?: string; location?: string; bullets?: string[] }>;
+    projects?: Array<{ company?: string; name?: string; role?: string; demoUrl?: string; repoUrl?: string; bullets?: string[] }>;
+    education?: string[];
+    certifications?: string[];
+    languages?: string[];
+  };
+}
+
+/**
+ * Tries parsing JSON output adhering to the AI JSON Schema.
+ */
+function tryParseJsonCv(
+  rawText: string,
+  masterData: string,
+  company: string,
+  targetRole: string
+): ExtractedCvAndGap | null {
+  let candidateJson = rawText.trim();
+  const fenceMatch = candidateJson.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+  if (fenceMatch) {
+    candidateJson = fenceMatch[1].trim();
+  } else {
+    const firstBrace = candidateJson.indexOf('{');
+    const lastBrace = candidateJson.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+      candidateJson = candidateJson.slice(firstBrace, lastBrace + 1);
+    }
+  }
+
+  try {
+    const parsed = JSON.parse(candidateJson) as JsonCvOutput;
+    if (!parsed || !parsed.cvData) return null;
+
+    const candidateName = parsed.cvData.name || extractCandidateName(masterData, 'Candidate');
+    const role = parsed.cvData.title || targetRole || '';
+
+    const cvData: CVData = {
+      name: candidateName,
+      title: role,
+      contacts: parsed.cvData.contacts || [],
+      sections: [],
+      summary: parsed.cvData.summary || '',
+      skillGroups: (parsed.cvData.skills || []).map((sg) => ({
+        category: (sg.category || '').replace(/[:*_\s]+$/, '').replace(/^[:*_\s]+/, '').trim(),
+        skills: (sg.skills || [])
+          .map((sk) => sk.replace(/^[:*_\s]+/, '').replace(/[:*_\s]+$/, '').trim())
+          .filter(Boolean),
+      })),
+      experience: (parsed.cvData.experience || []).map((exp) => ({
+        company: exp.company || '',
+        role: exp.role || 'Specialist',
+        date: exp.date || '',
+        location: exp.location || '',
+        bullets: exp.bullets || [],
+      })),
+      projects: (parsed.cvData.projects || []).map((proj) => ({
+        company: proj.company || proj.name || 'Project',
+        role: proj.role || '',
+        demoUrl: proj.demoUrl,
+        repoUrl: proj.repoUrl,
+        bullets: proj.bullets || [],
+      })),
+      education: parsed.cvData.education || [],
+      certifications: parsed.cvData.certifications || [],
+      languages: parsed.cvData.languages || [],
+    };
+
+    const cvMarkdown = serializeCvDataToMarkdown(cvData);
+    const score = parsed.gapReport?.estimatedScore ?? parsed.gapReport?.estimatedMatchScore ?? 0;
+    const keywords = parsed.gapReport?.criticalKeywords ?? parsed.gapReport?.criticalIntegratedKeywords ?? [];
+
+    const compName = parsed.gapReport?.targetCompany || company || 'Target Company';
+    const tgtRole = parsed.gapReport?.targetRole || targetRole || role;
+    const narrative = parsed.gapReport?.narrative || '';
+    const gaps = parsed.gapReport?.gaps || '';
+
+    const gapMarkdown = [
+      `# MATCHING & TAILORING REPORT`,
+      `- **Target Company:** ${compName}`,
+      `- **Target Role:** ${tgtRole}`,
+      `- **Estimated Match Score:** ${score}/100`,
+      `- **Critical Integrated Keywords:** ${keywords.join(', ')}`,
+      `- **Strategic Narrative:** ${narrative}`,
+      `- **Addressed Gaps:** ${gaps}`,
+    ].join('\n');
+
+    return {
+      cvMarkdown,
+      gapMarkdown,
+      score,
+      keywords,
+      cvData,
+    };
+  } catch {
+    return null;
+  }
 }
 
 /**
  * Pure function: Extracts and separates Part 1 (Gap Analysis) and Part 2 (Tailored CV) from LLM output.
+ * Primary: AI JSON Schema. Fallback: Delimited Markdown.
  */
 export function extractCvAndGap(
   rawText: string,
@@ -21,6 +141,13 @@ export function extractCvAndGap(
   company: string = '',
   targetRole: string = ''
 ): ExtractedCvAndGap {
+  // 1. Try JSON schema extraction first (Ruta B)
+  const jsonResult = tryParseJsonCv(rawText, masterData, company, targetRole);
+  if (jsonResult) {
+    return jsonResult;
+  }
+
+  // 2. Fallback to Markdown regex extraction for backward compatibility
   let gapContent = '';
   let cvContent = rawText;
 

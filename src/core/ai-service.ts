@@ -247,6 +247,7 @@ export async function tailorResume(
     estimatedMatchScore: extracted.score,
     extractedKeywords: extracted.keywords,
     rawResponse: result.text,
-    modelUsed: result.modelUsed
+    modelUsed: result.modelUsed,
+    cvData: extracted.cvData,
   };
 }

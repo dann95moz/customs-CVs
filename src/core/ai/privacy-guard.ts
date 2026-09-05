@@ -113,7 +113,7 @@ export function restoreOriginalHeader(
     ) {
       roleTitle = masterParsed.title;
     } else {
-      roleTitle = extractTargetRole('', originalMasterData, 'Professional Specialist');
+      roleTitle = extractTargetRole('', originalMasterData, '');
     }
   }
 

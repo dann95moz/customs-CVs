@@ -58,6 +58,8 @@ export interface TailorRequest {
   providerSettings: AIProviderSettings;
 }
 
+import { CVData } from './cv';
+
 export interface TailorResponse {
   tailoredCvMarkdown: string;
   gapAnalysisMarkdown?: string;
@@ -65,4 +67,5 @@ export interface TailorResponse {
   extractedKeywords?: string[];
   rawResponse?: string;
   modelUsed: string;
+  cvData?: CVData;
 }

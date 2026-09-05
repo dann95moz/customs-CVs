@@ -7,6 +7,7 @@ import {
   extractCandidateName,
   extractTargetCompany,
   extractTargetRole,
+  serializeCvDataToMarkdown,
 } from '../../core/parser';
 
 export const DEFAULT_AI_SETTINGS: AIProviderSettings = {
@@ -120,7 +121,7 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
 
       const candName = extractCandidateName(masterData, 'Candidate').replace(/_/g, ' ');
       const comp = companyName || extractTargetCompany(targetJob, 'Target Company');
-      const role = targetRole || extractTargetRole(targetJob, masterData, 'Specialist');
+      const role = targetRole || extractTargetRole(targetJob, masterData, '') || '';
 
       // Check if an identical version exists in savedVersions
       const existingDuplicate = savedVersions.find(
@@ -161,7 +162,16 @@ export const createAiSlice: StateCreator<ResumeStore, [], [], AiSlice> = (set, g
         nextSavedVersions = [autoSavedVersion, ...savedVersions.filter((v) => v.id !== autoSavedVersion.id)];
       }
 
+      let nextMasterData = masterData;
+      if (response.cvData && (!masterData || !/^##\s+/m.test(masterData))) {
+        const structured = serializeCvDataToMarkdown(response.cvData);
+        if (structured && structured.trim()) {
+          nextMasterData = structured;
+        }
+      }
+
       set({
+        masterData: nextMasterData,
         cvMarkdown: tailoredCv,
         gapMarkdown: gapReport,
         currentBaseLanguage: detectedLang,

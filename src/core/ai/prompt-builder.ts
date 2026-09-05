@@ -163,76 +163,81 @@ ${rules}
   - Comprehensive / Senior Scope (2 Pages, 700–850 words): If the candidate possesses 7+ years of extensive experience, include 3–4 roles with 3–4 bullets per role (never 5+).
 - Avoid orphan bullet points and maintain clean visual rhythm.
 
-=== STRICT OUTPUT FORMAT ===
-Deliver your entire response in ${lang.name} with exactly two clearly delimited Markdown code blocks:
+=== 📋 CANDIDATE KNOWLEDGE BASE DIRECTIVE (PLAIN TEXT & FREEFORM COMPATIBLE) ===
+- The candidate's master data may be provided in Markdown, unstructured plain text, or notes.
+- Identify names, companies, roles, dates, skills, and accomplishments authentically from the text without requiring markdown syntax.
+- Obey ZERO HALLUCINATION: Never invent companies or qualifications not explicitly supported by the candidate's text.
 
-PART 1: GAP ANALYSIS
-\`\`\`markdown
-# ${lang.gapReportTitle}
-- **${lang.gapLabels.targetCompany}** ${company}
-- **${lang.gapLabels.targetRole}** ${targetRole}
-- **Estimated Match Score:** [X]/100
-- **Critical Integrated Keywords:** [Keyword 1, Keyword 2, Keyword 3, ...]
-- **${lang.gapLabels.narrative}** [3-4 sentence analysis in ${lang.name} of how candidate fits target vacancy]
-- **${lang.gapLabels.gaps}** [Key missing requirements and how candidate background mitigates them in ${lang.name} without fabricating data]
-\`\`\`
+=== STRICT OUTPUT FORMAT (JSON SCHEMA) ===
+Deliver your entire response in ${lang.name} as a single, valid JSON object (optionally inside a \`\`\`json ... \`\`\` fence) adhering strictly to this schema:
 
-PART 2: TAILORED CV
-\`\`\`markdown
-# [CANDIDATE FULL NAME]
-**${targetRole}**
-[City, Country] • [Email] • [Phone]
-[Verifiable links from master data ONLY (e.g. LinkedIn • GitHub) — omit if not present in master data]
-
----
-
-## ${lang.sections.summary}
-[3-4 lines dynamic zero-fluff summary in ${lang.name} in PLAIN TEXT without bolding any technology names, with no repeated keywords/themes across sentences, ending with **bold mandatory closing impact metrics**]
----
-
-## ${lang.sections.skills}
-- **${lang.skillsCategories.languages}** [Comma separated skills found ONLY in master data]
-- **${lang.skillsCategories.frameworks}** [Comma separated skills found ONLY in master data]
-- **${lang.skillsCategories.tooling}** [Comma separated skills found ONLY in master data]
-
----
-
-## ${lang.sections.experience}
-
-### **[Company Name]** | [Location / Remote]
-*[Job Title]* | [Mon YYYY – Mon YYYY]
-- [Google XYZ bullet with **bold action/technologies** and **bold quantified metrics** in ${lang.name} from master data]
-- [Second achievement highlighting **bold architecture/tooling** with **bold percentage gain** in ${lang.name} from master data]
-- [Third achievement highlighting **bold scaling/leadership** with **bold quantifiable impact** in ${lang.name} from master data]
-
----
-
-## ${lang.sections.projects} (OPTIONAL — INCLUDE 1-2 ONLY IF HIGHLY RELEVANT TO VACANCY AND PRESENT IN MASTER DATA)
- 
-### **[Project Name]** | [Exact Link 1 from Master Data](exact_url) • [Exact Link 2 from Master Data](exact_url)
-*[Role / Scope / Stack summary in ${lang.name} — NEVER include dates or locations]*
-- [Project impact/highlight with **bold technologies** and **measurable outcomes** in ${lang.name} from master data]
-
----
-
-## ${lang.sections.education}
-- **[Degree / Major]** – [Institution], [Year]
-- **[Certification Name 1]** – [Issuer], [Year]
-- **[Certification Name 2]** – [Issuer], [Year]
-- **[Certification Name 3]** – [Issuer], [Year]
-- **[Certification Name 4]** – [Issuer], [Year]
-
----
-
-## ${lang.sections.languages}
-- **[Language 1]:** Native
-- **[Language 2]:** [CEFR Level] (e.g. B2 – Upper Intermediate, C1 – Advanced)
+\`\`\`json
+{
+  "gapReport": {
+    "targetCompany": "${company}",
+    "targetRole": "${targetRole}",
+    "estimatedScore": 85,
+    "criticalKeywords": ["Keyword 1", "Keyword 2", "Keyword 3"],
+    "narrative": "3-4 sentence analysis in ${lang.name} of how candidate fits target vacancy",
+    "gaps": "Key missing requirements and how candidate background mitigates them in ${lang.name} without fabricating data"
+  },
+  "cvData": {
+    "name": "CANDIDATE FULL NAME",
+    "title": "${targetRole}",
+    "contacts": [
+      { "type": "location", "label": "Candidate Location from MASTER-DATA (omit if not in source)" },
+      { "type": "email", "label": "candidate email from MASTER-DATA" },
+      { "type": "phone", "label": "phone from MASTER-DATA" },
+      { "type": "linkedin", "label": "LinkedIn", "url": "url from MASTER-DATA" }
+    ],
+    "summary": "3-4 lines dynamic zero-fluff summary in ${lang.name} without bolding technology names, ending with **bold mandatory closing impact metrics**",
+    "skills": [
+      { "category": "${lang.skillsCategories.languages}", "skills": ["Skill 1", "Skill 2"] },
+      { "category": "${lang.skillsCategories.frameworks}", "skills": ["Skill 3", "Skill 4"] },
+      { "category": "${lang.skillsCategories.tooling}", "skills": ["Skill 5", "Skill 6"] }
+    ],
+    "experience": [
+      {
+        "company": "Company Name from MASTER-DATA",
+        "location": "Company Location from MASTER-DATA (omit or empty string if not in source)",
+        "role": "Job Title",
+        "date": "Mon YYYY – Mon YYYY",
+        "bullets": [
+          "Google XYZ bullet with **bold action/technologies** and **bold quantified metrics** in ${lang.name}",
+          "Second achievement highlighting **bold architecture/tooling** with **bold percentage gain** in ${lang.name}",
+          "Third achievement highlighting **bold scaling/leadership** with **bold quantifiable impact** in ${lang.name}"
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "company": "Project Name",
+        "role": "Role / Scope / Stack",
+        "demoUrl": "https://...",
+        "repoUrl": "https://...",
+        "bullets": [
+          "Project impact with **bold technologies** and **measurable outcomes** in ${lang.name}"
+        ]
+      }
+    ],
+    "education": [
+      "**Degree / Major** – Institution, Year"
+    ],
+    "certifications": [
+      "**Certification Name** – Issuer, Year"
+    ],
+    "languages": [
+      "**Language 1:** Native",
+      "**Language 2:** [CEFR Level] (e.g. B2 – Upper Intermediate)"
+    ]
+  }
+}
 \`\`\`
 `;
 
    const { sanitizedText } = sanitizeMasterDataForAi(req.masterData);
 
-   const userPrompt = `Synthesize a tailored CV and Gap Analysis in ${lang.name} for the target company: "${company}" and target role: "${targetRole}".
+   const userPrompt = `Synthesize a tailored CV and Gap Analysis in ${lang.name} for the target company: "${company}" and target role: "${targetRole}". Return the result strictly as a valid JSON object matching the requested schema.
 
 CRITICAL LANGUAGE REQUIREMENT: TARGET-JOB.MD is in ${lang.name}. Output all content, summaries, bullet points, and narratives 100% in ${lang.name}.
 
@@ -242,7 +247,7 @@ Target Role: ${targetRole}
 
 ${req.targetJob}
 
-=== CANDIDATE KNOWLEDGE BASE (MASTER-DATA.MD - ABSOLUTE SSOT) ===
+=== CANDIDATE KNOWLEDGE BASE (MASTER-DATA - ABSOLUTE SSOT - PLAIN TEXT COMPATIBLE) ===
 ${sanitizedText || req.masterData}
 `;
 
