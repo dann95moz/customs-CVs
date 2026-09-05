@@ -15,11 +15,22 @@ import {
   CvTranslationVariant,
 } from '../types/cv';
 
+export interface GlobalNotification {
+  open: boolean;
+  message: string;
+  severity?: 'success' | 'info' | 'warning' | 'error';
+  actionLabel?: string;
+  onAction?: () => void;
+}
+
 export interface UiSlice {
   activeTab: StudioTab;
   wizardStep: WizardStep;
+  globalNotification: GlobalNotification | null;
   setActiveTab: (tab: StudioTab) => void;
   setWizardStep: (step: WizardStep) => void;
+  showNotification: (notif: Omit<GlobalNotification, 'open'>) => void;
+  hideNotification: () => void;
   handleStartWizard: () => void;
   handleExploreDemo: () => void;
 }

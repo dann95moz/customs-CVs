@@ -16,6 +16,7 @@ import {
 } from '../constants/templates';
 import { downloadTextFile, buildTimestampedFileName } from '../utils/fileUtils';
 import { useTranslation } from 'react-i18next';
+import { Snackbar, Alert, Button } from '@mui/material';
 import './App.css';
 
 // Dynamically loaded tab views and wizard steps
@@ -71,6 +72,8 @@ export const App: React.FC = () => {
   const setGenerationError = useResumeStore((s) => s.setGenerationError);
   const handleGenerate = useResumeStore((s) => s.handleGenerate);
   const handleResetWorkspace = useResumeStore((s) => s.handleResetWorkspace);
+  const globalNotification = useResumeStore((s) => s.globalNotification);
+  const hideNotification = useResumeStore((s) => s.hideNotification);
 
 
   // Derived state via optimized memoized hooks
@@ -261,6 +264,42 @@ export const App: React.FC = () => {
 
       {/* Full-Screen Blocking AI Synthesis Screen */}
       <AiGeneratingOverlay />
+
+      {/* Global Toast Notification */}
+      {globalNotification && (
+        <Snackbar
+          open={globalNotification.open}
+          autoHideDuration={6000}
+          onClose={hideNotification}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          sx={{ top: { xs: '72px', sm: '80px' } }}
+        >
+          <Alert
+            severity={globalNotification.severity || 'success'}
+            variant="filled"
+            onClose={hideNotification}
+            action={
+              globalNotification.actionLabel ? (
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    globalNotification.onAction?.();
+                    hideNotification();
+                  }}
+                  sx={{ fontWeight: 700, textTransform: 'none', ml: 1 }}
+                >
+                  {globalNotification.actionLabel}
+                </Button>
+              ) : undefined
+            }
+            sx={{ fontWeight: 600, alignItems: 'center' }}
+          >
+            {globalNotification.message}
+          </Alert>
+        </Snackbar>
+      )}
     </div>
   );
 };
+

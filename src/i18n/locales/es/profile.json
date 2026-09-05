@@ -10,16 +10,36 @@
     "clearProfileTip": "Limpiar todos los campos del perfil para empezar desde cero",
     "exportBackup": "Exportar Respaldo (.md)",
     "exportBackupTip": "Descargar tu perfil profesional como archivo Markdown (.md)",
-    "continueToTarget": "Continuar a Vacante Objetivo"
+    "continueToTarget": "Continuar a Vacante Objetivo",
+    "reviewProfile": "Revisar"
   },
   "dialog": {
-    "confirmReplaceTitle": "¿Reemplazar el perfil actual?",
-    "confirmReplaceDesc": "Importar este archivo sobrescribirá los datos de tu perfil actual. ¿Deseas continuar?",
+    "confirmReplaceTitle": "¿Reemplazar perfil actual?",
+    "confirmReplaceDesc": "Importar este archivo reemplazará los datos actuales de tu perfil. ¿Estás seguro de que deseas continuar?",
     "confirm": "Importar y Reemplazar",
-    "confirmClearTitle": "¿Comenzar de cero?",
+    "confirmClearTitle": "¿Empezar desde cero?",
     "confirmClearDesc": "¿Estás seguro de que deseas limpiar todos los datos del perfil? Esta acción no se puede deshacer.",
     "confirmClear": "Aceptar",
     "cancel": "Cancelar"
+  },
+  "choice": {
+    "badge": "Paso 1 de 3 • Perfil de Carrera",
+    "title": "¿Cómo deseas comenzar tu perfil?",
+    "subtitle": "Elige el método que mejor se adapte a tu flujo de trabajo. Todo se procesa 100% de forma local y privada.",
+    "recommendedChip": "Recomendado • Sin Fricción",
+    "freeTextCardTitle": "Pegar Notas o Texto Libre",
+    "freeTextCardDesc": "Pega notas de carrera sin formato, extracto de LinkedIn o importa un PDF/TXT existente. Sin sintaxis—la IA estructura todo automáticamente.",
+    "freeTextAction": "Escribir o Pegar Notas",
+    "importAction": "O Cargar Archivo (PDF, TXT, MD)",
+    "dropOrBrowse": "Arrastra y suelta tu PDF, TXT o MD aquí, o haz clic para explorar",
+    "guidedCardTitle": "Formulario Guiado Paso a Paso",
+    "guidedCardDesc": "Construye tu perfil sección por sección con campos dedicados para datos personales, experiencia, habilidades y educación desde cero.",
+    "guidedAction": "Abrir Formulario Guiado",
+    "sampleQuestion": "¿Solo quieres probar?",
+    "loadSampleAction": "Cargar Perfil de Ejemplo",
+    "switchMethod": "Cambiar método",
+    "switchToGuided": "Cambiar a Formulario Guiado",
+    "switchToFreeText": "Cambiar a Texto Libre / Notas"
   },
   "modes": {
     "guidedAssistant": "Formulario Guiado",
@@ -27,7 +47,12 @@
     "markdownEditor": "Modo Manual",
     "markdownShort": "Manual",
     "guidedTitle": "Formulario Guiado de Perfil",
-    "markdownTitle": "Modo Manual / Texto Libre"
+    "markdownTitle": "Modo Manual / Texto Libre",
+    "freeTextTitle": "Texto Libre y Notas de Carrera",
+    "freeTextEditor": "Texto Libre / Notas",
+    "freeTextShort": "Texto Libre",
+    "freeTextHint": "Pega texto plano, extracto de LinkedIn o notas sin formato. No requiere sintaxis Markdown: la IA sintetiza y estructura todo automáticamente.",
+    "freeTextInGuidedNotice": "Tienes notas de carrera sin formato guardadas. La IA las estructurará en este formulario automáticamente al adaptar en el Paso 2, o puedes diligenciarlo directamente."
   },
   "completeness": {
     "title": "Completitud del Perfil Maestro",
@@ -45,6 +70,7 @@
     "tipLoadSample": "Consejo: Haz clic en 'Cargar Perfil de Ejemplo' para probar de inmediato",
     "importingPdf": "Leyendo y estructurando tu CV en PDF...",
     "pdfSuccess": "Perfil profesional importado exitosamente desde {{fileName}}",
+    "fileImportedSuccess": "¡CV \"{{fileName}}\" importado con éxito!",
     "importedAi": "Estructurado con Motor de IA",
     "importedLocal": "Estructurado con Parser Local del Cliente"
   },

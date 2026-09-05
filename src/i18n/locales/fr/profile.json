@@ -10,7 +10,8 @@
     "clearProfileTip": "Effacer tous les champs du profil pour repartir de zéro",
     "exportBackup": "Exporter une Sauvegarde (.md)",
     "exportBackupTip": "Télécharger votre profil professionnel au format Markdown (.md)",
-    "continueToTarget": "Continuer vers l'Offre Cible"
+    "continueToTarget": "Continuer vers l'Offre Cible",
+    "reviewProfile": "Vérifier"
   },
   "dialog": {
     "confirmReplaceTitle": "Remplacer le profil actuel ?",
@@ -21,13 +22,37 @@
     "confirmClear": "Confirmer",
     "cancel": "Annuler"
   },
+  "choice": {
+    "badge": "Étape 1 sur 3 • Profil Professionnel",
+    "title": "Comment souhaitez-vous commencer votre profil ?",
+    "subtitle": "Choisissez la méthode qui correspond le mieux à votre façon de travailler. Tout est traité 100% localement et en toute confidentialité.",
+    "recommendedChip": "Recommandé • Zéro Friction",
+    "freeTextCardTitle": "Coller des Notes ou Texte Libre",
+    "freeTextCardDesc": "Collez des notes de carrière brutes, un résumé LinkedIn ou importez un PDF/TXT existant. Aucune syntaxe requise — l'IA structure tout automatiquement.",
+    "freeTextAction": "Écrire ou Coller des Notes",
+    "importAction": "Ou Importer un Fichier (PDF, TXT, MD)",
+    "dropOrBrowse": "Glissez-déposez votre PDF, TXT ou MD ici, ou cliquez pour parcourir",
+    "guidedCardTitle": "Formulaire Guidé Étape par Étape",
+    "guidedCardDesc": "Construisez votre profil section par section avec des champs dédiés aux infos personnelles, à l'expérience, aux compétences et à l'éducation.",
+    "guidedAction": "Ouvrir le Formulaire Guidé",
+    "sampleQuestion": "Vous souhaitez tester ?",
+    "loadSampleAction": "Charger un Profil d'Exemple",
+    "switchMethod": "Changer de méthode",
+    "switchToGuided": "Passer au Formulaire Guidé",
+    "switchToFreeText": "Passer au Texte Libre / Notes"
+  },
   "modes": {
     "guidedAssistant": "Formulaire Guidé",
     "guidedShort": "Guidé",
     "markdownEditor": "Mode Manuel",
     "markdownShort": "Manuel",
     "guidedTitle": "Formulaire de Profil Guidé",
-    "markdownTitle": "Mode Manuel / Texte Libre"
+    "markdownTitle": "Mode Manuel / Texte Libre",
+    "freeTextTitle": "Texte Libre & Notes de Carrière",
+    "freeTextEditor": "Texte Libre / Notes",
+    "freeTextShort": "Texte Libre",
+    "freeTextHint": "Collez du texte brut, un résumé LinkedIn ou des notes. Aucune syntaxe Markdown requise — l'IA structure tout automatiquement.",
+    "freeTextInGuidedNotice": "Vous avez enregistré des notes de carrière brutes. L'IA les structurera automatiquement dans ce formulaire lors de l'adaptation à l'étape 2, ou vous pouvez le remplir directement."
   },
   "completeness": {
     "title": "Complétude du Profil Principal",
@@ -45,6 +70,7 @@
     "tipLoadSample": "Astuce : Cliquez sur 'Charger un Profil Exemple' pour tester immédiatement",
     "importingPdf": "Lecture et structuration de votre CV PDF...",
     "pdfSuccess": "Profil de carrière importé avec succès depuis {{fileName}}",
+    "fileImportedSuccess": "CV « {{fileName}} » importé avec succès !",
     "importedAi": "Structuré via le moteur d'IA",
     "importedLocal": "Structuré via le parseur local client"
   },

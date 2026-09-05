@@ -12,6 +12,8 @@ interface UseMasterDataWorkflowProps {
   onNextStep: () => void;
 }
 
+export type MasterDataMode = 'choice' | 'freeText' | 'guided';
+
 export const useMasterDataWorkflow = ({
   content,
   onChange,
@@ -19,7 +21,11 @@ export const useMasterDataWorkflow = ({
 }: UseMasterDataWorkflowProps) => {
   const { t } = useTranslation(['profile', 'common']);
 
-  const [editMode, setEditMode] = useState<'guided' | 'markdown'>('guided');
+  const [editMode, setEditMode] = useState<MasterDataMode>(() => {
+    if (!content || !content.trim()) return 'choice';
+    if (/^##\s+/m.test(content)) return 'guided';
+    return 'freeText';
+  });
   const [manualText, setManualText] = useState(content);
   const manualTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const flushGuidedRef = useRef<(() => void) | null>(null);
@@ -46,15 +52,29 @@ export const useMasterDataWorkflow = ({
     }
   }, [manualText, onChange]);
 
-  const handleSwitchMode = useCallback((newMode: 'guided' | 'markdown') => {
+  const handleSwitchMode = useCallback((newMode: 'freeText' | 'guided') => {
     if (newMode === editMode) return;
-    if (editMode === 'markdown') {
+    if (editMode === 'freeText') {
       flushManualRef.current?.();
       flushManual();
     } else if (editMode === 'guided') {
       flushGuidedRef.current?.();
     }
     setEditMode(newMode);
+  }, [editMode, flushManual]);
+
+  const handleSelectMode = useCallback((mode: 'freeText' | 'guided') => {
+    setEditMode(mode);
+  }, []);
+
+  const handleResetToChoice = useCallback(() => {
+    if (editMode === 'freeText') {
+      flushManualRef.current?.();
+      flushManual();
+    } else if (editMode === 'guided') {
+      flushGuidedRef.current?.();
+    }
+    setEditMode('choice');
   }, [editMode, flushManual]);
 
   const handleManualTextChange = (val: string) => {
@@ -97,8 +117,8 @@ export const useMasterDataWorkflow = ({
   const handleApplyImportedData = (
     importedText: string,
     fileName: string,
-    isPdf?: boolean,
-    details?: PdfImportResult
+    _isPdf?: boolean,
+    _details?: PdfImportResult
   ) => {
     if (manualTimerRef.current) {
       clearTimeout(manualTimerRef.current);
@@ -106,17 +126,22 @@ export const useMasterDataWorkflow = ({
     }
     setManualText(importedText);
     onChange(importedText);
-    const candidateName = extractCandidateName(importedText, fileName.replace(/\.pdf$/i, ''));
 
-    setNotification({
-      open: true,
-      message: t('profile:status.pdfSuccess', {
+    // Global toast informing user of successful upload with quick review action
+    useResumeStore.getState().showNotification({
+      message: t('profile:status.fileImportedSuccess', {
         fileName,
-        defaultValue: `Successfully imported career profile for ${candidateName} from ${fileName}`,
+        defaultValue: `Resume "${fileName}" imported successfully!`,
       }),
       severity: 'success',
-      usedAI: details?.usedAI,
+      actionLabel: t('profile:actions.reviewProfile', 'Review'),
+      onAction: () => {
+        useResumeStore.getState().setWizardStep('profile');
+      },
     });
+
+    // Fast-track auto advance directly to Step 2 (Target Vacancy)
+    onNextStep();
   };
 
   const handleFileLoaded = (
@@ -125,11 +150,18 @@ export const useMasterDataWorkflow = ({
     isPdf?: boolean,
     details?: PdfImportResult
   ) => {
+    const finalContent = loadedContent;
+    if (fileName.toLowerCase().endsWith('.md') && /^##\s+/m.test(loadedContent)) {
+      setEditMode('guided');
+    } else {
+      setEditMode('freeText');
+    }
+
     if (hasData) {
-      setPendingFile({ content: loadedContent, fileName, isPdf, details });
+      setPendingFile({ content: finalContent, fileName, isPdf, details });
       setShowConfirmDialog(true);
     } else {
-      handleApplyImportedData(loadedContent, fileName, isPdf, details);
+      handleApplyImportedData(finalContent, fileName, isPdf, details);
     }
   };
 
@@ -158,6 +190,7 @@ export const useMasterDataWorkflow = ({
     }
     setManualText('');
     onChange('');
+    setEditMode('choice');
     setShowClearConfirmDialog(false);
     setNotification({
       open: true,
@@ -195,9 +228,9 @@ export const useMasterDataWorkflow = ({
   };
 
   const handleContinue = () => {
-    if (editMode === 'markdown') {
+    if (editMode === 'freeText') {
       flushManual();
-    } else {
+    } else if (editMode === 'guided') {
       flushGuidedRef.current?.();
     }
     onNextStep();
@@ -211,6 +244,8 @@ export const useMasterDataWorkflow = ({
     editMode,
     setEditMode,
     handleSwitchMode,
+    handleSelectMode,
+    handleResetToChoice,
     flushGuidedRef,
     flushManualRef,
     manualText,

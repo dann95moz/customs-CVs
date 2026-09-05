@@ -10,7 +10,8 @@
     "clearProfileTip": "Clear all profile fields and start from a blank slate",
     "exportBackup": "Export Backup (.md)",
     "exportBackupTip": "Download your career profile as Markdown (.md)",
-    "continueToTarget": "Continue to Target Vacancy"
+    "continueToTarget": "Continue to Target Vacancy",
+    "reviewProfile": "Review"
   },
   "dialog": {
     "confirmReplaceTitle": "Replace current profile?",
@@ -21,13 +22,37 @@
     "confirmClear": "Confirm",
     "cancel": "Cancel"
   },
+  "choice": {
+    "badge": "Step 1 of 3 • Career Profile",
+    "title": "How would you like to start your profile?",
+    "subtitle": "Choose the input method that best matches your workflow. Everything is processed 100% locally and privately.",
+    "recommendedChip": "Recommended • Zero Friction",
+    "freeTextCardTitle": "Paste Notes or Free Text",
+    "freeTextCardDesc": "Paste unformatted career notes, LinkedIn summary, or import an existing PDF/TXT. No formatting required—the AI structures everything automatically.",
+    "freeTextAction": "Write or Paste Notes",
+    "importAction": "Or Upload File (PDF, TXT, MD)",
+    "dropOrBrowse": "Drag & drop PDF, TXT or MD here, or click to browse",
+    "guidedCardTitle": "Guided Step-by-Step Form",
+    "guidedCardDesc": "Build your profile section by section with dedicated inputs for personal info, work experience, categorized skills, and education from scratch.",
+    "guidedAction": "Open Guided Form",
+    "sampleQuestion": "Just testing?",
+    "loadSampleAction": "Load Sample Profile",
+    "switchMethod": "Change Method",
+    "switchToGuided": "Switch to Guided Form",
+    "switchToFreeText": "Switch to Free Text / Notes"
+  },
   "modes": {
     "guidedAssistant": "Guided Form",
     "guidedShort": "Guided",
     "markdownEditor": "Manual Mode",
     "markdownShort": "Manual",
     "guidedTitle": "Guided Profile Form",
-    "markdownTitle": "Freeform Text / Manual Mode"
+    "markdownTitle": "Freeform Text / Manual Mode",
+    "freeTextTitle": "Free Text & Career Notes",
+    "freeTextEditor": "Free Text / Notes",
+    "freeTextShort": "Free Text",
+    "freeTextHint": "Paste raw text, LinkedIn summary, or unformatted notes. No Markdown syntax required—the AI synthesizes and structures everything automatically.",
+    "freeTextInGuidedNotice": "You have raw career notes saved. The AI will structure them into this form automatically during tailoring in Step 2, or you can fill this form directly."
   },
   "completeness": {
     "title": "Master Profile Completeness",
@@ -45,6 +70,7 @@
     "tipLoadSample": "Tip: Click 'Load Sample Profile' to test right away",
     "importingPdf": "Reading and structuring your PDF resume...",
     "pdfSuccess": "Successfully imported career profile from {{fileName}}",
+    "fileImportedSuccess": "Resume \"{{fileName}}\" imported successfully!",
     "importedAi": "Structured via AI Engine",
     "importedLocal": "Structured via Client-Side Local Parser"
   },

@@ -10,7 +10,8 @@
     "clearProfileTip": "Alle Profilfelder leeren und mit einer leeren Vorlage beginnen",
     "exportBackup": "Sicherung exportieren (.md)",
     "exportBackupTip": "Laden Sie Ihr Karriereprofil als Markdown (.md) herunter",
-    "continueToTarget": "Weiter zur Zielstelle"
+    "continueToTarget": "Weiter zur Zielstelle",
+    "reviewProfile": "Überprüfen"
   },
   "dialog": {
     "confirmReplaceTitle": "Aktuelles Profil ersetzen?",
@@ -21,13 +22,37 @@
     "confirmClear": "Bestätigen",
     "cancel": "Abbrechen"
   },
+  "choice": {
+    "badge": "Schritt 1 von 3 • Karriereprofil",
+    "title": "Wie möchten Sie Ihr Profil beginnen?",
+    "subtitle": "Wählen Sie die Methode, die am besten zu Ihrem Workflow passt. Alles wird 100% lokal und privat verarbeitet.",
+    "recommendedChip": "Empfohlen • Reibungslos",
+    "freeTextCardTitle": "Notizen oder Freitext einfügen",
+    "freeTextCardDesc": "Fügen Sie unformatierte Notizen, eine LinkedIn-Zusammenfassung ein oder laden Sie ein PDF/TXT hoch. Keine Formatierung erforderlich – die KI strukturiert alles automatisch.",
+    "freeTextAction": "Notizen schreiben oder einfügen",
+    "importAction": "Oder Datei hochladen (PDF, TXT, MD)",
+    "dropOrBrowse": "PDF, TXT oder MD hierher ziehen oder klicken zum Auswählen",
+    "guidedCardTitle": "Geführtes Schritt-für-Schritt-Formular",
+    "guidedCardDesc": "Erstellen Sie Ihr Profil Abschnitt für Abschnitt mit Feldern für persönliche Daten, Berufserfahrung, Fähigkeiten und Bildung.",
+    "guidedAction": "Geführtes Formular öffnen",
+    "sampleQuestion": "Einfach testen?",
+    "loadSampleAction": "Beispielprofil laden",
+    "switchMethod": "Methode wechseln",
+    "switchToGuided": "Zu geführtem Formular wechseln",
+    "switchToFreeText": "Zu Freitext / Notizen wechseln"
+  },
   "modes": {
     "guidedAssistant": "Geführtes Formular",
     "guidedShort": "Geführt",
     "markdownEditor": "Manueller Modus",
     "markdownShort": "Manuell",
     "guidedTitle": "Geführtes Profilformular",
-    "markdownTitle": "Manueller Modus / Freitext"
+    "markdownTitle": "Manueller Modus / Freitext",
+    "freeTextTitle": "Freitext & Karrierenotizen",
+    "freeTextEditor": "Freitext / Notizen",
+    "freeTextShort": "Freitext",
+    "freeTextHint": "Fügen Sie reinen Text, eine LinkedIn-Zusammenfassung oder Notizen ein. Keine Markdown-Syntax erforderlich – die KI strukturiert alles automatisch.",
+    "freeTextInGuidedNotice": "Sie haben unformatierte Karrierenotizen gespeichert. Die KI strukturiert diese beim Anpassen in Schritt 2 automatisch in dieses Formular, oder Sie können es direkt ausfüllen."
   },
   "completeness": {
     "title": "Vollständigkeit des Basis-Profils",
@@ -45,6 +70,7 @@
     "tipLoadSample": "Tipp: Klicken Sie auf 'Beispielprofil laden', um direkt zu testen",
     "importingPdf": "PDF-Lebenslauf wird gelesen und strukturiert...",
     "pdfSuccess": "Karriereprofil erfolgreich aus {{fileName}} importiert",
+    "fileImportedSuccess": "Lebenslauf „{{fileName}}“ erfolgreich importiert!",
     "importedAi": "Strukturiert durch KI-Engine",
     "importedLocal": "Strukturiert durch lokalen Client-Parser"
   },

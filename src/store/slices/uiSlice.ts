@@ -16,6 +16,7 @@ const getInitialTab = (): StudioTab => {
 export const createUiSlice: StateCreator<ResumeStore, [], [], UiSlice> = (set, get) => ({
   activeTab: getInitialTab(),
   wizardStep: 'profile',
+  globalNotification: null,
 
   setActiveTab: (tab: StudioTab) => {
     set({ activeTab: tab });
@@ -26,6 +27,18 @@ export const createUiSlice: StateCreator<ResumeStore, [], [], UiSlice> = (set, g
 
   setWizardStep: (step: WizardStep) => {
     set({ wizardStep: step });
+  },
+
+  showNotification: (notif) => {
+    set({ globalNotification: { ...notif, open: true } });
+  },
+
+  hideNotification: () => {
+    set((state) => ({
+      globalNotification: state.globalNotification
+        ? { ...state.globalNotification, open: false }
+        : null,
+    }));
   },
 
 
