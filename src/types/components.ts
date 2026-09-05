@@ -251,6 +251,9 @@ export interface StepPreviewToolbarProps {
   isGenerating: boolean;
   onDownloadPdf: () => void;
   onDownloadMarkdown?: () => void;
+  onDownloadPlainText?: () => void;
+  onDownloadDocx?: () => void;
+  onCopyPlainText?: () => void;
   onPrintPdf?: () => void;
   isExportingPdf?: boolean;
   pageFormat?: PageFormat;

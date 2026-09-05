@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import {
   useResumeStore,
   useParsedCv,
@@ -11,6 +11,9 @@ import { usePrintPdf } from './usePrintPdf';
 import { useGitHubStarPrompt } from './useGitHubStarPrompt';
 import { PreviewSidePanelType, CvTranslationVariant } from '../types';
 import { getPageFormatConfig } from '../theme/dimensions';
+import { generatePlainTextCv } from '../core/export/plainTextExporter';
+import { generateWordDocumentBlob } from '../core/export/docxExporter';
+import { downloadTextFile, downloadBlobFile } from '../utils/fileUtils';
 import {
   translateFullCv,
   translateCvSection,
@@ -308,6 +311,27 @@ export const useStepPreviewWorkflow = () => {
     }
   };
 
+  const onTriggerDownloadPlainText = useCallback(() => {
+    const plainText = generatePlainTextCv(parsedCv);
+    const targetTxtName = `CV_${candidateName}_${cleanCompany}_ATS.txt`;
+    downloadTextFile(plainText, targetTxtName, 'text/plain;charset=utf-8;');
+  }, [parsedCv, candidateName, cleanCompany]);
+
+  const onTriggerDownloadDocx = useCallback(() => {
+    const blob = generateWordDocumentBlob(parsedCv);
+    const targetDocxName = `CV_${candidateName}_${cleanCompany}.doc`;
+    downloadBlobFile(blob, targetDocxName);
+  }, [parsedCv, candidateName, cleanCompany]);
+
+  const onTriggerCopyPlainText = useCallback(async (): Promise<boolean> => {
+    const plainText = generatePlainTextCv(parsedCv);
+    if (navigator?.clipboard?.writeText) {
+      await navigator.clipboard.writeText(plainText);
+      return true;
+    }
+    return false;
+  }, [parsedCv]);
+
   const handleToggleSidePanel = (panel: PreviewSidePanelType) => {
     if (panel === 'compare') {
       setIsDiffModalOpen(true);
@@ -406,6 +430,9 @@ export const useStepPreviewWorkflow = () => {
     handleConfirmTrackApplication,
     handleMagicAutoFit,
     onTriggerDirectDownloadPdf,
+    onTriggerDownloadPlainText,
+    onTriggerDownloadDocx,
+    onTriggerCopyPlainText,
     // Print & Star prompt
     isExportingPdf,
     isPromptOpen,

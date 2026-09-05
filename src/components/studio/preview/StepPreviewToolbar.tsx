@@ -35,6 +35,9 @@ import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
+import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
+import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { useTranslation } from 'react-i18next';
 import { StepPreviewToolbarProps, PageFormat } from '../../../types';
 import { useCvLiveEdit } from './CvLiveEditContext';
@@ -54,6 +57,9 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
   isGenerating,
   onDownloadPdf,
   onDownloadMarkdown,
+  onDownloadPlainText,
+  onDownloadDocx,
+  onCopyPlainText,
   isExportingPdf = false,
   pageFormat = 'a4',
   onPageFormatChange,
@@ -77,6 +83,15 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
 
   const [pdfMenuAnchor, setPdfMenuAnchor] = useState<null | HTMLElement>(null);
   const [langMenuAnchor, setLangMenuAnchor] = useState<null | HTMLElement>(null);
+  const [copiedAts, setCopiedAts] = useState<boolean>(false);
+
+  const handleCopyAts = () => {
+    if (onCopyPlainText) {
+      onCopyPlainText();
+      setCopiedAts(true);
+      setTimeout(() => setCopiedAts(false), 2500);
+    }
+  };
 
   const handleOpenPdfMenu = (e: React.MouseEvent<HTMLElement>) => {
     setPdfMenuAnchor(e.currentTarget);
@@ -598,6 +613,71 @@ export const StepPreviewToolbar: React.FC<StepPreviewToolbarProps> = ({
               }}
             />
           </MenuItem>
+
+          {onDownloadDocx && (
+            <MenuItem
+              onClick={() => {
+                handleClosePdfMenu();
+                onDownloadDocx();
+              }}
+            >
+              <ListItemIcon>
+                <DescriptionRoundedIcon fontSize="small" sx={{ color: '#2b579a' }} />
+              </ListItemIcon>
+              <ListItemText
+                primary={t('preview:toolbar.downloadDocxItem', 'Descargar Word (.docx)')}
+                secondary={t('preview:toolbar.downloadDocxDesc', 'Formato Office editable para reclutadores')}
+                slotProps={{
+                  primary: { sx: { fontSize: '0.82rem', fontWeight: 700 } },
+                  secondary: { sx: { fontSize: '0.7rem' } },
+                }}
+              />
+            </MenuItem>
+          )}
+
+          {onDownloadPlainText && (
+            <MenuItem
+              onClick={() => {
+                handleClosePdfMenu();
+                onDownloadPlainText();
+              }}
+            >
+              <ListItemIcon>
+                <NotesRoundedIcon fontSize="small" color="action" />
+              </ListItemIcon>
+              <ListItemText
+                primary={t('preview:toolbar.downloadTxtItem', 'Texto Plano ATS (.txt)')}
+                secondary={t('preview:toolbar.downloadTxtDesc', 'Para copiar y pegar en portales ATS')}
+                slotProps={{
+                  primary: { sx: { fontSize: '0.82rem', fontWeight: 700 } },
+                  secondary: { sx: { fontSize: '0.7rem' } },
+                }}
+              />
+            </MenuItem>
+          )}
+
+          {onCopyPlainText && (
+            <MenuItem
+              onClick={() => {
+                handleClosePdfMenu();
+                handleCopyAts();
+              }}
+            >
+              <ListItemIcon>
+                <ContentCopyRoundedIcon fontSize="small" color={copiedAts ? 'success' : 'action'} />
+              </ListItemIcon>
+              <ListItemText
+                primary={copiedAts ? t('common:status.copied', '¡Copiado!') : t('preview:toolbar.copyTxtItem', 'Copiar Texto ATS')}
+                secondary={t('preview:toolbar.copyTxtDesc', 'Copia el texto limpio al portapapeles')}
+                slotProps={{
+                  primary: { sx: { fontSize: '0.82rem', fontWeight: 700, color: copiedAts ? 'success.main' : 'inherit' } },
+                  secondary: { sx: { fontSize: '0.7rem' } },
+                }}
+              />
+            </MenuItem>
+          )}
+
+          {onDownloadMarkdown && <Divider sx={{ my: 0.5 }} />}
 
           {onDownloadMarkdown && (
             <MenuItem

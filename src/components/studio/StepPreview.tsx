@@ -125,6 +125,9 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
     handleConfirmTrackApplication,
     handleMagicAutoFit,
     onTriggerDirectDownloadPdf,
+    onTriggerDownloadPlainText,
+    onTriggerDownloadDocx,
+    onTriggerCopyPlainText,
     isExportingPdf,
     isPromptOpen,
     dismissPrompt,
@@ -164,6 +167,9 @@ export const StepPreview: React.FC<StepPreviewProps> = () => {
         isGenerating={isGenerating}
         onDownloadPdf={onTriggerDirectDownloadPdf}
         onDownloadMarkdown={handleDownloadCvMarkdown}
+        onDownloadPlainText={onTriggerDownloadPlainText}
+        onDownloadDocx={onTriggerDownloadDocx}
+        onCopyPlainText={onTriggerCopyPlainText}
         isExportingPdf={isExportingPdf}
         pageFormat={pageFormat}
         onPageFormatChange={setPageFormat}
