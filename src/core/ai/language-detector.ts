@@ -42,9 +42,9 @@ export const LANGUAGE_DEFINITIONS: Record<SupportedLanguage, DetectedLanguage> =
       languages: 'IDIOMAS'
     },
     skillsCategories: {
-      languages: 'Lenguajes y Fundamentos:',
-      frameworks: 'Frameworks, Arquitectura y Ecosistema:',
-      tooling: 'Herramientas, Testing, CI/CD e Integración IA:'
+      languages: 'Lenguajes y Fundamentos',
+      frameworks: 'Frameworks, Arquitectura y Ecosistema',
+      tooling: 'Herramientas, Testing, CI/CD e Integración IA'
     },
     gapReportTitle: 'REPORTE DE ESTRATEGIA Y MATCHING (Análisis de Brechas)',
     gapLabels: {
@@ -69,9 +69,9 @@ export const LANGUAGE_DEFINITIONS: Record<SupportedLanguage, DetectedLanguage> =
       languages: 'SPRACHKENNTNISSE'
     },
     skillsCategories: {
-      languages: 'Programmiersprachen & Grundlagen:',
-      frameworks: 'Frameworks, Architektur & Ökosystem:',
-      tooling: 'Werkzeuge, Testing, CI/CD & KI-Integrationen:'
+      languages: 'Programmiersprachen & Grundlagen',
+      frameworks: 'Frameworks, Architektur & Ökosystem',
+      tooling: 'Werkzeuge, Testing, CI/CD & KI-Integrationen'
     },
     gapReportTitle: 'MATCHING- & ANPASSUNGSSTRATEGIEBERICHT (Gap-Analyse)',
     gapLabels: {
@@ -96,9 +96,9 @@ export const LANGUAGE_DEFINITIONS: Record<SupportedLanguage, DetectedLanguage> =
       languages: 'LANGUES'
     },
     skillsCategories: {
-      languages: 'Langages et Fondamentaux:',
-      frameworks: 'Frameworks, Architecture et Écosystème:',
-      tooling: 'Outils, Tests, CI/CD et Intégrations IA:'
+      languages: 'Langages et Fondamentaux',
+      frameworks: 'Frameworks, Architecture et Écosystème',
+      tooling: 'Outils, Tests, CI/CD et Intégrations IA'
     },
     gapReportTitle: 'RAPPORT DE STRATÉGIE ET D’ADÉQUATION (Analyse des Écarts)',
     gapLabels: {
@@ -123,9 +123,9 @@ export const LANGUAGE_DEFINITIONS: Record<SupportedLanguage, DetectedLanguage> =
       languages: 'LINGUE'
     },
     skillsCategories: {
-      languages: 'Linguaggi e Fondamenti:',
-      frameworks: 'Framework, Architettura ed Ecosistema:',
-      tooling: 'Strumenti, Testing, CI/CD e Integrazioni IA:'
+      languages: 'Linguaggi e Fondamenti',
+      frameworks: 'Framework, Architettura ed Ecosistema',
+      tooling: 'Strumenti, Testing, CI/CD e Integrazioni IA'
     },
     gapReportTitle: 'RAPPORTO DI STRATEGIA E ALLINEAMENTO (Analisi dei Gap)',
     gapLabels: {
@@ -150,9 +150,9 @@ export const LANGUAGE_DEFINITIONS: Record<SupportedLanguage, DetectedLanguage> =
       languages: 'LANGUAGES'
     },
     skillsCategories: {
-      languages: 'Languages & Core Fundamentals:',
-      frameworks: 'Frameworks, Architecture & Ecosystem:',
-      tooling: 'Tooling, Testing, CI/CD & AI Integrations:'
+      languages: 'Languages & Core Fundamentals',
+      frameworks: 'Frameworks, Architecture & Ecosystem',
+      tooling: 'Tooling, Testing, CI/CD & AI Integrations'
     },
     gapReportTitle: 'MATCHING & TAILORING STRATEGY REPORT (Gap Analysis)',
     gapLabels: {

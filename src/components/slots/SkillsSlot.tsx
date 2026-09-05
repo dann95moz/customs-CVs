@@ -27,8 +27,8 @@ export const SkillsSlot: React.FC<SkillsSlotProps> = ({
             <EditableText
               tagName="span"
               className="skills-category"
-              value={group.category}
-              onSave={(newCat) => liveEdit?.updateSkillCategory(idx, newCat)}
+              value={group.category.replace(/[:*_\s]+$/, '').replace(/^[:*_\s]+/, '')}
+              onSave={(newCat) => liveEdit?.updateSkillCategory(idx, newCat.replace(/[:*_\s]+$/, '').replace(/^[:*_\s]+/, ''))}
               placeholder="Category"
             />
             <span className="skills-colon">: </span>
@@ -36,11 +36,11 @@ export const SkillsSlot: React.FC<SkillsSlotProps> = ({
               <EditableText
                 tagName="span"
                 className="skills-items-editable"
-                value={group.skills.join(', ')}
+                value={group.skills.map((s) => s.replace(/^[:*_\s]+/, '').replace(/[:*_\s]+$/, '')).join(', ')}
                 onSave={(newSkillsText) => {
                   const parsed = newSkillsText
                     .split(',')
-                    .map((s) => s.trim())
+                    .map((s) => s.replace(/^[:*_\s]+/, '').replace(/[:*_\s]+$/, '').trim())
                     .filter(Boolean);
                   liveEdit.updateSkillList(idx, parsed);
                 }}
@@ -48,16 +48,19 @@ export const SkillsSlot: React.FC<SkillsSlotProps> = ({
               />
             ) : (
               <span className="skills-items">
-                {group.skills.map((skill, sIdx) => (
-                  <React.Fragment key={sIdx}>
-                    <span className="skill-pill">
-                      {skill}
-                    </span>
-                    {variant === 'inline' && sIdx < group.skills.length - 1 && (
-                      <span className="skill-separator">, </span>
-                    )}
-                  </React.Fragment>
-                ))}
+                {group.skills.map((skill, sIdx) => {
+                  const cleanSkill = skill.replace(/^[:*_\s]+/, '').replace(/[:*_\s]+$/, '');
+                  return (
+                    <React.Fragment key={sIdx}>
+                      <span className="skill-pill">
+                        {cleanSkill}
+                      </span>
+                      {variant === 'inline' && sIdx < group.skills.length - 1 && (
+                        <span className="skill-separator">, </span>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
               </span>
             )}
           </li>

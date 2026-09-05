@@ -179,7 +179,7 @@ export function extractTargetRole(targetJobText: string, masterDataText: string 
     }
   }
 
-  return fallback || 'Professional Specialist';
+  return fallback;
 }
 
 /**

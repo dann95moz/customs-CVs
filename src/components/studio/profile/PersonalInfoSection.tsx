@@ -29,13 +29,24 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = React.mem
           : c.type === 'location' || c.type === 'phone' || c.type === 'text'
           ? c.label || ''
           : c.url || c.label || '';
-      map[c.type] = raw
+
+      let cleaned = raw
         .replace(/^mailto:/i, '')
         .replace(/\\([\[\]+*`_~\\-])/g, '$1')
         .replace(/\*\*([^*]+)\*\*/g, '$1')
-        .replace(/[*_\[\]]/g, '')
-        .replace(/^\\+|\\+$/g, '')
         .trim();
+
+      if (c.type === 'linkedin' || c.type === 'github' || c.type === 'globe') {
+        const urlMatch = cleaned.match(/https?:\/\/[^\s)\]]+/i);
+        if (urlMatch) {
+          cleaned = urlMatch[0];
+        } else {
+          cleaned = cleaned.replace(/[*_\[\]()]/g, '').trim();
+        }
+      } else {
+        cleaned = cleaned.replace(/[*_\[\]]/g, '').replace(/^\\+|\\+$/g, '').trim();
+      }
+      map[c.type] = cleaned;
     });
     return map;
   }, [contacts]);

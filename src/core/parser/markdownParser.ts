@@ -33,8 +33,8 @@ export function cleanMarkdownFormatting(text: string): string {
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/\[([^\]]+)\]/g, '$1')
     .replace(/`([^`]+)`/g, '$1')
-    .replace(/^[*•\-\u2013\u2014]+\s*/, '')
-    .replace(/[*•\-\u2013\u2014]+$/, '')
+    .replace(/^[:*•\-\u2013\u2014\s]+/, '')
+    .replace(/[:*•\-\u2013\u2014\s]+$/, '')
     .replace(/^\\+|\\+$/g, '') // remove stray leading or trailing backslashes
     .trim();
 }
@@ -165,17 +165,21 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
   let linkMatch: RegExpExecArray | null;
   while ((linkMatch = mdLinkRegex.exec(text)) !== null) {
     const rawLabel = linkMatch[1].trim();
-    const rawUrl = linkMatch[2].trim();
-    const cleanLabel = cleanMarkdownFormatting(rawLabel);
+    let rawUrl = linkMatch[2].trim().replace(/\)+$/, '');
+    const cleanLabel = cleanMarkdownFormatting(rawLabel).replace(/[*_\[\]()]/g, '').trim();
 
     if (rawUrl.includes('linkedin.com') || cleanLabel.toLowerCase().includes('linkedin')) {
       if (!addedTypes.has('linkedin')) {
-        results.push({ type: 'linkedin', label: cleanLabel || 'LinkedIn', url: rawUrl });
+        const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+        const label = cleanLabel && !cleanLabel.startsWith('http') ? cleanLabel : 'LinkedIn';
+        results.push({ type: 'linkedin', label, url });
         addedTypes.add('linkedin');
       }
     } else if (rawUrl.includes('github.com') || cleanLabel.toLowerCase().includes('github')) {
       if (!addedTypes.has('github')) {
-        results.push({ type: 'github', label: cleanLabel || 'GitHub', url: rawUrl });
+        const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+        const label = cleanLabel && !cleanLabel.startsWith('http') ? cleanLabel : 'GitHub';
+        results.push({ type: 'github', label, url });
         addedTypes.add('github');
       }
     } else if (rawUrl.startsWith('mailto:') || rawUrl.includes('@')) {
@@ -185,7 +189,9 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
         addedTypes.add('email');
       }
     } else if (!addedTypes.has('globe')) {
-      results.push({ type: 'globe', label: cleanLabel || 'Portfolio', url: rawUrl });
+      const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+      const label = cleanLabel && !cleanLabel.startsWith('http') ? cleanLabel : 'Portfolio';
+      results.push({ type: 'globe', label, url });
       addedTypes.add('globe');
     }
   }
@@ -200,11 +206,6 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
     /^(?:portfolio|portafolio|website|web|sitio web|blog|live demo|demo|github|linkedin|email|correo|phone|tel[ée]fono|whatsapp|availability|disponibilidad|immediate|inmediata)$/i.test(str.trim());
 
   for (const part of rawParts) {
-    // If the part is or contains a link/URL, skip it for location parsing
-    if (part.includes('http://') || part.includes('https://') || /\[.*?\]\(.*?\)/.test(part)) {
-      continue;
-    }
-
     const emailMatch = part.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
     const linkedinMatch = part.match(/(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+/i);
     const githubMatch = part.match(/(?:https?:\/\/)?(?:www\.)?github\.com\/[a-zA-Z0-9_-]+/i);
@@ -227,6 +228,11 @@ export function extractContactsFromBlock(text: string): ContactItem[] {
     if (phoneMatch && !emailMatch && !addedTypes.has('phone') && phoneMatch[0].replace(/\D/g, '').length >= 7) {
       results.push({ type: 'phone', label: phoneMatch[0].trim() });
       addedTypes.add('phone');
+    }
+
+    // Skip location parsing if this part is a link/URL or contains one
+    if (part.includes('http://') || part.includes('https://') || /\[.*?\]\(.*?\)/.test(part)) {
+      continue;
     }
 
     // Isolate Location (remove email, phone, links from part)
@@ -279,23 +285,39 @@ function parseSkillGroups(rawContent: string): SkillCategory[] {
 
     // Heading style: ### Category Name
     if (trimmed.startsWith('### ') || trimmed.startsWith('#### ')) {
-      const categoryName = cleanMarkdownFormatting(trimmed.replace(/^#+\s*/, ''));
+      const categoryName = cleanMarkdownFormatting(trimmed.replace(/^#+\s*/, '')).replace(/[:*_\s]+$/, '');
       currentGroup = { category: categoryName, skills: [] };
       groups.push(currentGroup);
       continue;
     }
 
+    // Bullet style: - **Languages:** JavaScript, TypeScript OR - **Languages**: JavaScript, TypeScript
+    const bulletMatch = trimmed.match(/^[-*•]\s*(?:\*{0,2}(.*?)\*{0,2}):+\*{0,2}\s*(.*)$/);
+    if (bulletMatch) {
+      const category = cleanMarkdownFormatting(bulletMatch[1] || '').replace(/[:*_\s]+$/, '').trim();
+      const rawSkills = bulletMatch[2] !== undefined ? bulletMatch[2] : '';
+      const skills = rawSkills
+        .split(/[,•|·;]/)
+        .map((s) => cleanMarkdownFormatting(s).replace(/^[:*_\s]+/, '').replace(/[:*_\s]+$/, '').trim())
+        .filter((s) => s.length > 0 && !s.toLowerCase().startsWith('category') && s !== '-');
+
+      if (category || skills.length > 0) {
+        groups.push({ category: category || 'Technical Skills', skills });
+      }
+      continue;
+    }
+
     // Check if line contains one or more embedded category patterns, supporting Unicode characters (e.g. Á, É, Í, Ó, Ú, Ü, Ä, Ö, etc.)
-    const categoryTokens = trimmed.split(/(?:^|(?<=[,\s]))(?:\*{0,2})([\p{Lu}\p{L}][\p{L}0-9\s&/\\-]{2,35}?)(?:\*{0,2}):\s*/u);
+    const categoryTokens = trimmed.split(/(?:^|(?<=[,\s]))(?:\*{0,2})([\p{Lu}\p{L}][\p{L}0-9\s&/\\-]{2,35}?)(?:\*{0,2}):+\*{0,2}\s*/u);
 
     if (categoryTokens.length > 1) {
       // We found structured category:skills segments
       for (let i = 1; i < categoryTokens.length; i += 2) {
-        const catName = cleanMarkdownFormatting(categoryTokens[i]).replace(/:$/, '').trim();
+        const catName = cleanMarkdownFormatting(categoryTokens[i]).replace(/[:*_\s]+$/, '').trim();
         const skillsRaw = categoryTokens[i + 1] || '';
         const skills = skillsRaw
           .split(/[,•|·;]/)
-          .map(cleanMarkdownFormatting)
+          .map((s) => cleanMarkdownFormatting(s).replace(/^[:*_\s]+/, '').replace(/[:*_\s]+$/, '').trim())
           .filter((s) => s.length > 0 && !s.toLowerCase().startsWith('category') && s !== '-');
 
         if (catName && (skills.length > 0 || !groups.some((g) => g.category === catName))) {
@@ -308,26 +330,11 @@ function parseSkillGroups(rawContent: string): SkillCategory[] {
       continue;
     }
 
-    // Bullet style: - **Languages:** JavaScript, TypeScript
-    const bulletMatch = trimmed.match(/^[-*•]\s*(?:\*\*(.*?)\*\*|(.*?)):?\s*(.*)$/);
-    if (bulletMatch) {
-      const category = cleanMarkdownFormatting(bulletMatch[1] || bulletMatch[2] || '');
-      const rawSkills = bulletMatch[3] !== undefined ? bulletMatch[3] : '';
-      const skills = rawSkills
-        .split(/[,•|·;]/)
-        .map(cleanMarkdownFormatting)
-        .filter((s) => s.length > 0 && s !== '-');
-
-      if (category || skills.length > 0) {
-        groups.push({ category: category || 'Technical Skills', skills });
-      }
-      continue;
-    }
-
     // Comma-separated list without explicit category
     const looseSkills = trimmed
       .split(/[,•|·;]/)
       .map(cleanMarkdownFormatting)
+      .map((s) => s.replace(/^[:*_\s]+/, '').replace(/[:*_\s]+$/, '').trim())
       .filter((s) => s.length > 0 && s !== '-');
 
     if (looseSkills.length > 0) {
@@ -342,8 +349,14 @@ function parseSkillGroups(rawContent: string): SkillCategory[] {
 
   // Deduplicate and clean
   return groups.map((g) => ({
-    category: g.category.trim() || 'Core Competencies',
-    skills: Array.from(new Set(g.skills.map(cleanMarkdownFormatting).filter(Boolean)))
+    category: g.category.replace(/[:*_\s]+$/, '').replace(/^[:*_\s]+/, '').trim() || 'Core Competencies',
+    skills: Array.from(
+      new Set(
+        g.skills
+          .map((s) => cleanMarkdownFormatting(s).replace(/^[:*_\s]+/, '').replace(/[:*_\s]+$/, '').trim())
+          .filter(Boolean)
+      )
+    )
   }));
 }
 
@@ -990,8 +1003,8 @@ export function parseCvMarkdownToData(rawMarkdown: string): CVData {
 
   // Populate structured helper properties
   const cvData: CVData = {
-    name: name || 'Candidate',
-    title: title || 'Professional Specialist',
+    name: name || '',
+    title: title || '',
     contacts,
     sections,
     nationality,

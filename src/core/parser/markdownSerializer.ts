@@ -37,11 +37,16 @@ export function serializeCvDataToMarkdown(data: CVData): string {
   if (data.contacts && data.contacts.length > 0) {
     const contactStrings = data.contacts.map(c => {
       if (c.url) {
-        return `[${c.label}](${c.url})`;
+        const cleanLabel = (c.label || '').replace(/[\[\]]/g, '').trim();
+        const cleanUrl = c.url.replace(/[\[\]\(\)]/g, '').trim();
+        if (cleanLabel === cleanUrl || cleanLabel.startsWith('http') || cleanLabel.includes('linkedin.com') || cleanLabel.includes('github.com')) {
+          return cleanUrl;
+        }
+        return `[${cleanLabel || cleanUrl}](${cleanUrl})`;
       }
-      return c.label;
+      return (c.label || '').replace(/[\[\]]/g, '').trim();
     });
-    parts.push(contactStrings.join(' • '));
+    parts.push(contactStrings.filter(Boolean).join(' • '));
   }
 
   // Helper to get formatted section title preserving user's edit or emoji prefix
@@ -65,8 +70,10 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     parts.push('\n---\n');
     parts.push(`## ${getSectionTitle('skills', 'CORE SKILLS & COMPETENCIES', '🛠️')}`);
     for (const group of data.skillGroups) {
-      const cat = group.category ? group.category.trim() : '';
-      const skl = group.skills && group.skills.length > 0 ? group.skills.join(', ') : '';
+      const cat = group.category ? group.category.replace(/[:*_\s]+$/, '').replace(/^[*_\s]+/, '').trim() : '';
+      const skl = group.skills && group.skills.length > 0
+        ? group.skills.map((s) => s.replace(/^[:*_\s]+/, '').replace(/[:*_\s]+$/, '').trim()).filter(Boolean).join(', ')
+        : '';
       parts.push(`- **${cat}:** ${skl}`);
     }
   }
@@ -112,16 +119,29 @@ export function serializeCvDataToMarkdown(data: CVData): string {
     parts.push(projItemsFormatted.join('\n\n---\n\n'));
   }
 
-  // Education
-  if (data.education && data.education.length > 0) {
+  // Education & Certifications
+  const hasEdu = Boolean(data.education && data.education.length > 0);
+  const hasCert = Boolean(data.certifications && data.certifications.length > 0);
+  if (hasEdu || hasCert) {
     parts.push('\n---\n');
     parts.push(`## ${getSectionTitle('education', 'EDUCATION & CERTIFICATIONS', '🎓')}`);
-    for (const edu of data.education) {
-      let cleanEdu = edu.replace(/^(?:[-•]\s*|\*\s+)/, '');
-      if (/^\*?[^*]+\*\*/.test(cleanEdu)) {
-        cleanEdu = cleanEdu.replace(/^\*?([^*]+)\*\*/, '**$1**');
+    if (data.education) {
+      for (const edu of data.education) {
+        let cleanEdu = edu.replace(/^(?:[-•]\s*|\*\s+)/, '');
+        if (/^\*?[^*]+\*\*/.test(cleanEdu)) {
+          cleanEdu = cleanEdu.replace(/^\*?([^*]+)\*\*/, '**$1**');
+        }
+        parts.push(`- ${cleanEdu}`);
       }
-      parts.push(`- ${cleanEdu}`);
+    }
+    if (data.certifications) {
+      for (const cert of data.certifications) {
+        let cleanCert = cert.replace(/^(?:[-•]\s*|\*\s+)/, '');
+        if (/^\*?[^*]+\*\*/.test(cleanCert)) {
+          cleanCert = cleanCert.replace(/^\*?([^*]+)\*\*/, '**$1**');
+        }
+        parts.push(`- ${cleanCert}`);
+      }
     }
   }
 

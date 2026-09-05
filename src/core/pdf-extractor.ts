@@ -95,7 +95,7 @@ interface ExtractedExpBlock {
  */
 export function reconstructExperienceFromPdfLines(lines: string[]): string {
   if (!lines || lines.length === 0) {
-    return `### **Company Name** | City, Country\n*Senior Specialist* | **2022 – Present**\n- Led cross-functional initiatives improving operational efficiency and technical delivery.`;
+    return '';
   }
 
   const blocks: ExtractedExpBlock[] = [];
@@ -109,7 +109,7 @@ export function reconstructExperienceFromPdfLines(lines: string[]): string {
     if (currentBlock && (currentBlock.company || currentBlock.role || currentBlock.bullets.length > 0)) {
       if (!currentBlock.company && currentBlock.role) {
         currentBlock.company = currentBlock.role;
-        currentBlock.role = 'Specialist';
+        currentBlock.role = '';
       }
       blocks.push(currentBlock);
       currentBlock = null;
@@ -131,13 +131,13 @@ export function reconstructExperienceFromPdfLines(lines: string[]): string {
       if (hasPipe) {
         flushBlock();
         const parts = cleanLine.split('|').map((p) => p.trim());
-        let comp = parts[0];
-        let role = parts[1] || 'Specialist';
+        const comp = parts[0] || '';
+        let role = parts[1] || '';
         let datePart = parts[2] || '';
 
         if (datePattern.test(role) && !parts[2]) {
           datePart = role;
-          role = 'Specialist';
+          role = '';
         }
 
         currentBlock = {
@@ -153,8 +153,8 @@ export function reconstructExperienceFromPdfLines(lines: string[]): string {
         const titleWithoutDate = cleanLine.replace(datePattern, '').replace(/[|•–—]/g, ' ').trim();
 
         currentBlock = {
-          company: titleWithoutDate || 'Organization',
-          role: titleWithoutDate.length < 35 ? titleWithoutDate : 'Specialist',
+          company: titleWithoutDate || '',
+          role: titleWithoutDate.length < 35 ? titleWithoutDate : '',
           date: extractedDate || undefined,
           bullets: []
         };
@@ -163,18 +163,18 @@ export function reconstructExperienceFromPdfLines(lines: string[]): string {
           flushBlock();
           currentBlock = {
             company: cleanLine,
-            role: 'Specialist',
+            role: '',
             bullets: []
           };
-        } else if (!currentBlock.role || currentBlock.role === 'Specialist') {
+        } else if (!currentBlock.role) {
           currentBlock.role = cleanLine;
         }
       }
     } else {
       if (!currentBlock) {
         currentBlock = {
-          company: 'Career Experience',
-          role: 'Professional Specialist',
+          company: '',
+          role: '',
           bullets: []
         };
       }
@@ -196,11 +196,16 @@ export function reconstructExperienceFromPdfLines(lines: string[]): string {
 
   return blocks
     .map((b) => {
-      const compHeader = b.location ? `### **${b.company}** | ${b.location}` : `### **${b.company}**`;
-      const roleLine = b.date ? `*${b.role}* | **${b.date}**` : `*${b.role}*`;
+      const compHeader = b.company
+        ? (b.location ? `### **${b.company}** | ${b.location}` : `### **${b.company}**`)
+        : (b.location ? `### ${b.location}` : '');
+      const roleLine = b.date
+        ? (b.role ? `*${b.role}* | **${b.date}**` : `**${b.date}**`)
+        : (b.role ? `*${b.role}*` : '');
       const bullets = b.bullets.map((bullet) => `- ${bullet}`).join('\n');
-      return `${compHeader}\n${roleLine}\n${bullets}`;
+      return [compHeader, roleLine, bullets].filter(Boolean).join('\n');
     })
+    .filter(Boolean)
     .join('\n\n---\n\n');
 }
 
@@ -223,9 +228,36 @@ export function parsePdfToMasterMarkdownLocal(rawText: string, fallbackName = 'C
   const githubMatch = rawText.match(/(?:https?:\/\/)?(?:www\.)?github\.com\/[a-zA-Z0-9_-]+/i);
   const github = githubMatch ? (githubMatch[0].startsWith('http') ? githubMatch[0] : `https://${githubMatch[0]}`) : '';
 
+  // Extract location via RegEx or top lines
+  const locationMatch = rawText.match(
+    /(?:^|\n)\s*[-*•]?\s*\*{0,2}(?:Location|Ubicación|Ubicacion|City|Ciudad|Ort|Lieu|Località)(?:\s*\/[^*:]*)?(?::\*{0,2}|\*{0,2}:)\s*(.+)$/im
+  );
+  let location = '';
+  if (locationMatch) {
+    location = cleanMarkdownFormatting(locationMatch[1].trim());
+  } else {
+    for (let i = 0; i < Math.min(lines.length, 6); i++) {
+      const line = lines[i];
+      if (
+        line.includes(',') &&
+        !line.includes('@') &&
+        !line.includes('http') &&
+        !line.match(/^\+?\d/) &&
+        line.length >= 3 &&
+        line.length <= 50
+      ) {
+        const clean = cleanMarkdownFormatting(line);
+        if (/^[A-ZÁÉÍÓÚÄÖÜ].*,.*[A-ZÁÉÍÓÚÄÖÜ]/.test(clean)) {
+          location = clean;
+          break;
+        }
+      }
+    }
+  }
+
   // 2. Identify candidate name from top lines (skipping contact info or headers)
-  let candidateName = fallbackName;
-  let headline = 'Professional Specialist';
+  let candidateName = fallbackName || '';
+  let headline = '';
 
   for (let i = 0; i < Math.min(lines.length, 5); i++) {
     const line = lines[i];
@@ -318,32 +350,34 @@ export function parsePdfToMasterMarkdownLocal(rawText: string, fallbackName = 'C
 
   const certText = sections.certifications.length > 0
     ? sections.certifications.map((l) => (l.startsWith('-') ? l : `- ${l}`)).join('\n')
-    : `- Professional Certificate / Training`;
+    : '';
 
   const langText = sections.languages.length > 0
     ? sections.languages.map((l) => (l.startsWith('-') ? l : `- **${l}**`)).join('\n')
-    : `- **English:** Professional Working Proficiency\n- **Spanish:** Native`;
+    : '';
 
   // Build clean contact row
   const contactParts: string[] = [];
-  contactParts.push('City, Country');
+  if (location) contactParts.push(location);
   if (email) contactParts.push(email);
   if (phone) contactParts.push(phone);
   if (linkedin) contactParts.push(linkedin);
   if (github) contactParts.push(github);
 
-  return `# ${candidateName}
-**${headline}**
-${contactParts.join(' • ')}
+  const headlineBlock = headline ? `**${headline}**\n` : '';
+  const contactRow = contactParts.length > 0 ? `${contactParts.join(' • ')}\n` : '';
+  const titleField = headline ? `- **Primary Professional Title:** ${headline}\n` : '';
+  const locationField = location ? `- **Location:** ${location}\n` : '';
 
+  return `# ${candidateName || 'Candidate'}
+${headlineBlock}${contactRow}
 ## 👤 1. Personal & Contact Information
-- **Full Name:** ${candidateName}
-- **Primary Professional Title:** ${headline}
-- **Location:** City, Country
-- **Email:** ${email || 'candidate.email@example.com'}
-- **Phone / WhatsApp:** ${phone || '+1 234 567 8900'}
-- **LinkedIn:** ${linkedin || 'https://linkedin.com/in/username'}
-- **GitHub / Portfolio:** ${github || 'https://github.com/username'}
+- **Full Name:** ${candidateName || ''}
+${titleField}${locationField}- **Email:** ${email}
+- **Phone / WhatsApp:** ${phone}
+- **LinkedIn:** ${linkedin}
+- **GitHub / Portfolio:** ${github}
+
 
 ---
 
@@ -389,11 +423,10 @@ ${langText}
  */
 export async function importResumePdf(file: File): Promise<PdfImportResult> {
   const rawText = await extractRawTextFromPdf(file);
-  const markdown = parsePdfToMasterMarkdownLocal(rawText, file.name.replace(/\.pdf$/i, ''));
-  const candidateName = extractCandidateName(markdown, file.name.replace(/\.pdf$/i, ''));
+  const candidateName = extractCandidateName(rawText, file.name.replace(/\.pdf$/i, ''));
 
   return {
-    markdown,
+    markdown: rawText,
     candidateName,
     usedAI: false,
     rawText
